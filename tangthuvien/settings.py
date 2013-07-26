@@ -146,6 +146,8 @@ INSTALLED_APPS = (
     'mptt',
     'zinnia',
     'south',
+    'book',
+    'django_coverage',
 )
 
 # A sample logging configuration. The only tangible logging
