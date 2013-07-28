@@ -1,5 +1,6 @@
 /.coverage
 /media/uploads
+/local_settings
 /.settings/org.eclipse.core.resources.prefs
 *.pyc
 /.pydevproject
