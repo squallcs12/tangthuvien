@@ -1,7 +1,7 @@
 # Django settings for tangthuvien project.
 import os
 
-PATH_ROOT =  os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
+PATH_ROOT = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
 
 def realpath(path):
     return os.path.realpath(os.path.join(PATH_ROOT, path))
@@ -17,13 +17,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tangthuvien',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'tangthuvien',  # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'tangthuvien',
         'PASSWORD': 'random_password',
-        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': 'localhost',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '',  # Set to empty string for default.
     }
 }
 
@@ -104,7 +104,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.core.context_processors.request',
   'django.core.context_processors.media',
   'django.core.context_processors.static',
-  'zinnia.context_processors.version',) # Optional
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -141,7 +140,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'lettuce.django',    
+    'lettuce.django',
     'tagging',
     'mptt',
     'zinnia',
@@ -181,6 +180,9 @@ LOGGING = {
 
 # Zinnia configuration
 ZINNIA_UPLOAD_TO = 'uploads/zinnia'
+
+# Book configuration
+BOOK_LIST_ITEM_COUNT = 10
 
 try:
     from local_settings import *

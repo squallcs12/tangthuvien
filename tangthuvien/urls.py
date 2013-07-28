@@ -6,7 +6,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'tangthuvien.views.home', name='home'),
+    url(r'^$', 'tangthuvien.views.home_view.main', name='homepage'),
+    url(r'^sitemap$', 'tangthuvien.views.sitemap_view.main', name='sitemap'),
+
     # url(r'^tangthuvien/', include('tangthuvien.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
@@ -14,6 +16,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    
+    #books
+    url(r'^books/', include('book.urls')),
+    
     #zinnia
     url(r'^', include('zinnia.urls')),
     url(r'^comments/', include('django.contrib.comments.urls')),

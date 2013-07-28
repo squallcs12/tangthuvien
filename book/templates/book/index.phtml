@@ -1,0 +1,36 @@
+{% extends 'master.phtml' %}
+{% load i18n %}
+{% block title %}List of books{% endblock %}
+
+{% block content %}
+<ul id="books" class="list">
+{% for book in books %}
+	<li class="item book" item_id="{{ book.id }}">
+		<h3>{{ book.title }}</h3>
+		<p>{{ book.description }}</p>
+		<div class="author">
+			<a href="books/author/{{book.author.slug}}">{{book.author.name}}</a>
+		</div>
+	</li>
+{% endfor %}
+</ul>
+<div id="pagination">
+	<ul class="pagination">
+	    {% if books.has_previous %}
+	    	<li><a class="first" href="{{url}}">{% trans "first page" %}</a></li>
+	        <li><a class="prev" href="{{url}}?page={{ books.previous_page_number }}">{% trans "previous page" %}</a></li>
+	    {% else %}
+			<li><span class="first">{% trans "first page" %}</span></li>
+	    {% endif %}
+	
+		<li><span class="current">{{ books.number }}</span></li>
+		
+	    {% if books.has_next %}
+	        <li><a class="next" href="{{url}}?page={{ books.next_page_number }}">{% trans "next page" %}</a></li>
+			<li><a class="last" href="{{url}}?page={{ books.end_index }}">{% trans "last page" %}</a></li>
+		{% else %}
+			<li><span class="last">{% trans "last page" %}</span></li>
+		{% endif %}
+	</ul>
+</div>
+{% endblock %}
