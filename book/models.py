@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from ckeditor.fields import RichTextField
 
-from zinnia.models.entry import TagsEntry, ContentEntry
+from zinnia.models.entry import TagsEntry
 from zinnia.models.category import Category
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
@@ -90,8 +91,13 @@ class Category(MPTTModel):
         """
         order_insertion_by = ['title']
 
+
 class Book(TagsEntry):
+    user = models.ForeignKey(User)
     title = models.CharField(max_length=255)
+    slug = models.SlugField(
+        _('slug'), unique=True, max_length=255,
+        help_text=_("Used to build the book's URL."))
     description = models.TextField(blank=True)
     author = models.ForeignKey('book.Author')
     categories = models.ManyToManyField(
@@ -128,8 +134,14 @@ class Book(TagsEntry):
                        ('can_change_status', 'Can change status'),
                        ('can_change_author', 'Can change author(s)'),)
 
+    def __unicode__(self):
+        return self.title
+
 class BookType(models.Model):
     name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.name
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -141,21 +153,32 @@ class Author(models.Model):
 class Type(models.Model):
     name = models.CharField(max_length=255)
 
-class Chapter(ContentEntry):
+    def __unicode__(self):
+        return self.name
+
+class Chapter(models.Model):
     book = models.ForeignKey('book.Book')
     user = models.ForeignKey(User)
     number = models.IntegerField()
-    name = models.CharField(max_length=255)
-    type = models.ForeignKey('book.ChapterType')
+    title = models.CharField(max_length=255)
+    chapter_type = models.ForeignKey('book.ChapterType')
+    content = RichTextField()
     creation_date = models.DateTimeField(
         _('creation date'), default=timezone.now)
 
     last_update = models.DateTimeField(
         _('last update'), default=timezone.now)
 
+
+    def __unicode__(self):
+        return self.title
+
     class Meta(Book.Meta):
         pass
 
 class ChapterType(models.Model):
     name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.name
 
