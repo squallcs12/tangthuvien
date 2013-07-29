@@ -23,9 +23,11 @@ urlpatterns = patterns('',
     #zinnia
     url(r'^', include('zinnia.urls')),
     url(r'^comments/', include('django.contrib.comments.urls')),
+    # ckeditor
+    url(r'^ckeditor/', include('ckeditor.urls')),
 )
 
 from tangthuvien import settings
 if settings.DEBUG:
-    urlpatterns += patterns('', (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|avi|mp3|mp4|wav|pdf|))$', 'django.views.static.serve',
+    urlpatterns += patterns('', (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|ico|avi|mp3|mp4|wav|pdf|))$', 'django.views.static.serve',
         {'document_root': settings.realpath('media')}))

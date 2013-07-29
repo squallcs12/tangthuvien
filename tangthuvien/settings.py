@@ -104,6 +104,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.core.context_processors.request',
   'django.core.context_processors.media',
   'django.core.context_processors.static',
+  'zinnia.context_processors.version',)  # Optional
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -143,10 +144,12 @@ INSTALLED_APPS = (
     'lettuce.django',
     'tagging',
     'mptt',
-    'zinnia',
     'south',
     'book',
     'django_coverage',
+    'zinnia',
+    'ckeditor',
+    'custom_admin',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -181,11 +184,12 @@ LOGGING = {
 # Zinnia configuration
 ZINNIA_UPLOAD_TO = 'uploads/zinnia'
 
+CKEDITOR_UPLOAD_PATH = realpath("media/uploads/ckeditor")
+
 # Book configuration
 BOOK_LIST_ITEM_COUNT = 10
 
 try:
     from local_settings import *
 except ImportError:
-    pass    
-    
+    pass
