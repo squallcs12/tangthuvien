@@ -1,0 +1,7 @@
+{% load i18n %}
+<select name="{{name}}" id="id_filter_column_{{name}}" class="filter_column" autocomplete="off" style="width: 97%">
+	<option value=''>{% trans "--" %}</option>
+	{% for option in options %}
+	<option value="{{option.value}}">{{option.label}}</option>
+	{% endfor %}
+</select>

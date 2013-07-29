@@ -22,8 +22,5 @@ class ColumnFilterNode(template.Node):
         column_filters = context['cl'].model_admin.current_column_filters
 
         if column_name in column_filters:
-            return column_filters[column_name].render()
-        elif column_name in context['cl'].model_admin.list_display:
-            return TextColumnFilter(column_name).render()
-
+            return column_filters[column_name].render(context)
         return ''

@@ -53,8 +53,8 @@ class AuthorFilter(RelatedSimpleListFilter):
     lookup_key = 'author_id'
     title = _('Authors')
     parameter_name = 'author'
-    verbose_name = _('Author')
-    verbose_name_plurar = _('Authors')
+    verbose_name = _('book')
+    verbose_name_plurar = _('books')
 
 
 class BookTypeFilter(RelatedSimpleListFilter):
@@ -79,9 +79,8 @@ class BookAdmin(ModelAdminColumnFilter):
     list_display = ('id', 'title', 'slug', 'author', 'get_categories', 'complete_status', 'ttv_type',)
     list_display_links = ('id', 'title', 'slug', 'complete_status',)
 
-    list_filter = (AuthorFilter, BookTypeFilter)
-
     column_filters = {
+        'id' : TextColumnFilter,
         'title' : MatchTextColumnFilter,
     }
 

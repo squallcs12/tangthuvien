@@ -16,15 +16,16 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    
-    #books
+
+    # books
     url(r'^books/', include('book.urls')),
-    
-    #zinnia
-    url(r'^', include('zinnia.urls')),
-    url(r'^comments/', include('django.contrib.comments.urls')),
+
     # ckeditor
     url(r'^ckeditor/', include('ckeditor.urls')),
+
+    # zinnia
+     url(r'^zinnia/', include('zinnia.urls')),
+#     url(r'^comments/', include('django.contrib.comments.urls')),
 )
 
 from tangthuvien import settings

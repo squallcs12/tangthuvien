@@ -1,5 +1,8 @@
 from django.contrib.admin.filters import SimpleListFilter
 import pdb
+from django.template.response import TemplateResponse
+from django.template import Context, Template
+from django.template.loader import render_to_string
 
 class ColumnFilter(SimpleListFilter):
 
@@ -18,7 +21,7 @@ class ColumnFilter(SimpleListFilter):
         self.parameter_name = self.get_param_name(param_name)
         self.value = None
 
-    def render(self):
+    def render(self, context):
         '''
         Render output for column filder
         '''
@@ -47,9 +50,13 @@ class TextColumnFilter(ColumnFilter):
     '''
     Text compare filter
     '''
-    def render(self):
-        return '<input type="text" name="%(name)s" id="filter_column_id_%(name)s" class="filter_column" style="width: 95%%" value="%(value)s"/>' \
-                % {'name' : self.parameter_name, 'value' : self.value if self.value else ''}
+    def render(self, context):
+        data = {}
+        data['name'] = self.parameter_name
+
+        data['value'] = self.value if self.value else ''
+
+        return render_to_string('custom_admin/text_field.phtml', data, context)
 
 class MatchTextColumnFilter(TextColumnFilter):
     '''
@@ -59,3 +66,24 @@ class MatchTextColumnFilter(TextColumnFilter):
         if self.value is not None:
             params = {'%s__icontains' % self.column_name : self.value}
             return queryset.filter(**params)
+
+class ForeignKeyColumnFilter(ColumnFilter):
+
+    def __init__(self, param_name, foreign_key):
+        super(ForeignKeyColumnFilter, self).__init__(param_name)
+        self.foreign_key = foreign_key
+
+    def get_options(self):
+        '''
+        Return foreign values
+        '''
+        for obj in self.foreign_key.rel.to.objects.all():
+            yield {'value' : obj.id, 'label' : obj.__unicode__()}
+
+    def render(self, context):
+        data = {}
+        data['name'] = self.parameter_name
+
+        data['options'] = self.get_options()
+
+        return render_to_string('custom_admin/foreign_key.phtml', data, context)

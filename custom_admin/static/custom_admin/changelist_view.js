@@ -1,6 +1,6 @@
 django.jQuery(function($){
 	function product_search_query(){
-		params = {}
+		var params = {}
 		$(".filter_column").each(function(){
 			if(value = $(this).val().trim()){
 				params[this.name] = value;
