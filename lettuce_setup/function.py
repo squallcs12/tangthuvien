@@ -9,8 +9,13 @@ from lettuce.django import django_url
 import pdb
 import sure
 from django.utils.translation import ugettext_lazy as _
+from selenium.webdriver.remote.webelement import WebElement
+from django.db import connection
 
 def browser():
+    '''
+    @return: selenium.webdriver.Firefox
+    '''
     return world.browser
 
 def visit(url):
@@ -21,6 +26,9 @@ def find_all(selector):
 
 def find(selector):
     return browser().find_element_by_css_selector(selector)
+
+WebElement.find = WebElement.find_element_by_css_selector
+WebElement.find_all = WebElement.find_elements_by_css_selector
 
 def current_page_link(selector):
     return find(selector + " .pagination .current")
@@ -62,3 +70,8 @@ def compare_list_item_ids(page1, page2, selector):
 def check_title(title):
     find("#content")
     browser().title.should.contain(_(title).__unicode__())
+
+def execute_sql(sql):
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    cursor.close()
