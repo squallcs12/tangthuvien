@@ -150,6 +150,7 @@ INSTALLED_APPS = (
     'zinnia',
     'ckeditor',
     'custom_admin',
+    'accounts',
 )
 
 # A sample logging configuration. The only tangible logging
