@@ -5,40 +5,11 @@ Created on Jul 27, 2013
 '''
 from django.contrib import admin
 from django.core.urlresolvers import NoReverseMatch
-from django.db.models import Count
-from django.utils.translation import ungettext_lazy
 from django.utils.translation import ugettext_lazy as _
-from zinnia.admin.filters import RelatedPublishedFilter
-from book.models import Category, Chapter, Author, BookType
-from django.contrib.markup.templatetags.markup import markdown
+from book.models import Chapter, Author, BookType
 from book.admin.filter_base import RelatedSimpleListFilter
 from custom_admin.filters import TextColumnFilter, MatchTextColumnFilter
 from custom_admin.base_admin import ModelAdminColumnFilter
-
-class CategoryListFilter(RelatedPublishedFilter):
-    """
-    List filter for EntryAdmin about categories
-    with published entries.
-    """
-    model = Category
-    lookup_key = 'categories__id'
-    title = _('published categories')
-    parameter_name = 'category'
-
-    def lookups(self, request, model_admin):
-        """
-        Return published objects with the number of entries.
-        """
-        active_objects = self.model.published.all().annotate(
-            number_of_entries=Count('books'))
-        for active_object in active_objects:
-            yield (
-                str(active_object.pk), ungettext_lazy(
-                    '%(item)s (%(count)i entry)',
-                    '%(item)s (%(count)i entries)',
-                    active_object.number_of_entries) % {
-                        'item': active_object.__unicode__(),
-                        'count': active_object.number_of_entries})
 
 class ChapterInline(admin.StackedInline):
     model = Chapter
@@ -102,13 +73,7 @@ class BookAdmin(ModelAdminColumnFilter):
     actions_on_top = True
     actions_on_bottom = True
 
-    def get_markedown_activity_title(self, book):
-        return markdown(book.title)
-    get_markedown_activity_title.allow_tags = True
-
     def save_model(self, request, obj, form, change):
         if not hasattr(obj, 'user'):
             obj.user = request.user
         obj.save()
-
-

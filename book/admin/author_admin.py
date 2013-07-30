@@ -4,5 +4,8 @@ Created on Jul 27, 2013
 @author: antipro
 '''
 from django.contrib import admin
-from book.models import Author
+
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'slug')
+    list_display_links = ('name', 'slug')
 
