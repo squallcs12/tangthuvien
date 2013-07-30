@@ -27,7 +27,7 @@ urlpatterns = patterns('',
      url(r'^zinnia/', include('zinnia.urls')),
 #     url(r'^comments/', include('django.contrib.comments.urls')),
 
-    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^accounts/', include('accounts.urls')),
 )
 
 from tangthuvien import settings
