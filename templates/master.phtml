@@ -22,6 +22,9 @@
         <link rel="stylesheet" type="text/css" media="screen, projection" href="{{ STATIC_URL }}zinnia/css/ie.css" />
     <![endif]-->
     {% block link %}{% endblock %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>if(!window.jQuery) document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"><sc' + 'ript>')</script>
+    <script>jQuery.noConflict()</script>
     {% block script %}{% endblock %}
   </head>
   <body class="zinnia {% block theme-class %}default{% endblock %} {% block color-class %}blue{% endblock %} {% block sidebar-class %}right-sidebar{% endblock %} {% block body-class %}{% endblock %}">
