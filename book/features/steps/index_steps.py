@@ -8,29 +8,60 @@ from lettuce import step, before, after
 from lettuce_setup.function import *  # @UnusedWildImport
 import pdb
 from book.features.factories.book_factory import BookFactory
+from book.features.factories.chapter_factory import ChapterFactory
+from book.features.factories.chapter_type_factory import ChapterTypeFactory
 
 @before.each_feature
 def before_book_feature(feature):
     if feature.name == 'Books page':
+        clean_book_tables()
         create_book_list()
-@after.each_feature
-def after_book_feature(feature):
-    if feature.name == 'Books page':
-        delete_book_list()
+
+def clean_book_tables():
+    '''
+    Clean all book app table
+    '''
+    queries = ['SET foreign_key_checks = 0;',
+    'truncate table tangthuvien.book_author;',
+    'truncate table tangthuvien.book_book;',
+    'truncate table tangthuvien.book_book_categories;',
+    'truncate table tangthuvien.book_book_sites;',
+    'truncate table tangthuvien.book_booktype;',
+    'truncate table tangthuvien.book_category;',
+    'truncate table tangthuvien.book_chapter;',
+    'truncate table tangthuvien.book_chaptertype;',
+    'truncate table tangthuvien.book_type;',
+    'truncate table tangthuvien.book_userlog;',
+    'SET foreign_key_checks = 1;', ]
+    for query in queries:
+        execute_sql(query)
+
 
 def create_book_list():
     world.book_list = []
+
+    chappter_types = []
+    for i in range(0, 5):
+        chappter_type = ChapterTypeFactory()
+        chappter_type.save()
+        chappter_types.append(chappter_type)
     for i in range(0, 50):  # @UnusedVariable
         book = BookFactory()
         book.save()
         world.book_list.append(book)
+        for i in range(0, 10):
+            chapter = ChapterFactory()
+            chapter.number = i
+            chapter.book = book
+            chapter.chapter_type = chappter_type
+            chapter.user = book.user
+            chapter.save()
 
 def delete_book_list():
     for book in world.book_list:
         book.ttv_type.delete()
         book.author.delete()
     world.book_list = []
-
 
 @step(u'When I visit book index page')
 def when_i_visit_book_index_page(step):
