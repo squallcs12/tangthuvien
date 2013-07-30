@@ -11,3 +11,4 @@ class AuthorFactory(factory.Factory):
     FACTORY_FOR = Author
 
     name = factory.Sequence(lambda n: 'Author {0}'.format(n))
+    slug = factory.Sequence(lambda n: 'author-{0}'.format(n))
