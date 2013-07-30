@@ -57,11 +57,6 @@ def create_book_list():
             chapter.user = book.user
             chapter.save()
 
-def delete_book_list():
-    for book in world.book_list:
-        book.ttv_type.delete()
-        book.author.delete()
-    world.book_list = []
 
 @step(u'When I visit book index page')
 def when_i_visit_book_index_page(step):
