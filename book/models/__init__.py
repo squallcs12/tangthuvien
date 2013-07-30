@@ -8,7 +8,7 @@ from ckeditor.fields import RichTextField
 from book.models.book_model import Book
 from book.models.category_model import Category
 from book.models.chapter_model import Chapter
-
+from book.models.user_log_model import UserLog
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)

@@ -1,0 +1,33 @@
+{% load i18n %}
+<div id="pagination">
+	<ul class="pagination">
+	    {% if chapters.has_previous %}
+	    	<li><a class="first" href="{% url 'book_view' chapter.book.slug %}?page=1">{% trans "first page" %}</a></li>
+	        <li><a class="prev" href="{% url 'book_view' chapter.book.slug %}?page={{ chapters.previous_page_number }}">{% trans "previous page" %}</a></li>
+	    {% else %}
+			<li><span class="first">{% trans "first page" %}</span></li>
+	    {% endif %}
+	
+		<li><span class="current">{{ chapters.number }}</span></li>
+		
+	    {% if chapters.has_next %}
+	        <li><a class="next" href="{% url 'book_view' chapter.book.slug %}?page={{ chapters.next_page_number }}">{% trans "next page" %}</a></li>
+			<li><a class="last" href="{% url 'book_view' chapter.book.slug %}?page={{ chapters.paginator.num_pages }}">{% trans "last page" %}</a></li>
+		{% else %}
+			<li><span class="last">{% trans "last page" %}</span></li>
+		{% endif %}
+	</ul>
+	<form>
+		{% trans "Jump to chapter" %}
+		<select name="chapter" class="chapter-list">
+			{% for page_number in chapters.paginator.page_range %}
+			<option value="{{page_number}}" {% if page_number == chapters.number %}selected="selected"{% endif %}>{{page_number}}</option>
+			{% endfor %}
+		</select>
+		<script>
+			jQuery(".chapter-list").unbind('click').change(function(){
+				location.href = '{% url 'book_view' chapter.book.slug %}?page=' + this.value
+			});
+		</script>
+	</form>
+</div>

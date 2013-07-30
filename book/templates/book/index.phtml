@@ -6,7 +6,7 @@
 <ul id="books" class="list">
 {% for book in books %}
 	<li class="item book" item_id="{{ book.id }}">
-		<h3>{{ book.title }}</h3>
+		<h3><a class="title" href="{{ book.full_url }}">{{ book.title }}</a></h3>
 		<p>{{ book.description }}</p>
 		<div class="author">
 			<a href="books/author/{{book.author.slug}}">{{book.author.name}}</a>

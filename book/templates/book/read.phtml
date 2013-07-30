@@ -1,0 +1,30 @@
+{% extends 'master.phtml' %}
+{% load i18n %}
+{% block title %}List of books{% endblock %}
+
+{% block content %}
+{% include 'book/read_pagination.phtml'%}
+<div id="chapters">
+	<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
+		<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
+		<div class="content">{{chapter.content|safe}}</div>
+	</div>
+</div>
+{% include 'book/read_pagination.phtml'%}
+{% endblock %}
+{% block sidebar %}
+<div id="book" book_id="{{book.id}}" class="widget">
+	<h3 class="header">{% trans "Book" %}</h3>
+	<div class="content">
+		<h4 class="title">{{book.title}}</h4>
+		<div class="description">{{book.description}}</div>
+	</div>
+</div>
+<div id="author" author_id="{{book.author.id}}" class="widget">
+	<h3 class="header">{% trans "Author" %}</h3>
+	<div class="content">
+		<h4 class="title">{{book.author.name}}</h4>
+		<div class="information">{{book.author.information}}</div>
+	</div>
+</div>
+{% endblock %}
