@@ -49,7 +49,7 @@ def create_book_list():
         book = BookFactory()
         book.save()
         world.book_list.append(book)
-        for i in range(0, 10):
+        for i in range(1, 11):
             chapter = ChapterFactory()
             chapter.number = i
             chapter.book = book
