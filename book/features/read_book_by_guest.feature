@@ -18,13 +18,3 @@ Feature: Books page
 		When I go to last chapter
 		Then I see the book title and description
 		And I see the last chapter
-		
-		
-	Scenario: Read book as user
-		Given I was a logged-in user
-		When I visit book index page
-		And I click on a book
-		When I choose a random chapter from selection box
-		When I visit book index page
-		And I click on the previous book
-		And I see the last random chapter
