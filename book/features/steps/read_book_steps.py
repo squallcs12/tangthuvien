@@ -7,8 +7,6 @@ Created on Jul 29, 2013
 from lettuce import step
 from lettuce_setup.function import *  # @UnusedWildImport
 import random
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 
 @step(u'And I click on a book')
 def and_i_click_on_a_book(step):
@@ -66,19 +64,3 @@ def when_i_go_to_last_chapter(step):
 @step(u'see the last chapter')
 def see_the_last_chapter(step):
     last_page_link("#pagination").tag_name.should_not.equal('a')
-
-@step(u'Given I was a non-logged-in user')
-def given_i_was_a_non_logged_in_user(step):
-    pass  # we dont need to do anything for now
-
-@step(u'Given I was a logged-in user')
-def given_i_was_a_logged_in_user(step):
-    try:
-        User.objects.create_user('username', 'email@domain.com', 'password')
-    except:
-        pass
-    visit(reverse('login'));
-    find("#id_username").send_keys('username')
-    find("#id_password").send_keys('password')
-    find("#id_login").click()
-

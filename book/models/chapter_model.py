@@ -17,6 +17,8 @@ class Chapter(models.Model):
     title = models.CharField(max_length=255)
     chapter_type = models.ForeignKey('book.ChapterType')
     content = RichTextField()
+    thank_count = models.IntegerField(default=0)
+
     creation_date = models.DateTimeField(
         _('creation date'), default=timezone.now)
 

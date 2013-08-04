@@ -42,6 +42,6 @@ def main(request, slug, template="book/read.phtml"):
     chapter = chapters[0]
     data['chapter'] = chapter
 
-    chapter_read_signal.send(main, user=request.user, book=book, page=chapters.number)
+    chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
 
     return TemplateResponse(request, template, data)

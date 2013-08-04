@@ -13,6 +13,40 @@
 {% include 'book/read_pagination.phtml'%}
 {% endblock %}
 {% block sidebar %}
+<div id="chapter-thank" class="widget">
+	<h3>{% trans "Chapter thank" %}</h3>
+	<div class="thank-count">{% trans "thanks" %} <span class="count">{{chapter.thank_count}}</span></div>
+	<button class="thank-button{% if chapter.thanked_by_current_user %} disabled{% endif %}">{% trans "thank poster for this chapter" %}</button>
+	<script type="text/javascript">
+(function($){
+	var thank_button = $("#chapter-thank .thank-button");
+	var thank_count_div = $("#chapter-thank .count");
+	var thank_count = parseInt(thank_count_div.text());
+	function thank(event){
+		thank_button
+			.unbind('click', thank)
+			.addClass('disabled');
+		var request = {};
+		request['url'] = '{% url "summit_thank_request" %}';
+		request['data'] = {};
+		request['data']['chapter_id'] = '{{chapter.id}}';
+		request['type'] = 'POST';
+		request['success'] = function(data){
+			console.log(data);
+			thank_button.removeClass('loading');
+		};
+		thank_button.addClass('loading');
+		$.ajax(request);
+		
+		thank_count_div.html(thank_count + 1);
+	}
+	if(!thank_button.hasClass('disabled')){
+		thank_button.click(thank)
+	}
+})(jQuery);
+	</script>
+	{% csrf_token %}
+</div>
 <div id="book" book_id="{{book.id}}" class="widget">
 	<h3 class="header">{% trans "Book" %}</h3>
 	<div class="content">
