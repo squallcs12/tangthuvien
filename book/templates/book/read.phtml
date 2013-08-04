@@ -16,7 +16,7 @@
 <div id="chapter-thank" class="widget">
 	<h3>{% trans "Chapter thank" %}</h3>
 	<div class="thank-count">{% trans "thanks" %} <span class="count">{{chapter.thank_count}}</span></div>
-	<button class="thank-button{% if chapter.thanked_by_current_user %} disabled{% endif %}">{% trans "thank poster for this chapter" %}</button>
+	<button class="thank-button{% if chapter.thanked_by_current_user %} disabled{% elif not user.is_authenticated %} disabled login_required{% endif %}">{% trans "thank poster for this chapter" %}</button>
 	<script type="text/javascript">
 (function($){
 	var thank_button = $("#chapter-thank .thank-button");

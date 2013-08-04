@@ -18,3 +18,5 @@ Feature: Books page
 		When I go to last chapter
 		Then I see the book title and description
 		And I see the last chapter
+		And I see chapter thank count
+		And I can not thank the poster

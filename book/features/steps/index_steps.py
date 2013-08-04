@@ -63,7 +63,7 @@ def create_book_list():
 
 @step(u'When I visit book index page')
 def when_i_visit_book_index_page(step):
-    visit("/books")
+    visit_by_view_name('books_home')
 
 @step(u'Then I see list of books')
 def then_i_see_list_of_books(step):
