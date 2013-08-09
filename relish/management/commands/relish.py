@@ -117,6 +117,8 @@ class Command(BaseCommand):
         for path, module in paths:
             for feature_file in filter(_filter_feature_file, os.listdir(path)):
                 filename = os.path.basename(feature_file)
-                os.symlink(os.path.join(path, feature_file), '%s/%s_%s' % (folder, module.__name__, filename))
+                if not os.path.exists(os.path.join(folder, module.__name__)):
+                    os.makedirs(os.path.join(folder, module.__name__), 0775)
+                os.symlink(os.path.join(path, feature_file), os.path.join(folder, module.__name__, filename))
 
         subprocess.call(["relish", "push", '%s:%s' % (settings.RELISH_PROJECT_NAME, settings.RELISH_PROJECT_VERSION), "path", folder])
