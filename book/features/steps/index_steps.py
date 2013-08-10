@@ -60,7 +60,6 @@ def create_book_list():
             chapter.user = book.user
             chapter.save()
 
-
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):
     visit_by_view_name('books_home')
