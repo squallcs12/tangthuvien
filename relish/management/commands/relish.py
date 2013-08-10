@@ -7,10 +7,9 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from optparse import make_option
 import os
-import sys
 from django.utils.importlib import import_module
-import pdb
 import subprocess
+import shutil
 
 
 def get_apps():
@@ -44,9 +43,9 @@ def _filter_configured_avoids(module):
 
     return not run_app
 
-def _filter_feature_file(filepath):
-    file_name, file_extension = os.path.splitext(filepath)  # @UnusedVariable
-    if file_extension == '.feature':
+def is_relish_file(filename):
+    file_name, file_extension = os.path.splitext(filename)  # @UnusedVariable
+    if file_extension in ('.feature', '.md'):
         return True
     return False
 
@@ -78,6 +77,14 @@ def collect_relish(only_the_apps=None, avoid_apps=None, path="features"):
     joinpath = lambda app: (os.path.join(os.path.dirname(app.__file__), path), app)
     return map(joinpath, apps)
 
+def _filter_feature_path_exists(path):
+    return os.path.exists(path[0])
+
+def tree(path):
+    for root, dirs, files in os.walk(path):  # @UnusedVariable
+        for filename in files:
+            yield os.path.join(root, filename)
+
 class Command(BaseCommand):
     help = """
     Publish cucumber feature files to relishapp.com
@@ -88,37 +95,44 @@ class Command(BaseCommand):
              help='Run ONLY the django apps that are listed here. Comma separated'),
         make_option('-A', '--avoid-apps', action='store', dest='avoid_apps', default='',
              help='AVOID running the django apps that are listed here. Comma separated'),
-        make_option('-f', '--folder', action='store', dest='folder', default='feature_symlinks',
+        make_option('-f', '--folder', action='store', dest='folder', default='features',
+             help='Features folder name'),
+        make_option('-t', '--tmp', action='store', dest='tmp', default='.feature_symlinks',
              help='Features folder name'),
     )
 
     def path_to_run(self, apps_to_run, apps_to_avoid):
         return (1,)
 
-    def get_paths(self, args, apps_to_run, apps_to_avoid):
-        return collect_relish(apps_to_run, apps_to_avoid)
+    def get_paths(self, args, apps_to_run, apps_to_avoid, features_folder):
+        return collect_relish(apps_to_run, apps_to_avoid, features_folder)
 
     def handle(self, *args, **options):
-        folder = options.get('folder', 'feature_symlinks')
+        folder = options.get('tmp', '.feature_symlinks')
+        features_folder = options.get('folder', 'features')
         apps_to_run = tuple(options.get('apps', '').split(","))
         apps_to_avoid = tuple(options.get('avoid_apps', '').split(","))
-        paths = self.get_paths(args, apps_to_run, apps_to_avoid)
+        paths = self.get_paths(args, apps_to_run, apps_to_avoid, features_folder)
 
-        if not os.path.exists(folder):
-            os.makedirs(folder, 0775)
-        else:
-            for the_file in os.listdir(folder):
-                file_path = os.path.join(folder, the_file)
-                try:
-                    if os.path.isfile(file_path):
-                        os.unlink(file_path)
-                except Exception, e:
-                    print e
+        paths = filter(_filter_feature_path_exists, paths)
+
+        if os.path.exists(folder):
+            shutil.rmtree(folder)
+        os.makedirs(folder, 0775)
         for path, module in paths:
-            for feature_file in filter(_filter_feature_file, os.listdir(path)):
-                filename = os.path.basename(feature_file)
-                if not os.path.exists(os.path.join(folder, module.__name__)):
-                    os.makedirs(os.path.join(folder, module.__name__), 0775)
-                os.symlink(os.path.join(path, feature_file), os.path.join(folder, module.__name__, filename))
+            os.makedirs(os.path.join(folder, module.__name__), 0775)
+            for root, dirs, files in os.walk(path):  # @UnusedVariable
+                for filename in files:
+                    if is_relish_file(filename):
+                        relative_folder = root[len(path):]
+                        if relative_folder:
+                            if relative_folder[0] == os.sep:
+                                relative_folder = relative_folder[1:]
+                            des_folder = os.path.join(folder, module.__name__, relative_folder)
+                            if not os.path.isdir(des_folder):
+                                os.mkdir(des_folder, 0775)
+                            os.symlink(os.path.join(root, filename), os.path.join(des_folder , filename))
+                        else:
+                            os.symlink(os.path.join(root, filename), os.path.join(folder, module.__name__, filename))
 
         subprocess.call(["relish", "push", '%s:%s' % (settings.RELISH_PROJECT_NAME, settings.RELISH_PROJECT_VERSION), "path", folder])
