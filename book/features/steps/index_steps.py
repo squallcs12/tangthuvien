@@ -61,8 +61,8 @@ def create_book_list():
             chapter.save()
 
 
-@step(u'When I visit book index page')
-def when_i_visit_book_index_page(step):
+@step(u'I visit book index page')
+def i_visit_book_index_page(step):
     visit_by_view_name('books_home')
 
 @step(u'Then I see list of books')
