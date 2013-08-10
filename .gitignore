@@ -7,4 +7,4 @@
 *.pyc
 /.pydevproject
 /.project
-/feature_symlinks
+/.feature_symlinks
