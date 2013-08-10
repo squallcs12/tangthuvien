@@ -130,12 +130,6 @@ TEMPLATE_DIRS = (
 LETTUCE_APPS = (
     'book',
 )
-RELISH_APPS = (
-    'book',
-    'relish',
-)
-RELISH_PROJECT_NAME = 'tangthuvien'
-RELISH_PROJECT_VERSION = '1.0'
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -157,7 +151,6 @@ INSTALLED_APPS = (
     'ckeditor',
     'custom_admin',
     'accounts',
-    'relish',
 )
 
 # A sample logging configuration. The only tangible logging
