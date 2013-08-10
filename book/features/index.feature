@@ -1,4 +1,4 @@
-Feature: Books page
+Feature: Book listing page
 	
 	Scenario: User visit book list
 		When I visit book index page
