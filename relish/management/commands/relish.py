@@ -136,3 +136,4 @@ class Command(BaseCommand):
                             os.symlink(os.path.join(root, filename), os.path.join(folder, module.__name__, filename))
 
         subprocess.call(["relish", "push", '%s:%s' % (settings.RELISH_PROJECT_NAME, settings.RELISH_PROJECT_VERSION), "path", folder])
+        shutil.rmtree(folder)
