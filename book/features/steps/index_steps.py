@@ -13,7 +13,7 @@ from book.features.factories.chapter_type_factory import ChapterTypeFactory
 
 @before.each_feature
 def before_book_feature(feature):
-    if feature.name == 'Books page' and (not hasattr(world, 'book_created') or not world.book_created):
+    if (not hasattr(world, 'book_created') or not world.book_created):
         clean_book_tables()
         create_book_list()
         world.book_created = True
@@ -35,6 +35,8 @@ def clean_book_tables():
     'truncate table tangthuvien.book_userlog;',
     'truncate table tangthuvien.book_chapterthank;',
     'truncate table tangthuvien.book_chapterthanksummary;',
+    'truncate table tangthuvien.book_rating;',
+    'truncate table tangthuvien.book_ratinglog;',
     'SET foreign_key_checks = 1;', ]
     for query in queries:
         execute_sql(query)

@@ -27,8 +27,6 @@ def require_login_simple(func):
 @require_login_simple
 def log_user_read_book(sender, **kwargs):
     user = kwargs.get('user')
-    if not user.id:
-        return
     page = kwargs.get('page')
     chapter = kwargs.get('chapter')
     book = chapter.book
@@ -53,4 +51,13 @@ def set_thanked_status(sender, **kwargs):
         chapter.thanked_by_current_user = True
     except ObjectDoesNotExist:
         chapter.thanked_by_current_user = False
+
+
+@dispatch.receiver(chapter_read_signal)
+@require_login_simple
+def set_rated_status(sender, **kwargs):
+    user = kwargs.get('user')
+    chapter = kwargs.get('chapter')
+    chapter.book.rated_by_current_user = chapter.book.is_rated_by(user)
+
 

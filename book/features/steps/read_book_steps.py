@@ -8,14 +8,14 @@ from lettuce import step
 from lettuce_setup.function import *  # @UnusedWildImport
 import random
 
-@step(u'And I click on a book')
-def and_i_click_on_a_book(step):
+@step(u'I click on a book')
+def i_click_on_a_book(step):
     book_div = find("#books .book")
     world.choose_book_id = book_div.get_attribute('item_id')
     book_div.find("a.title").click()
 
-@step(u'Then I see the book title and description')
-def then_i_see_the_book_title_and_description(step):
+@step(u'I see the book title and description')
+def i_see_the_book_title_and_description(step):
     find("#book h4.title").text.should_not.be.empty
     find("#book div.description").text.should_not.be.empty
 

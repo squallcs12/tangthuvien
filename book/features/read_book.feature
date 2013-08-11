@@ -33,8 +33,9 @@ Feature: Book reading page
 		And I see the book rating result
 		And I see rating book button
 		And I can rate for the book
+		And I see the book rating count is 0
 		When I rate 5 star for the book
-		Then I see the book rating is 5 star
+		Then I see the book rating is 5.00
 		And I see the book rating count is 1
 		And I can not rate for the book anylonger
 		When I choose a random chapter from selection box
@@ -49,3 +50,6 @@ Feature: Book reading page
 		When I reload the page
 		Then I still see thank number not change after increasing
 		And I can not thank the poster
+		And I see the book rating is 5.00
+		And I see the book rating count is 1
+		And I can not rate for the book anylonger
