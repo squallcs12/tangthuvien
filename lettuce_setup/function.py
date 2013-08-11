@@ -4,13 +4,15 @@ Created on Jul 25, 2013
 @author: antipro
 '''
 from lettuce_setup import all
-from lettuce import world
+from lettuce import world, step
 from lettuce.django import django_url
 import pdb
 import sure
 from django.utils.translation import ugettext_lazy as _
 from selenium.webdriver.remote.webelement import WebElement
 from django.db import connection
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 def browser():
     '''
@@ -20,6 +22,9 @@ def browser():
 
 def visit(url):
     browser().get(django_url(url))
+
+def visit_by_view_name(name):
+    visit(reverse(name))
 
 def find_all(selector):
     return browser().find_elements_by_css_selector(selector)
@@ -75,3 +80,19 @@ def execute_sql(sql):
     cursor = connection.cursor()
     cursor.execute(sql)
     cursor.close()
+
+
+def default_user():
+    if not hasattr(world, 'default_user'):
+        try:
+            user = User.objects.create_user('username', 'email@domain.com', 'password')
+        except:
+            user = User.objects.get_by_natural_key('username')
+        user.raw_password = 'password'
+        world.default_user = user
+    return world.default_user
+
+
+@step(u'When I reload the page')
+def when_i_reload_the_page(step):
+    browser().refresh()

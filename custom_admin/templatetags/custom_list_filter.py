@@ -4,7 +4,6 @@ Created on Jul 29, 2013
 @author: antipro
 '''
 from django import template
-from custom_admin.filters import TextColumnFilter
 
 register = template.Library()
 

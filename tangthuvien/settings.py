@@ -114,6 +114,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'book.middleware.ClearTemplateJsCss',
 )
 
 ROOT_URLCONF = 'tangthuvien.urls'
@@ -156,7 +157,6 @@ INSTALLED_APPS = (
     'ckeditor',
     'custom_admin',
     'accounts',
-    'relish',
 )
 
 # A sample logging configuration. The only tangible logging

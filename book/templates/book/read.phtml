@@ -1,6 +1,11 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
+{% load static_tags %}
 {% block title %}List of books{% endblock %}
+
+{% block link %}
+{% load_css static /book/rating_star.css %}
+{% endblock %}
 
 {% block content %}
 {% include 'book/read_pagination.phtml'%}
@@ -13,10 +18,93 @@
 {% include 'book/read_pagination.phtml'%}
 {% endblock %}
 {% block sidebar %}
+<div id="chapter-thank" class="widget">
+	<h3>{% trans "Chapter thank" %}</h3>
+	<div class="thank-count">{% trans "thanks" %} <span class="count">{{chapter.thank_count}}</span></div>
+	<button class="thank-button{% if chapter.thanked_by_current_user %} disabled{% elif not user.is_authenticated %} disabled login_required{% endif %}">{% trans "thank poster for this chapter" %}</button>
+	<script type="text/javascript">
+(function($){
+	var thankButton = $("#chapter-thank .thank-button");
+	var thankCountDiv = $("#chapter-thank .count");
+	var thankCount = parseInt(thankCountDiv.text());
+	function thank(event){
+		thankButton
+			.unbind('click', thank)
+			.addClass('disabled');
+		var request = {};
+		request['url'] = '{% url "summit_thank_request" %}';
+		request['data'] = {};
+		request['data']['chapter_id'] = '{{chapter.id}}';
+		request['type'] = 'POST';
+		request['success'] = function(data){
+			console.log(data);
+			thankButton.removeClass('loading');
+		};
+		thankButton.addClass('loading');
+		$.ajax(request);
+
+		thankCountDiv.html(thankCount + 1);
+	}
+	if(!thankButton.hasClass('disabled')){
+		thankButton.click(thank)
+	}
+})(jQuery);
+	</script>
+	{% csrf_token %}
+</div>
 <div id="book" book_id="{{book.id}}" class="widget">
 	<h3 class="header">{% trans "Book" %}</h3>
 	<div class="content">
 		<h4 class="title">{{book.title}}</h4>
+		<div class="rating">
+			<div class="result">
+				<span class="average-result">{{book.rating.average_result}}</span>/<span class="rating-count">{{book.rating.rating_count}}</span>
+			</div>
+			<div class="rate-star">
+				{% for i in book.rating.rating_range %}
+				<button class="rate-star-{{i}}" data-rate-number="{{i}}"
+				{% if book.rated_by_current_user %}
+					disabled='disabled'
+				{% elif not user.is_authenticated %}
+				disabled='disabled' class='login_required'
+				{% endif %}>{{i}}</button>
+				{% endfor %}
+			</div>
+			<script type="text/javascript">
+(function($){
+	$("#book .rating .rate-star button").click(function(){
+		var clickedButton = this;
+		rateNumber = $(this).data('rate-number');
+
+		$("#book .rating .rate-star button").attr('disabled', true);
+		resultSpan = $("#book .rating .average-result");
+		countSpan = $("#book .rating .rating-count");
+
+		ratingCount = parseInt(countSpan.html());
+
+		var newResult = (ratingCount * parseFloat(resultSpan.html()) + rateNumber) / (ratingCount + 1);
+		newResult = newResult.toFixed(2);
+
+		resultSpan.html(newResult);
+		countSpan.html(ratingCount + 1);
+
+		request = {};
+		request['url'] = '{% url "submit_book_rating" %}';
+		request['type'] = 'POST';
+		request['data'] = {};
+		request['data']['number'] = rateNumber;
+		request['data']['book_id'] = '{{book.id}}';
+		request['success'] = function(data){
+			resultSpan.html(data['average_result'].toFixed(2));
+			countSpan.html(data['rating_count']);
+			$(clicked_button).removeClass('loading');
+		}
+		$(clickedButton).addClass('loading');
+		$.ajax(request);
+	});
+})(jQuery);
+			</script>
+		</div>
 		<div class="description">{{book.description}}</div>
 	</div>
 </div>

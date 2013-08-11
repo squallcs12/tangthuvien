@@ -11,6 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from zinnia.models.entry import TagsEntry
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
+from book.models.rating_model import RatingLog
 
 class Book(TagsEntry):
     user = models.ForeignKey(User)
@@ -39,6 +41,13 @@ class Book(TagsEntry):
 
     last_update = models.DateTimeField(
         _('last update'), default=timezone.now)
+
+    def is_rated_by(self, user):
+        try:
+            RatingLog.objects.get(book=self, user=user)
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     class Meta:
         """

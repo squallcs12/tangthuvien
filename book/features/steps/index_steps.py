@@ -13,9 +13,10 @@ from book.features.factories.chapter_type_factory import ChapterTypeFactory
 
 @before.each_feature
 def before_book_feature(feature):
-    if feature.name == 'Books page':
+    if (not hasattr(world, 'book_created') or not world.book_created):
         clean_book_tables()
         create_book_list()
+        world.book_created = True
 
 def clean_book_tables():
     '''
@@ -32,6 +33,10 @@ def clean_book_tables():
     'truncate table tangthuvien.book_chaptertype;',
     'truncate table tangthuvien.book_type;',
     'truncate table tangthuvien.book_userlog;',
+    'truncate table tangthuvien.book_chapterthank;',
+    'truncate table tangthuvien.book_chapterthanksummary;',
+    'truncate table tangthuvien.book_rating;',
+    'truncate table tangthuvien.book_ratinglog;',
     'SET foreign_key_checks = 1;', ]
     for query in queries:
         execute_sql(query)
@@ -49,7 +54,7 @@ def create_book_list():
         book = BookFactory()
         book.save()
         world.book_list.append(book)
-        for i in range(0, 10):
+        for i in range(1, 11):
             chapter = ChapterFactory()
             chapter.number = i
             chapter.book = book
@@ -57,10 +62,9 @@ def create_book_list():
             chapter.user = book.user
             chapter.save()
 
-
-@step(u'When I visit book index page')
-def when_i_visit_book_index_page(step):
-    visit("/books")
+@step(u'I visit book index page')
+def i_visit_book_index_page(step):
+    visit_by_view_name('books_home')
 
 @step(u'Then I see list of books')
 def then_i_see_list_of_books(step):

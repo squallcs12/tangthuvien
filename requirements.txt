@@ -7,6 +7,7 @@ South==0.8.1
 akismet==0.2.0
 argparse==1.2.1
 coverage==3.6
+django-annoying==0.7.7
 django-blog-zinnia==0.12.3
 django-ckeditor==4.0.2
 django-coverage==1.2.4

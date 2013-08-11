@@ -8,5 +8,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
+    url(r'^submit_thank', 'thank_view.main', name='summit_thank_request'),
+    url(r'^submit_book_rating', 'rating_view.main', name='submit_book_rating'),
     url(r'^(?P<slug>.*)$', 'book_view.main', name='book_view'),
 )
