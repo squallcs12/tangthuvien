@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'custom_admin',
     'accounts',
+    'relish',
 )
 
 # A sample logging configuration. The only tangible logging
