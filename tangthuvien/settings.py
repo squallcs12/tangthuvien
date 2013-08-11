@@ -132,7 +132,6 @@ LETTUCE_APPS = (
 )
 RELISH_APPS = (
     'book',
-    'relish',
 )
 RELISH_PROJECT_NAME = 'tangthuvien'
 RELISH_PROJECT_VERSION = '1.0'
