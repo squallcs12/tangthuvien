@@ -3,14 +3,10 @@ Created on Jul 25, 2013
 
 @author: antipro
 '''
-from lettuce import after, before, world
-from selenium import webdriver
-
-@before.each_scenario
-def before_scenario(scenario):
-    world.browser = webdriver.Firefox()
-    world.browser.implicitly_wait(3)
+from lettuce import after, world
 
 @after.each_scenario
 def after_scenario(scenario):
-    world.browser.quit()
+    if hasattr(world, 'browser'):
+        world.browser.quit()
+        del world.browser

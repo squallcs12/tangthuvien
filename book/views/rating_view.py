@@ -3,10 +3,10 @@ Created on Aug 8, 2013
 
 @author: antipro
 '''
-from django.http.response import HttpResponse
-from tangthuvien.decorator.ajax_required_decorator import ajax_required
 from book.models.book_model import Book
-import json
+
+from tangthuvien.decorator.ajax_required_decorator import ajax_required
+from tangthuvien.django_custom import HttpJson
 
 @ajax_required
 def main(request):
@@ -23,4 +23,4 @@ def main(request):
     returnJson['average_result'] = book.rating.average_result
     returnJson['rating_count'] = book.rating.rating_count
 
-    return HttpResponse(json.dumps(returnJson), content_type="application/json")
+    return HttpJson(returnJson)

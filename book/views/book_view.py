@@ -45,3 +45,8 @@ def main(request, slug, template="book/read.phtml"):
     chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
 
     return TemplateResponse(request, template, data)
+
+def short(request, book_id):
+    book_id = int(book_id)
+    book = Book.objects.get(pk=book_id)
+    return HttpResponseRedirect(reverse('book_view', kwargs={'slug':book.slug}))

@@ -7,12 +7,19 @@ from django import dispatch
 import pdb
 from book.models.user_log_model import UserLog
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.signals import post_save
+from book.models.chapter_model import Chapter
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 # when user read a chapter
 chapter_read_signal = dispatch.Signal(providing_args=["user", "chapter", "page"])
 
 # when user thank a chapter
 chapter_thank_signal = dispatch.Signal(providing_args=["user", "chapter"])
+
+# book listing signal
+pre_listing_book = dispatch.Signal(providing_args=["user", "books"])
 
 # require login to do something
 def require_login_simple(func):
@@ -34,6 +41,7 @@ def log_user_read_book(sender, **kwargs):
     try:
         userLog = UserLog.objects.get(user=user, book=book)
         userLog.page = page
+        userLog.last_update = timezone.now()
     except ObjectDoesNotExist:
         userLog = UserLog(user=user, book=book, page=page)
 
@@ -60,4 +68,26 @@ def set_rated_status(sender, **kwargs):
     chapter = kwargs.get('chapter')
     chapter.book.rated_by_current_user = chapter.book.is_rated_by(user)
 
+@dispatch.receiver(chapter_read_signal)
+@require_login_simple
+def set_favorited_status(sender, **kwargs):
+    user = kwargs.get('user')
+    chapter = kwargs.get('chapter')
+    chapter.book.favorited_by_current_user = chapter.book.is_favorited_by(user)
 
+@dispatch.receiver(post_save, sender=Chapter)
+def new_chapter(sender, **kwargs):
+    if kwargs.get('created'):
+        chapter = kwargs.get('instance')
+        chapter.book.last_update = timezone.now()
+        chapter.book.save()
+
+@dispatch.receiver(pre_listing_book)
+def mark_unread_for_book(sender, **kwargs):
+    user = kwargs.get('user')
+    # assert isinstance(user, User)
+    if not user.is_authenticated():
+        return
+    for book in kwargs.get('books'):
+        if not book.is_read:
+            book.is_read_by_current_user = book.is_read_by_user(user)

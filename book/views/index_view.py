@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from book.models import Book
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from tangthuvien import settings
+from book.signals import pre_listing_book
 def main(request, template='book/index.phtml'):
     data = {}
 
@@ -22,5 +23,7 @@ def main(request, template='book/index.phtml'):
     except EmptyPage:
         books = paginator.page(paginator.num_pages)
     data['books'] = books
+
+    pre_listing_book.send(main, user=request.user, books=books)
 
     return TemplateResponse(request, template, data)

@@ -1,1 +1,1 @@
-from clear_template_js_css_middleware import ClearTemplateJsCss
+from .clear_template_js_css_middleware import ClearTemplateJsCss

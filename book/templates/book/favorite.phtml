@@ -1,0 +1,17 @@
+{% extends 'master.phtml' %}
+{% load i18n %}
+{% block title %}List of books{% endblock %}
+
+{% block content %}
+{% if books %}
+<form method="POST" action="{% url 'unfavorite_books' %}">
+    {% csrf_token %}
+    {% include 'book/_books_list.phtml' with class='favorite' showcheckbox=1%}
+    <div class"actions">
+        <input type="submit" name="unfavorite_books" id="unfavorite_books" value="Unfavorite" />
+    </div>
+</form>
+{% else %}
+{% trans "You did not mark any books as favorite yet." %}
+{% endif %}
+{% endblock %}

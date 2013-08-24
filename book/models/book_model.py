@@ -9,9 +9,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from tagging import fields
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from book.models.rating_model import RatingLog
+
+from datetime import timedelta
+import pdb
 
 class Book(models.Model):
     user = models.ForeignKey(User)
@@ -36,6 +40,12 @@ class Book(models.Model):
         verbose_name=_('sites'),
         help_text=_('Sites where the entry will be published.'))
 
+    favorite_count = models.IntegerField(default=0)
+
+    favorited_by = models.ManyToManyField(User, related_name="favorite_books", through='book.Favorite')
+
+    read_users = models.ManyToManyField(User, related_name="read_books", through="book.UserLog")
+
     creation_date = models.DateTimeField(
         _('creation date'), default=timezone.now)
 
@@ -48,6 +58,9 @@ class Book(models.Model):
             return True
         except ObjectDoesNotExist:
             return False
+
+    def is_favorited_by(self, user):
+        return self.favorited_by.filter(id=user.id).exists()
 
     class Meta:
         """
@@ -69,3 +82,13 @@ class Book(models.Model):
     @property
     def full_url(self):
         return "%s%s" % (reverse('books_home'), self.slug,)
+
+    @property
+    def is_read(self):
+        return self.last_update < timezone.now() + timedelta(minutes= -15)
+
+    def is_read_by_user(self, user):
+        try:
+            return self.last_update < self.userlog_set.get(user=user, book=self).last_update
+        except ObjectDoesNotExist:
+            return False

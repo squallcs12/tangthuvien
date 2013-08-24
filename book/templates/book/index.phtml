@@ -3,17 +3,7 @@
 {% block title %}List of books{% endblock %}
 
 {% block content %}
-<ul id="books" class="list">
-{% for book in books %}
-	<li class="item book" item_id="{{ book.id }}">
-		<h3><a class="title" href="{{ book.full_url }}">{{ book.title }}</a></h3>
-		<p>{{ book.description }}</p>
-		<div class="author">
-			<a href="books/author/{{book.author.slug}}">{{book.author.name}}</a>
-		</div>
-	</li>
-{% endfor %}
-</ul>
+{% include 'book/_books_list.phtml'%}
 <div id="pagination">
 	<ul class="pagination">
 	    {% if books.has_previous %}

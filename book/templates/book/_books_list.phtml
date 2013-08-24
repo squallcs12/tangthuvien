@@ -1,0 +1,14 @@
+<ul id="books" class="list {{class}}">
+{% for book in books %}
+    <li class="item book" item_id="{{ book.id }}"{% if not book.is_read and not book.is_read_by_current_user %}unread="yes"{% endif %}>
+        <h3><a class="title" href="{{ book.full_url }}">{{ book.title }}</a></h3>
+        <p>{{ book.description }}</p>
+        <div class="author">
+            <a href="books/author/{{book.author.slug}}">{{book.author.name}}</a>
+        </div>
+        {% if showcheckbox %}
+        <input type="checkbox" name="ids[]" value="{{book.id}}">
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>

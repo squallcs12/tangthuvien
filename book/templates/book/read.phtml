@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block content %}
-{% include 'book/read_pagination.phtml'%}
+{% include 'book/_read_pagination.phtml'%}
 <div id="chapters">
 	<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
 		<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
 		<div class="content">{{chapter.content|safe}}</div>
 	</div>
 </div>
-{% include 'book/read_pagination.phtml'%}
+{% include 'book/_read_pagination.phtml'%}
 {% endblock %}
 {% block sidebar %}
 <div id="chapter-thank" class="widget">
@@ -52,10 +52,44 @@
 	</script>
 	{% csrf_token %}
 </div>
-<div id="book" book_id="{{book.id}}" class="widget">
+<div id="book" item_id="{{chapter.book.id}}" class="widget">
 	<h3 class="header">{% trans "Book" %}</h3>
 	<div class="content">
 		<h4 class="title">{{book.title}}</h4>
+		<div class="favorite">
+			<button class="favorite" favorite="{% if chapter.book.favorited_by_current_user %}yes{% else %}no{% endif %}">Favorite</button>
+			<script>
+(function($){
+	var loading = false;
+	$("#book .favorite button").click(function(){
+		if(loading){
+			return;
+		}
+		loading = true;
+		var request = {};
+		request['url'] = '{% url "submit_favorite_book" %}';
+		request['data'] = {'id' : '{{chapter.book.id}}'};
+		request['type'] = 'POST';
+		if($(this).attr('favorite') == 'no'){
+			var ajaxComplete = function(){
+				$("#book .favorite button").attr('favorite', 'yes');
+			}
+		} else {
+			var ajaxComplete = function(){
+				$("#book .favorite button").attr('favorite', 'no');
+			}
+		};
+		request['success'] = function(data){
+			loading = false;
+			$("#book .favorite button").removeClass('loading');
+			ajaxComplete();
+		};
+		$("#book .favorite button").addClass('loading');
+		$.ajax(request);
+	});
+})(jQuery);
+			</script>
+		</div>
 		<div class="rating">
 			<div class="result">
 				<span class="average-result">{{book.rating.average_result}}</span>/<span class="rating-count">{{book.rating.rating_count}}</span>

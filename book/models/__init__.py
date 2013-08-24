@@ -11,6 +11,7 @@ from book.models.chapter_model import Chapter
 from book.models.user_log_model import UserLog
 from book.models.chapter_thank_model import ChapterThank, ChapterThankSummary
 from book.models.rating_model import Rating, RatingLog
+from book.models.favorite_model import Favorite
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)

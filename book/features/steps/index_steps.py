@@ -4,9 +4,7 @@ Created on Jul 27, 2013
 
 @author: antipro
 '''
-from lettuce import step, before, after
 from lettuce_setup.function import *  # @UnusedWildImport
-import pdb
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
 from book.features.factories.chapter_type_factory import ChapterTypeFactory
@@ -23,20 +21,21 @@ def clean_book_tables():
     Clean all book app table
     '''
     queries = ['SET foreign_key_checks = 0;',
-    'truncate table tangthuvien.book_author;',
-    'truncate table tangthuvien.book_book;',
-    'truncate table tangthuvien.book_book_categories;',
-    'truncate table tangthuvien.book_book_sites;',
-    'truncate table tangthuvien.book_booktype;',
-    'truncate table tangthuvien.book_category;',
-    'truncate table tangthuvien.book_chapter;',
-    'truncate table tangthuvien.book_chaptertype;',
-    'truncate table tangthuvien.book_type;',
-    'truncate table tangthuvien.book_userlog;',
-    'truncate table tangthuvien.book_chapterthank;',
-    'truncate table tangthuvien.book_chapterthanksummary;',
-    'truncate table tangthuvien.book_rating;',
-    'truncate table tangthuvien.book_ratinglog;',
+    'truncate table book_author;',
+    'truncate table book_book;',
+    'truncate table book_book_categories;',
+    'truncate table book_book_sites;',
+    'truncate table book_booktype;',
+    'truncate table book_category;',
+    'truncate table book_chapter;',
+    'truncate table book_chaptertype;',
+    'truncate table book_type;',
+    'truncate table book_userlog;',
+    'truncate table book_chapterthank;',
+    'truncate table book_chapterthanksummary;',
+    'truncate table book_rating;',
+    'truncate table book_ratinglog;',
+    'truncate table book_favorite;',
     'SET foreign_key_checks = 1;', ]
     for query in queries:
         execute_sql(query)
@@ -46,10 +45,9 @@ def create_book_list():
     world.book_list = []
 
     chappter_types = []
-    for i in range(0, 5):
-        chappter_type = ChapterTypeFactory()
-        chappter_type.save()
-        chappter_types.append(chappter_type)
+    chappter_type = ChapterTypeFactory()
+    chappter_type.save()
+    chappter_types.append(chappter_type)
     for i in range(0, 50):  # @UnusedVariable
         book = BookFactory()
         book.save()
@@ -64,7 +62,7 @@ def create_book_list():
 
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):
-    visit_by_view_name('books_home')
+    visit('/books')
 
 @step(u'Then I see list of books')
 def then_i_see_list_of_books(step):

@@ -17,4 +17,5 @@ urlpatterns = patterns('',
         {'template_name':'accounts/password_reset_confirm.phtml'},
         name='password_reset_confirm'),
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete', {'template_name':'accounts/password_reset_complete.phtml'}, name='password_reset_complete'),
+    url(r'^profile', 'tangthuvien.views.home_view.main'),
 )
