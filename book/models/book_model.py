@@ -9,13 +9,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from zinnia.models.entry import TagsEntry
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from book.models.rating_model import RatingLog
 
-class Book(TagsEntry):
+class Book(models.Model):
     user = models.ForeignKey(User)
+    tags = fields.TagField(_('tags'))
     title = models.CharField(max_length=255)
     slug = models.SlugField(
         _('slug'), unique=True, max_length=255,

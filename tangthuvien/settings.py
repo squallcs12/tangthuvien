@@ -103,8 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'django.core.context_processors.i18n',
   'django.core.context_processors.request',
   'django.core.context_processors.media',
-  'django.core.context_processors.static',
-  'zinnia.context_processors.version',)  # Optional
+  'django.core.context_processors.static',)  # Optional
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -153,7 +152,6 @@ INSTALLED_APPS = (
     'south',
     'book',
     'django_coverage',
-    'zinnia',
     'ckeditor',
     'custom_admin',
     'accounts',

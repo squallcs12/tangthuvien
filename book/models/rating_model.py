@@ -4,16 +4,10 @@ Created on Aug 4, 2013
 @author: antipro
 '''
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
-from annoying.fields import AutoOneToOneField
-
-from zinnia.models.entry import TagsEntry
-from django.core.urlresolvers import reverse
-import math
 from django.core.exceptions import ObjectDoesNotExist
+from tangthuvien.models.fields import AutoOneToOneField
 
 class Rating(models.Model):
     book = AutoOneToOneField('book.Book')

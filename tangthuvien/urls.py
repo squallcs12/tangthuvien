@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^ckeditor/', include('ckeditor.urls')),
 
     # zinnia
-     url(r'^zinnia/', include('zinnia.urls')),
+#      url(r'^zinnia/', include('zinnia.urls')),
 #     url(r'^comments/', include('django.contrib.comments.urls')),
 
     url(r'^accounts/', include('accounts.urls')),
