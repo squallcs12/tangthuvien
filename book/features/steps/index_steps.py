@@ -11,7 +11,7 @@ from book.features.factories.chapter_type_factory import ChapterTypeFactory
 
 @before.each_feature
 def before_book_feature(feature):
-    if ('Book app ::' in feature.name) and \
+    if ('Book App ::' in feature.name) and \
         (not hasattr(world, 'book_created') or not world.book_created):
         create_book_list()
 
