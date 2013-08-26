@@ -129,6 +129,7 @@ TEMPLATE_DIRS = (
 )
 LETTUCE_APPS = (
     'book',
+    'accounts',
 )
 RELISH_APPS = (
     'book',
@@ -156,7 +157,10 @@ INSTALLED_APPS = (
     'custom_admin',
     'accounts',
     'relish',
+    'social_auth',
 )
+SITE_ID = 1
+
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -213,6 +217,36 @@ CKEDITOR_UPLOAD_PATH = realpath("media/uploads/ckeditor")
 
 # Book configuration
 BOOK_LIST_ITEM_COUNT = 10
+
+
+# social auth
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuthBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.google.GoogleBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_PIPELINE = (
+    'social_auth.backends.pipeline.social.social_auth_user',
+    'social_auth.backends.pipeline.user.get_username',
+    'social_auth.backends.pipeline.user.create_user',
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details',
+)
+TWITTER_CONSUMER_KEY = 'VCbibbV9XJ0NN12m7KXUrQ'
+TWITTER_CONSUMER_SECRET = 'xZ4aXbHVBMe1Hh7hETRnXAYb01j1DFiBiAVVvcrQc0M'
+FACEBOOK_APP_ID = '163282880528447'
+FACEBOOK_API_SECRET = '10da9db623ab2ce4a5d9cec50be0ae82'
+GOOGLE_OAUTH2_CLIENT_ID = '458888079280.apps.googleusercontent.com'
+GOOGLE_OAUTH2_CLIENT_SECRET = 'ts4n76udRMzz96kwNc5QdaiZ'
+
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/accounts/set_password'
+
+FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
 
 try:
     from local_settings import *

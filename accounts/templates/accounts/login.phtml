@@ -1,5 +1,6 @@
 {% extends "master.phtml" %}
-
+{% load i18n %}
+{% load back_url_tag %}
 {% block content %}
 
 {% if form.errors %}
@@ -22,5 +23,9 @@
 <input type="submit" value="login" id="id_login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
+<div id="social_login">
+    <a href="{% url 'socialauth_begin' 'facebook' %}{% back_url %}" id="facebook" title="{% trans 'Login with your Facebook account' %}">{% trans 'Login with Facebook' %}</a>
+    <a href="{% url 'socialauth_begin' 'twitter' %}{% back_url %}" id="twitter" title="{% trans 'Login with your Twitter account' %}">{% trans 'Login with Twitter' %}</a>
+    <a href="{% url 'socialauth_begin' 'google-oauth2' %}{% back_url %}" id="google" title="{% trans 'Login with your Google account' %}">{% trans 'Login with Google' %}</a>
+</div>
 {% endblock %}

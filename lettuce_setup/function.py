@@ -5,7 +5,6 @@ Created on Jul 25, 2013
 '''
 from lettuce_setup import all
 from lettuce import world, step, before, after
-from lettuce.django import django_url
 import pdb
 import sure
 from selenium import webdriver
@@ -16,6 +15,16 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import time
 from django.db.transaction import TransactionManagementError
+from django.conf import settings
+import urlparse
+
+def django_url(url="", host='localhost', port=8000):
+    base_url = "http://%s" % host
+    port = int(port or getattr(settings, 'LETTUCE_SERVER_PORT', 8000))
+    if port is not 80:
+        base_url += ':%d' % port
+
+    return urlparse.urljoin(base_url, url)
 
 class TimeoutException(Exception):
     pass
@@ -134,3 +143,22 @@ def eval_sql(sql):
 @step(u'When I reload the page')
 def when_i_reload_the_page(step):
     browser().refresh()
+
+
+@step(u'Given I was a non-logged-in user')
+def given_i_was_a_non_logged_in_user(step):
+    pass  # we dont need to do anything for now
+
+@step(u'Given I was a logged-in user')
+def given_i_was_a_logged_in_user(step):
+    visit_by_view_name('login')
+    user = default_user()
+    find("#id_username").send_keys(user.username)
+    find("#id_password").send_keys(user.raw_password)
+    find("#id_login").click()
+
+def random_password():
+    return ";P/*Aor1%Q-2+c2"
+
+def email_address():
+    return 'tangthuvien.vn@gmail.com'

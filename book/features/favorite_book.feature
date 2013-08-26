@@ -1,7 +1,7 @@
-Feature: Favorite book
+Feature: Book App :: Favorite book
 	As user, I want to mark some favorite book
 	So that I can easily to read it for later
-	
+
 	Scenario: Manage favorite book
 		Given I was a logged-in user
 		When I read a book

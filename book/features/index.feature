@@ -1,5 +1,5 @@
-Feature: Book listing page
-	
+Feature: Book App :: Book listing page
+
 	Scenario: User visit book list
 		When I visit book index page
 		Then I see list of books

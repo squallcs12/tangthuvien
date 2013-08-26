@@ -1,5 +1,5 @@
-Feature: Book reading page
-	
+Feature: Book App :: Book reading page
+
 	Scenario: Read book as guest
 		Given I was a non-logged-in user
 		When I visit book index page
@@ -24,7 +24,7 @@ Feature: Book reading page
 		And I see the last chapter
 		And I see chapter thank count
 		And I can not thank the poster
-		
+
 	Scenario: Read book as user
 		Given I was a logged-in user
 		When I visit book index page
