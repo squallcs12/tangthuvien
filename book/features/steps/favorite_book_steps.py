@@ -48,7 +48,7 @@ def i_see_the_book_was_listed_there(step):
 
 @step(u'I read the last chapter of the book')
 def i_read_the_last_chapter_of_the_book(step):
-    visit_by_view_name('book_view_short', kwargs={'book_id':world.favorite_book_id})
+    visit_by_view_name('book_read_short', kwargs={'book_id':world.favorite_book_id})
     i_go_to_last_chapter(step)
 
 @step(u'a new chapter was posted to the book')

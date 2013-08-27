@@ -23,7 +23,7 @@ def main(request, slug, template="book/read.phtml"):
     if page is None and request.user.is_authenticated():
         try:
             page = UserLog.objects.get(user=request.user, book=book).page
-            return HttpResponseRedirect(reverse('book_view', kwargs={'slug':book.slug}) + '?page=' + str(page))
+            return HttpResponseRedirect(reverse('book_read', kwargs={'slug':book.slug}) + '?page=' + str(page))
         except ObjectDoesNotExist:
             pass
 
@@ -49,4 +49,4 @@ def main(request, slug, template="book/read.phtml"):
 def short(request, book_id):
     book_id = int(book_id)
     book = Book.objects.get(pk=book_id)
-    return HttpResponseRedirect(reverse('book_view', kwargs={'slug':book.slug}))
+    return HttpResponseRedirect(reverse('book_read', kwargs={'slug':book.slug}))

@@ -2,17 +2,17 @@
 <div id="pagination">
 	<ul class="pagination">
 	    {% if chapters.has_previous %}
-	    	<li><a class="first" href="{% url 'book_view' chapter.book.slug %}?page=1">{% trans "first page" %}</a></li>
-	        <li><a class="prev" href="{% url 'book_view' chapter.book.slug %}?page={{ chapters.previous_page_number }}">{% trans "previous page" %}</a></li>
+	    	<li><a class="first" href="{% url 'book_read' chapter.book.slug %}?page=1">{% trans "first page" %}</a></li>
+	        <li><a class="prev" href="{% url 'book_read' chapter.book.slug %}?page={{ chapters.previous_page_number }}">{% trans "previous page" %}</a></li>
 	    {% else %}
 			<li><span class="first">{% trans "first page" %}</span></li>
 	    {% endif %}
-	
+
 		<li><span class="current">{{ chapters.number }}</span></li>
-		
+
 	    {% if chapters.has_next %}
-	        <li><a class="next" href="{% url 'book_view' chapter.book.slug %}?page={{ chapters.next_page_number }}">{% trans "next page" %}</a></li>
-			<li><a class="last" href="{% url 'book_view' chapter.book.slug %}?page={{ chapters.paginator.num_pages }}">{% trans "last page" %}</a></li>
+	        <li><a class="next" href="{% url 'book_read' chapter.book.slug %}?page={{ chapters.next_page_number }}">{% trans "next page" %}</a></li>
+			<li><a class="last" href="{% url 'book_read' chapter.book.slug %}?page={{ chapters.paginator.num_pages }}">{% trans "last page" %}</a></li>
 		{% else %}
 			<li><span class="last">{% trans "last page" %}</span></li>
 		{% endif %}
@@ -26,7 +26,7 @@
 		</select>
 		<script>
 			jQuery(".chapter-list").unbind('click').change(function(){
-				location.href = '{% url 'book_view' chapter.book.slug %}?page=' + this.value
+				location.href = '{% url 'book_read' chapter.book.slug %}?page=' + this.value
 			});
 		</script>
 	</form>
