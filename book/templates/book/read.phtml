@@ -1,7 +1,7 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
 {% load static_tags %}
-{% block title %}List of books{% endblock %}
+{% block title %}{{chapter.book.title}} - {% trans 'Page'%} {{chapter.number}}{% endblock %}
 
 {% block link %}
 {% load_css static /book/rating_star.css %}
@@ -16,6 +16,17 @@
 	</div>
 </div>
 {% include 'book/_read_pagination.phtml'%}
+<script>
+    function get_real_link(link){
+        var a = document.createElement('a');
+        a.href = link;
+        link = a.href;
+        delete a;
+        return link;
+    }
+    var disqus_url = get_real_link("{% url 'book_read' chapter.book.slug %}");
+</script>
+{% include 'disqus.phtml'%}
 {% endblock %}
 {% block sidebar %}
 <div id="chapter-thank" class="widget">
