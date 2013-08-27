@@ -2,12 +2,11 @@
 {% load i18n %}
 {% load back_url_tag %}
 {% block content %}
-
+{% if not user.is_authenticated %}
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
-
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form">
 {% csrf_token %}
 <table>
 <tr>
@@ -23,6 +22,11 @@
 <input type="submit" value="login" id="id_login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+<p>{% trans 'Or log in with your social network account:' %}</p>
+{% else %}
+<p>{% trans 'You are currently logged in as' %} {{request.user.first_name}} {{request.user.last_name}}</p>
+<p>{% trans 'Associate your account with social network account:' %}</p>
+{% endif %}
 <div id="social_login">
     <a href="{% url 'socialauth_begin' 'facebook' %}{% back_url %}" id="facebook" title="{% trans 'Login with your Facebook account' %}">{% trans 'Login with Facebook' %}</a>
     <a href="{% url 'socialauth_begin' 'twitter' %}{% back_url %}" id="twitter" title="{% trans 'Login with your Twitter account' %}">{% trans 'Login with Twitter' %}</a>
