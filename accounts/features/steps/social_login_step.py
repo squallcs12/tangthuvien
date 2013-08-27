@@ -7,9 +7,9 @@ from lettuce_setup.function import *
 import facebook
 from django.conf import settings
 
-@before.each_feature
-def clear_social_login(feature):
-    if 'Accounts App ::' in feature.name:
+@before.each_scenario
+def clear_social_login(scenario):
+    if 'Accounts App ::' in scenario.feature.name:
         '''
         Clean all book app table
         '''
