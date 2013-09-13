@@ -13,6 +13,7 @@ django-mptt==0.5.5
 django-social-auth==0.7.25
 django-tagging==0.3.1
 django-xmlrpc==0.1.5
+facebook-sdk==0.4.0
 factory-boy==2.1.1
 fuzzywuzzy==0.2
 httplib2==0.8
