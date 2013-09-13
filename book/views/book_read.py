@@ -12,6 +12,7 @@ from book.models.user_log_model import UserLog
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from tangthuvien.functions import disqus_append
 
 def main(request, slug, template="book/read.phtml"):
     data = {}
@@ -43,6 +44,8 @@ def main(request, slug, template="book/read.phtml"):
     data['chapter'] = chapter
 
     chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
+    
+    disqus_append(data)
 
     return TemplateResponse(request, template, data)
 

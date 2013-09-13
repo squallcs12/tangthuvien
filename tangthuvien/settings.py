@@ -248,6 +248,9 @@ SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/accounts/set_password'
 
 FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
 
+DISQUS_DEVELOPER = True
+DISQUS_SHORTNAME = 'tangthuvien'
+
 try:
     from local_settings import *
 except ImportError:
