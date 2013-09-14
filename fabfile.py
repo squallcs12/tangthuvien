@@ -1,13 +1,185 @@
-from fabric.api import task, run, require, put, sudo, local
+from fabric.api import task, run, require, put, sudo, local, env
 import threading
 
-settings = threading.local()
-settings.branch = local("git branch | grep \"*\"", capture=True)[2:]
+env.hosts = ['root@210.211.109.43']
 
 def deploy():
-    pass
-    
+    "Deploy current branch to remote server"
+    Deploy.deploy()
+
+def setup():
+    "Setup remote server before deploy"
+    Deploy.setup()
+
 def update():
-    local("git pull origin %s" % settings.branch)
-    local("pip install -r requirements.txt")
-    local("python manage.py migrate")
+    "Update local"
+    Deploy.update_local()
+
+def test():
+    "Testing commands"
+    print Deploy.get_python_version()
+
+class Deploy(object):
+
+    @classmethod
+    def sudo(cls, command):
+        sudo(command, user='www-data')
+
+    @classmethod
+    def init(cls):
+        cls.branch = local("git branch | grep \"*\"", capture=True)[2:]
+        cls.project_name = 'tangthuvien.vn'
+        cls.deploy_dir = '/var/www/tangthuvien.vn'
+        cls.current_dir = '/var/www/tangthuvien.vn/current'
+        cls.share_dir = '/var/www/tangthuvien.vn/shared'
+        cls.virtualenv_dir = '/var/www/tangthuvien.vn/shared/virtualenv'
+        cls.git_source = "https://github.com/squallcs12/tangthuvien.git"
+        cls.have_yum = cls.is_command_exists('yum')
+
+    @classmethod
+    def install_git(cls):
+        if not cls.is_command_exists('git'):
+            if cls.have_yum:
+                sudo("yum install git -y")
+            else:
+                sudo("apt-get install git -y")
+
+    @classmethod
+    def is_command_exists(cls, command):
+        return len(run("whereis %s" % command)) > len("%s: " % command)
+
+    @classmethod
+    def get_command_real_path(cls, command):
+        return run("whereis %s" % command).split(' ')[1]
+
+    @classmethod
+    def mkdirs(cls):
+        sudo("mkdir %s" % cls.deploy_dir)
+        sudo("mkdir %s/releases" % cls.deploy_dir)
+        sudo("mkdir %s" % cls.share_dir)
+        sudo("mkdir %s/run")
+        sudo("mkdir %s/uploads" % cls.share_dir)
+        sudo("mkdir -m 666 /var/log/tangthuvien.vn")
+        sudo("touch %s" % cls.current_dir)  # so that we can remote it later
+
+    @classmethod
+    def checkout_source(cls, current_time):
+        release_dir = "%s/releases/%s" % (cls.deploy_dir, current_time)
+        sudo("git clone %s %s;" % (cls.git_source, release_dir))
+        sudo("rm %s" % cls.current_dir)
+        sudo("ln -s %s/releases/%s %s" % (cls.deploy_dir, current_time, cls.current_dir))
+        sudo("cd %s; git checkout %s" % (cls.current_dir, cls.branch))
+        sudo("chown -R www-data:www-data %s" % release_dir)
+
+
+    @classmethod
+    def install_requirements(cls):
+        cls.sudo("cd %s; source %s/bin/activate; pip install -r requirements.txt" % (cls.current_dir, cls.virtualenv_dir))
+
+    @classmethod
+    def get_python_version(cls):
+        return ".".join(run("python -V").split(' ')[1].split('.')[0:2])
+
+    @classmethod
+    def install_python(cls):
+        if cls.get_python_version() != '2.7':
+            sudo("cd ~; wget http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2")
+            sudo("cd ~; tar -xf Python-2.7.5.tar.bz2")
+            sudo("cd ~/Python-2.7.5; ./configure")
+            sudo("cd ~/Python-2.7.5; make")
+            sudo("cd ~/Python-2.7.5; make install")
+
+    @classmethod
+    def install_setup_tools(cls):
+        if not cls.is_command_exists('easy_install'):
+            sudo("cd ~; wget https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.5.tar.gz --no-check-certificate")
+            sudo("cd ~; tar -xf setuptools-1.1.5.tar.gz")
+            sudo("python2.7 ~/setuptools-1.1.5/setup.py install")
+
+    @classmethod
+    def install_pip(cls):
+        if not cls.is_command_exists('pip'):
+            sudo("%s pip" % cls.get_command_real_path('easy_install'))
+
+    @classmethod
+    def install_virtualenv(cls):
+        if not cls.is_command_exists('virtualenv'):
+            sudo("%s install virtualenv", cls.get_command_real_path('pip'))
+
+    @classmethod
+    def create_virtualenv(cls):
+        cls.sudo("%s %s" % (cls.get_command_real_path('virtualenv'), cls.virtualenv_dir))
+
+    @classmethod
+    def install_mysql_dev(cls):
+        if cls.have_yum:
+            sudo("yum install mysql-devel -y")
+        else:
+            sudo("apt-get install libmysqld-dev -y")
+
+    @classmethod
+    def create_user_and_group(cls):
+        # user not exists
+        if not sudo("cat /etc/passwd | grep www-data"):
+            sudo("useradd www-data")
+        else:
+            if not sudo("cat /etc/group | grep www-data"):
+                sudo("groupadd www-data")
+                sudo("useradd -G www-data www-data")
+
+    @classmethod
+    def chown_dirs(cls):
+        sudo("chown -R www-data:www-data %s" % cls.deploy_dir)
+
+    @classmethod
+    def install_supervisor(cls):
+        if not cls.is_command_exists('supervisorctl'):
+            if cls.have_yum:
+                sudo("yum install supervisor -y")
+            else:
+                sudo("apt-get install supervisor -y")
+
+    @classmethod
+    def copy_system_config_files(cls):
+        sudo("rm -f /etc/nginx/sites-enabled/tangthuvien.vn.conf")
+        sudo("rm -f /etc/supervisor/conf.d/tangthuvien.conf")
+        sudo("cp %s/bin/nginx.conf /etc/nginx/sites-enabled/tangthuvien.vn.conf" % cls.current_dir)
+        sudo("cp %s/bin/supervisor.conf /etc/supervisor/conf.d/tangthuvien.conf" % cls.current_dir)
+
+    @classmethod
+    def restart_web_services(cls):
+        sudo("supervisorctl -c/var/www/tangthuvien.vn/current/bin/supervisor.conf shutdown")
+        sudo("supervisord -c/var/www/tangthuvien.vn/current/bin/supervisor.conf")
+
+        sudo("service nginx restart")
+
+    @classmethod
+    def setup(cls):
+        cls.init()
+        cls.mkdirs()
+        cls.install_git()
+        cls.install_python()
+        cls.install_setup_tools()
+        cls.install_pip()
+        cls.install_virtualenv()
+        cls.create_user_and_group()
+        cls.chown_dirs()
+        cls.create_virtualenv()
+        cls.install_mysql_dev()
+        cls.install_supervisor()
+
+    @classmethod
+    def deploy(cls):
+        cls.init()
+        current_time = run("date +%Y%m%d%H%M%S")
+        cls.checkout_source(current_time)
+        cls.install_requirements()
+        cls.copy_system_config_files()
+        cls.restart_web_services()
+
+    @classmethod
+    def update_local(cls):
+        cls.init()
+        local("git pull origin %s" % cls.branch)
+        local("pip install -r requirements.txt")
+        local("python manage.py migrate")
