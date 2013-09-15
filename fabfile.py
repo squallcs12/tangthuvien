@@ -151,8 +151,8 @@ class Deploy(object):
 
     @classmethod
     def restart_web_services(cls):
-        sudo("supervisorctl -c/var/www/tangthuvien.vn/current/bin/supervisor.conf shutdown")
-        sudo("supervisord -c/var/www/tangthuvien.vn/current/bin/supervisor.conf")
+        sudo("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
+        sudo("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
 
         sudo("service nginx restart")
 
