@@ -217,6 +217,9 @@ CKEDITOR_UPLOAD_PATH = realpath("media/uploads/ckeditor")
 
 # Book configuration
 BOOK_LIST_ITEM_COUNT = 10
+BOOK_COVER_MEDIA_PATH = 'books/covers'
+BOOK_COVER_THUMB_DIR = 'thumbs'
+BOOK_COVER_THUMB_SIZE = [100, 150]
 
 
 # social auth

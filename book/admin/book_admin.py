@@ -42,12 +42,12 @@ class BookTypeFilter(RelatedSimpleListFilter):
 
 class BookAdmin(ModelAdminColumnFilter):
     fieldsets = [
-        (None, {'fields': ['title', 'slug', 'author', 'description', 'categories', 'complete_status', 'ttv_type']}),
+        (None, {'fields': ['title', 'slug', 'cover', 'author', 'description', 'categories', 'complete_status', 'ttv_type']}),
     ]
 
-    inlines = [ChapterInline]
+#     inlines = [ChapterInline]
 
-    list_display = ('id', 'title', 'slug', 'author', 'get_categories', 'complete_status', 'ttv_type',)
+    list_display = ('id', 'title', 'slug', 'cover', 'cover_thumb', 'author', 'get_categories', 'complete_status', 'ttv_type',)
     list_display_links = ('id', 'title', 'slug', 'complete_status',)
 
     column_filters = {

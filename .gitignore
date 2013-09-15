@@ -3,6 +3,7 @@
 /local_settings
 /.coverage
 /media/uploads
+/media
 /local_settings
 /.settings/org.eclipse.core.resources.prefs
 *.pyc

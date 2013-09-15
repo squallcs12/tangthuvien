@@ -3,6 +3,8 @@ Created on Jul 29, 2013
 
 @author: antipro
 '''
+
+import os
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.db import models
@@ -15,12 +17,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from book.models.rating_model import RatingLog
 
 from datetime import timedelta
-import pdb
+from tangthuvien import settings
 
 class Book(models.Model):
     user = models.ForeignKey(User)
     tags = fields.TagField(_('tags'))
     title = models.CharField(max_length=255)
+    cover = models.ImageField(upload_to=settings.BOOK_COVER_MEDIA_PATH)
     slug = models.SlugField(
         _('slug'), unique=True, max_length=255,
         help_text=_("Used to build the book's URL."))
@@ -87,8 +90,37 @@ class Book(models.Model):
     def is_read(self):
         return self.last_update < timezone.now() + timedelta(minutes= -15)
 
+    @property
+    def cover_thumb(self):
+        return os.path.join(settings.BOOK_COVER_THUMB_DIR, self.cover.name)
+
     def is_read_by_user(self, user):
         try:
             return self.last_update < self.userlog_set.get(user=user, book=self).last_update
         except ObjectDoesNotExist:
             return False
+
+    def _create_cover_thumbnail(self):
+        if not self.cover:
+            return
+
+        from PIL import Image  # @UnresolvedImport
+        import imghdr
+
+        # Set our max thumbnail size in a tuple (max width, max height)
+
+        # Open original photo which we want to thumbnail using PIL's Image
+        image = Image.open(self.cover.path)
+        PIL_TYPE = imghdr.what(self.cover.path)
+
+        image.thumbnail(settings.BOOK_COVER_THUMB_SIZE, Image.ANTIALIAS)
+
+        # Save the thumbnail
+        thumb_file = os.path.join(settings.MEDIA_ROOT, settings.BOOK_COVER_THUMB_DIR, self.cover.name)
+        image.save(thumb_file, PIL_TYPE)
+
+    def save(self):
+        super(Book, self).save()
+
+        # create a thumbnail
+        self._create_cover_thumbnail()
