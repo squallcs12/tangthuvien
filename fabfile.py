@@ -58,23 +58,37 @@ class Deploy(object):
         sudo("mkdir -p %s/releases" % cls.deploy_dir)
         sudo("mkdir -p %s" % cls.share_dir)
         sudo("mkdir -p %s/run" % cls.share_dir)
-        sudo("mkdir -p %s/uploads" % cls.share_dir)
-        sudo("mkdir -p -m 666 /var/log/tangthuvien.vn")
+        sudo("mkdir -p %s/static" % cls.share_dir)
+        sudo("mkdir -p %s/media" % cls.share_dir)
+        sudo("mkdir -p %s/media/uploads" % cls.share_dir)
+        sudo("mkdir -p %s/media/uploads/ckeditor" % cls.share_dir)
+        sudo("mkdir -p -m 777 /var/log/tangthuvien.vn")
         sudo("touch %s" % cls.current_dir)  # so that we can remote it later
+        sudo("touch %s/local_settings.py" % cls.share_dir)
+
 
     @classmethod
     def checkout_source(cls, current_time):
         release_dir = "%s/releases/%s" % (cls.deploy_dir, current_time)
         sudo("git clone %s %s;" % (cls.git_source, release_dir))
         sudo("rm %s" % cls.current_dir)
+
         sudo("ln -s %s/releases/%s %s" % (cls.deploy_dir, current_time, cls.current_dir))
         sudo("cd %s; git checkout %s" % (cls.current_dir, cls.branch))
         sudo("chown -R www-data:www-data %s" % release_dir)
 
+        cls.sudo("ln -s %s/media %s/media" % (cls.share_dir, cls.current_dir))
+        cls.sudo("ln -s %s/static %s/static" % (cls.share_dir, cls.current_dir))
+
+        cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.current_dir))
+
+    @classmethod
+    def sudo_virtualenv(cls, command):
+        cls.sudo("source %s/bin/activate; %s" % (cls.virtualenv_dir, command))
 
     @classmethod
     def install_requirements(cls):
-        cls.sudo("cd %s; source %s/bin/activate; pip install -r requirements.txt" % (cls.current_dir, cls.virtualenv_dir))
+        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.current_dir)
 
     @classmethod
     def get_python_version(cls):
@@ -135,6 +149,7 @@ class Deploy(object):
     @classmethod
     def chown_dirs(cls):
         sudo("chown -R www-data:www-data %s" % cls.deploy_dir)
+        sudo("chown -R www-data:www-data %s" % cls.deploy_dir)
 
     @classmethod
     def install_supervisor(cls):
@@ -151,8 +166,8 @@ class Deploy(object):
 
     @classmethod
     def restart_web_services(cls):
-        sudo("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
-        sudo("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
+        cls.sudo_virtualenv("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
+        cls.sudo_virtualenv("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
 
         sudo("service nginx restart")
 
