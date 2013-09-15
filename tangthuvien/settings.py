@@ -184,7 +184,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': "/var/log/tangthuvien.log",
+            'filename': "/var/log/tangthuvien.vn/django.log",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
