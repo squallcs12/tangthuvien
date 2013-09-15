@@ -54,12 +54,12 @@ class Deploy(object):
 
     @classmethod
     def mkdirs(cls):
-        sudo("mkdir %s" % cls.deploy_dir)
-        sudo("mkdir %s/releases" % cls.deploy_dir)
-        sudo("mkdir %s" % cls.share_dir)
-        sudo("mkdir %s/run")
-        sudo("mkdir %s/uploads" % cls.share_dir)
-        sudo("mkdir -m 666 /var/log/tangthuvien.vn")
+        sudo("mkdir -p %s" % cls.deploy_dir)
+        sudo("mkdir -p %s/releases" % cls.deploy_dir)
+        sudo("mkdir -p %s" % cls.share_dir)
+        sudo("mkdir -p %s/run" % cls.share_dir)
+        sudo("mkdir -p %s/uploads" % cls.share_dir)
+        sudo("mkdir -p -m 666 /var/log/tangthuvien.vn")
         sudo("touch %s" % cls.current_dir)  # so that we can remote it later
 
     @classmethod
@@ -107,8 +107,13 @@ class Deploy(object):
             sudo("%s install virtualenv", cls.get_command_real_path('pip'))
 
     @classmethod
+    def is_file_exists(cls, filename):
+        return sudo("if test -f %s; then echo 1; else echo 0; fi" % filename)
+
+    @classmethod
     def create_virtualenv(cls):
-        cls.sudo("%s %s" % (cls.get_command_real_path('virtualenv'), cls.virtualenv_dir))
+        if not cls.is_file_exists('%s/bin/activate' % cls.virtualenv_dir):
+            cls.sudo("%s %s" % (cls.get_command_real_path('virtualenv'), cls.virtualenv_dir))
 
     @classmethod
     def install_mysql_dev(cls):
@@ -142,9 +147,7 @@ class Deploy(object):
     @classmethod
     def copy_system_config_files(cls):
         sudo("rm -f /etc/nginx/sites-enabled/tangthuvien.vn.conf")
-        sudo("rm -f /etc/supervisor/conf.d/tangthuvien.conf")
         sudo("cp %s/bin/nginx.conf /etc/nginx/sites-enabled/tangthuvien.vn.conf" % cls.current_dir)
-        sudo("cp %s/bin/supervisor.conf /etc/supervisor/conf.d/tangthuvien.conf" % cls.current_dir)
 
     @classmethod
     def restart_web_services(cls):
