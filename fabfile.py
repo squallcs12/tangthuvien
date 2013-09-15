@@ -172,6 +172,14 @@ class Deploy(object):
         sudo("service nginx restart")
 
     @classmethod
+    def run_migration(cls):
+        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.current_dir)
+
+    @classmethod
+    def collect_statics(cls):
+        cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.current_dir)
+
+    @classmethod
     def setup(cls):
         cls.init()
         cls.mkdirs()
@@ -192,6 +200,8 @@ class Deploy(object):
         current_time = run("date +%Y%m%d%H%M%S")
         cls.checkout_source(current_time)
         cls.install_requirements()
+        cls.run_migration()
+        cls.collect_statics()
         cls.copy_system_config_files()
         cls.restart_web_services()
 
