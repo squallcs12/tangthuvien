@@ -3,24 +3,8 @@
 {% block title %}List of books{% endblock %}
 
 {% block content %}
-{% include 'book/_books_list.phtml'%}
-<div id="pagination">
-	<ul class="pagination">
-	    {% if books.has_previous %}
-	    	<li><a class="first" href="{% url 'books_home' %}">{% trans "first page" %}</a></li>
-	        <li><a class="prev" href="{% url 'books_home' %}?page={{ books.previous_page_number }}">{% trans "previous page" %}</a></li>
-	    {% else %}
-			<li><span class="first">{% trans "first page" %}</span></li>
-	    {% endif %}
-	
-		<li><span class="current">{{ books.number }}</span></li>
-		
-	    {% if books.has_next %}
-	        <li><a class="next" href="{% url 'books_home' %}?page={{ books.next_page_number }}">{% trans "next page" %}</a></li>
-			<li><a class="last" href="{% url 'books_home' %}?page={{ books.paginator.num_pages }}">{% trans "last page" %}</a></li>
-		{% else %}
-			<li><span class="last">{% trans "last page" %}</span></li>
-		{% endif %}
-	</ul>
-</div>
+	<h3>{% trans "Danh sách truyện" %}</h3>
+	{% include 'book/_index_pagination.phtml'%}
+	{% include 'book/_books_list.phtml'%}
+	{% include 'book/_index_pagination.phtml'%}
 {% endblock %}

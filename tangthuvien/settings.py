@@ -99,11 +99,14 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-  'django.contrib.auth.context_processors.auth',
-  'django.core.context_processors.i18n',
-  'django.core.context_processors.request',
-  'django.core.context_processors.media',
-  'django.core.context_processors.static',)  # Optional
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'tangthuvien.context_processors.site_name',
+    'tangthuvien.context_processors.one_time_show_notification',
+  )  # Optional
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -219,7 +222,8 @@ CKEDITOR_UPLOAD_PATH = realpath("media/uploads/ckeditor")
 BOOK_LIST_ITEM_COUNT = 10
 BOOK_COVER_MEDIA_PATH = 'books/covers'
 BOOK_COVER_THUMB_DIR = 'thumbs'
-BOOK_COVER_THUMB_SIZE = [100, 150]
+BOOK_COVER_THUMB_SIZE = [210, 280]
+BOOK_CHAPTER_PAGINATOR_RANGE = (-100, -50, -10, -2, -1, 0, 1, 2, 10, 50, 100)
 
 
 # social auth
@@ -256,6 +260,7 @@ SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 
 FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
 
+# disqus config
 DISQUS_DEVELOPER = True
 DISQUS_SHORTNAME = 'tangthuvien'
 

@@ -2,38 +2,46 @@
 {% load i18n %}
 {% load static_tags %}
 {% block title %}{{chapter.book.title}} - {% trans 'Page'%} {{chapter.number}}{% endblock %}
-
-{% block link %}
-{% load_css static /book/rating_star.css %}
-{% endblock %}
-
+{% load_css static /book/style.css %}
 {% block content %}
-{% include 'book/_read_pagination.phtml'%}
-<div id="chapters">
-	<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
-		<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
-		<div class="content">{{chapter.content|safe}}</div>
+<div class="row">
+	<div class="col-lg-9">
+		<h3>{{book.title}} / {{book.author.name}}</h3>
+		<div class="panel panel-default">
+        	<div class="panel-body">
+				{% include 'book/_read_pagination.phtml'%}
+				<div id="chapters">
+					<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
+						<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
+						<div class="content">{{chapter.content|safe}}</div>
+					</div>
+				</div>
+				{% include 'book/_read_pagination.phtml'%}
+            </div>
+        </div>
+		<script>
+		    var disqus_url = get_real_link("{% url 'book_read' chapter.book.slug %}");
+		</script>
+		{% include 'disqus.phtml'%}
 	</div>
-</div>
-{% include 'book/_read_pagination.phtml'%}
-<script>
-    function get_real_link(link){
-        var a = document.createElement('a');
-        a.href = link;
-        link = a.href;
-        delete a;
-        return link;
-    }
-    var disqus_url = get_real_link("{% url 'book_read' chapter.book.slug %}");
-</script>
-{% include 'disqus.phtml'%}
-{% endblock %}
-{% block sidebar %}
-<div id="chapter-thank" class="widget">
-	<h3>{% trans "Chapter thank" %}</h3>
-	<div class="thank-count">{% trans "thanks" %} <span class="count">{{chapter.thank_count}}</span></div>
-	<button class="thank-button{% if chapter.thanked_by_current_user %} disabled{% elif not user.is_authenticated %} disabled login_required{% endif %}">{% trans "thank poster for this chapter" %}</button>
-	<script type="text/javascript">
+	<div class="col-lg-3 sidebar-margin-top">
+		<div id="chapter-thank" class="panel panel-default">
+			<div class="panel-heading">{% trans 'Cám ơn người đăng' %}</div>
+			<div class="panel-body">
+				<div class="thank-count">
+					<button 
+						class="
+						btn thank-button
+						{% if chapter.thanked_by_current_user %}btn-disable
+						{% elif not user.is_authenticated %}btn-disable login_required
+						{% else %}btn-default
+						{% endif %}"
+						title="{% if chapter.thanked_by_current_user %}{% trans 'Bạn đã gởi cám ơn' %}{% elif not user.is_authenticated %}{% trans 'Bạn cần đăng nhập để gởi cám ơn' %}{% else %}{% trans 'Gởi lời cám ơn tới người đăng chương truyện này' %}{% endif %}"
+						>
+						<span class="count">{{chapter.thank_count}}</span> {% trans "Cám ơn" %}
+					</button>
+				</div>
+				<script type="text/javascript">
 (function($){
 	var thankButton = $("#chapter-thank .thank-button");
 	var thankCountDiv = $("#chapter-thank .count");
@@ -41,7 +49,8 @@
 	function thank(event){
 		thankButton
 			.unbind('click', thank)
-			.addClass('disabled');
+			.removeClass('btn-default')
+			.addClass('btn-disable');
 		var request = {};
 		request['url'] = '{% url "summit_thank_request" %}';
 		request['data'] = {};
@@ -56,23 +65,35 @@
 
 		thankCountDiv.html(thankCount + 1);
 	}
-	if(!thankButton.hasClass('disabled')){
+	if(!thankButton.hasClass('btn-disable')){
 		thankButton.click(thank)
 	}
 })(jQuery);
-	</script>
-	{% csrf_token %}
-</div>
-<div id="book" item_id="{{chapter.book.id}}" class="widget">
-	<h3 class="header">{% trans "Book" %}</h3>
-	<div class="content">
-		<h4 class="title">{{book.title}}</h4>
-		<div class="favorite">
-			<button class="favorite" favorite="{% if chapter.book.favorited_by_current_user %}yes{% else %}no{% endif %}">Favorite</button>
-			<script>
+				</script>
+				{% csrf_token %}
+			</div>
+		</div>
+		<div class="panel panel-default favorite">
+			<div class="panel-body">
+				<button class="btn 
+					{% if not user.is_authenticated %}
+						btn-disable login_required
+					{% else %}
+						{% if chapter.book.favorited_by_current_user %}btn-disable{% else %}btn-default{% endif %}
+					{% endif %}
+					" id="favorite_book" 
+					favorite="{% if chapter.book.favorited_by_current_user %}yes{% else %}no{% endif %}"
+					{% if not user.is_authenticated %}title="{% trans 'Bạn cần đăng nhập để đánh dâu thích đọc' %}"{% endif %}>
+					{% if chapter.book.favorited_by_current_user %}
+						{% trans "Dừng thích đọc" %}
+					{% else %}
+						{% trans "Thích đọc" %}
+					{% endif %}
+				</button>
+				<script>
 (function($){
 	var loading = false;
-	$("#book .favorite button").click(function(){
+	$("#favorite_book").click(function(){
 		if(loading){
 			return;
 		}
@@ -83,47 +104,53 @@
 		request['type'] = 'POST';
 		if($(this).attr('favorite') == 'no'){
 			var ajaxComplete = function(){
-				$("#book .favorite button").attr('favorite', 'yes');
+				$("#favorite_book").attr('favorite', 'yes');
+				$("#favorite_book").html('{% trans "Dừng thích đọc" %}');
 			}
 		} else {
 			var ajaxComplete = function(){
-				$("#book .favorite button").attr('favorite', 'no');
+				$("#favorite_book").attr('favorite', 'no');
+				$("#favorite_book").html('{% trans "Thích đọc" %}');
 			}
 		};
 		request['success'] = function(data){
 			loading = false;
-			$("#book .favorite button").removeClass('loading');
+			$("#favorite_book").removeClass('loading');
 			ajaxComplete();
 		};
-		$("#book .favorite button").addClass('loading');
+		$("#favorite_book").addClass('loading');
 		$.ajax(request);
 	});
 })(jQuery);
-			</script>
+				</script>
+			</div>
 		</div>
-		<div class="rating">
-			<div class="result">
-				<span class="average-result">{{book.rating.average_result}}</span>/<span class="rating-count">{{book.rating.rating_count}}</span>
-			</div>
-			<div class="rate-star">
-				{% for i in book.rating.rating_range %}
-				<button class="rate-star-{{i}}" data-rate-number="{{i}}"
-				{% if book.rated_by_current_user %}
-					disabled='disabled'
-				{% elif not user.is_authenticated %}
-				disabled='disabled' class='login_required'
-				{% endif %}>{{i}}</button>
-				{% endfor %}
-			</div>
-			<script type="text/javascript">
+		<div class="panel panel-default rating" id="book_rating">
+			<div class="panel-heading">{% trans 'Đánh giá truyện' %}</div>
+			<div class="panel-body">
+				<div class="result">
+					Đánh giá <strong><span class="average-result">{{book.rating.average_result}}</span></strong> 
+					qua <strong><span class="rating-count">{{book.rating.rating_count}}</span></strong> lượt
+				</div>
+				<div class="rate-star">
+					{% for i in book.rating.rating_range %}
+					<button class="btn btn-default rate-star-{{i}}" data-rate-number="{{i}}"
+					{% if book.rated_by_current_user %}
+						disabled='disabled'
+					{% elif not user.is_authenticated %}
+					disabled='disabled' class='login_required'
+					{% endif %}>{{i}}</button>
+					{% endfor %}
+				</div>
+				<script type="text/javascript">
 (function($){
-	$("#book .rating .rate-star button").click(function(){
+	$("#book_rating .rate-star button").click(function(){
 		var clickedButton = this;
 		rateNumber = $(this).data('rate-number');
 
-		$("#book .rating .rate-star button").attr('disabled', true);
-		resultSpan = $("#book .rating .average-result");
-		countSpan = $("#book .rating .rating-count");
+		$("#book_rating .rate-star button").attr('disabled', true);
+		resultSpan = $("#book_rating .average-result");
+		countSpan = $("#book_rating .rating-count");
 
 		ratingCount = parseInt(countSpan.html());
 
@@ -148,16 +175,17 @@
 		$.ajax(request);
 	});
 })(jQuery);
-			</script>
+				</script>
+			</div>
 		</div>
-		<div class="description">{{book.description}}</div>
-	</div>
-</div>
-<div id="author" author_id="{{book.author.id}}" class="widget">
-	<h3 class="header">{% trans "Author" %}</h3>
-	<div class="content">
-		<h4 class="title">{{book.author.name}}</h4>
-		<div class="information">{{book.author.information}}</div>
+		<div id="book" item_id="{{chapter.book.id}}" class="panel panel-default">
+			<div class="panel-heading">{{book.title}}</div>
+			<div class="panel-body">{{book.description}}</div>
+		</div>
+		<div id="author" author_id="{{book.author.id}}" class="panel panel-default">
+			<div class="panel-heading">{{book.author.name}}</div>
+			<div class="panel-body">{{book.author.information}}</div>
+		</div>
 	</div>
 </div>
 {% endblock %}

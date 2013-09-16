@@ -3,110 +3,58 @@
 {% load url from future %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>{% trans "Tàng Thư Viện" %} - {% block title %}{% endblock %}</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta http-equiv="cache-control" content="public" />
-    <meta name="robots" content="follow, all" />
-    <meta name="language" content="{{ LANGUAGE_CODE }}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="{% block meta-description %}{% trans "Thư viện truyện kiếm hiệp Việt Nam." %}{% endblock %}" />
-    <meta name="keywords" content="tangthuvien, ttv, kiếm hiệp, {% block meta-keywords %}{% endblock %}" />
-    <meta name="author" content="Antipro.VN" />
-    {% block meta %}{% endblock %}
-    <link rel="pingback" href="/xmlrpc/" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="home" href="{% url 'homepage' %}" />
-    <link rel="stylesheet" type="text/css" media="screen, projection" href="{{ STATIC_URL }}css/book/screen.css" />
-    <link rel="stylesheet" type="text/css" media="print" href="{{ STATIC_URL }}css/book/print.css" />
-    <!--[if lt IE 8]>
-        <link rel="stylesheet" type="text/css" media="screen, projection" href="{{ STATIC_URL }}css/book/ie.css" />
-    <![endif]-->
-    {% block link %}{% endblock %}
-    {% print_css %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script>if(!window.jQuery) document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>')</script>
-    <script>jQuery.noConflict()</script>
-    <script>
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-function sameOrigin(url) {
-    // test that a given url is a same-origin URL
-    // url could be relative or scheme relative or absolute
-    var host = document.location.host; // host + port
-    var protocol = document.location.protocol;
-    var sr_origin = '//' + host;
-    var origin = protocol + sr_origin;
-    // Allow absolute or scheme relative URLs to same origin
-    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-        // or any other URL that isn't scheme relative or absolute i.e relative.
-        !(/^(\/\/|http:|https:).*/.test(url));
-}
-jQuery.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-            xhr.setRequestHeader("X-CSRFToken", jQuery.cookie('csrftoken'));
-        }
-    }
-});</script>
-    <script src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
-    {% block script %}{% endblock %}
-    {% print_js %}
-  </head>
-  <body class="zinnia {% block theme-class %}default{% endblock %} {% block color-class %}blue{% endblock %} {% block sidebar-class %}right-sidebar{% endblock %} {% block body-class %}{% endblock %}">
-    <div class="container">
-      <div id="header">
-        <ul class="top-navigation">
-          <li>
-            <a href="{% url 'sitemap' %}" title="{% trans "Sitemap" %}" class="sitemap">
-              {% trans "Sitemap" %}
-            </a>
-          </li>
-        </ul>
-        <h1>
-          <a href="{% url 'homepage' %}" title="{% trans "Tàng Thư Viện" %}" rel="home">
-            {% trans "Tàng Thư Viện" %}
-          </a>
-        </h1>
-        <blockquote>
-          <p>{% trans "Truyện kiếm hiệp." %}</p>
-        </blockquote>
-        {% block breadcrumbs %}{% endblock %}
-      </div>
-      {% block slider %}{% endblock %}
-      <div id="content" class="hfeed">
-        <div class="links">
-          <h3>{% trans "Useful links" %}</h3>
-          <ul>
-            <li>
-              <a href="{% url 'homepage' %}" title="{% trans "Weblog index" %}">
-                {% trans "Weblog index" %}
-              </a>
-            </li>
-            <li>
-              <a href="{% url 'sitemap' %}" title="{% trans "Sitemap" %}">
-                {% trans "Sitemap" %}
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="search">
-          <h3>{% trans "Search" %}</h3>
-        </div>
-        {% block content %}
-        
-        {% endblock %}
-      </div>
-      <div id="sidebar">
-        {% block sidebar %}
-        {% endblock %}
-      </div>
-      <div id="footer">
-        <p>{% blocktrans %}Powered by <a href="/">tangthuvien.vn</a>{% endblocktrans %}</p>
-      </div>
-    </div>
-  </body>
+	<head>
+		<title>{% trans "Tàng Thư Viện" %} - {% block title %}{% endblock %}</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="cache-control" content="public" />
+		<meta name="robots" content="follow, all" />
+		<meta name="language" content="{{ LANGUAGE_CODE }}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="{% block meta-description %}{% trans "Thư viện truyện kiếm hiệp Việt Nam." %}{% endblock %}" />
+		<meta name="keywords" content="tangthuvien, ttv, kiếm hiệp, {% block meta-keywords %}{% endblock %}" />
+		<meta name="author" content="Antipro.VN" />
+		{% block meta %}{% endblock %}
+		<link rel="pingback" href="/xmlrpc/" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="home" href="{% url 'homepage' %}" />
+		{% block link %}{% endblock %}
+		{% load_css static /bootstrap/slate.css %}
+		{% load_css static /bootstrap/bootswatch.min.css %}
+		{% print_css %}
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script>
+			if (!window.jQuery)
+				document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>')
+		</script>
+		<script>
+			jQuery.noConflict()
+		</script>
+		<script src="{{ STATIC_URL }}js/head_define.js"></script>
+		<script src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
+		{% block script %}{% endblock %}
+		{% load_js static /bootstrap.min.js %}
+	</head>
+	<body id="{% block page_id %}{% endblock %}">
+		{% include '_top_nav.phtml' %}
+		<div class="container">
+			{% include '_top_banner.phtml' %}
+			{% block slider %}{% endblock %}
+			<div id="content" class="hfeed">
+				{% block content %}
+
+				{% endblock %}
+			</div>
+			<footer>
+				<div class="row">
+					<div class="col-lg-12">
+						{% include '_footer_nav.phtml' %}
+						<p>
+							{% blocktrans %}Powered by <a href="/">tangthuvien.vn</a>{% endblocktrans %}
+						</p>
+					</div>
+				</div>
+			</footer>
+		</div>
+	{% print_js %}
+	</body>
 </html>

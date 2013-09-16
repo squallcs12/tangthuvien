@@ -68,9 +68,15 @@ def find(selector):
 
 WebElement.find = WebElement.find_element_by_css_selector
 WebElement.find_all = WebElement.find_elements_by_css_selector
+
 def has_class(self, class_name):
     self.get_attribute('class').split(' ').should.contain(class_name);
 WebElement.has_class = has_class
+
+def should_be_temp_link(self):
+    self.tag_name.should.equal('a')
+    self.get_attribute('href').should.equal(browser().current_url + '#')
+WebElement.should_be_temp_link = should_be_temp_link
 
 def current_page_link(selector):
     return find(selector + " .pagination .current")

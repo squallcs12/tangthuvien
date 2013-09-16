@@ -19,7 +19,7 @@ def i_read_a_book(step):
     world.favorite_book_id = find("#book").get_attribute("item_id")  # @UnusedVariable
 
 def mark_as_favorite_button():
-    return find("#book .favorite button")
+    return find("#favorite_book")
 
 @step(u'I see the mark-as-favorite button')
 def i_see_the_mark_as_favorite_button(step):
@@ -70,7 +70,7 @@ def i_see_that_book_marked_as_unread_on_favorite_list(step):
 
 @step(u'I remove the book from favorite list')
 def i_remove_the_book_from_favorite_list(step):
-    find("#books .book[item_id='%s'] input[type='checkbox']" % world.favorite_book_id).click()
+    find("#books .book[item_id='%s'] .panel" % world.favorite_book_id).click()
     find("#unfavorite_books").click()
     i_read_the_last_chapter_of_the_book(step)
 

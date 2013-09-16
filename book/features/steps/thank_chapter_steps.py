@@ -19,7 +19,7 @@ def and_i_see_chapter_thank_count(step):
 
 @step(u'And I can thank the poster for this chapter')
 def and_i_can_thank_the_poster_for_this_chapter(step):
-    get_thank_button().get_attribute('class').should_not.contain('disabled')
+    get_thank_button().get_attribute('class').should_not.contain('btn-disable')
 
 @step(u'When I thank the poster for this chapter')
 def when_i_thank_the_poster_for_this_chapter(step):
@@ -32,7 +32,7 @@ def then_i_see_the_chapter_thank_was_increased(step):
 
 @step(u'And I can not thank the poster')
 def and_i_can_not_thank_the_poster(step):
-    get_thank_button().get_attribute('class').should.contain('disabled')
+    get_thank_button().get_attribute('class').should.contain('btn-disable')
 
 @step(u'Then I still see thank number not change after increasing')
 def then_i_still_see_thank_number_not_change_after_increasing(step):

@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load slice_page_range %}
+<div class="books_pagination" class="row">
+	<div class="col-lg-12">
+		<ul class="pagination pagination-sm">
+		    {% if books.has_previous %}
+		    	<li><a class="first" href="{% url 'books_home' %}">««</a></li>
+		        <li><a class="prev" href="{% url 'books_home' %}?page={{ books.previous_page_number }}">«</a></li>
+		    {% else %}
+				<li class="disabled"><a class="first" href="#">««</a></li>
+		    {% endif %}
+			
+			
+		    {% for page_number in books|slice_page_range %}
+		    	{% if page_number ==  books.number %}
+					<li class="active"><a class="current" href="#">{{ books.number }}</a></li>
+		    	{% else %}
+			    	<li><a href="{% url 'books_home' %}?page={{ page_number }}">{{ page_number }}</a></li>
+		    	{% endif %}
+			{% endfor %}
+			
+		    {% if books.has_next %}
+		        <li><a class="next" href="{% url 'books_home' %}?page={{ books.next_page_number }}">»</a></li>
+				<li><a class="last" href="{% url 'books_home' %}?page={{ books.paginator.num_pages }}">»»</a></li>
+			{% else %}
+				<li class="disabled"><a class="last" href="#">»»</a></li>
+			{% endif %}
+		</ul>
+	</div>
+</div>

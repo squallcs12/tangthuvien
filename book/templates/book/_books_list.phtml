@@ -1,14 +1,37 @@
-<ul id="books" class="list {{class}}">
-{% for book in books %}
-    <li class="item book" item_id="{{ book.id }}"{% if not book.is_read and not book.is_read_by_current_user %}unread="yes"{% endif %}>
-        <h3><a class="title" href="{{ book.full_url }}">{{ book.title }}</a></h3>
-        <p>{{ book.description }}</p>
-        <div class="author">
-            <a href="books/author/{{book.author.slug}}">{{book.author.name}}</a>
-        </div>
-        {% if showcheckbox %}
-        <input type="checkbox" name="ids[]" value="{{book.id}}">
-        {% endif %}
-    </li>
-{% endfor %}
-</ul>
+{% load i18n %}
+{% load static_tags %}
+{% load_css static /book/style.css %}
+<div id="books" class="list {{class}}">
+	{% for book in books %}
+		{% if forloop.counter0|divisibleby:"4" %}<div class="row">{% endif %}
+			<div class="col-lg-3 item book" item_id="{{ book.id }}"{% if not book.is_read and not book.is_read_by_current_user %}unread="yes"{% endif %}>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						{% if showcheckbox %}
+						<input type="checkbox" name="ids[]" value="{{book.id}}">
+				        {% endif %}
+						<h4>
+							<a href="{{ book.full_url }}">{{book.title}}</a>
+						</h4>
+					</div>
+					<div class="panel-body">
+	                	<a class="title" href="{{ book.full_url }}"><img src="{{book.cover.url}}" /></a>
+	                	<h5><a href="books/author/{{book.author.slug}}">{{book.author.name}}</a></h5>
+	          		</div>
+				</div>
+			</div>
+		{% if forloop.last or forloop.counter|divisibleby:"4" %}</div>{% endif %}
+	{% endfor %}
+</div>
+{% if showcheckbox %}
+<script>
+jQuery(function($) {
+	$("#books .panel").click(function() {
+		var state = ! $("input[type='checkbox']").prop('checked')
+		$("input[type='checkbox']").prop('checked', state);
+		$(this).toggleClass('panel-default');
+		$(this).toggleClass('panel-success');
+	});
+});
+</script>
+{% endif %}

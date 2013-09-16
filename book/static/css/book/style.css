@@ -1,0 +1,21 @@
+/* books listing section */
+div#books.list{
+	text-align: center;
+}
+div#books.list .item input[type=checkbox]{
+	display: none
+}
+div#books.list .item .panel-heading{
+	text-align: left;
+}
+.form-control.chapter-list{
+	width: 50%;
+	display: inline-block;
+	height: 29px;
+	margin: 20px 0;
+	padding: 4px 12px;
+}
+.sidebar-margin-top{
+	margin-top: 56px;
+}
+/* end books listing section */

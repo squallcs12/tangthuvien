@@ -3,10 +3,8 @@ Created on Aug 16, 2013
 
 @author: antipro
 '''
-from django.http.response import HttpResponse
 from tangthuvien.decorator.ajax_required_decorator import ajax_required
 from book.models.book_model import Book
-import json
 from book.models.favorite_model import Favorite
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse

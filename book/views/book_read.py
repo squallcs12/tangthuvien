@@ -6,7 +6,6 @@ Created on Jul 29, 2013
 from django.template.response import TemplateResponse
 from book.models.book_model import Book
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-import pdb
 from book.signals import chapter_read_signal
 from book.models.user_log_model import UserLog
 from django.core.exceptions import ObjectDoesNotExist
@@ -44,7 +43,7 @@ def main(request, slug, template="book/read.phtml"):
     data['chapter'] = chapter
 
     chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
-    
+
     disqus_append(data)
 
     return TemplateResponse(request, template, data)

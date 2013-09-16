@@ -72,17 +72,16 @@ def then_i_see_list_of_books(step):
 
 @step(u'And I was at the first page of listing')
 def and_i_was_at_the_first_page_of_listing(step):
-    first_link = first_page_link("#pagination")
-    first_link.tag_name.should_not.equal('a')
+    first_page_link(".books_pagination").should_be_temp_link()
     save_list_item_ids(1, "#books .book")
 
-    current_page = current_page_link("#pagination")
-    current_page.tag_name.should_not.equal('a')
+    current_page = current_page_link(".books_pagination")
+    current_page.should_be_temp_link()
     int(current_page.text).should.equal(1)
 
 @step(u'When I go to the next page')
 def when_i_go_to_the_next_page(step):
-    next_page_link("#pagination").click()
+    next_page_link(".books_pagination").click()
 
 @step(u'And those books difference from the first page')
 def and_those_books_difference_from_the_first_page(step):
@@ -91,23 +90,23 @@ def and_those_books_difference_from_the_first_page(step):
 
 @step(u'And I was at the second page of listing')
 def and_i_was_at_the_second_page_of_listing(step):
-    current_page = current_page_link("#pagination")
+    current_page = current_page_link(".books_pagination")
     int(current_page.text).should.equal(2)
 
 @step(u'When I go to the last page')
 def when_i_go_to_the_last_page(step):
-    last_page_link("#pagination").click()
+    last_page_link(".books_pagination").click()
 
 @step(u'And those books difference from the other pages')
 def and_those_books_difference_from_the_other_pages(step):
-    last_page_number = int(current_page_link("#pagination").text)
+    last_page_number = int(current_page_link(".books_pagination").text)
     compare_list_item_ids(1, last_page_number, "#books .book").should.be(False)
     compare_list_item_ids(2, last_page_number, "#books .book").should.be(False)
 
 @step(u'And I was at the last page of listing')
 def and_i_was_at_the_last_page_of_listing(step):
-    last_link = last_page_link("#pagination")
-    last_link.tag_name.should_not.equal('a')
+    last_page_link(".books_pagination").should_be_temp_link()
 
-    last_page_number = int(current_page_link("#pagination").text)
+    last_page_number = int(current_page_link(".books_pagination").text)
     save_list_item_ids(last_page_number, "#books .book")
+
