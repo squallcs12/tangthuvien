@@ -197,6 +197,15 @@ class Deploy(object):
         cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.current_dir)
 
     @classmethod
+    def install_image_lib(cls):
+        if cls.have_yum:
+            sudo("yum install libpng-devel -y")
+            sudo("yum install libjpeg-devel -y")
+        else:
+            sudo("apt-get install libpng-devel -y")
+            sudo("apt-get install libjpeg-devel -y")
+
+    @classmethod
     def setup(cls):
         cls.init()
         cls.mkdirs()
@@ -211,6 +220,7 @@ class Deploy(object):
         cls.install_mysql_dev()
         cls.install_supervisor()
         cls.install_redis()
+        cls.install_image_libs()
 
     @classmethod
     def deploy(cls):
