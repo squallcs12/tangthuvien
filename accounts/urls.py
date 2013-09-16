@@ -4,9 +4,10 @@ Created on Jul 30, 2013
 @author: antipro
 '''
 from django.conf.urls import patterns, url, include
-
+from django.contrib.auth.views import login
+from accounts.forms import AuthenticationForm
 urlpatterns = patterns('',
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'accounts/login.phtml'}, name='login'),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'accounts/login.phtml', 'authentication_form': AuthenticationForm}, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name':'accounts/logged_out.phtml'}, name='logout'),
     url(r'^password_change/$', 'django.contrib.auth.views.password_change', {'template_name':'accounts/password_change.phtml'}, name='password_change'),
     url(r'^password_change/done/$', 'django.contrib.auth.views.password_change_done', {'template_name':'accounts/password_change_done.phtml'}, name='password_change_done'),
@@ -18,7 +19,7 @@ urlpatterns = patterns('',
         {'template_name':'accounts/password_reset_confirm.phtml'},
         name='password_reset_confirm'),
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete', {'template_name':'accounts/password_reset_complete.phtml'}, name='password_reset_complete'),
-    url(r'^profile', 'tangthuvien.views.home_view.main'),
+    url(r'^profile', 'tangthuvien.views.home_view.main', name='accounts_profile'),
 
     url(r'^set_password', 'accounts.views.set_password_view.main', name='set_user_password'),
     url(r'^social_auth/', include('social_auth.urls')),
