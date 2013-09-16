@@ -31,7 +31,7 @@
 						</h4>
 					</div>
 					<div class="panel-body">
-	                	<a class="title" href="{{ book.full_url }}"><img src="{{book.cover.url}}" /></a>
+	                	<a class="title" href="{{ book.full_url }}"><img src="{{ MEDIA_URL }}{{book.cover_thumb}}" /></a>
 	                	<h5><a href="books/author/{{book.author.slug}}">{{book.author.name}}</a></h5>
 	          		</div>
 				</div>
