@@ -37,3 +37,6 @@ function get_real_link(link){
 jQuery(document).on("click", "ul.pagination li.disabled a", function(){
 	return false;
 });
+jQuery(document).on("click", "ul.pagination li.active a", function(){
+	return false;
+});
