@@ -264,6 +264,13 @@ FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
 DISQUS_DEVELOPER = True
 DISQUS_SHORTNAME = 'tangthuvien'
 
+# redis config
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
+
+REDIS_ONE_TIME_NOTIFICATION_PREFIX = "ONE_TIME_NOTIFICATION_"
+
 try:
     from local_settings import *
 except ImportError:

@@ -116,6 +116,18 @@ class Deploy(object):
             sudo("python2.7 ~/setuptools-1.1.5/setup.py install")
 
     @classmethod
+    def install_redis(cls):
+        if not cls.is_command_exists('redis-cli'):
+            if cls.have_yum:
+                sudo("yum install redis -y")
+            else:
+                sudo("cd ~; wget http://download.redis.io/redis-stable.tar.gz")
+                sudo("cd ~; tar xvzf redis-stable.tar.gz")
+                sudo("cd ~/redis-stable; make")
+                sudo("cp ~/redis-stable/src/redis-server /usr/bin/redis-server")
+                sudo("cp ~/redis-stable/src/redis-cli /usr/bin/redis-cli")
+
+    @classmethod
     def install_pip(cls):
         if not cls.is_command_exists('pip'):
             sudo("%s pip" % cls.get_command_real_path('easy_install'))
@@ -198,6 +210,7 @@ class Deploy(object):
         cls.create_virtualenv()
         cls.install_mysql_dev()
         cls.install_supervisor()
+        cls.install_redis()
 
     @classmethod
     def deploy(cls):
