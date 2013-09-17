@@ -15,11 +15,16 @@ def disqus_append(data):
 pool = redis.ConnectionPool(host=st.REDIS_HOST, port=st.REDIS_PORT, db=st.REDIS_DB)
 redis_cli = redis.Redis(connection_pool=pool)
 
-def wrap(key):
-    return '%s%s' % (st.REDIS_USER_SETTING_KEY_PREFIX, key)
 
-def get_user_settings(key, user_id):
-    return redis_cli.hget(wrap(key), user_id)
+class UserSettings(object):
+    @classmethod
+    def wrap(cls, key):
+        return '%s%s' % (st.REDIS_USER_SETTING_KEY_PREFIX, key)
 
-def change_user_settings(key, user_id, value):
-    redis_cli.hset(wrap(key), user_id, value)
+    @classmethod
+    def get(cls, key, user_id):
+        return redis_cli.hget(cls.wrap(key), user_id)
+
+    @classmethod
+    def set(cls, key, user_id, value):
+        redis_cli.hset(cls.wrap(key), user_id, value)
