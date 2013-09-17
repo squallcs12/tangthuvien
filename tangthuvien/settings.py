@@ -134,9 +134,12 @@ TEMPLATE_DIRS = (
 LETTUCE_APPS = (
     'book',
     'accounts',
+    'tangthuvien',
 )
 RELISH_APPS = (
     'book',
+    'accounts',
+    'tangthuvien',
 )
 RELISH_PROJECT_NAME = 'tangthuvien'
 RELISH_PROJECT_VERSION = '1.0'
