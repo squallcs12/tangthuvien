@@ -8,7 +8,7 @@
     {% csrf_token %}
     {% include 'book/_books_list.phtml' with class='favorite' showcheckbox=1%}
     <div class"actions">
-        <input type="submit" name="unfavorite_books" id="unfavorite_books" value="Unfavorite" />
+        <button type="submit" name="unfavorite_books" id="unfavorite_books" class="btn btn-default">{% trans 'Dừng thích đọc' %}</button>
     </div>
 </form>
 {% else %}
