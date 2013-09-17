@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     'accounts',
     'relish',
     'social_auth',
+    'tangthuvien',
 )
 SITE_ID = 1
 
