@@ -3,7 +3,7 @@ Created on Aug 6, 2013
 
 @author: antipro
 '''
-from book.templatetags import static_tags
+from tangthuvien.templatetags import static_tags
 
 
 class ClearTemplateJsCss(object):
