@@ -105,6 +105,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'tangthuvien.context_processors.site_name',
+    'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
   )  # Optional
 
@@ -271,6 +272,12 @@ REDIS_PORT = 6379
 REDIS_DB = 0
 
 REDIS_ONETIME_NOTIFICATION_PREFIX = "ONETIME_NOTIFICATION_"
+
+AVAILABLE_STYLES = ['amelia', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'united']
+DEFAULT_STYLE = 'slate'
+REDIS_STYLE_USER_SETTING_KEY = 'STYLE'
+
+REDIS_USER_SETTING_KEY_PREFIX = 'USER_SETTINGS_'
 
 try:
     from local_settings import *
