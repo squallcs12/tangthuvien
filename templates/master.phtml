@@ -23,16 +23,17 @@
 		{% print_css %}
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script>
-			if (!window.jQuery)
-				document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>')
+			if (!window.jQuery){
+				document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>');
+			}
+			jQuery.noConflict();
 		</script>
-		<script>
-			jQuery.noConflict()
-		</script>
+		{% include '_js_defined_params.phtml' %}
 		<script src="{{ STATIC_URL }}js/head_define.js"></script>
 		<script src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
 		{% block script %}{% endblock %}
 		{% load_js static /bootstrap.min.js %}
+		{% load_js static /foot_define.js %}
 	</head>
 	<body id="{% block page_id %}{% endblock %}">
 		{% include '_top_nav.phtml' %}

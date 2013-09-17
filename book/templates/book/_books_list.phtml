@@ -1,12 +1,12 @@
 {% load i18n %}
 {% load static_tags %}
 {% load_css static /book/style.css %}
-{% if showcheckbox and not one_time_show_notification.SELECT_BOOK_IN_LIST %}
+{% if showcheckbox and not onetime_show_notification.SELECT_BOOK_IN_LIST %}
 <div class="row">
 	<div class="col-lg-12">
 		<div class="bs-example">
 			<div class="alert alert-dismissable alert-info">
-				<button type="button" class="close" data-dismiss="alert">×</button>
+				<button type="button" class="close onetime-notification" data-dismiss="alert" data-key="SELECT_BOOK_IN_LIST">×</button>
 				<p>
 					{% trans "Bạn có thể chọn truyện bằng cách click vào phần trống trong tiêu đề truyện" %}.
 					<img src="{{ STATIC_URL }}img/book/help/book_select_before_click.png" />

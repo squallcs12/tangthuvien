@@ -5,7 +5,7 @@ Created on Sep 17, 2013
 '''
 from tangthuvien import settings
 from tangthuvien.functions import redis_cli
-class OneTimeShowNotification(object):
+class OnetimeShowNotification(object):
 
     request = None
 
@@ -14,11 +14,17 @@ class OneTimeShowNotification(object):
 
     def __getattribute__(self, name):
         if name == 'request':
-            return super(OneTimeShowNotification, self).__getattribute__(name)
+            return super(OnetimeShowNotification, self).__getattribute__(name)
 
         if not self.request.user.is_authenticated():
             return False
 
-        name = "%s%s" % (settings.REDIS_ONE_TIME_NOTIFICATION_PREFIX, name)
+        name = wrap_key(name)
 
         return redis_cli.sismember(name, self.request.user.id)
+
+def wrap_key(key):
+    return "%s%s" % (settings.REDIS_ONETIME_NOTIFICATION_PREFIX, key)
+
+def register_off(key, user_id):
+    redis_cli.sadd(wrap_key(key), user_id)

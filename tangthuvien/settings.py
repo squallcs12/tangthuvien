@@ -105,7 +105,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'tangthuvien.context_processors.site_name',
-    'tangthuvien.context_processors.one_time_show_notification',
+    'tangthuvien.context_processors.onetime_show_notification',
   )  # Optional
 
 MIDDLEWARE_CLASSES = (
@@ -270,7 +270,8 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
 
-REDIS_ONE_TIME_NOTIFICATION_PREFIX = "ONE_TIME_NOTIFICATION_"
+REDIS_ONETIME_NOTIFICATION_PREFIX = "ONETIME_NOTIFICATION_"
+ONETIME_NOTIFICATION_NAME = ['SELECT_BOOK_IN_LIST']
 
 try:
     from local_settings import *
