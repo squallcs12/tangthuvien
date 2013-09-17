@@ -54,11 +54,12 @@ class ChapterAdmin(admin.ModelAdmin):
         (None, {'fields': ['book', 'number', 'title', 'chapter_type', 'content']}),
     ]
 
-    list_display = ('get_book', 'title', 'number', 'chapter_type')
+    list_display = ('id', 'number', 'title', 'description', 'book', 'chapter_type')
+    list_editable = ('number', 'title')
 
-    list_filter = [ChapterTypeFilter, ]
+    list_filter = [ChapterTypeFilter, 'book']
 
-    list_display_links = ('title', 'number')
+    list_display_links = ()
 
     actions_on_top = True
     actions_on_bottom = True
@@ -73,3 +74,7 @@ class ChapterAdmin(admin.ModelAdmin):
         edit_url = urlresolvers.reverse('admin:book_book_change', args=(chapter.book.id,))
         return '<a href="%s">%s</a>' % (edit_url, chapter.book.__unicode__())
     get_book.allow_tags = True
+    get_book.short_description = 'Book'
+
+    def description(self, chapter):
+        return chapter.content[0: 100]
