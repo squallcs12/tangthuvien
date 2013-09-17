@@ -168,3 +168,8 @@ def random_password():
 
 def email_address():
     return 'tangthuvien.vn@gmail.com'
+
+@before.all
+def clear_redis():
+    from tangthuvien.functions import redis_cli
+    redis_cli.flushdb()
