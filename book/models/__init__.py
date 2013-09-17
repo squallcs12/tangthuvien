@@ -52,3 +52,6 @@ class ChapterType(models.Model):
     class Meta:
         app_label = 'book'
 
+def import_signals():
+    from book import signals
+import_signals()
