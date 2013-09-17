@@ -121,11 +121,7 @@ class Deploy(object):
             if cls.have_yum:
                 sudo("yum install redis -y")
             else:
-                sudo("cd ~; wget http://download.redis.io/redis-stable.tar.gz")
-                sudo("cd ~; tar xvzf redis-stable.tar.gz")
-                sudo("cd ~/redis-stable; make")
-                sudo("cp ~/redis-stable/src/redis-server /usr/bin/redis-server")
-                sudo("cp ~/redis-stable/src/redis-cli /usr/bin/redis-cli")
+                sudo("apt-get install redis-server -y")
 
     @classmethod
     def install_pip(cls):
