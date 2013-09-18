@@ -19,7 +19,7 @@ urlpatterns = patterns('',
         {'template_name':'accounts/password_reset_confirm.phtml'},
         name='password_reset_confirm'),
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete', {'template_name':'accounts/password_reset_complete.phtml'}, name='password_reset_complete'),
-    url(r'^profile', 'tangthuvien.views.home_view.main', name='accounts_profile'),
+    url(r'^profile', 'accounts.views.profile_view.main', name='accounts_profile'),
 
     url(r'^set_password', 'accounts.views.set_password_view.main', name='set_user_password'),
     url(r'^social_auth/', include('social_auth.urls')),

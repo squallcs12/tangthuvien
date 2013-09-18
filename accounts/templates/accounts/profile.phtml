@@ -1,0 +1,17 @@
+{% extends "master.phtml" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Your profile' %}{% endblock %}
+
+{% block content %}
+<div id="profile_links">
+	<div class="row">
+		<div class="col-lg-3">
+			<ul class="nav nav-pills nav-stacked">
+				<li><a href="{% url 'password_change' %}">{% trans 'Change password' %}</a></li>
+				<li><a href="{% url 'favorite_books' %}">{% trans 'Favorite books' %}</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
