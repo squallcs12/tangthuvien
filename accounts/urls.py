@@ -5,13 +5,16 @@ Created on Jul 30, 2013
 '''
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.views import login
-from accounts.forms import AuthenticationForm
+from accounts.forms import AuthenticationForm, PasswordChangeForm
 urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'accounts/login.phtml', 'authentication_form': AuthenticationForm}, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name':'accounts/logged_out.phtml'}, name='logout'),
-    url(r'^password_change/$', 'django.contrib.auth.views.password_change', {'template_name':'accounts/password_change.phtml'}, name='password_change'),
+    url(r'^password_change/$', 'django.contrib.auth.views.password_change', {
+            'template_name':'accounts/password_change.phtml',
+            'password_change_form': PasswordChangeForm
+        }, name='password_change'),
     url(r'^password_change/done/$', 'django.contrib.auth.views.password_change_done', {'template_name':'accounts/password_change_done.phtml'}, name='password_change_done'),
-    url(r'^password_set/done/$', 'django.contrib.auth.views.password_change_done', {'template_name':'accounts/password_set_done.phtml'}, name='password_set_done'),
+    url(r'^password_set/done/$', 'accounts.views.set_password_view.done', name='password_set_done'),
     url(r'^password_reset/$', 'django.contrib.auth.views.password_reset', {'template_name':'accounts/password_reset.phtml'}, name='password_reset'),
     url(r'^password_reset/done/$', 'django.contrib.auth.views.password_reset_done', {'template_name':'password_reset_done.phtml'}, name='password_reset_done'),
     url(r'^reset/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

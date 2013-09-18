@@ -16,5 +16,11 @@ from django.views.decorators.csrf import csrf_protect
 @login_required
 def main(request):
     # if request.user.password == '!':
-    return password_change(request, template_name='accounts/password_set.phtml', password_change_form=SetPasswordForm, post_change_redirect=reverse('password_set_done'))
-    return HttpGoBack(request);
+    return password_change(request,
+                           template_name='accounts/password_set.phtml',
+                           password_change_form=SetPasswordForm,
+                           post_change_redirect=reverse('password_set_done'))
+
+def done(request, template='accounts/password_set_done.phtml'):
+    data = {}
+    return TemplateResponse(request, template, data)

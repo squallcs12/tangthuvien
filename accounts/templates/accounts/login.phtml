@@ -12,23 +12,7 @@
 						{% csrf_token %}
 						<fieldset>
 							<legend>{% trans 'Log in with your website account' %}</legend>
-							{% if form.errors %}
-								<div class="alert alert-danger">
-									{{form.errors}}
-					            </div>
-				            {% endif %}
-							<div class="form-group">
-			                    <label for="{{ form.username.auto_id }}" class="col-lg-3 control-label">{{ form.username.label }}</label>
-			                    <div class="col-lg-9">
-			                    	{{ form.username }}
-			                    </div>
-			            	</div>
-							<div class="form-group">
-			                    <label for="{{ form.password.auto_id }}" class="col-lg-3 control-label">{{ form.password.label }}</label>
-			                    <div class="col-lg-9">
-			                    	{{ form.password }}
-			                    </div>
-			            	</div>
+							{% include "general/form_render.phtml" %}
 			            	<div class="form-group">
 		                    	<div class="col-lg-9 col-lg-offset-3">
 		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button> 
