@@ -1,0 +1,9 @@
+{% load i18n %}
+<ul class="nav nav-pills nav-stacked">
+	<li{% if active_changepassword %} class="active"{% endif %}>
+		<a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
+	</li>
+	<li{% if active_favoritebook %} class="active"{% endif %}>
+		<a href="{% url 'favorite_books' %}">{% trans 'Favorite books' %}</a>
+	</li>
+</ul>
