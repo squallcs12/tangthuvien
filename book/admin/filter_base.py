@@ -13,8 +13,8 @@ class RelatedSimpleListFilter(SimpleListFilter):
     lookup_key = None
     title = None
     parameter_name = None
-    verbose_name = _('')
-    verbose_name_plurar = _('s')
+    verbose_name = ''
+    verbose_name_plurar = ''
 
     def queryset(self, request, queryset):
         """

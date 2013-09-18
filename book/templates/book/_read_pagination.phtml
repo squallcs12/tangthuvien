@@ -28,7 +28,7 @@
 	</div>
 	<div class="col-lg-3">
 		<form>
-			{% trans "Đọc chương" %}
+			{% trans "Read chapter" %}
 			<select name="chapter" class="form-control chapter-list">
 				{% for page_number in chapters.paginator.page_range %}
 				<option value="{{page_number}}" {% if page_number == chapters.number %}selected="selected"{% endif %}>{{page_number}}</option>

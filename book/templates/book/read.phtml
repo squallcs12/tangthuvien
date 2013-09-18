@@ -26,7 +26,7 @@
 	</div>
 	<div class="col-lg-3 sidebar-margin-top">
 		<div id="chapter-thank" class="panel panel-default">
-			<div class="panel-heading">{% trans 'Cám ơn người đăng' %}</div>
+			<div class="panel-heading">{% trans 'Thank the poster' %}</div>
 			<div class="panel-body">
 				<div class="thank-count">
 					<button 
@@ -36,9 +36,9 @@
 						{% elif not user.is_authenticated %}btn-disable login_required
 						{% else %}btn-default
 						{% endif %}"
-						title="{% if chapter.thanked_by_current_user %}{% trans 'Bạn đã gởi cám ơn' %}{% elif not user.is_authenticated %}{% trans 'Bạn cần đăng nhập để gởi cám ơn' %}{% else %}{% trans 'Gởi lời cám ơn tới người đăng chương truyện này' %}{% endif %}"
+						title="{% if chapter.thanked_by_current_user %}{% trans 'You thanked already' %}{% elif not user.is_authenticated %}{% trans 'Required you be logged-in to thank' %}{% else %}{% trans 'Thank the poster' %}{% endif %}"
 						>
-						<span class="count">{{chapter.thank_count}}</span> {% trans "Cám ơn" %}
+						<span class="count">{{chapter.thank_count}}</span> {% trans "thank(s)" %}
 					</button>
 				</div>
 				<script type="text/javascript">
@@ -83,11 +83,11 @@
 					{% endif %}
 					" id="favorite_book" 
 					favorite="{% if chapter.book.favorited_by_current_user %}yes{% else %}no{% endif %}"
-					{% if not user.is_authenticated %}title="{% trans 'Bạn cần đăng nhập để đánh dâu thích đọc' %}"{% endif %}>
+					{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
 					{% if chapter.book.favorited_by_current_user %}
-						{% trans "Dừng thích đọc" %}
+						{% trans "Favorite" %}
 					{% else %}
-						{% trans "Thích đọc" %}
+						{% trans "Unfavorite" %}
 					{% endif %}
 				</button>
 				<script>
@@ -105,12 +105,12 @@
 		if($(this).attr('favorite') == 'no'){
 			var ajaxComplete = function(){
 				$("#favorite_book").attr('favorite', 'yes');
-				$("#favorite_book").html('{% trans "Dừng thích đọc" %}');
+				$("#favorite_book").html('{% trans "Unfavorite" %}');
 			}
 		} else {
 			var ajaxComplete = function(){
 				$("#favorite_book").attr('favorite', 'no');
-				$("#favorite_book").html('{% trans "Thích đọc" %}');
+				$("#favorite_book").html('{% trans "Favorite" %}');
 			}
 		};
 		request['success'] = function(data){
@@ -126,11 +126,13 @@
 			</div>
 		</div>
 		<div class="panel panel-default rating" id="book_rating">
-			<div class="panel-heading">{% trans 'Đánh giá truyện' %}</div>
+			<div class="panel-heading">{% trans 'Rate book' %}</div>
 			<div class="panel-body">
 				<div class="result">
-					Đánh giá <strong><span class="average-result">{{book.rating.average_result}}</span></strong> 
-					qua <strong><span class="rating-count">{{book.rating.rating_count}}</span></strong> lượt
+					{% blocktrans with book.rating.average_result as averate and book.rating.rating_count as rating_count %}
+						Was rated <strong><span class="average-result">{{averate}}</span></strong> 
+						over <strong><span class="rating-count">{{rating_count}}</span></strong> ratings
+					{% endblocktrans %}
 				</div>
 				<div class="rate-star">
 					{% for i in book.rating.rating_range %}

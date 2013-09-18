@@ -39,7 +39,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'vi'
 
 SITE_ID = 1
 
@@ -115,8 +115,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.ClearTemplateJsCss',
 )
 
@@ -282,7 +283,12 @@ REDIS_STYLE_USER_SETTING_KEY = 'STYLE'
 
 REDIS_USER_SETTING_KEY_PREFIX = 'USER_SETTINGS_'
 
+LOCALE_PATHS = (
+    realpath('conf/locale'),
+)
+
 try:
     from local_settings import *
 except ImportError:
     pass
+

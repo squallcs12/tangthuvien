@@ -10,10 +10,10 @@
 					<form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form" class="form-horizontal">
 						{% csrf_token %}
 						<fieldset>
-							<legend>{% trans 'Đăng nhập bằng tài khoản Tàng Thư Viện' %}</legend>
+							<legend>{% trans 'Log in with your website account' %}</legend>
 							{% if form.errors %}
 								<div class="alert alert-danger">
-									{% trans "Bạn điền sai tên đăng nhập hoặc mật khẩu. Xin thử lại lần nữa." %}
+									{{form.errors}}
 					            </div>
 				            {% endif %}
 							<div class="form-group">
@@ -30,7 +30,7 @@
 			            	</div>
 			            	<div class="form-group">
 		                    	<div class="col-lg-10 col-lg-offset-2">
-		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Đăng nhập' %}</button> 
+		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button> 
 		                    	</div>
 		                  	</div>
 						</fieldset>
