@@ -202,6 +202,10 @@ class Deploy(object):
             sudo("apt-get install libjpeg-devel -y")
 
     @classmethod
+    def combine_django_messages(cls):
+        cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.current_dir)
+
+    @classmethod
     def setup(cls):
         cls.init()
         cls.mkdirs()
@@ -226,6 +230,7 @@ class Deploy(object):
         cls.install_requirements()
         cls.run_migration()
         cls.collect_statics()
+        cls.combine_django_messages()
         cls.copy_system_config_files()
         cls.restart_web_services()
 
