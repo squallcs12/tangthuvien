@@ -287,6 +287,9 @@ LOCALE_PATHS = (
     realpath('conf/locale'),
 )
 
+TEST_EMAIL = 'tangthuvien.vn@gmail.com'
+TEST_PASSWORD = ";P/*Aor1%Q-2+c2"
+
 try:
     from local_settings import *
 except ImportError:

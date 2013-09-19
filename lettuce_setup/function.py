@@ -163,10 +163,10 @@ def given_i_was_a_logged_in_user(step):
     find("#id_login").click()
 
 def random_password():
-    return ";P/*Aor1%Q-2+c2"
+    return settings.TEST_PASSWORD
 
 def email_address():
-    return 'tangthuvien.vn@gmail.com'
+    return settings.TEST_EMAIL
 
 @before.all
 def clear_redis():
