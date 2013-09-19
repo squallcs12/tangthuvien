@@ -8,7 +8,6 @@ from lettuce import world, step, before, after
 import pdb
 import sure
 from selenium import webdriver
-from django.utils.translation import ugettext_lazy as _
 from selenium.webdriver.remote.webelement import WebElement
 from django.db import connection
 from django.contrib.auth.models import User
@@ -117,7 +116,7 @@ def compare_list_item_ids(page1, page2, selector):
 
 def check_title(title):
     find("#content")
-    browser().title.should.contain(_(title).__unicode__())
+    browser().title.should.contain(title)
 
 def execute_sql(sql):
     cursor = connection.cursor()
