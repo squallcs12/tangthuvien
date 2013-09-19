@@ -39,6 +39,7 @@ def clean_book_tables():
     for query in queries:
         execute_sql(query)
 
+TOTAL_BOOK_WILL_BE_CREATED = 26
 
 def create_book_list():
     clean_book_tables()
@@ -49,7 +50,7 @@ def create_book_list():
     chappter_type = ChapterTypeFactory()
     chappter_type.save()
     chappter_types.append(chappter_type)
-    for i in range(0, 50):  # @UnusedVariable
+    for i in range(0, TOTAL_BOOK_WILL_BE_CREATED):  # @UnusedVariable
         book = BookFactory()
         book.save()
         world.book_list.append(book)
@@ -68,7 +69,8 @@ def i_visit_book_index_page(step):
 @step(u'Then I see list of books')
 def then_i_see_list_of_books(step):
     check_title('List of books')
-    len(find_all("#books .book")).should.equal(10)
+    [settings.BOOK_LIST_ITEM_COUNT, TOTAL_BOOK_WILL_BE_CREATED % settings.BOOK_LIST_ITEM_COUNT]\
+        .should.contain(len(find_all("#books .book")))
 
 @step(u'And I was at the first page of listing')
 def and_i_was_at_the_first_page_of_listing(step):
