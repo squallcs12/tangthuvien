@@ -7,11 +7,12 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from book.models.chapter_model import Chapter
 from book.models import ChapterType
+from ckeditor.widgets import CKEditorWidget
 
 class PostNewChapterForm(forms.Form):
     title = forms.CharField(max_length=255)
     number = forms.IntegerField()
-    content = forms.CharField(widget=forms.Textarea)
+    content = forms.CharField(widget=CKEditorWidget())
     chapter_type = forms.ModelChoiceField(queryset=ChapterType.objects)
 
     def __init__(self, request, book, *args, **kwargs):

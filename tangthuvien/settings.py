@@ -223,7 +223,14 @@ LOGGING = {
     }
 }
 
+# ckeditor config
 CKEDITOR_UPLOAD_PATH = realpath("media/uploads/ckeditor")
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'width': '100%',
+    },
+}
 
 # Book configuration
 BOOK_LIST_ITEM_COUNT = 12
