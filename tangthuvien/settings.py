@@ -119,6 +119,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.ClearTemplateJsCss',
+    'tangthuvien.middleware.Notification',
 )
 
 ROOT_URLCONF = 'tangthuvien.urls'

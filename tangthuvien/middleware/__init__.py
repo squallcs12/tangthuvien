@@ -1,1 +1,2 @@
 from .clear_template_js_css_middleware import ClearTemplateJsCss
+from .notification_middleware import Notification
