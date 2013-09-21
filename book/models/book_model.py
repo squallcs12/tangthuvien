@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from tagging import fields
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from book.models.rating_model import RatingLog
+from .rating_model import RatingLog
 
 from datetime import timedelta
 from tangthuvien import settings
