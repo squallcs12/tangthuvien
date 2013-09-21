@@ -79,6 +79,12 @@ def set_favorited_status(sender, **kwargs):
 def new_chapter(sender, **kwargs):
     if kwargs.get('created'):
         chapter = kwargs.get('instance')
+
+        # increase user post
+        chapter.user.book_profile.chapters_count += 1
+        chapter.user.book_profile.save()
+
+        # increase book last update
         chapter.book.last_update = timezone.now()
         chapter.book.save()
 

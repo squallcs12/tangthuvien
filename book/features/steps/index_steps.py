@@ -35,11 +35,12 @@ def clean_book_tables():
     'truncate table book_rating;',
     'truncate table book_ratinglog;',
     'truncate table book_favorite;',
+    'truncate table book_profile;',
     'SET foreign_key_checks = 1;', ]
     for query in queries:
         execute_sql(query)
 
-TOTAL_BOOK_WILL_BE_CREATED = 26
+TOTAL_BOOK_WILL_BE_CREATED = 13
 
 def create_book_list():
     clean_book_tables()
