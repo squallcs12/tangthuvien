@@ -26,7 +26,7 @@ def main(request):
     chapter = Chapter.objects.get(pk=chapter_id)
 
     try:
-        chapterThank = ChapterThank.objects.get(chapter=chapter, user=request.user)
+        ChapterThank.objects.get(chapter=chapter, user=request.user)
         return HttpResponse(THANK_RESPONSE_CODE_ALREADY_THANK)
     except ObjectDoesNotExist:
         pass
