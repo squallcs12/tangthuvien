@@ -28,9 +28,10 @@ class NotificationObject(object):
 
     @property
     def messages(self):
-        messages = self.request.session['notification_messages']
-        self.init()
-        return messages
+        if 'notification_messages' in self.request.session:
+            messages = self.request.session['notification_messages']
+            self.init()
+            return messages
 
     def add_message(self, kind, message):
         if not isinstance(message, str):
