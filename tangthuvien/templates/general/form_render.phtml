@@ -1,8 +1,9 @@
+{% load bootstrap %}
 {% for field in form %}
 	<div class="form-group{% if field.errors %} has-error{% endif %}">
         <label for="{{ field.auto_id }}" class="col-lg-3 control-label">{{ field.label }}</label>
         <div class="col-lg-9">
-        	{{ field }}
+        	{{ field|add_bootstrap_field }}
         	{% if field.errors %}
             	<div class="alert alert-danger">
             		{% if field.errors %}{{field.errors}}{% endif %}
