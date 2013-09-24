@@ -49,9 +49,10 @@ def i_update_my_account_password(step):
 def i_login_using_my_twitter_account(step):
     visit_by_view_name('login')
     find("#social_login #twitter").click()
-    find("#oauth_form #username_or_email").send_keys(email_address())
-    find("#oauth_form #password").send_keys(random_password())
-    find("#oauth_form #allow").click()
+    if len(find_all("#oauth_form #username_or_email")):  # if need login
+        find("#oauth_form #username_or_email").send_keys(email_address())
+        find("#oauth_form #password").send_keys(random_password())
+        find("#oauth_form #allow").click()
 
 @step(u'my account was associated with both facebook and twitter')
 def my_account_was_associated_with_both_facebook_and_twitter(step):
@@ -62,13 +63,14 @@ def my_account_was_associated_with_both_facebook_and_twitter(step):
 def i_login_using_my_google_account(step):
     visit_by_view_name('login')
     find("#social_login #google").click()
-    find("#gaia_loginform #Email").send_keys(email_address())
-    find("#gaia_loginform #Passwd").send_keys(random_password())
-    find("#gaia_loginform #signIn").click()
+    if len(find_all("#gaia_loginform #Email")):
+        find("#gaia_loginform #Email").send_keys(email_address())
+        find("#gaia_loginform #Passwd").send_keys(random_password())
+        find("#gaia_loginform #signIn").click()
 
-    find("#submit_approve_access")
-    until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 5)
-    find("#submit_approve_access").click()
+        find("#submit_approve_access")
+        until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 5)
+        find("#submit_approve_access").click()
 
 @step(u'my account was associated with facebook, twitter and google')
 def my_account_was_associated_with_facebook_twitter_and_google(step):
