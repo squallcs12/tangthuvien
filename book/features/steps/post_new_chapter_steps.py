@@ -22,7 +22,11 @@ def i_submit_a_new_book_chapter(step):
     new_chapter_form = find("#new-chapter-form")
     new_chapter_form.find("input[name='title']").send_keys("New chapter title")
     new_chapter_form.find("input[name='number']").send_keys("11")
-    new_chapter_form.find("textarea[name='content']").send_keys("New chapter content")
+
+    browser().switch_to_frame(find(".cke_wysiwyg_frame"))
+    find(".cke_editable").send_keys("New chapter content")
+    browser().switch_to_default_content()
+
     new_chapter_form.find("select[name='chapter_type']").select("chapter-type-0")
     world.user_total_chapter_before_post = default_user().book_profile.chapters_count
     new_chapter_form.find("button[type='submit']").click()
