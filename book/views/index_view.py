@@ -14,7 +14,7 @@ def main(request, template='book/index.phtml'):
     page = request.GET.get('page')
     perpage = request.GET.get('perpage', settings.BOOK_LIST_ITEM_COUNT)
 
-    book_list = Book.objects.all()
+    book_list = Book.objects.filter(chapters_count__gt=0)
     paginator = Paginator(book_list, perpage)
     try:
         books = paginator.page(page)

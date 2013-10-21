@@ -18,8 +18,13 @@ from .rating_model import RatingLog
 
 from datetime import timedelta
 from tangthuvien import settings
+from unidecode import unidecode
 
 class Book(models.Model):
+
+    STATUS_ONGOING = 0
+    STATUS_FINISHED = 1
+
     user = models.ForeignKey(User)
     tags = fields.TagField(_('tags'))
     title = models.CharField(max_length=255)
@@ -34,7 +39,7 @@ class Book(models.Model):
         related_name='books',
         blank=True, null=True,
         verbose_name=_('categories'))
-    complete_status = models.IntegerField()
+    complete_status = models.IntegerField(default=0)
     ttv_type = models.ForeignKey('book.BookType')
 
     sites = models.ManyToManyField(
@@ -54,6 +59,8 @@ class Book(models.Model):
 
     last_update = models.DateTimeField(
         _('last update'), default=timezone.now)
+
+    chapters_count = models.IntegerField(default=0)
 
     def is_rated_by(self, user):
         try:
@@ -119,8 +126,11 @@ class Book(models.Model):
         thumb_file = os.path.join(settings.MEDIA_ROOT, settings.BOOK_COVER_THUMB_DIR, self.cover.name)
         image.save(thumb_file, PIL_TYPE)
 
-    def save(self):
-        super(Book, self).save()
+    def save(self, *args, **kwargs):
+        # create slug
+        self.slug = unidecode(self.title)
+
+        super(Book, self).save(*args, **kwargs)
 
         # create a thumbnail
         self._create_cover_thumbnail()

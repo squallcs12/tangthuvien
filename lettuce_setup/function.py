@@ -16,6 +16,7 @@ import time
 from django.db.transaction import TransactionManagementError
 from django.conf import settings
 import urlparse
+from selenium.common.exceptions import NoSuchElementException
 
 def find_all(selector):
     return browser().find_elements_by_css_selector(selector)
@@ -28,8 +29,12 @@ WebElement.find_all = WebElement.find_elements_by_css_selector
 WebElement.xpath = WebElement.find_element_by_xpath
 
 def has_class(self, class_name):
-    self.get_attribute('class').split(' ').should.contain(class_name);
+    return self.get_attribute('class').split(' ')
 WebElement.has_class = has_class
+
+def should_has_class(self, class_name):
+    return self.has_class(class_name).should.be.ok
+WebElement.should_has_class = should_has_class
 
 def should_be_temp_link(self):
     self.tag_name.should.equal('a')
@@ -39,6 +44,24 @@ WebElement.should_be_temp_link = should_be_temp_link
 def select(self, value):
     self.xpath("./option[text()='%s']" % value).click()
 WebElement.select = select
+
+def fillin(self, value):
+    assert isinstance(self, WebElement)
+    if self.tag_name == 'textarea':
+        if self.value_of_css_property('display').lower() == 'none':
+            try:
+                cke_container = self.xpath('../div')
+                if cke_container.has_class('cke'):
+                    browser().switch_to_frame(cke_container.find(".cke_wysiwyg_frame"))
+                    find(".cke_editable").send_keys(value)
+                    browser().switch_to_default_content()
+                    return
+            except NoSuchElementException:
+                pass
+
+    return self.send_keys(value)
+
+WebElement.fillin = fillin
 
 def django_url(url="", host='localhost', port=8000):
     base_url = "http://%s" % host

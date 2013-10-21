@@ -14,6 +14,7 @@ urlpatterns = patterns('book.views',
     url(r'^unfavorite_books', 'favorite_view.unfavorite_books', name='unfavorite_books'),
     url(r'^favorite', 'favorite_view.main', name='favorite_books'),
     url(r'^post_new_chapter/(?P<book_id>\d*)', 'post_new_chapter_view.main', name='post_new_chapter'),
+    url(r'^publish', 'publish_new_book_view.main', name='publish_new_book'),
     url(r'^s/(?P<book_id>\d*)', 'book_read.short', name='book_read_short'),
     url(r'^(?P<slug>.*)$', 'book_read.main', name='book_read'),
 )

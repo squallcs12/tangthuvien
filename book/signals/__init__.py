@@ -84,8 +84,9 @@ def new_chapter(sender, **kwargs):
         chapter.user.book_profile.chapters_count += 1
         chapter.user.book_profile.save()
 
-        # increase book last update
+        # increase book last update and chapter count
         chapter.book.last_update = timezone.now()
+        chapter.book.chapters_count += 1
         chapter.book.save()
 
 @dispatch.receiver(pre_listing_book)
