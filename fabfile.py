@@ -179,6 +179,8 @@ class Deploy(object):
 
     @classmethod
     def restart_web_services(cls):
+        sudo("chmod 777 %s/bin/gunicorn_start.sh" % cls.current_dir)
+
         cls.sudo_virtualenv("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
         cls.sudo_virtualenv("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
 
