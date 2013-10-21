@@ -21,7 +21,7 @@ def i_submit_a_new_book_chapter(step):
     world.old_total_chapters = get_total_chapters(int(world.choose_book_id))
     find("#after-chapter-content #post-new-chapter").click()
 
-    when_i_post_a_new_chapter_for_this_book()
+    when_i_post_a_new_chapter_for_this_book(step)
 
 def get_total_chapters(book_id):
     db_commit()
@@ -29,7 +29,7 @@ def get_total_chapters(book_id):
 
 def check_new_chapter_content():
     chapter = find("#chapter")
-    chapter.find("h2 span.number").text.should.equal("11")
+    chapter.find("h2 span.number").text.should.equal(str(world.old_total_chapters + 1))
     chapter.find("h2").text.should.contain("New chapter title")
     chapter.find(".content").text.should.contain("New chapter content")
 

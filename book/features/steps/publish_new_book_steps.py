@@ -7,6 +7,7 @@ from lettuce_setup.function import *  # @UnusedWildImport
 from book.features.steps.index_steps import i_visit_book_index_page
 import os
 from tangthuvien import settings
+from book.models.book_model import Book
 
 @step(u'When I publish a new book')
 def when_i_publish_a_new_book(step):
@@ -39,11 +40,18 @@ def and_the_book_was_not_listed_yet(step):
     get_book_title_list().should_not.contain("Book title")
     browser().back()
 
+def current_book_id():
+    return int(browser().current_url.split('/').pop())
+
+def current_book():
+    db_commit()
+    return Book.objects.get(pk=current_book_id())
+
 @step(u'When I post a new chapter for this book')
 def when_i_post_a_new_chapter_for_this_book(step):
     new_chapter_form = find("#new-chapter-form")
     new_chapter_form.find("input[name='title']").send_keys("New chapter title")
-    new_chapter_form.find("input[name='number']").send_keys("11")
+    new_chapter_form.find("input[name='number']").send_keys(str(current_book().chapters_count + 1))
     new_chapter_form.find("textarea[name='content']").fillin("New chapter content")
 
     new_chapter_form.find("select[name='chapter_type']").select("chapter-type-0")
