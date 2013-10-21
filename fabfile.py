@@ -27,7 +27,6 @@ class Deploy(object):
 
     @classmethod
     def init(cls):
-        cls.branch = local("git branch | grep \"*\"", capture=True)[2:]
         cls.project_name = 'tangthuvien.vn'
         cls.deploy_dir = '/var/www/tangthuvien.vn'
         cls.current_dir = '/var/www/tangthuvien.vn/current'
@@ -79,7 +78,7 @@ class Deploy(object):
         sudo("rm %s" % cls.current_dir)
 
         sudo("ln -s %s/releases/%s %s" % (cls.deploy_dir, current_time, cls.current_dir))
-        sudo("cd %s; git checkout %s" % (cls.current_dir, cls.branch))
+        sudo("cd %s; git checkout %s" % (cls.current_dir, cls.branch()))
         sudo("chown -R www-data:www-data %s" % release_dir)
 
         cls.sudo("ln -s %s/media %s/media" % (cls.share_dir, cls.current_dir))
@@ -208,6 +207,10 @@ class Deploy(object):
         cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.current_dir)
 
     @classmethod
+    def branch(cls):
+        return local("git branch | grep \"*\"", capture=True)[2:]
+
+    @classmethod
     def setup(cls):
         cls.init()
         cls.mkdirs()
@@ -238,12 +241,17 @@ class Deploy(object):
 
     @classmethod
     def update_local(cls):
-        cls.init()
-        local("git pull origin %s" % cls.branch)
+        local("sudo apt-get install libjpeg-dev -y")
+        local("sudo apt-get install libpng-dev -y")
+        local("git pull origin %s" % cls.branch())
         local("pip install -r requirements.txt")
-        local("python manage.py migrate")
         local("mkdir -p media/thumbs")
         local("mkdir -p media/thumbs/books")
         local("mkdir -p media/thumbs/books/covers")
         local("mkdir -p media/books")
         local("mkdir -p media/books/covers")
+        local("mkdir -p media/uploads/ckeditor")
+        local("sudo mkdir -p /var/log/tangthuvien.vn/")
+        local("sudo chmod 777 /var/log/tangthuvien.vn/")
+        local("python manage.py syncdb --migrate")
+
