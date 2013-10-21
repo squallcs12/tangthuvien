@@ -1,8 +1,8 @@
 {% extends "master.phtml" %}
 {% load i18n static %}
-
+{% load static_tags %}
 {% block title %}{% trans 'Social accounts' %}{% endblock %}
-
+{% load_css static /accounts/zocial.css %}
 {% block content %}<div id="content-main">
 
 <form action="" method="post" id="set_password_form">{% csrf_token %}
@@ -11,7 +11,9 @@
         <ul id="social_accounts" class="list">
             {% for social in socials %}
             <li class="item social social-{{social.provider}}">
-                {{social.provider}} - {{social.uid}}
+            	<a href="http://twitter.com/account/redirect_by_id/{{social.uid}}" class="zocial {{social.provider}}">
+            		{{social.uid}}
+            	</a>
             </li>
             {% endfor%}
         </ul>
