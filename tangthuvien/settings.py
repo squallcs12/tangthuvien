@@ -120,6 +120,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.ClearTemplateJsCss',
     'tangthuvien.middleware.Notification',
+    'tangthuvien.middleware.GoogleAnalytics',
 )
 
 ROOT_URLCONF = 'tangthuvien.urls'
@@ -168,6 +169,7 @@ INSTALLED_APPS = (
     'relish',
     'social_auth',
     'tangthuvien',
+    'jsonify',
 )
 SITE_ID = 1
 

@@ -45,6 +45,10 @@ def main(request, slug, template="book/read.phtml"):
     chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
 
     disqus_append(data)
+    
+    request.google_analytic.pageview['page'] = reverse('book_read', kwargs={'slug': book.slug})
+    request.google_analytic.pageview['title'] = book.title
+
 
     return TemplateResponse(request, template, data)
 

@@ -125,10 +125,14 @@ class Book(models.Model):
         # Save the thumbnail
         thumb_file = os.path.join(settings.MEDIA_ROOT, settings.BOOK_COVER_THUMB_DIR, self.cover.name)
         image.save(thumb_file, PIL_TYPE)
+        
+    def _create_slug(self):
+        from django.template.defaultfilters import slugify
+        self.slug = slugify(unidecode(self.title))
 
     def save(self, *args, **kwargs):
         # create slug
-        self.slug = unidecode(self.title)
+        self._create_slug()
 
         super(Book, self).save(*args, **kwargs)
 
