@@ -13,4 +13,11 @@ Feature: Book App :: Book listing page
 		And I was at the last page of listing
 		And those books difference from the other pages
 		And I was at the last page of listing
+		When I choose a book category
+		Then I see only books in that category were listed
+		When I choose one more book category
+		Then I see only books in those categories was listed
+		When I clear selected book categories
+		Then I see all the books were listed
+
 		

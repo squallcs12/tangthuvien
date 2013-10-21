@@ -113,3 +113,15 @@ def and_i_was_at_the_last_page_of_listing(step):
     last_page_number = int(current_page_link(".books_pagination").text)
     save_list_item_ids(last_page_number, "#books .book")
 
+@step(u'When I choose a book category')
+def when_i_choose_a_book_category(step):
+    assert False, 'This step must be implemented'
+@step(u'Then I see only books in that category were listed')
+def then_i_see_only_books_in_that_category_were_listed(step):
+    assert False, 'This step must be implemented'
+@step(u'When I choose one more book category')
+def when_i_choose_one_more_book_category(step):
+    assert False, 'This step must be implemented'
+@step(u'Then I see only books in those categories was listed')
+def then_i_see_only_books_in_those_categories_was_listed(step):
+    assert False, 'This step must be implemented'
