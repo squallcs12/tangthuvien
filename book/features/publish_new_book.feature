@@ -8,8 +8,3 @@ Feature: Book App :: Publish new book
         And the book was not listed yet
         When I post a new chapter for this book
         Then I see that book was listed
-
-    Scenario: Listing book by category
-        Given I publish a number of books
-        When I visit those book categories
-        Then I see the book was listed there
