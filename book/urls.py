@@ -8,6 +8,8 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
+    url(r'^ajax_list_books$', 'index_view.ajax', name='ajax_list_books'),
+    url(r'^categories/(?P<slugs>.*)$', 'index_view.by_categories', name='books_list_by_categories'),
     url(r'^submit_thank', 'thank_view.main', name='summit_thank_request'),
     url(r'^submit_book_rating', 'rating_view.main', name='submit_book_rating'),
     url(r'^submit_favorite_book', 'favorite_view.ajax_submit', name='submit_favorite_book'),

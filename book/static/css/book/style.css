@@ -1,13 +1,4 @@
 /* books listing section */
-div#books.list{
-	text-align: center;
-}
-div#books.list .item input[type=checkbox]{
-	display: none
-}
-div#books.list .item .panel-heading{
-	text-align: left;
-}
 .form-control.chapter-list{
 	width: 50%;
 	display: inline-block;
@@ -19,3 +10,7 @@ div#books.list .item .panel-heading{
 	margin-top: 56px;
 }
 /* end books listing section */
+
+.bootstrap-tagsinput {
+    width: 100%;
+}

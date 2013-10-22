@@ -10,6 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 from mptt.fields import TreeForeignKey
 from mptt.managers import TreeManager
 from mptt.models import MPTTModel
+from unidecode import unidecode
+from django.template.defaultfilters import slugify
 
 
 class EntryRelatedPublishedManager(models.Manager):
@@ -90,3 +92,11 @@ class Category(MPTTModel):
         Category MPTT's meta informations.
         """
         order_insertion_by = ['title']
+
+    def _create_slug(self):
+        self.slug = slugify(unidecode(self.title))
+
+    def save(self, *args, **kwargs):
+        self._create_slug()
+
+        super(Category, self).save(*args, **kwargs)

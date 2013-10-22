@@ -74,7 +74,7 @@ def django_url(url="", host='localhost', port=8000):
 class TimeoutException(Exception):
     pass
 
-def until(method, timeout, message='', ignored_exceptions=True, interval=0.5):
+def until(method, timeout=3, message='', ignored_exceptions=True, interval=0.5):
     """Calls the method provided with the driver as an argument until the \
     return value is not False."""
     end_time = time.time() + timeout
@@ -83,7 +83,7 @@ def until(method, timeout, message='', ignored_exceptions=True, interval=0.5):
             value = method()
             if value:
                 return value
-        except ignored_exceptions:
+        except:
             pass
         time.sleep(0.5)
         if(time.time() > end_time):
@@ -140,7 +140,7 @@ def compare_list_item_ids(page1, page2, selector):
 
     if page2 not in world.list_items[selector].keys():
         raise Exception("Item list page %s was not saved" % page2)
-    return len(set(world.list_items[selector][page1]) ^ set(world.list_items[selector][page1])).should.equal(0)
+    return set(world.list_items[selector][page1]) == set(world.list_items[selector][page2])
 
 def check_title(title):
     find("#content")
