@@ -30,12 +30,13 @@
                 </thead>
                 <tbody>
                     {% for book in books %}
-                    <tr class="item book" item_id="{{book.id}}">
+                    <tr class="item book {% if not book.is_read and not book.is_read_by_current_user %}unread{% endif %}"
+                    item_id="{{book.id}}" {% if not book.is_read and not book.is_read_by_current_user %}unread="yes"{% endif %}>
                         <td>
                             {% if showcheckbox %}
                                 <input type="checkbox" name="ids[]" value="{{book.id}}">
                             {% endif %}
-                             <a href="{{ book.full_url }}">{{book.title}}</a></td>
+                             <a href="{{ book.full_url }}" class="title">{{book.title}}</a></td>
                         <td>
                             {% for category in book.categories.all %}
                             <a class="label label-info" href="#">{{category.title}}</a>

@@ -72,7 +72,7 @@ def find_book_in_list(book_id):
 
 @step(u'I remove the book from favorite list')
 def i_remove_the_book_from_favorite_list(step):
-    find_book_in_list(world.favorite_book_id).find(".panel").click()
+    find_book_in_list(world.favorite_book_id).find("input[type='checkbox']").click()
     find("#unfavorite_books").click()
     i_read_the_last_chapter_of_the_book(step)
 

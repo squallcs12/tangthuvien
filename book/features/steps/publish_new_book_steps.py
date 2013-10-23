@@ -31,7 +31,7 @@ def and_i_was_on_the_post_new_chapter_page(step):
     browser().current_url.should.contain("post_new_chapter")
 
 def get_book_title_list():
-    title_links = find_all("#books .row .panel .panel-heading h4 a")
+    title_links = find_all("#books .book a.title")
     return [link.text for link in title_links]
 
 @step(u'And the book was not listed yet')
