@@ -15,7 +15,8 @@
 {% block content %}
 	<h3>
 	    {% trans "List of books" %}
-	    <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
+        <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
+        <a href="{% url 'copy_book' %}" id="copy-book">{% trans 'Copy book' %}</a>
 	</h3>
 	<div class="row">
         <div class="col-lg-6 col-lg-offset-6">

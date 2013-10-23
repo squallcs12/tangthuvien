@@ -55,3 +55,6 @@ class PublishNewBookForm(forms.Form):
 
         return book
 
+class CopyBookForm(PublishNewBookForm):
+    thread_url = forms.URLField()
+
