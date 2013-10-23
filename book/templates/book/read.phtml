@@ -1,8 +1,13 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
 {% load static_tags %}
+
 {% block title %}{{chapter.book.title}} - {% trans 'Page'%} {{chapter.number}}{% endblock %}
+
+{% block meta-description %}{{chapter.book.description|striptags|escapejs}}{% endblock %}
+
 {% load_css static /book/style.css %}
+
 {% block content %}
 <div class="row">
 	<div class="col-lg-9">
@@ -18,6 +23,9 @@
 				</div>
 				{% include 'book/_read_pagination.phtml'%}
             </div>
+        </div>
+        <div id="after-chapter-content" class="btn-group btn-group-justified">
+            <a id="post-new-chapter" href="{% url 'post_new_chapter' chapter.book.id %}" class="btn btn-default">{% trans 'Add Chapter' %}</a>
         </div>
 		<script>
 		    var disqus_url = get_real_link("{% url 'book_read' chapter.book.slug %}");

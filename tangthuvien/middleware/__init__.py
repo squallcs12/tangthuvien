@@ -1,1 +1,3 @@
 from .clear_template_js_css_middleware import ClearTemplateJsCss
+from .notification_middleware import Notification
+from .google_analytics_middleware import GoogleAnalytics

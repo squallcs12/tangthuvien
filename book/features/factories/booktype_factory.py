@@ -7,11 +7,7 @@ Created on Jul 28, 2013
 from book.models import BookType
 import factory
 
-
-def get_type_name(n):
-    return ['Dịch', 'Convert', 'Việt'][n]
-
 class BookTypeFactory(factory.Factory):
     FACTORY_FOR = BookType
 
-    name = factory.Sequence(lambda n : get_type_name(n))
+    name = factory.Sequence(lambda n: 'book-type-{0}'.format(n))
