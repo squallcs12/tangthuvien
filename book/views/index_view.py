@@ -102,6 +102,11 @@ def by_categories(request, template='book/index.phtml', slugs=''):
 
     data['selectedCategories'] = categories
 
+    data['page_title'] = " ".join(category.title for category in categories)
+    if len(categories) == 1:
+        data['page_description'] = categories[0].description
+    else:
+        data['page_description'] = data['page_title']
     pre_listing_book.send(main, user=request.user, books=books)
 
     return TemplateResponse(request, template, data)
