@@ -81,8 +81,7 @@ def i_visit_book_index_page(step):
 @step(u'Then I see list of books')
 def then_i_see_list_of_books(step):
     check_title('List of books')
-    [settings.BOOK_LIST_ITEM_COUNT, TOTAL_BOOK_WILL_BE_CREATED % settings.BOOK_LIST_ITEM_COUNT]\
-        .should.contain(len(find_all("#books .book")))
+    range(0, settings.BOOK_LIST_ITEM_COUNT + 1).should.contain(len(find_all("#books .book")))
 
 @step(u'And I was at the first page of listing')
 def and_i_was_at_the_first_page_of_listing(step):
