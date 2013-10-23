@@ -5,13 +5,14 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from ckeditor.fields import RichTextField
 
-from book.models.book_model import Book
-from book.models.category_model import Category
-from book.models.chapter_model import Chapter
-from book.models.user_log_model import UserLog
-from book.models.chapter_thank_model import ChapterThank, ChapterThankSummary
-from book.models.rating_model import Rating, RatingLog
-from book.models.favorite_model import Favorite
+from .book_model import Book
+from .category_model import Category
+from .chapter_model import Chapter
+from .user_log_model import UserLog
+from .chapter_thank_model import ChapterThank, ChapterThankSummary
+from .rating_model import Rating, RatingLog
+from .favorite_model import Favorite
+from .profile_model import Profile
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)

@@ -10,7 +10,7 @@ import random
 
 @step(u'I click on a book')
 def i_click_on_a_book(step):
-    book_div = find("#books .book")
+    book_div = find_all("#books .book").pop()
     world.choose_book_id = book_div.get_attribute('item_id')
     book_div.find("a.title").click()
 

@@ -119,6 +119,8 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.ClearTemplateJsCss',
+    'tangthuvien.middleware.Notification',
+    'tangthuvien.middleware.GoogleAnalytics',
 )
 
 ROOT_URLCONF = 'tangthuvien.urls'
@@ -167,6 +169,7 @@ INSTALLED_APPS = (
     'relish',
     'social_auth',
     'tangthuvien',
+    'jsonify',
 )
 SITE_ID = 1
 
@@ -222,7 +225,14 @@ LOGGING = {
     }
 }
 
+# ckeditor config
 CKEDITOR_UPLOAD_PATH = realpath("media/uploads/ckeditor")
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'width': '100%',
+    },
+}
 
 # Book configuration
 BOOK_LIST_ITEM_COUNT = 12

@@ -1,0 +1,27 @@
+{% extends 'master.phtml' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Post new chapter'%}{% endblock %}
+
+{% block content %}
+<div id="publish_new_book">
+	<div class="row">
+		<div class="col-lg-9">
+			<div class="well">
+				<form method="post" action="{% url 'publish_new_book' %}" class="form-horizontal" id="new-book-form" enctype="multipart/form-data">
+					{% csrf_token %}
+					<fieldset>
+						<legend>{% trans 'Publish new book' %}</legend>
+						{% include 'general/form_render.phtml' %}
+						<div class="form-group">
+		                    <div class="col-lg-9 col-lg-offset-3">
+	                      		<button type="submit" id="id_submit" class="btn btn-primary">{% trans 'Publish' %}</button> 
+	                    	</div>
+	                  	</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

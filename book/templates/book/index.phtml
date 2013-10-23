@@ -1,10 +1,85 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
-{% block title %}List of books{% endblock %}
+{% load jsonify %}
+{% load simple_filters %}
+{% load static_tags %}
+{% load_css static /bootstrap-tagsinput/bootstrap-tagsinput.css %}
+{% load_js static /bootstrap-tagsinput/bootstrap-tagsinput.js %}
+{% load_js static /bootstrap-tagsinput/bootstrap-typeahead.js %}
+{% load_js static /plugins/jquery.loading.js %}
+
+{% block title %}{% trans "List of books" %}{% endblock %}
 
 {% block content %}
-	<h3>{% trans "List of books" %}</h3>
-	{% include 'book/_index_pagination.phtml'%}
-	{% include 'book/_books_list.phtml'%}
-	{% include 'book/_index_pagination.phtml'%}
+	<h3>
+	    {% trans "List of books" %}
+	    <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
+	</h3>
+	<div class="row">
+        <div class="col-lg-6 col-lg-offset-6">
+            <form class="categories_filters">
+                <input type="text" name="categories" />
+            </form>
+            <script>
+            (function ($){
+                $(window).load(function() {
+                    $("input[name='categories']").tagsinput({
+                        itemValue: 'id',
+                        itemText: 'title',
+                    });
+                    $("input[name='categories']").tagsinput('input').typeahead({
+                        val: {},
+                        display: 'title',
+                        source: {{categories|list|jsonify}},
+                        template: '<p>{{text}}</p>',
+                        itemSelected: function(obj){
+                            $("input[name='categories']").tagsinput('add', obj);
+                            $("input[name='categories']").tagsinput('input').val('');
+                            $("input[name='categories']").tagsinput('focus');
+                        }
+                    })
+                    
+                    {% for category in selectedCategories %}
+                    $("input[name='categories']").tagsinput('add', {
+                        'id': '{{category.id}}',
+                        'title': '{{category.title|escapejs}}'
+                    });
+                    {% endfor %}
+                    $("input[name='categories']").change(function(){
+                        reload_book_list_by_category(this);
+                    });
+                });
+                
+                var loading = false;
+                var current_ajax_request = null;
+                function reload_book_list_by_category(filter){
+                    if (loading){
+                        current_ajax_request.abort();
+                    }
+                    var ajaxSettings = {}
+                    ajaxSettings['url'] = "{% url 'ajax_list_books' %}";
+                    ajaxSettings['data'] = {};
+                    ajaxSettings['data']['categories'] = $(filter).val();
+                    ajaxSettings['success'] = function(data){
+                        $("#books_list_block").html(data['content']);
+                        $('title').html(data['title']);
+                        $("#books_list_block").removeLoading();
+                        if (typeof window.history.pushState != 'undefined'){
+                            window.history.pushState(data,"", data['url']);
+                        } else {
+                            alert("Not implemented yet");
+                        }
+                        
+                    }
+                    loading = true;
+                    $("#books_list_block").putLoading();
+                    current_ajax_request = $.ajax(ajaxSettings);
+                }
+            })(jQuery);
+            </script>
+        </div>
+	</div>
+	<div id="books_list_block">
+	   {% include 'book/_books_list_index.phtml'%}
+	</div>
 {% endblock %}

@@ -8,6 +8,7 @@ import factory
 from book.features.factories.author_factory import AuthorFactory
 import random
 from django.contrib.auth.models import User
+from book.features.factories.booktype_factory import BookTypeFactory
 
 def get_random_type(n):
     return BookType.objects.all()[n % 3]
@@ -17,7 +18,7 @@ def get_ttv_type(n):
         return get_random_type(n)
     except IndexError:
         for i in range(0, 3):  # @UnusedVariable
-            BookType().save()
+            BookTypeFactory().save()
         return get_random_type(n)
 
 

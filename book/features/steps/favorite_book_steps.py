@@ -67,10 +67,12 @@ def i_see_that_book_marked_as_unread_on_favorite_list(step):
     i_visit_favorite_books_manager_page(step)
     find("#books .book[item_id='%s']" % world.favorite_book_id).get_attribute('unread').should.equal('yes')
 
+def find_book_in_list(book_id):
+    return find("#books .book[item_id='%s']" % book_id)
 
 @step(u'I remove the book from favorite list')
 def i_remove_the_book_from_favorite_list(step):
-    find("#books .book[item_id='%s'] .panel" % world.favorite_book_id).click()
+    find_book_in_list(world.favorite_book_id).find("input[type='checkbox']").click()
     find("#unfavorite_books").click()
     i_read_the_last_chapter_of_the_book(step)
 
