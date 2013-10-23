@@ -59,7 +59,7 @@ def a_new_chapter_was_posted_to_the_book(step):
         title="New posted chapter",
         content="New posted chapter content",
         chapter_type=ChapterType.objects.all()[0],
-        number=eval_sql("SELECT MAX(number) FROM book_chapter WHERE book_id=%s" % world.favorite_book_id) + 1
+        number=Book.objects.get(pk=int(world.favorite_book_id)).chapters_count + 1
     )
 
 @step(u'I see that book marked as unread on favorite list')

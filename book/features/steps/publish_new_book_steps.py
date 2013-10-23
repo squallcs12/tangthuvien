@@ -13,14 +13,16 @@ from book.models.book_model import Book
 def when_i_publish_a_new_book(step):
     i_visit_book_index_page(step)
     find("#new-book").click()
-
     publish_book_form = find("#new-book-form")
-    publish_book_form.find("[name='title']").send_keys("Book title")
-    publish_book_form.find("[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
-    publish_book_form.find("[name='description']").fillin("Book description")
-    publish_book_form.find("[name='author']").select("Author 0")
-    publish_book_form.find("[name='ttv_type']").select("book-type-0")
+    fill_new_book_form(publish_book_form, "Book title")
     publish_book_form.find("button[type='submit']").click()
+
+def fill_new_book_form(form, book_title):
+    form.find("[name='title']").send_keys(book_title)
+    form.find("[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
+    form.find("[name='description']").fillin("Book description")
+    form.find("[name='author']").select("Author 0")
+    form.find("[name='ttv_type']").select("book-type-0")
 
 @step(u'Then I a book was published')
 def then_i_a_book_was_published(step):

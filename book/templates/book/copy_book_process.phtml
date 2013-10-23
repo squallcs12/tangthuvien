@@ -1,0 +1,205 @@
+{% extends 'master.phtml' %}
+{% load i18n %}
+{% load static_tags %}
+
+{% block title %}{% trans 'Copy'%} {{book.title}}{% endblock %}
+
+{% load_css static /book/style.css %}
+
+{% block content %}
+<div class="row">
+	<div class="col-lg-9">
+		<h3>{{book.title}} / {{book.author.name}}</h3>
+		<div class="panel panel-default">
+        	<div class="panel-body">
+        	    <div class="progress progress-striped active" id="process_bar">
+                    <div class="progress-bar progress-bar-info" style="width: 0%"></div>
+                </div>
+        	    <pre id="process_output"></pre>
+        	    <iframe id="process_output_frame" src="{% url 'copy_book_process_output' book.id %}?url={{url}}" 
+        	    style="width: 0px; height: 0px; display: none"></iframe>
+        	    <script>
+        	    (function($){
+        	        var start = 0;
+        	        var end = 0;
+        	        var total_chapter = 0;
+        	        var page_percent = 0;
+        	        var chapter_num = 0;
+        	        function change_percent(percent){
+        	            $("#process_bar .progress-bar").css('width', percent + '%');
+        	            $("#process_bar .progress-bar").html(percent + '%');
+        	        }
+            	    report_copy_process = function(command){
+            	        $("#process_output").append(command + "\n");
+            	        var args = command.split(' ');
+            	        switch(args[0]){
+            	            case 'start':
+            	               start = parseInt(args[1]);
+            	               break;
+            	            case 'end':
+            	               end = parseInt(args[1]);
+            	               break;
+            	            case 'process_page':
+            	               var page = parseInt(args[1]) - 1;
+            	               var total = end - start + 1;
+            	               page_percent = ((page * 100 + 0.0) / total).toFixed(2);
+            	               change_percent(page_percent);
+            	               break;
+            	            case 'total_chapter':
+            	               total_chapter = parseInt(args[1]);
+            	               break;
+            	            case 'skip_post':
+            	            case 'process_chapter':
+            	               chapter_num += 1;
+            	               var chapter_percent = ((chapter_num * 100 + 0.0) / total_chapter).toFixed(2);
+            	               var current_percent = parseFloat(page_percent) + parseFloat(chapter_percent);
+            	               change_percent(current_percent);
+            	               break;
+            	            case 'finish':
+            	               $("#process_bar").removeClass('active');
+            	               $("#process_bar .progress-bar")
+            	                   .removeClass('progress-bar-info')
+            	                   .addClass('progress-bar-success');
+            	               change_percent(100.00);
+            	               break;
+            	            default:
+            	               break;
+            	        } 
+            	    }
+        	    })(jQuery);
+        	    (function($){
+        	        interval_process = setInterval(function(){
+        	            var html = $("body", $("#process_output_frame")[0].contentWindow.document).html();
+        	            $("body", $("#process_output_frame")[0].contentWindow.document).html('');
+        	            eval(html);
+        	        }, 1000);
+        	        $("#process_output_frame").load(function(){
+        	            clearInterval(interval_process);
+        	            var html = $("body", $("#process_output_frame")[0].contentWindow.document).html();
+                        $("body", $("#process_output_frame")[0].contentWindow.document).html('');
+                        eval(html);
+        	        });
+        	    })(jQuery);
+        	    </script>
+            </div>
+        </div>
+	</div>
+	<div class="col-lg-3 sidebar-margin-top">
+		<div class="panel panel-default favorite">
+			<div class="panel-body">
+				<button class="btn 
+					{% if not user.is_authenticated %}
+						btn-disable login_required
+					{% else %}
+						{% if book.favorited_by_current_user %}btn-disable{% else %}btn-default{% endif %}
+					{% endif %}
+					" id="favorite_book" 
+					favorite="{% if book.favorited_by_current_user %}yes{% else %}no{% endif %}"
+					{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
+					{% if book.favorited_by_current_user %}
+						{% trans "Favorite" %}
+					{% else %}
+						{% trans "Unfavorite" %}
+					{% endif %}
+				</button>
+				<script>
+(function($){
+	var loading = false;
+	$("#favorite_book").click(function(){
+		if(loading){
+			return;
+		}
+		loading = true;
+		var request = {};
+		request['url'] = '{% url "submit_favorite_book" %}';
+		request['data'] = {'id' : '{{book.id}}'};
+		request['type'] = 'POST';
+		if($(this).attr('favorite') == 'no'){
+			var ajaxComplete = function(){
+				$("#favorite_book").attr('favorite', 'yes');
+				$("#favorite_book").html('{% trans "Unfavorite" %}');
+			}
+		} else {
+			var ajaxComplete = function(){
+				$("#favorite_book").attr('favorite', 'no');
+				$("#favorite_book").html('{% trans "Favorite" %}');
+			}
+		};
+		request['success'] = function(data){
+			loading = false;
+			$("#favorite_book").removeClass('loading');
+			ajaxComplete();
+		};
+		$("#favorite_book").addClass('loading');
+		$.ajax(request);
+	});
+})(jQuery);
+				</script>
+			</div>
+		</div>
+		<div class="panel panel-default rating" id="book_rating">
+			<div class="panel-heading">{% trans 'Rate book' %}</div>
+			<div class="panel-body">
+				<div class="result">
+					{% blocktrans with book.rating.average_result as averate and book.rating.rating_count as rating_count %}
+						Was rated <strong><span class="average-result">{{averate}}</span></strong> 
+						over <strong><span class="rating-count">{{rating_count}}</span></strong> ratings
+					{% endblocktrans %}
+				</div>
+				<div class="rate-star">
+					{% for i in book.rating.rating_range %}
+					<button class="btn btn-default rate-star-{{i}}" data-rate-number="{{i}}"
+					{% if book.rated_by_current_user %}
+						disabled='disabled'
+					{% elif not user.is_authenticated %}
+					disabled='disabled' class='login_required'
+					{% endif %}>{{i}}</button>
+					{% endfor %}
+				</div>
+				<script type="text/javascript">
+(function($){
+	$("#book_rating .rate-star button").click(function(){
+		var clickedButton = this;
+		rateNumber = $(this).data('rate-number');
+
+		$("#book_rating .rate-star button").attr('disabled', true);
+		resultSpan = $("#book_rating .average-result");
+		countSpan = $("#book_rating .rating-count");
+
+		ratingCount = parseInt(countSpan.html());
+
+		var newResult = (ratingCount * parseFloat(resultSpan.html()) + rateNumber) / (ratingCount + 1);
+		newResult = newResult.toFixed(2);
+
+		resultSpan.html(newResult);
+		countSpan.html(ratingCount + 1);
+
+		request = {};
+		request['url'] = '{% url "submit_book_rating" %}';
+		request['type'] = 'POST';
+		request['data'] = {};
+		request['data']['number'] = rateNumber;
+		request['data']['book_id'] = '{{book.id}}';
+		request['success'] = function(data){
+			resultSpan.html(data['average_result'].toFixed(2));
+			countSpan.html(data['rating_count']);
+			$(clicked_button).removeClass('loading');
+		}
+		$(clickedButton).addClass('loading');
+		$.ajax(request);
+	});
+})(jQuery);
+				</script>
+			</div>
+		</div>
+		<div id="book" item_id="{{book.id}}" class="panel panel-default">
+			<div class="panel-heading">{{book.title}}</div>
+			<div class="panel-body">{{book.description}}</div>
+		</div>
+		<div id="author" author_id="{{book.author.id}}" class="panel panel-default">
+			<div class="panel-heading">{{book.author.name}}</div>
+			<div class="panel-body">{{book.author.information}}</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -36,8 +36,8 @@ class PublishNewBookForm(forms.Form):
     title = forms.CharField(max_length=255)
     description = forms.CharField(widget=CKEditorWidget())
     cover = forms.ImageField()
-    author = forms.ModelChoiceField(queryset=Author.objects)
-    ttv_type = forms.ModelChoiceField(queryset=BookType.objects)
+    author = forms.ModelChoiceField(queryset=Author.objects.order_by('name'))
+    ttv_type = forms.ModelChoiceField(queryset=BookType.objects.order_by('name'))
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -54,4 +54,7 @@ class PublishNewBookForm(forms.Form):
         self.request.notification.success(_("New book was published successfully."))
 
         return book
+
+class CopyBookForm(PublishNewBookForm):
+    thread_url = forms.URLField()
 

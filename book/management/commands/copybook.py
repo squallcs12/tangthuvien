@@ -9,7 +9,8 @@ from book.models.book_model import Book
 import requests
 from bs4 import BeautifulSoup
 from book.models.chapter_model import Chapter
-import pdb
+import sys
+import time
 
 class Command(BaseCommand):
     help = """
@@ -36,21 +37,26 @@ class Command(BaseCommand):
 
     def get_page_range_from_content(self, content):
         assert isinstance(content, BeautifulSoup)
-        summary = content.find('div', class_="pagenav").find("td", class_="vbmenu_control")
+        page_nav = content.find('div', class_="pagenav")
+        if not page_nav:
+            return 1, 1
+        summary = page_nav.find("td", class_="vbmenu_control")
         start, end = summary.text.split(' ')[1].split('/')
         return int(start), int(end)
 
 
     def handle(self, *args, **options):
 
-        thread_id = int(options.get('thread', 0))
+        thread_id = (options.get('thread', 0))
         book_id = int(options.get('book', 0))
         start = int(options.get('start', 1))
         end = int(options.get('end', 0))
+        for message in self.copy(thread_id, book_id, start, end):
+            print message
 
-
+    def copy(self, thread_id, book_id, start, end):
         if not thread_id or not book_id:
-            print("You mush specific thread and book")
+            sys.stdout.write("You mush specific thread and book")
 
         book = Book.objects.get(pk=book_id)
 
@@ -62,10 +68,14 @@ class Command(BaseCommand):
         if end < thread_start or end > thread_end:
             end = thread_end
 
+        yield "start %s" % start
+        yield "end %s" % end
+        yield ""
+
         chapter_number = 1
         skip = True
         for page in range(start, end + 1):
-            print("Copy page %s" % page)
+            yield "process_page %s" % page
             content = self.get_thread_html(thread_id, page)
 
             start_posts_index = content.find('<div id="posts">') + len('<div id="posts">')
@@ -73,23 +83,23 @@ class Command(BaseCommand):
             posts = content[start_posts_index: end_posts_index]
             posts = posts.split("<!-- / close content container -->")[0:-1]
 
+
+            if skip:
+                skip = False
+                posts = posts[1:]
+
+            yield "total_chapter %s" % len(posts)
+
             post_count = 0
             for post in posts:
                 post_count += 1
-                if skip:
-                    skip = False
-                    continue
-
                 post = BeautifulSoup(post)
                 vp = post.find(class_="hiddentext")
 
                 if not vp:
-                    print("There is no VP in post %s from url http://www.tangthuvien.vn/forum/showthread.php?t=%s&page=%s" % (post_count, thread_id, page))
-                    enter = raw_input("Please check. Continue? [y]/n")
-                    if enter == 'n':
-                        exit()
+                    yield "skip_post %s" % post_count
                     continue
-                print("Copy chapter %s" % chapter_number)
+                yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
                 chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in vp.text.split("\n") if txt])
                 chapter.number = chapter_number
@@ -98,7 +108,9 @@ class Command(BaseCommand):
                 chapter.chapter_type_id = 1
                 chapter.save()
                 chapter_number += 1
-            print("Finish page %s" % page)
-            print("")
 
-        print "Finish"
+                time.sleep(2)
+            yield "finish_page %s" % page
+            yield ""
+
+        yield "finish"

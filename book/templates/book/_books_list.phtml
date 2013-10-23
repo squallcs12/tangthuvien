@@ -39,7 +39,7 @@
                              <a href="{{ book.full_url }}" class="title">{{book.title}}</a></td>
                         <td>
                             {% for category in book.categories.all %}
-                            <a class="label label-info" href="#">{{category.title}}</a>
+                            <a class="label label-info" href="{% url 'books_list_by_categories' category.slug %}">{{category.title}}</a>
                             {% endfor %}
                         </td>
                         <td><a href="books/author/{{book.author.slug}}">{{book.author.name}}</a></td>
