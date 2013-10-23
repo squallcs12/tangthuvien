@@ -5,8 +5,9 @@ Created on Jul 30, 2013
 '''
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.views import login
+from accounts.forms import AuthenticationForm
 urlpatterns = patterns('',
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'accounts/login.phtml'}, name='login'),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'accounts/login.phtml', 'authentication_form': AuthenticationForm}, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name':'accounts/logged_out.phtml'}, name='logout'),
     url(r'^password_change/$', 'django.contrib.auth.views.password_change', {
             'template_name':'accounts/password_change.phtml',
