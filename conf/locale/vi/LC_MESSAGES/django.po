@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -17,16 +16,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: accounts/forms.py:12
+msgid ""
+"Please enter a correct %(username)s and password. Note that both fields may "
+"be case-sensitive."
+msgstr "Vui lòng điền đúng tên đăng nhập và mật khẩu."
+
+#: accounts/forms.py:14
+msgid ""
+"Your Web browser doesn't appear to have cookies enabled. Cookies are "
+"required for logging in."
+msgstr ""
+
+#: accounts/forms.py:16
+msgid "This account is inactive."
+msgstr ""
 #: accounts/templates/accounts/_user_menu.phtml:4
 #: accounts/templates/accounts/password_change.phtml:3
 #: accounts/templates/accounts/password_change.phtml:12
 #: accounts/templates/accounts/password_change.phtml:16
-#, fuzzy
 msgid "Change password"
 msgstr "Đổi mật khẩu"
 
 #: accounts/templates/accounts/_user_menu.phtml:7
-#, fuzzy
 msgid "Favorite books"
 msgstr "Ưa thích"
 
@@ -254,17 +266,14 @@ msgstr ""
 "Bạn có thể chọn truyện bằng cách click vào khoản trống bên tiêu đề truyện"
 
 #: book/templates/book/_books_list.phtml:26
-#, fuzzy
 msgid "Book name"
 msgstr "Tên sách"
 
 #: book/templates/book/_books_list.phtml:27
-#, fuzzy
 msgid "Categories"
 msgstr "Danh mục"
 
 #: book/templates/book/_books_list.phtml:28
-#, fuzzy
 msgid "Author"
 msgstr "Tác giả"
 
@@ -286,19 +295,16 @@ msgid "List of books"
 msgstr "Danh sách truyện"
 
 #: book/templates/book/index.phtml:16
-#, fuzzy
 msgid "New book"
 msgstr "Đăng sách mới"
 
 #: book/templates/book/post_new_chapter.phtml:4
 #: book/templates/book/publish_new_book.phtml:4
-#, fuzzy
 msgid "Post new chapter"
 msgstr "Đăng chương mới"
 
 #: book/templates/book/post_new_chapter.phtml:14
 #: book/templates/book/post_new_chapter.phtml:18
-#, fuzzy
 msgid "Post chapter"
 msgstr "Đăng chương"
 
@@ -315,7 +321,6 @@ msgid "Page"
 msgstr "Trang"
 
 #: book/templates/book/read.phtml:28
-#, fuzzy
 msgid "Add Chapter"
 msgstr "Thêm chương"
 
