@@ -22,7 +22,6 @@ class PostNewChapterForm(forms.Form):
         super(PostNewChapterForm, self).__init__(*args, **kwargs)
 
     def process(self):
-
         chapter = Chapter()
         chapter.book = self.book
         chapter.user = self.request.user
@@ -31,6 +30,29 @@ class PostNewChapterForm(forms.Form):
         chapter.save()
 
         self.request.notification.success(_("New chapter was posted successfully."))
+
+class AddAuthorForm(forms.Form):
+    name = forms.CharField()
+    description = forms.CharField(widget=forms.Textarea(), required=False)
+
+    def process(self):
+        author = Author()
+        for key, value in self.cleaned_data.items():
+            setattr(author, key, value)
+        author.save()
+
+        return author
+
+class AddBookTypeForm(forms.Form):
+    name = forms.CharField()
+
+    def process(self):
+        ttv_type = BookType()
+        for key, value in self.cleaned_data.items():
+            setattr(ttv_type, key, value)
+        ttv_type.save()
+
+        return ttv_type
 
 class PublishNewBookForm(forms.Form):
     title = forms.CharField(max_length=255)
@@ -42,6 +64,8 @@ class PublishNewBookForm(forms.Form):
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(PublishNewBookForm, self).__init__(*args, **kwargs)
+        self.author_form = AddAuthorForm(prefix='author')
+        self.type_form = AddBookTypeForm(prefix='type')
 
 
     def process(self):

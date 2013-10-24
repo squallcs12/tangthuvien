@@ -134,7 +134,9 @@ class Book(models.Model):
         # create slug
         self._create_slug()
 
-        super(Book, self).save(*args, **kwargs)
+        ret = super(Book, self).save(*args, **kwargs)
 
         # create a thumbnail
         self._create_cover_thumbnail()
+
+        return ret

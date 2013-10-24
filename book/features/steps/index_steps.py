@@ -124,18 +124,14 @@ def and_i_was_at_the_last_page_of_listing(step):
     save_list_item_ids(last_page_number, "#books .book")
 
 def choose_category_filter(name):
+    world.current_url = browser().current_url
     find(".categories_filters .bootstrap-tagsinput input").send_keys('c')
     find(".typeahead.dropdown-menu").find_element_by_link_text(name).click()
-    world.current_url = browser().current_url
 
 
 @step(u'When I choose a book category')
 def when_i_choose_a_book_category(step):
     choose_category_filter("category-0")
-
-@step(u'And I see the loading animation')
-def and_i_see_the_loading_animation(step):
-    find(".modal-backdrop")
 
 @step(u'the loading animation finished')
 def the_loading_animation_finished(step):

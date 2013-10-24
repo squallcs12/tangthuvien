@@ -99,4 +99,4 @@ class Category(MPTTModel):
     def save(self, *args, **kwargs):
         self._create_slug()
 
-        super(Category, self).save(*args, **kwargs)
+        return super(Category, self).save(*args, **kwargs)

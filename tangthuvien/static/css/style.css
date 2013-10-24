@@ -19,3 +19,7 @@ button a:hover{
 footer {
 	margin: 3em 0;
 }
+
+.modal.in .modal-dialog{
+    padding: 0;
+}

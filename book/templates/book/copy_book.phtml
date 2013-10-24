@@ -1,7 +1,14 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
+{% load static_tags %}
 
-{% block title %}{% trans 'Post new chapter'%}{% endblock %}
+{% load_css static /bootstrap-modal/bootstrap-modal-bs3patch.css %}
+{% load_css static /bootstrap-modal/bootstrap-modal.css %}
+
+{% load_js static /bootstrap-modal/bootstrap-modalmanager.js %}
+{% load_js static /bootstrap-modal/bootstrap-modal.js %}
+
+{% block title %}{% trans 'Copy book'%}{% endblock %}
 
 {% block content %}
 <div id="publish_new_book">
@@ -20,6 +27,7 @@
 	                  	</div>
 					</fieldset>
 				</form>
+                {% include 'book/_inline_add_author_and_book_type.phtml' with form_id='copy-book-form'%}
 			</div>
 		</div>
 	</div>

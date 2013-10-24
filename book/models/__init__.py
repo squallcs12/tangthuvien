@@ -13,12 +13,23 @@ from .chapter_thank_model import ChapterThank, ChapterThankSummary
 from .rating_model import Rating, RatingLog
 from .favorite_model import Favorite
 from .profile_model import Profile
+from django.template.defaultfilters import slugify
+from unidecode import unidecode
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)
 
     def __unicode__(self):
         return self.name
+
+    def _create_slug(self):
+        self.slug = slugify(unidecode(self.name))
+
+    def save(self, *args, **kwargs):
+        # create slug
+        self._create_slug()
+
+        return super(BookType, self).save(*args, **kwargs)
 
     class Meta:
         app_label = 'book'
@@ -31,6 +42,15 @@ class Author(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def _create_slug(self):
+        self.slug = slugify(unidecode(self.name))
+
+    def save(self, *args, **kwargs):
+        # create slug
+        self._create_slug()
+
+        return super(Author, self).save(*args, **kwargs)
 
     class Meta:
         app_label = 'book'

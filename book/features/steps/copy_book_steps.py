@@ -27,7 +27,7 @@ def then_i_see_the_copying_was_processed(step):
 
 @step(u'When the process is finished')
 def when_the_process_is_finished(step):
-    until(lambda: find("#process_bar.progress .progress-bar").text == '100%')
+    until(lambda: find("#process_bar.progress .progress-bar").text == '100%', timeout=20)
 
 @step(u'Then I see the whole book was copied')
 def then_i_see_the_whole_book_was_copied(step):

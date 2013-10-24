@@ -14,8 +14,7 @@ Feature: Book App :: Book listing page
 		And those books difference from the other pages
 		And I was at the last page of listing
 		When I choose a book category
-		And I see the loading animation
-		When the loading animation finished
+		And the loading animation finished
 		Then I see the url was changed
 		And I see only books in that category were listed
 		When I choose one more book category

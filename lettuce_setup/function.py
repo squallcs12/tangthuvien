@@ -58,8 +58,10 @@ def fillin(self, value):
                     return
             except NoSuchElementException:
                 pass
-
-    return self.send_keys(value)
+    self.clear()
+    self.send_keys(value)
+    obj = self
+    until(lambda: obj.get_attribute('value') == value)
 
 WebElement.fillin = fillin
 

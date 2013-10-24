@@ -6,7 +6,6 @@ Created on Sep 24, 2013
 from lettuce_setup.function import *  # @UnusedWildImport
 from book.features.steps.index_steps import i_visit_book_index_page
 import os
-from tangthuvien import settings
 from book.models.book_model import Book
 
 @step(u'When I publish a new book')
@@ -21,11 +20,24 @@ def fill_new_book_form(form, book_title):
     form.find("[name='title']").send_keys(book_title)
     form.find("[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
     form.find("[name='description']").fillin("Book description")
-    form.find("[name='author']").select("Author 0")
-    form.find("[name='ttv_type']").select("book-type-0")
 
-@step(u'Then I a book was published')
-def then_i_a_book_was_published(step):
+    form.find("[name='author']").select("-create-new-")
+    author_form = find("#new-author-form")
+    fill_new_book_form.n += 1
+    author_form.find("[name='author-name']").send_keys("New author %s" % fill_new_book_form.n)
+    author_form.find("[type='submit']").click()
+    until(lambda: len(find_all(".modal-scrollable")) == 0)
+
+    form.find("[name='ttv_type']").select("-create-new-")
+    type_form = find("#new-type-form")
+    fill_new_book_form.n += 1
+    type_form.find("[name='type-name']").send_keys("New type %s" % fill_new_book_form.n)
+    type_form.find("[type='submit']").click()
+    until(lambda: len(find_all(".modal-scrollable")) == 0)
+fill_new_book_form.n = 0
+
+@step(u'Then I see a book was published')
+def then_i_see_a_book_was_published(step):
     find(".notifications").text.should.contain("New book was published successfully.")
 
 @step(u'And I was on the post new chapter page')

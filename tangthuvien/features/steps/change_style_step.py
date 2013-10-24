@@ -16,6 +16,7 @@ def and_i_change_the_style_of_website(step):
 
 @step(u'Then I see the style of website was changed')
 def then_i_see_the_style_of_website_was_changed(step):
+    find("body")  # wait for the page loaded and redirected successfully
     browser().page_source.should.contain("/readable.css")
 
 @step(u'Then I still see the style of website was keep as I changed')

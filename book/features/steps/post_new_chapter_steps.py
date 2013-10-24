@@ -19,7 +19,8 @@ def i_am_reading_a_book(step):
 @step(u'I submit a new book chapter')
 def i_submit_a_new_book_chapter(step):
     world.old_total_chapters = get_total_chapters(int(world.choose_book_id))
-    find("#after-chapter-content #post-new-chapter").click()
+    time.sleep(1)
+    find("#after-chapter-content").find("#post-new-chapter").click()
 
     when_i_post_a_new_chapter_for_this_book(step)
 
