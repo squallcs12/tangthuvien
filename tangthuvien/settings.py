@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'lettuce.django',
+    'tangthuvien',
     'tagging',
     'mptt',
     'south',
@@ -168,7 +169,6 @@ INSTALLED_APPS = (
     'accounts',
     'relish',
     'social_auth',
-    'tangthuvien',
     'jsonify',
 )
 SITE_ID = 1
