@@ -9,6 +9,8 @@ from book.models.chapter_model import Chapter
 from book.models import ChapterType, Author, BookType
 from ckeditor.widgets import CKEditorWidget
 from book.models.book_model import Book
+from tangthuvien.functions import UserSettings
+from tangthuvien import settings
 
 class PostNewChapterForm(forms.Form):
     title = forms.CharField(max_length=255)
@@ -81,4 +83,40 @@ class PublishNewBookForm(forms.Form):
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()
+
+
+class ConfigReadingSectionForm(forms.Form):
+    font_family = forms.ChoiceField(
+                    widget=forms.Select(attrs={'data-css-name':'font-family'}),
+                    choices=[('', '---'), ('Arial', 'Arial'), ('Tahoma', 'Tahoma'), ]
+                    )
+    font_size = forms.ChoiceField(
+                    widget=forms.Select(attrs={'data-css-name':'font-size'}),
+                    choices=[('', '---'), ('20px', '20px'), ('30px', '30px'), ]
+                    )
+
+    def __init__(self, user, *args, **kwargs):
+        super(ConfigReadingSectionForm, self).__init__(*args, **kwargs)
+        self.user = user
+        self._styles = -1
+        styles = self.styles
+        if styles:
+            for style in styles.split(';'):
+                style_name, style_value = style.split(':')
+                for boundfield in self:
+                    if boundfield.field.widget.attrs['data-css-name'] == style_name:
+                        boundfield.field.initial = style_value
+
+    def process(self):
+        styles = []
+        for boundfield in self:
+            styles.append("%s:%s" % (boundfield.field.widget.attrs['data-css-name'], boundfield.value()))
+        UserSettings.set(settings.REDIS_READING_BOOK_STYLE_KEY, self.user.id, ";".join(styles))
+
+    @property
+    def styles(self):
+        if self._styles != -1:
+            return self._styles
+        self._styles = UserSettings.get(settings.REDIS_READING_BOOK_STYLE_KEY, self.user.id)
+        return self._styles
 

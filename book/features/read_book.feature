@@ -55,11 +55,11 @@ Feature: Book App :: Book reading page
 		And I can not rate for the book anylonger
 
 	Scenario: Configurate reading section
-		Givent I was a logged-in user
+		Given I was a logged-in user
 		When I read a book
 		And I change the reading section font face and font size
 		Then I see the configuration of readind section is applied
-		When I go to another chapter
+		When I go to next chapter
 		Then I see the configuration of readind section is applied
 		When I read another book
 		Then I see the configuration of readind section is applied

@@ -12,6 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from tangthuvien.functions import disqus_append
+from book.forms import ConfigReadingSectionForm
 
 def main(request, slug, template="book/read.phtml"):
     data = {}
@@ -45,10 +46,11 @@ def main(request, slug, template="book/read.phtml"):
     chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
 
     disqus_append(data)
-    
+
     request.google_analytic.pageview['page'] = reverse('book_read', kwargs={'slug': book.slug})
     request.google_analytic.pageview['title'] = book.title
 
+    data['config_reading_section_form'] = ConfigReadingSectionForm(request.user)
 
     return TemplateResponse(request, template, data)
 

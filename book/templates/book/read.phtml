@@ -11,14 +11,19 @@
 {% block content %}
 <div class="row">
 	<div class="col-lg-9">
-		<h3>{{book.title}} / {{book.author.name}}</h3>
+	    <div class="row">
+    		<h3 class="col-lg-9">{{book.title}} / {{book.author.name}}</h3>
+            <div class="col-lg-3" id="read_config">
+                {% include 'book/_config_reading_section.phtml' %}
+            </div>
+        </div>
 		<div class="panel panel-default">
         	<div class="panel-body">
 				{% include 'book/_read_pagination.phtml'%}
 				<div id="chapters">
 					<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
 						<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
-						<div class="content">{{chapter.content|safe}}</div>
+						<div class="content" style="{{config_reading_section_form.styles}}">{{chapter.content|safe}}</div>
 					</div>
 				</div>
 				{% include 'book/_read_pagination.phtml'%}

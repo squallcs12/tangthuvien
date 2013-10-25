@@ -9,3 +9,9 @@ register = template.Library()
 @register.filter(name='list')
 def to_list(obj):
     return list(obj)
+
+@register.filter(name='multiple')
+def multiple(number, multipler):
+    return number * multipler
+
+
