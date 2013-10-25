@@ -1,4 +1,4 @@
-Feature: Book App :: Book reading page
+Feature: Book App :: Post new chapter
 
 	Scenario: User post new chapter
 		Given I was a logged-in user

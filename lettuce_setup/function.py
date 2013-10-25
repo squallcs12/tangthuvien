@@ -98,6 +98,7 @@ def browser():
     '''
     if not hasattr(world, 'browser'):
         world.browser = webdriver.Firefox()
+        world.browser.maximize_window()
         world.browser.implicitly_wait(3)
     return world.browser
 

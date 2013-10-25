@@ -19,9 +19,7 @@ def i_am_reading_a_book(step):
 @step(u'I submit a new book chapter')
 def i_submit_a_new_book_chapter(step):
     world.old_total_chapters = get_total_chapters(int(world.choose_book_id))
-    time.sleep(1)
-    find("#after-chapter-content").find("#post-new-chapter").click()
-
+    find("#post-new-chapter").click()
     when_i_post_a_new_chapter_for_this_book(step)
 
 def get_total_chapters(book_id):
@@ -48,8 +46,7 @@ def other_people_can_read_this_chapter(step):
     i_visit_book_index_page(step)
     find_book_in_list(world.choose_book_id).should_has_class("unread")
     i_click_on_a_book(step)
-    last_page_link(".chapters_pagination").click()
-    check_new_chapter_content()
+    last_page_link(".chapters_pagination").get_attribute('href').should.contain('?page=%s' % (world.old_total_chapters + 1))
 
 @step(u'my posted chapter was increased')
 def my_posted_chapter_was_increased(step):
