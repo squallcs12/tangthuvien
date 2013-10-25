@@ -1,12 +1,6 @@
 {% load i18n %}
-{% load static_tags %}
 {% load simple_filters %}
-
-{% load_css static /bootstrap-modal/bootstrap-modal-bs3patch.css %}
-{% load_css static /bootstrap-modal/bootstrap-modal.css %}
-
-{% load_js static /bootstrap-modal/bootstrap-modalmanager.js %}
-{% load_js static /bootstrap-modal/bootstrap-modal.js %}
+{% include 'general/bootstrap_modal_requirement.phtml' %}
 <button type="button" data-toggle="modal" data-target="#config-modal"
     class="btn btn-default config">{% trans 'Config' %}</button>
 <!-- Modal -->

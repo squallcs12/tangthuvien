@@ -1,11 +1,5 @@
 {% load i18n %}
-{% load static_tags %}
-
-{% load_css static /bootstrap-modal/bootstrap-modal-bs3patch.css %}
-{% load_css static /bootstrap-modal/bootstrap-modal.css %}
-
-{% load_js static /bootstrap-modal/bootstrap-modalmanager.js %}
-{% load_js static /bootstrap-modal/bootstrap-modal.js %}
+{% include 'general/bootstrap_modal_requirement.phtml' %}
 <!-- Modal -->
 <div id="new-author-form-div" class="modal fade" data-width="600" data-height="310"
     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
