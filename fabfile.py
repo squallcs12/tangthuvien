@@ -31,6 +31,7 @@ class Deploy(object):
         cls.deploy_dir = '/var/www/tangthuvien.vn'
         cls.current_dir = '/var/www/tangthuvien.vn/current'
         cls.share_dir = '/var/www/tangthuvien.vn/shared'
+        cls.bin_dir = '%s/bin' % cls.share_dir
         cls.virtualenv_dir = '/var/www/tangthuvien.vn/shared/virtualenv'
         cls.git_source = "https://github.com/squallcs12/tangthuvien.git"
         cls.have_yum = cls.is_command_exists('yum')
@@ -57,6 +58,7 @@ class Deploy(object):
         sudo("mkdir -p %s/releases" % cls.deploy_dir)
         sudo("mkdir -p %s" % cls.share_dir)
         sudo("mkdir -p %s/run" % cls.share_dir)
+        sudo("mkdir -p %s" % cls.bin_dir)
         sudo("mkdir -p %s/static" % cls.share_dir)
         sudo("mkdir -p %s/media" % cls.share_dir)
         sudo("mkdir -p %s/media/uploads" % cls.share_dir)
@@ -85,6 +87,8 @@ class Deploy(object):
         cls.sudo("ln -s %s/static %s/static" % (cls.share_dir, cls.current_dir))
 
         cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.current_dir))
+
+        cls.sudo("ln -s %s/bin %s" % (cls.current_dir, cls.bin_dir))
 
     @classmethod
     def sudo_virtualenv(cls, command):
@@ -207,6 +211,13 @@ class Deploy(object):
         cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.current_dir)
 
     @classmethod
+    def install_kindlegen(cls):
+        if not cls.is_file_exists("%s/kindlegen" % cls.bin_dir):
+            sudo("cd /tmp; wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
+            sudo("cd /tmp; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
+            sudo("cp /tmp/kindlegen %s" % cls.bin_dir)
+
+    @classmethod
     def branch(cls):
         return local("git branch | grep \"*\"", capture=True)[2:]
 
@@ -226,10 +237,11 @@ class Deploy(object):
         cls.install_supervisor()
         cls.install_redis()
         cls.install_image_libs()
+        cls.install_kindlegen()
 
     @classmethod
     def deploy(cls):
-        cls.init()
+        cls.setup()
         current_time = run("date +%Y%m%d%H%M%S")
         cls.checkout_source(current_time)
         cls.install_requirements()
