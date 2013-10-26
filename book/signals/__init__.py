@@ -7,7 +7,7 @@ from django import dispatch
 import pdb
 from book.models.user_log_model import UserLog
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from book.models.chapter_model import Chapter
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -88,6 +88,17 @@ def new_chapter(sender, **kwargs):
         chapter.book.last_update = timezone.now()
         chapter.book.chapters_count += 1
         chapter.book.save()
+
+@dispatch.receiver(post_delete, sender=Chapter)
+def delete_chapter(sender, **kwargs):
+    chapter = kwargs.get('instance')
+    chapter.user.book_profile.chapters_count -= 1
+    chapter.user.book_profile.save()
+
+    # increase book last update and chapter count
+    chapter.book.chapters_count -= 1
+    chapter.book.save()
+
 
 @dispatch.receiver(pre_listing_book)
 def mark_unread_for_book(sender, **kwargs):
