@@ -28,6 +28,8 @@ class Command(BaseCommand):
              help='End page'),
         make_option('-k', '--skip', action='store', dest='skip', default=1,
              help='Skip first post'),
+        make_option('-l', '--log', action='store', dest='log', default='',
+             help='Log file'),
     )
 
     def get_thread_html(self, thread_id, page=1):
@@ -46,13 +48,18 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-
         thread_id = (options.get('thread', 0))
         book_id = int(options.get('book', 0))
         start = int(options.get('start', 1))
         end = int(options.get('end', 0))
-        for message in self.copy(thread_id, book_id, start, end):
-            print message
+        log = options.get('end', '')
+        if not log:
+            for message in self.copy(thread_id, book_id, start, end):
+                print message
+        else:
+            for message in self.copy(thread_id, book_id, start, end):
+                with open(log, "wa") as fb:
+                    fb.write("%s\n" % message)
 
     def copy(self, thread_id, book_id, start, end):
         if not thread_id or not book_id:

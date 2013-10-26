@@ -12,3 +12,4 @@
 /.feature_symlinks
 /python3
 /htmlcov
+.idea
