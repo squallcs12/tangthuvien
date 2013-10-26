@@ -195,11 +195,11 @@
 		</div>
 		<div id="book" item_id="{{chapter.book.id}}" class="panel panel-default">
 			<div class="panel-heading">{{book.title}}</div>
-			<div class="panel-body">{{book.description}}</div>
+			<div class="panel-body">{{book.description|safe}}</div>
 		</div>
 		<div id="author" author_id="{{book.author.id}}" class="panel panel-default">
 			<div class="panel-heading">{{book.author.name}}</div>
-			<div class="panel-body">{{book.author.information}}</div>
+			<div class="panel-body">{{book.author.information|safe}}</div>
 		</div>
 	</div>
 </div>
