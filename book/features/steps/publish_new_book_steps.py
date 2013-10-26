@@ -26,14 +26,14 @@ def fill_new_book_form(form, book_title):
     fill_new_book_form.n += 1
     author_form.find("[name='author-name']").send_keys("New author %s" % fill_new_book_form.n)
     author_form.find("[type='submit']").click()
-    until(lambda: len(find_all(".modal-scrollable")) == 0)
+    until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
 
     form.find("[name='ttv_type']").select("-create-new-")
     type_form = find("#new-type-form")
     fill_new_book_form.n += 1
     type_form.find("[name='type-name']").send_keys("New type %s" % fill_new_book_form.n)
     type_form.find("[type='submit']").click()
-    until(lambda: len(find_all(".modal-scrollable")) == 0)
+    until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
 fill_new_book_form.n = 0
 
 @step(u'Then I see a book was published')
