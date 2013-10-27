@@ -12,6 +12,7 @@ from book.models.book_model import Book
 from django.http import StreamingHttpResponse
 import subprocess
 from tangthuvien import settings
+import os
 
 def get_log_file(book_id):
     return settings.realpath('log/copybook/%s.log' % book_id)
@@ -41,15 +42,16 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
 
     thread_url = request.GET.get('url')
     thread_id = thread_url.split('?')[1].split('=')[1]
-
-    subprocess.Popen([
+    
+    os.system(" ".join([
         settings.realpath('env/bin/python'),
-        'manage.py',
+        settings.realpath('manage.py'),
         'copybook',
         '-b %s' % book.id,
         '-t %s' % thread_id,
         '-l %s' % get_log_file(book.id),
-    ])
+        "&"
+    ]))
 
     return TemplateResponse(request, template, data)
 
@@ -57,9 +59,9 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
 def process_output(request, book_id=0):
     response = HttpResponse()
     start_line = int(request.GET.get('start_line', 0))
-    log_file = get_log_file(book.id)
-    with open(log_file, 'r') as fb:
+    log_file = get_log_file(book_id)
+    with open(log_file, 'r') as fp:
         for i, line in enumerate(fp):
             if i >= start_line:
-                response.write("%s\n" % line)
+                response.write(line)
     return response

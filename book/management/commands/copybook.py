@@ -52,18 +52,20 @@ class Command(BaseCommand):
         book_id = int(options.get('book', 0))
         start = int(options.get('start', 1))
         end = int(options.get('end', 0))
-        log = options.get('end', '')
+        log = options.get('log', '')
         if not log:
             for message in self.copy(thread_id, book_id, start, end):
                 print message
         else:
+            with open(log, "w+") as fb:
+                pass
             for message in self.copy(thread_id, book_id, start, end):
-                with open(log, "wa") as fb:
-                    fb.write("%s\n" % message)
+                with open(log, "a") as fb:
+                    fb.write("\n%s" % message)
 
     def copy(self, thread_id, book_id, start, end):
         if not thread_id or not book_id:
-            sys.stdout.write("You mush specific thread and book")
+            sys.stdout.write("You must specific thread and book")
 
         book = Book.objects.get(pk=book_id)
 

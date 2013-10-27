@@ -11,6 +11,8 @@ from book.features.factories.chapter_type_factory import ChapterTypeFactory
 from book.features.factories.category_factory import CategoryFactory
 import random
 from book.models.category_model import Category
+import subprocess
+from tangthuvien import settings as st
 
 @before.each_feature
 def before_book_feature(feature):
@@ -73,6 +75,8 @@ def create_book_list():
         for book in world.book_list:
             if random.randint(0, 1):
                 category.books.add(book)
+    
+    subprocess.call(['rm',  '%s/*' % st.realpath('log/copybook'), '-f'])
 
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):

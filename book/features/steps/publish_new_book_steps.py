@@ -22,13 +22,15 @@ def fill_new_book_form(form, book_title):
     form.find("[name='description']").fillin("Book description")
 
     form.find("[name='author']").select("-create-new-")
-    author_form = find("#new-author-form")
     fill_new_book_form.n += 1
+    time.sleep(0.5)
+    author_form = find("#new-author-form")
     author_form.find("[name='author-name']").send_keys("New author %s" % fill_new_book_form.n)
     author_form.find("[type='submit']").click()
     until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
-
+    
     form.find("[name='ttv_type']").select("-create-new-")
+    time.sleep(0.5)
     type_form = find("#new-type-form")
     fill_new_book_form.n += 1
     type_form.find("[name='type-name']").send_keys("New type %s" % fill_new_book_form.n)
