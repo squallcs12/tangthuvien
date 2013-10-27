@@ -10,9 +10,11 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from book.models.book_model import Book
 from django.http import StreamingHttpResponse
-import time
-import pdb
-from book.management.commands import copybook
+import subprocess
+from tangthuvien import settings
+
+def get_log_file(book_id):
+    return settings.realpath('log/copybook/%s.log' % book_id)
 
 @login_required
 def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtml"):
@@ -37,19 +39,27 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
     book = Book.objects.get(pk=book_id)
     data['book'] = book
 
-    data['url'] = request.GET.get('url')
+    thread_url = request.GET.get('url')
+    thread_id = thread_url.split('?')[1].split('=')[1]
+
+    subprocess.Popen([
+        settings.realpath('env/bin/python'),
+        'manage.py',
+        'copybook',
+        '-b %s' % book.id,
+        '-t %s' % thread_id,
+        '-l %s' % get_log_file(book.id),
+    ])
 
     return TemplateResponse(request, template, data)
 
 @login_required
 def process_output(request, book_id=0):
-
-    thread_url = request.GET.get('url')
-    thread_id = thread_url.split('?')[1].split('=')[1]
-
-    def copy_output():
-        for message in copybook.Command().copy(thread_id, book_id, 1, 0):
-            yield "window.parent.report_copy_process('%s');" % message
-    resp = StreamingHttpResponse(copy_output())
-    return resp
-
+    response = HttpResponse()
+    start_line = int(request.GET.get('start_line', 0))
+    log_file = get_log_file(book.id)
+    with open(log_file, 'r') as fb:
+        for i, line in enumerate(fp):
+            if i >= start_line:
+                response.write("%s\n" % line)
+    return response

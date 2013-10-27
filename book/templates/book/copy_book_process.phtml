@@ -16,8 +16,6 @@
                     <div class="progress-bar progress-bar-info" style="width: 0%"></div>
                 </div>
         	    <pre id="process_output"></pre>
-        	    <iframe id="process_output_frame" src="{% url 'copy_book_process_output' book.id %}?url={{url}}" 
-        	    style="width: 0px; height: 0px; display: none"></iframe>
         	    <script>
         	    (function($){
         	        var start = 0;
@@ -64,21 +62,26 @@
             	               break;
             	            default:
             	               break;
-            	        } 
+            	        }
             	    }
-        	    })(jQuery);
-        	    (function($){
-        	        interval_process = setInterval(function(){
-        	            var html = $("body", $("#process_output_frame")[0].contentWindow.document).html();
-        	            $("body", $("#process_output_frame")[0].contentWindow.document).html('');
-        	            eval(html);
+        	    	var start_line = 0;
+        	    	var ajaxConf = {};
+        	    	ajaxConf['url'] = "{% url 'copy_book_process_output' book.id %}";
+        	    	ajaxConf['data'] = {}
+        	    	ajaxConf['success'] = function(data){
+        	    		var lines = data.split("\n");
+        	    		start_line += lines.length;
+        	    		for (var i = 0; i < lines.length; i++){
+        	    			report_copy_process(line);
+        	    			if (line == 'finish'){
+        	    				clearInterval(interval_process);
+        	    			}
+        	    		}
+        	    	}
+        	        var interval_process = setInterval(function(){
+        	        	ajaxConf['data']['start_line'] = start_line;
+        	        	$.ajax(ajaxConf);
         	        }, 1000);
-        	        $("#process_output_frame").load(function(){
-        	            clearInterval(interval_process);
-        	            var html = $("body", $("#process_output_frame")[0].contentWindow.document).html();
-                        $("body", $("#process_output_frame")[0].contentWindow.document).html('');
-                        eval(html);
-        	        });
         	    })(jQuery);
         	    </script>
             </div>
@@ -87,13 +90,13 @@
 	<div class="col-lg-3 sidebar-margin-top">
 		<div class="panel panel-default favorite">
 			<div class="panel-body">
-				<button class="btn 
+				<button class="btn
 					{% if not user.is_authenticated %}
 						btn-disable login_required
 					{% else %}
 						{% if book.favorited_by_current_user %}btn-disable{% else %}btn-default{% endif %}
 					{% endif %}
-					" id="favorite_book" 
+					" id="favorite_book"
 					favorite="{% if book.favorited_by_current_user %}yes{% else %}no{% endif %}"
 					{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
 					{% if book.favorited_by_current_user %}
@@ -142,7 +145,7 @@
 			<div class="panel-body">
 				<div class="result">
 					{% blocktrans with book.rating.average_result as averate and book.rating.rating_count as rating_count %}
-						Was rated <strong><span class="average-result">{{averate}}</span></strong> 
+						Was rated <strong><span class="average-result">{{averate}}</span></strong>
 						over <strong><span class="rating-count">{{rating_count}}</span></strong> ratings
 					{% endblocktrans %}
 				</div>
