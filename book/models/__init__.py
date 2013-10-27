@@ -1,9 +1,11 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from ckeditor.fields import RichTextField
+from django.template.defaultfilters import slugify
+from unidecode import unidecode
 
 from .book_model import Book
 from .category_model import Category
@@ -13,8 +15,8 @@ from .chapter_thank_model import ChapterThank, ChapterThankSummary
 from .rating_model import Rating, RatingLog
 from .favorite_model import Favorite
 from .profile_model import Profile
-from django.template.defaultfilters import slugify
-from unidecode import unidecode
+from .attachment_model import Attachment
+
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)

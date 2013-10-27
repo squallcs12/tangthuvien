@@ -1,4 +1,4 @@
-Feature: Generate book prc
+Feature: Book App :: Generate book prc
 
 	Scenario: Create book prc
 		Given a book exist

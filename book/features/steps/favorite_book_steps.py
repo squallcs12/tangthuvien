@@ -52,14 +52,16 @@ def i_read_the_last_chapter_of_the_book(step):
     i_go_to_last_chapter(step)
 
 @step(u'a new chapter was posted to the book')
-def a_new_chapter_was_posted_to_the_book(step):
+def a_new_chapter_was_posted_to_the_book(step, book=None):
+    if book is None:
+        book = Book.objects.get(pk=int(world.favorite_book_id))
     Chapter.objects.create(
         user=default_user(),
-        book=Book.objects.get(pk=int(world.favorite_book_id)),
+        book=book,
         title="New posted chapter",
         content="New posted chapter content",
         chapter_type=ChapterType.objects.all()[0],
-        number=Book.objects.get(pk=int(world.favorite_book_id)).chapters_count + 1
+        number=book.chapters_count + 1
     )
 
 @step(u'I see that book marked as unread on favorite list')

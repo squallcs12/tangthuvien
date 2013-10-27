@@ -42,25 +42,18 @@ class Book(models.Model):
         verbose_name=_('categories'))
     complete_status = models.IntegerField(default=0)
     ttv_type = models.ForeignKey('book.BookType')
-
     sites = models.ManyToManyField(
         Site,
         related_name='books',
         verbose_name=_('sites'),
         help_text=_('Sites where the entry will be published.'))
-
     favorite_count = models.IntegerField(default=0)
-
     favorited_by = models.ManyToManyField(User, related_name="favorite_books", through='book.Favorite')
-
     read_users = models.ManyToManyField(User, related_name="read_books", through="book.UserLog")
-
     creation_date = models.DateTimeField(
         _('creation date'), default=timezone.now)
-
     last_update = models.DateTimeField(
         _('last update'), default=timezone.now)
-
     chapters_count = models.IntegerField(default=0)
 
     def is_rated_by(self, user):
@@ -101,6 +94,18 @@ class Book(models.Model):
     @property
     def cover_thumb(self):
         return os.path.join(settings.BOOK_COVER_THUMB_DIR, self.cover.name)
+    
+    @property
+    def prc_file_name(self):
+        return "%s.prc" % self.slug
+    
+    @property
+    def prc_file(self):
+        return "media/books/prc/%s" % self.prc_file_name
+    
+    @property
+    def html_file(self):
+        return "media/books/prc/%s.html" % self.slug
 
     def is_read_by_user(self, user):
         try:

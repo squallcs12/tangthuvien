@@ -1,6 +1,7 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
 {% load static_tags %}
+{% load file_filters %}
 
 {% block title %}{{chapter.book.title}} - {% trans 'Page'%} {{chapter.number}}{% endblock %}
 
@@ -193,14 +194,21 @@
 				</script>
 			</div>
 		</div>
-		<div id="book" item_id="{{chapter.book.id}}" class="panel panel-default">
-			<div class="panel-heading">{{book.title}}</div>
-			<div class="panel-body">{{book.description|safe}}</div>
+		<div id="attachments" class="well well-sm">
+			<h3>{% trans 'Book attachments' %}</h3>
+			<ul class="nav nav-pills nav-stacked">
+				{% for attachment in book.attachment_set.all %}
+				<li>
+					<a href="{{attachment.real_url}}">
+						<span class="filename">{{attachment.name}}</span>
+						(<span class="filesize">{{attachment.size|size_in_kb}}</span>)<br />
+						<span class="date">{{attachment.creation_date|date:"D d M Y"}}</span>
+					</a>
+				</li>
+				{% endfor %}
+			</ul>
 		</div>
-		<div id="author" author_id="{{book.author.id}}" class="panel panel-default">
-			<div class="panel-heading">{{book.author.name}}</div>
-			<div class="panel-body">{{book.author.information|safe}}</div>
-		</div>
+		{% include 'book/_book_and_author_description.phtml' %}
 	</div>
 </div>
 {% endblock %}

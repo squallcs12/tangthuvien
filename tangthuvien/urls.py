@@ -34,7 +34,9 @@ urlpatterns = patterns('',
 
 from tangthuvien import settings
 if settings.DEBUG:
-    urlpatterns += patterns('', (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|ico|avi|mp3|mp4|wav|pdf|))$', 'django.views.static.serve',
-        {'document_root': settings.realpath('media')}))
+    urlpatterns += patterns('', 
+                            (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|ico|avi|mp3|mp4|wav|pdf|prc|zip|rar|doc))$', 
+                             'django.views.static.serve',
+                            {'document_root': settings.realpath('media')}))
     # put the favicon in ano the place so that warning will not be thrown durring the test
     urlpatterns += patterns('', (r'^(?P<path>favicon\.ico)$', 'django.views.static.serve', {'document_root': settings.realpath('media')}))
