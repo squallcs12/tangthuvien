@@ -194,6 +194,7 @@
 				</script>
 			</div>
 		</div>
+		{% if book.attachment_set.all.count %}
 		<div id="attachments" class="well well-sm">
 			<h3>{% trans 'Book attachments' %}</h3>
 			<ul class="nav nav-pills nav-stacked">
@@ -208,6 +209,7 @@
 				{% endfor %}
 			</ul>
 		</div>
+		{% endif %}
 		{% include 'book/_book_and_author_description.phtml' %}
 	</div>
 </div>

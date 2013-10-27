@@ -41,7 +41,7 @@ class Command(BaseCommand):
                 
         for book in books:
             os.system("%s %s -o %s" % (
-                settings.realpath('bin/kindlegen'),
+                settings.realpath('program/kindlegen'),
                 settings.realpath(book.html_file),
                 book.prc_file_name
             ))

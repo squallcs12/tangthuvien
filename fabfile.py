@@ -32,6 +32,7 @@ class Deploy(object):
         cls.current_dir = '/var/www/tangthuvien.vn/current'
         cls.share_dir = '/var/www/tangthuvien.vn/shared'
         cls.bin_dir = '%s/bin' % cls.share_dir
+        cls.program_dir = "%s/program" % cls.share_dir
         cls.virtualenv_dir = '/var/www/tangthuvien.vn/shared/virtualenv'
         cls.git_source = "https://github.com/squallcs12/tangthuvien.git"
         cls.have_yum = cls.is_command_exists('yum')
@@ -68,6 +69,7 @@ class Deploy(object):
         sudo("mkdir -p %s/media/thumbs/books/covers" % cls.share_dir)
         sudo("mkdir -p %s/media/books" % cls.share_dir)
         sudo("mkdir -p %s/media/books/covers" % cls.share_dir)
+        sudo("mkdir -p %s" % cls.program_dir)
         sudo("mkdir -p -m 777 /var/log/tangthuvien.vn")
         sudo("touch %s" % cls.current_dir)  # so that we can remote it later
         sudo("touch %s/local_settings.py" % cls.share_dir)
@@ -89,6 +91,8 @@ class Deploy(object):
         cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.current_dir))
 
         cls.sudo("ln -s %s/bin %s" % (cls.current_dir, cls.bin_dir))
+        cls.sudo("ln -s %s %s/env" % (cls.virtualenv_dir, cls.current_dir))
+        cls.sudo("ln -s %s %s/program" % (cls.program_dir, cls.current_dir))
 
     @classmethod
     def sudo_virtualenv(cls, command):
@@ -142,7 +146,7 @@ class Deploy(object):
 
     @classmethod
     def create_virtualenv(cls):
-        if not cls.is_file_exists('%s/bin/activate' % cls.virtualenv_dir):
+        if cls.is_file_exists('%s/bin/activate' % cls.virtualenv_dir) == '0':
             cls.sudo("%s %s" % (cls.get_command_real_path('virtualenv'), cls.virtualenv_dir))
 
     @classmethod
@@ -198,7 +202,7 @@ class Deploy(object):
         cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.current_dir)
 
     @classmethod
-    def install_image_lib(cls):
+    def install_image_libs(cls):
         if cls.have_yum:
             sudo("yum install libpng-devel -y")
             sudo("yum install libjpeg-devel -y")
@@ -212,14 +216,15 @@ class Deploy(object):
 
     @classmethod
     def install_kindlegen(cls):
-        if not cls.is_file_exists("%s/kindlegen" % cls.bin_dir):
+        if cls.is_file_exists("%s/kindlegen" % cls.program_dir) == '0':
             sudo("cd /tmp; wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
             sudo("cd /tmp; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
-            sudo("cp /tmp/kindlegen %s" % cls.bin_dir)
+            sudo("cp /tmp/kindlegen %s" % cls.program_dir)
 
     @classmethod
     def branch(cls):
         return local("git branch | grep \"*\"", capture=True)[2:]
+            
 
     @classmethod
     def setup(cls):
