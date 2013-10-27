@@ -85,6 +85,7 @@
         	    				clearInterval(interval_process);
         	    			}
         	    		}
+            	        $("#process_output").scrollTop($("#process_output")[0].scrollHeight);
         	    	}
         	        var interval_process = setInterval(function(){
         	        	ajaxConf['data']['start_line'] = start_line;
