@@ -33,6 +33,7 @@ class Deploy(object):
         cls.share_dir = '/var/www/tangthuvien.vn/shared'
         cls.bin_dir = '%s/bin' % cls.share_dir
         cls.program_dir = "%s/program" % cls.share_dir
+        cls.log_dir = "%s/log" % cls.share_dir
         cls.virtualenv_dir = '/var/www/tangthuvien.vn/shared/virtualenv'
         cls.git_source = "https://github.com/squallcs12/tangthuvien.git"
         cls.have_yum = cls.is_command_exists('yum')
@@ -59,8 +60,9 @@ class Deploy(object):
         sudo("mkdir -p %s/releases" % cls.deploy_dir)
         sudo("mkdir -p %s" % cls.share_dir)
         sudo("mkdir -p %s/run" % cls.share_dir)
-        sudo("mkdir -p %s" % cls.bin_dir)
         sudo("mkdir -p %s/static" % cls.share_dir)
+        sudo("mkdir -p %s/log" % cls.share_dir)
+        sudo("mkdir -p %s/log/copybook" % cls.share_dir)
         sudo("mkdir -p %s/media" % cls.share_dir)
         sudo("mkdir -p %s/media/uploads" % cls.share_dir)
         sudo("mkdir -p %s/media/uploads/ckeditor" % cls.share_dir)
@@ -69,6 +71,7 @@ class Deploy(object):
         sudo("mkdir -p %s/media/thumbs/books/covers" % cls.share_dir)
         sudo("mkdir -p %s/media/books" % cls.share_dir)
         sudo("mkdir -p %s/media/books/covers" % cls.share_dir)
+        sudo("mkdir -p %s/media/books/prc" % cls.share_dir)
         sudo("mkdir -p %s" % cls.program_dir)
         sudo("mkdir -p -m 777 /var/log/tangthuvien.vn")
         sudo("touch %s" % cls.current_dir)  # so that we can remote it later
@@ -93,6 +96,7 @@ class Deploy(object):
         cls.sudo("ln -s %s/bin %s" % (cls.current_dir, cls.bin_dir))
         cls.sudo("ln -s %s %s/env" % (cls.virtualenv_dir, cls.current_dir))
         cls.sudo("ln -s %s %s/program" % (cls.program_dir, cls.current_dir))
+        cls.sudo("ln -s %s %s/log" % (cls.log_dir, cls.current_dir))
 
     @classmethod
     def sudo_virtualenv(cls, command):
@@ -142,11 +146,11 @@ class Deploy(object):
 
     @classmethod
     def is_file_exists(cls, filename):
-        return sudo("if test -f %s; then echo 1; else echo 0; fi" % filename)
+        return sudo("if test -f %s; then echo 1; else echo 0; fi" % filename) == '1'
 
     @classmethod
     def create_virtualenv(cls):
-        if cls.is_file_exists('%s/bin/activate' % cls.virtualenv_dir) == '0':
+        if not cls.is_file_exists('%s/bin/activate' % cls.virtualenv_dir) :
             cls.sudo("%s %s" % (cls.get_command_real_path('virtualenv'), cls.virtualenv_dir))
 
     @classmethod
@@ -216,7 +220,7 @@ class Deploy(object):
 
     @classmethod
     def install_kindlegen(cls):
-        if cls.is_file_exists("%s/kindlegen" % cls.program_dir) == '0':
+        if not cls.is_file_exists("%s/kindlegen" % cls.program_dir):
             sudo("cd /tmp; wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
             sudo("cd /tmp; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
             sudo("cp /tmp/kindlegen %s" % cls.program_dir)
