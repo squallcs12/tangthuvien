@@ -6,6 +6,7 @@ Created on Oct 26, 2013
 from lettuce_setup.function import *  # @UnusedWildImport
 from book.models.book_model import Book
 from book.features.steps.favorite_book_steps import a_new_chapter_was_posted_to_the_book
+from book.features.steps.upload_book_attachments_steps import read_book_by_id, get_attachments_list
 from django.core.management import call_command
 import os
 from tangthuvien import settings as st
@@ -29,6 +30,5 @@ def then_a_prc_file_was_generated_for_this_book(step):
 
 @step(u'And the prc file was listed in the list of attachments')
 def and_the_prc_file_was_listed_in_the_list_of_attachments(step):
-    visit_by_view_name('book_read_short', kwargs={'book_id':world.book.id})
-    attachments = [attachment.text for attachment in find_all("#attachments .filename")]
-    attachments.should.contain(world.book.prc_file_name)
+	read_book_by_id(world.book.id)
+	get_attachments_list().should.contain(world.book.prc_file_name)

@@ -45,7 +45,7 @@ def clean_book_tables():
     for query in queries:
         execute_sql(query)
 
-TOTAL_BOOK_WILL_BE_CREATED = 55
+TOTAL_BOOK_WILL_BE_CREATED = 1
 
 def create_book_list():
     clean_book_tables()

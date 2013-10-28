@@ -10,13 +10,17 @@ import sure
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 from django.db import connection
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-import time
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.transaction import TransactionManagementError
-from django.conf import settings
-import urlparse
 from selenium.common.exceptions import NoSuchElementException
+
+import time
+import urlparse
+import time
+import urlparse
 
 def find_all(selector):
     return browser().find_elements_by_css_selector(selector)
@@ -195,6 +199,21 @@ def given_i_was_a_logged_in_user(step, number=1):
     find("#id_password").send_keys(user.raw_password)
     find("#id_login").click()
 
+
+@step(u'Given I was a logged-in super user')
+def given_i_was_a_logged_in_super_user(step, number=3):
+    given_i_was_a_logged_in_user(number)
+
+def super_group():
+    if not hasattr(world, 'super_group'):
+        from django.contrib.auth.models import Group
+        try:
+            world.super_group = Group.objects.get(name='super_group')
+        except ObjectDoesNotExist:
+            world.super_group = Group.objects.create(name='super_group')
+        default_user(3).groups.add(world.super_group)
+    return world.super_group
+    
 
 def right_nav_bar():
     return find(".nav.navbar-nav.navbar-right");
