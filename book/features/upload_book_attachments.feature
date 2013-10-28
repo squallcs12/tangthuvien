@@ -1,4 +1,5 @@
-Feature: As a converter / translator
+Feature: Book App :: Upload book attachments
+	As a converter / translator
 	I want to upload the convert file to the book
 	So that other user can download it
 

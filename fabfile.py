@@ -70,6 +70,7 @@ class Deploy(object):
         sudo("mkdir -p %s/media/thumbs/books" % cls.share_dir)
         sudo("mkdir -p %s/media/thumbs/books/covers" % cls.share_dir)
         sudo("mkdir -p %s/media/books" % cls.share_dir)
+        sudo("mkdir -p %s/media/books/attachments" % cls.share_dir)
         sudo("mkdir -p %s/media/books/covers" % cls.share_dir)
         sudo("mkdir -p %s/media/books/prc" % cls.share_dir)
         sudo("mkdir -p %s" % cls.program_dir)

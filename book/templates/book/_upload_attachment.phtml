@@ -1,0 +1,70 @@
+{% load static_tags %}
+{% if request.user.book_profile.can_upload_attachment %}
+	{% load_css static /plugins/jquery.fileupload.css %}
+
+	{% load_js static /plugins/jquery.fileupload.js %}
+	{% load_js static /plugins/jquery.iframe-transport.js %}
+	{% load_js static /plugins/vendor/jquery.ui.widget.js %}
+	<form id="upload_attachment">
+		{% csrf_token %}
+		<span class="btn btn-success fileinput-button">
+	        <i class="glyphicon glyphicon-plus"></i>
+	        <span>Select files...</span>
+	        <!-- The file input field used as target for the file upload widget -->
+	        <input id="fileupload" type="file" name="file" class="upload" multiple>
+	    </span>
+		<div class="progress progress-striped active" id="process_bar">
+	        <div class="progress-bar progress-bar-info" style="width: 0%"></div>
+	    </div>
+	</form>
+	<script>
+	(function($){
+		function get_size_in_kb(bytes){
+			var kb = parseInt(bytes / 1024);
+			return kb + " KB";
+		}
+		$(window).load(function(){
+		    $('#fileupload').fileupload({
+		        url: "{% url 'upload_book_attachment_ajax' book.id %}",
+		        dataType: 'json',
+		        beforeSend: function(){
+		        	$('#upload_attachment .progress .progress-bar').show();
+		        },
+		        done: function (e, data) {
+		            $.each(data.result.files, function (index, file) {
+		                $("#attachments ul").prepend(
+		                	$("<li></li>").html(
+		                		$("<a></a>")
+		                			.attr('href', file['url'])
+		                			.append(
+		                				$("<span></span>").addClass("filename").html(file['name'])
+		                			)
+		                			.append(" ")
+		                			.append(
+		                				$("<span></span>").addClass("filesize").html(get_size_in_kb(file['size']))
+		                			)
+		                			.append("<br />")
+		                			.append(
+		                				$("<span></span>").addClass("date").html(file['date'])
+		                			)
+		                	)
+		                );
+		            });
+		            $('#upload_attachment .progress .progress-bar').hide();
+		        },
+		        progressall: function (e, data) {
+		            var progress = parseInt(data.loaded / data.total * 100, 10);
+		            $('#upload_attachment .progress .progress-bar').css(
+		                'width',
+		                progress + '%'
+		            );
+		        }
+		    }).prop('disabled', !$.support.fileInput)
+		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+		});
+		$('#upload_attachment .progress .progress-bar').hide();
+	})(jQuery);
+	</script>
+{% else %}
+	<span class="upload">{% trans 'You reach upload count limited' %}</span>
+{% endif %}

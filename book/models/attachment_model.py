@@ -30,8 +30,10 @@ class Attachment(models.Model):
         """
         CoreEntry's meta informations.
         """
+        abstract = False
         app_label = 'book'
         ordering = ['-creation_date']
         get_latest_by = 'creation_date'
         verbose_name = _('attachment')
         verbose_name_plural = _('attachment')
+        permissions = (('can_approve', 'Can approve uploaded attachment'),)
