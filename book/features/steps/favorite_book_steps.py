@@ -8,15 +8,16 @@ from lettuce_setup.function import *  # @UnusedWildImport
 from book.features.steps.index_steps import i_visit_book_index_page
 from book.features.steps.read_book_steps import i_click_on_a_book, \
     i_go_to_last_chapter
+from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.chapter_model import Chapter
 from book.models.book_model import Book
 from book.models import ChapterType
 
-@step(u'I read a book')
+@step(u'I read a book$')
 def i_read_a_book(step):
     i_visit_book_index_page(step)
     i_click_on_a_book(step)
-    world.favorite_book_id = find("#book").get_attribute("item_id")  # @UnusedVariable
+    world.book_id = find("#book").get_attribute("item_id")  # @UnusedVariable
 
 def mark_as_favorite_button():
     return find("#favorite_book")
@@ -42,19 +43,19 @@ def i_visit_favorite_books_manager_page(step):
 @step(u'I see the book was listed there')
 def i_see_the_book_was_listed_there(step):
     for book in find_all("#books.favorite .book"):
-        if book.get_attribute("item_id") == world.favorite_book_id:
+        if book.get_attribute("item_id") == world.book_id:
             return
     raise Exception("Book was not listed in favorite list")
 
 @step(u'I read the last chapter of the book')
 def i_read_the_last_chapter_of_the_book(step):
-    visit_by_view_name('book_read_short', kwargs={'book_id':world.favorite_book_id})
+    read_book_by_id(world.book_id)
     i_go_to_last_chapter(step)
 
 @step(u'a new chapter was posted to the book')
 def a_new_chapter_was_posted_to_the_book(step, book=None):
     if book is None:
-        book = Book.objects.get(pk=int(world.favorite_book_id))
+        book = Book.objects.get(pk=int(world.book_id))
     Chapter.objects.create(
         user=default_user(),
         book=book,
@@ -67,14 +68,14 @@ def a_new_chapter_was_posted_to_the_book(step, book=None):
 @step(u'I see that book marked as unread on favorite list')
 def i_see_that_book_marked_as_unread_on_favorite_list(step):
     i_visit_favorite_books_manager_page(step)
-    find("#books .book[item_id='%s']" % world.favorite_book_id).get_attribute('unread').should.equal('yes')
+    find("#books .book[item_id='%s']" % world.book_id).get_attribute('unread').should.equal('yes')
 
 def find_book_in_list(book_id):
     return find("#books .book[item_id='%s']" % book_id)
 
 @step(u'I remove the book from favorite list')
 def i_remove_the_book_from_favorite_list(step):
-    find_book_in_list(world.favorite_book_id).find("input[type='checkbox']").click()
+    find_book_in_list(world.book_id).find("input[type='checkbox']").click()
     find("#unfavorite_books").click()
     i_read_the_last_chapter_of_the_book(step)
 

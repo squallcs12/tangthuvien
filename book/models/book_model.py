@@ -78,7 +78,7 @@ class Book(models.Model):
         verbose_name_plural = _('books')
         permissions = (('can_view_all', 'Can view all books'),
                        ('can_change_status', 'Can change status'),
-                       ('can_change_author', 'Can change author(s)'),)
+                       ('can_change_author', 'Can change author(s) 1'),)
 
     def __unicode__(self):
         return self.title
@@ -106,6 +106,10 @@ class Book(models.Model):
     @property
     def html_file(self):
         return "media/books/prc/%s.html" % self.slug
+
+    @property
+    def upload_attachment_dir(self):
+        return "media/books/attachments/%s" % self.id
 
     def is_read_by_user(self, user):
         try:
