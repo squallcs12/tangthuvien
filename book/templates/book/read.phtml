@@ -1,7 +1,6 @@
 {% extends 'master.phtml' %}
 {% load i18n %}
 {% load static_tags %}
-{% load file_filters %}
 
 {% block title %}{{chapter.book.title}} - {% trans 'Page'%} {{chapter.number}}{% endblock %}
 
@@ -194,29 +193,7 @@
 				</script>
 			</div>
 		</div>
-		<div id="attachments" class="well well-sm">
-			<h3>{% trans 'Book attachments' %}</h3>
-			{% include 'book/_upload_attachment.phtml' %}
-			<ul class="nav nav-pills nav-stacked">
-				{% for attachment in book.attachment_set.all %}
-					{% if attachment.is_approved 
-						or request.user.book_profile.can_approve_attachment 
-						or attachment.uploader.id = request.user.id %}
-						<li>
-							<a href="{{attachment.real_url}}">
-								<span class="filename">{{attachment.name}}</span>
-								(<span class="filesize">{{attachment.size|size_in_kb}}</span>)
-								{% if not attachment.is_approved and request.user.book_profile.can_approve_attachment %}
-									<span class="approve">V</span>
-								{% endif %}
-								<br />
-								<span class="date">{{attachment.creation_date|date:"D d M Y"}}</span>
-							</a>
-						</li>
-					{% endif %}
-				{% endfor %}
-			</ul>
-		</div>
+		{% include 'book/_book_attachments.phtml' %}
 		{% include 'book/_book_and_author_description.phtml' %}
 	</div>
 </div>

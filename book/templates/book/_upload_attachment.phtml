@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static_tags %}
 {% if request.user.book_profile.can_upload_attachment %}
 	{% load_css static /plugins/jquery.fileupload.css %}
@@ -28,7 +29,7 @@
 		        url: "{% url 'upload_book_attachment_ajax' book.id %}",
 		        dataType: 'json',
 		        beforeSend: function(){
-		        	$('#upload_attachment .progress .progress-bar').show();
+		        	$('#upload_attachment .progress').show();
 		        },
 		        done: function (e, data) {
 		            $.each(data.result.files, function (index, file) {
@@ -45,12 +46,12 @@
 		                			)
 		                			.append("<br />")
 		                			.append(
-		                				$("<span></span>").addClass("date").html(file['date'])
+		                				$("<span></span>").addClass("date").html(file['creation_date'])
 		                			)
 		                	)
 		                );
 		            });
-		            $('#upload_attachment .progress .progress-bar').hide();
+		            $('#upload_attachment .progress').hide();
 		        },
 		        progressall: function (e, data) {
 		            var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -61,10 +62,14 @@
 		        }
 		    }).prop('disabled', !$.support.fileInput)
 		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+			$('#upload_attachment .progress').hide();
 		});
-		$('#upload_attachment .progress .progress-bar').hide();
 	})(jQuery);
 	</script>
 {% else %}
-	<span class="upload">{% trans 'You reach upload count limited' %}</span>
+	{% if request.user.is_authenticated %}
+		<span class="upload">{% trans 'You reach upload count limited' %}</span>
+	{% else %}
+		<span class="upload">{% trans 'You need to log-in to upload document' %}</span>
+	{% endif %}
 {% endif %}

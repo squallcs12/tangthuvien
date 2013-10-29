@@ -11,6 +11,9 @@ from django.db.models.signals import post_save, post_delete
 from book.models.chapter_model import Chapter
 from django.utils import timezone
 from django.contrib.auth.models import User
+from book.models.book_model import Book
+from tangthuvien import settings
+import os
 
 # when user read a chapter
 chapter_read_signal = dispatch.Signal(providing_args=["user", "chapter", "page"])
@@ -89,16 +92,27 @@ def new_chapter(sender, **kwargs):
         chapter.book.chapters_count += 1
         chapter.book.save()
 
+@dispatch.receiver(post_save, sender=Book)
+def new_book(sender, **kwargs):
+    if kwargs.get('created'):
+        book = kwargs.get('instance')
+        folder = settings.realpath(book.upload_attachment_dir)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+
+
 @dispatch.receiver(post_delete, sender=Chapter)
 def delete_chapter(sender, **kwargs):
-    chapter = kwargs.get('instance')
-    chapter.user.book_profile.chapters_count -= 1
-    chapter.user.book_profile.save()
-
-    # increase book last update and chapter count
-    chapter.book.chapters_count -= 1
-    chapter.book.save()
-
+    try:
+        chapter = kwargs.get('instance')
+        chapter.user.book_profile.chapters_count -= 1
+        chapter.user.book_profile.save()
+    
+        # increase book last update and chapter count
+        chapter.book.chapters_count -= 1
+        chapter.book.save()
+    except:
+        pass
 
 @dispatch.receiver(pre_listing_book)
 def mark_unread_for_book(sender, **kwargs):

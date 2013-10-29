@@ -30,5 +30,5 @@ def then_a_prc_file_was_generated_for_this_book(step):
 
 @step(u'And the prc file was listed in the list of attachments')
 def and_the_prc_file_was_listed_in_the_list_of_attachments(step):
-	read_book_by_id(world.book.id)
-	get_attachments_list().should.contain(world.book.prc_file_name)
+    read_book_by_id(world.book.id)
+    get_attachments_list().should.contain(world.book.prc_file_name)

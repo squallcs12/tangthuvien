@@ -1,15 +1,8 @@
 from lettuce_setup.function import *  # @UnusedWildImport
 from book.models import Attachment
 import os
+from book.models.book_model import Book
 
-@before.all
-def add_super_group_permission():
-    from django.contrib.auth.models import Permission
-    from django.contrib.contenttypes.models import ContentType
-    content_type = ContentType.objects.get_for_model(Attachment)
-    group = super_group()
-    can_approve_attachment = Permission.objects.get(codename='can_approve_attachment', content_type=content_type)
-    group.permissions.add(can_approve_attachment)
 
 def get_attachments_list():
     return [attachment.text for attachment in find_all("#attachments .filename")]
@@ -19,9 +12,12 @@ def read_book_by_id(book_id):
 
 @step(u'And I upload a attachment to the book')
 def and_i_upload_a_attachment_to_the_book(step):
+    until(lambda: not find("#upload_attachment .progress").is_displayed())
     upload_form = find("#upload_attachment")
     upload_form.find(".upload").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
-    upload_form.find("[type='submit']").click()
+    time.sleep(0.5)
+    if find("#upload_attachment .progress").is_displayed():
+        until(lambda: not find("#upload_attachment .progress").is_displayed())
 
 @step(u'Then I see the attachment listed when reading that book')
 def then_i_see_the_attachment_listed_when_reading_that_book(step):
@@ -32,17 +28,19 @@ def and_the_attachment_can_not_be_seen_by_other_normal_user(step):
     visit_by_view_name("logout")
     read_book_by_id(world.book_id)
     get_attachments_list().should_not.contain("1278231576904.jpg")
-    given_i_was_a_logged_in_user()
+    given_i_was_a_logged_in_user(step)
+    read_book_by_id(world.book_id)
 
 @step(u'When I reach the limited of uploading attachment')
 def when_i_reach_the_limited_of_uploading_attachment(step):
-    default_user().book_profile.daily_uploaded_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_UPLOAD_LIMIT
-    default_user().book_profile.save()
+    profile = default_user().book_profile 
+    profile.daily_uploaded_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_UPLOAD_LIMIT
+    profile.save()
 
 @step(u'Then I can not upload attachment anylonger')
 def then_i_can_not_upload_attachment_anylonger(step):
-    when_i_reload_the_page()
-    find("#attachment .upload").tag_name.should_not.equal("input")
+    when_i_reload_the_page(step)
+    find("#attachments .upload").tag_name.should_not.equal("input")
 
 @step(u'Then the attachment can be seen by other normak user')
 @step(u'And the attachment can be seen by other normal user')
@@ -50,7 +48,7 @@ def and_the_attachment_can_be_seen_by_other_normal_user(step):
     visit_by_view_name("logout")
     read_book_by_id(world.book_id)
     get_attachments_list().should.contain("1278231576904.jpg")
-    given_i_was_a_logged_in_super_user()
+    given_i_was_a_logged_in_super_user(step)
 
 @step(u'And I approve that attachment')
 def and_i_approve_that_attachment(step):
@@ -58,8 +56,9 @@ def and_i_approve_that_attachment(step):
 
 @step(u'When I reach the limited of approving attachment')
 def when_i_reach_the_limited_of_approving_attachment(step):
-    default_user().book_profile.daily_approved_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_APPROVE_LIMIT
-    default_user().book_profile.save()
+    profile = default_user(3).book_profile
+    profile.daily_approved_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_APPROVE_LIMIT
+    profile.save()
 
 @step(u'Then I can not approve attachment anylonger')
 def then_i_can_not_approve_attachment_anylonger(step):
@@ -68,6 +67,7 @@ def then_i_can_not_approve_attachment_anylonger(step):
         attachment.save()
 
     read_book_by_id(world.book_id)
+    len(find_all("#attachments .filename")).should_not.equal(0)
     len(find_all("#attachments .approve")).should.equal(0)
 
 @step(u'Then I can download the attachment')
@@ -76,9 +76,27 @@ def then_i_can_download_the_attachment(step):
 
 @step(u'After I reach the limited of downloading attachment')
 def after_i_reach_the_limited_of_downloading_attachment(step):
-    default_user().book_profile.daily_downloaded_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_DOWNLOAD_LIMIT
-    default_user().book_profile.save()
+    profile = default_user().book_profile
+    profile.daily_downloaded_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_DOWNLOAD_LIMIT
+    profile.save()
 
 @step(u'Then I can not download attachment anylonger')
 def then_i_can_not_download_attachment_anylonger(step):
+    read_book_by_id(world.book_id)
     len(find_all("#attachments a")).should.equal(0)
+    
+@step(u'When I read a book has( approved)? attachment uploaded by normal user')
+def when_i_read_a_book_has_approved_attachment_uploaded_by_normal_user(step, approved):
+    book = Book.objects.all()[0]
+    Attachment.objects.create(
+                        uploader=default_user(),
+                        book=book,
+                        name='1278231576904.jpg',
+                        url='media/books/attachments/1278231576904.jpg',
+                        size=102400,
+                        is_approved=bool(approved),
+                        downloads_count=0,
+                    )
+    world.book_id = book.id
+    world.book = book
+    read_book_by_id(book.id)

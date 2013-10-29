@@ -13,7 +13,7 @@ from book.models.chapter_model import Chapter
 from book.models.book_model import Book
 from book.models import ChapterType
 
-@step(u'I read a book')
+@step(u'I read a book$')
 def i_read_a_book(step):
     i_visit_book_index_page(step)
     i_click_on_a_book(step)

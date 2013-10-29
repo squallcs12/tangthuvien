@@ -13,70 +13,8 @@ import random
 from book.models.category_model import Category
 import subprocess
 from tangthuvien import settings as st
-
-@before.each_feature
-def before_book_feature(feature):
-    if ('Book App ::' in feature.name) and \
-        (not hasattr(world, 'book_created') or not world.book_created):
-        create_book_list()
-
-def clean_book_tables():
-    '''
-    Clean all book app table
-    '''
-    queries = ['SET foreign_key_checks = 0;',
-    'truncate table book_author;',
-    'truncate table book_book;',
-    'truncate table book_book_categories;',
-    'truncate table book_book_sites;',
-    'truncate table book_booktype;',
-    'truncate table book_category;',
-    'truncate table book_chapter;',
-    'truncate table book_chaptertype;',
-    'truncate table book_type;',
-    'truncate table book_userlog;',
-    'truncate table book_chapterthank;',
-    'truncate table book_chapterthanksummary;',
-    'truncate table book_rating;',
-    'truncate table book_ratinglog;',
-    'truncate table book_favorite;',
-    'truncate table book_profile;',
-    'SET foreign_key_checks = 1;', ]
-    for query in queries:
-        execute_sql(query)
-
-TOTAL_BOOK_WILL_BE_CREATED = 1
-
-def create_book_list():
-    clean_book_tables()
-    world.book_created = True
-    world.book_list = []
-
-    chappter_types = []
-    chappter_type = ChapterTypeFactory()
-    chappter_type.save()
-    chappter_types.append(chappter_type)
-    for i in range(0, TOTAL_BOOK_WILL_BE_CREATED):  # @UnusedVariable
-        book = BookFactory()
-        book.save()
-        world.book_list.append(book)
-        for i in range(1, 11):
-            chapter = ChapterFactory()
-            chapter.number = i
-            chapter.book = book
-            chapter.chapter_type = chappter_type
-            chapter.user = book.user
-            chapter.save()
-
-    for i in range(0, 4):
-        category = CategoryFactory()
-        category.save()
-        assert isinstance(category, Category)
-        for book in world.book_list:
-            if random.randint(0, 1):
-                category.books.add(book)
-    
-    subprocess.call(['rm',  '%s/*' % st.realpath('log/copybook'), '-f'])
+from django.contrib.auth.models import User, Group
+from book.models.book_model import Book
 
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):

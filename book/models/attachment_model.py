@@ -7,6 +7,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 class Attachment(models.Model):
     name = models.CharField(max_length=255)
@@ -25,6 +26,14 @@ class Attachment(models.Model):
         if self.url.startswith("/") or (self.url.find("//") != -1): # if a valid url
             return self.url
         return "/%s" % self.url #return url from home
+    @property
+    def download_url(self):
+        return reverse(
+                    'book_attachment_download',
+                    kwargs={
+                        'book_id': self.book.id,
+                        'attachment_id': self.id
+                    })
     
     class Meta:
         """
