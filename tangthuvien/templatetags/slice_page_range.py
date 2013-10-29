@@ -16,3 +16,13 @@ def slice_page_range(pagination):
         page_number = pagination.number + number
         if page_number in page_range:
             yield page_number
+
+@register.filter(name='chapters_paging')
+def chapters_paging(chapters_list, page_number):
+    for index, chapter_info in enumerate(chapters_list):
+        if chapter_info[0] == page_number:
+            if index > 0:
+                yield chapters_list[index - 1][0]
+            yield page_number
+            if index < len(chapters_list) - 1:
+                yield chapters_list[index + 1][0]

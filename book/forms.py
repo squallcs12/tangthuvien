@@ -32,6 +32,8 @@ class PostNewChapterForm(forms.Form):
         chapter.save()
 
         self.request.notification.success(_("New chapter was posted successfully."))
+        
+        return chapter
 
 class AddAuthorForm(forms.Form):
     name = forms.CharField()

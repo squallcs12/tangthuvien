@@ -18,32 +18,26 @@ def main(request, slug, template="book/read.phtml"):
     data = {}
     book = Book.objects.get(slug=slug)
     data['book'] = book
-
-    page = request.GET.get('page')
-
-    if page is None and request.user.is_authenticated():
+    
+    if request.user.is_authenticated():
         try:
             page = UserLog.objects.get(user=request.user, book=book).page
-            return HttpResponseRedirect(reverse('book_read', kwargs={'slug':book.slug}) + '?page=' + str(page))
+            return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number' : page}))
         except ObjectDoesNotExist:
             pass
+    
+    return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number' : 1}))
+    
 
-    chapter_list = book.chapter_set.all().order_by('number')
-    paginator = Paginator(chapter_list, 1)
+def chapter(request, slug, chapter_number, template="book/read.phtml"):
+    data = {}
+    book = Book.objects.get(slug=slug)
+    data['book'] = book
 
-    try:
-        chapters = paginator.page(page)
-    except PageNotAnInteger:
-        chapters = paginator.page(1)
-    except EmptyPage:
-        chapters = paginator.page(paginator.num_pages)
-
-    data['chapters'] = chapters
-
-    chapter = chapters[0]
+    chapter = book.chapter_set.filter(number=chapter_number)[0]
     data['chapter'] = chapter
 
-    chapter_read_signal.send(main, user=request.user, chapter=chapter, page=chapters.number)
+    chapter_read_signal.send(main, user=request.user, chapter=chapter)
 
     disqus_append(data)
 

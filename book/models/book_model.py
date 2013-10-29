@@ -20,6 +20,7 @@ from datetime import timedelta
 from tangthuvien import settings
 from unidecode import unidecode
 from django.template.defaultfilters import slugify
+from tangthuvien.rediscache import cache_it
 
 class Book(models.Model):
 
@@ -55,6 +56,12 @@ class Book(models.Model):
     last_update = models.DateTimeField(
         _('last update'), default=timezone.now)
     chapters_count = models.IntegerField(default=0)
+    
+    _chapters_list = None
+    
+    def __init__(self, *args, **kwargs):
+        super(Book, self).__init__(*args, **kwargs)
+        self._chapters_list = None
 
     def is_rated_by(self, user):
         try:
@@ -110,7 +117,16 @@ class Book(models.Model):
     @property
     def upload_attachment_dir(self):
         return "media/books/attachments/%s" % self.id
-
+    
+    @property
+    def chapters_list(self):
+        if self._chapters_list is None:
+            self._chapters_list = get_chapters_list(self.id) 
+        return self._chapters_list
+    
+    def reset_chapters_list(self):
+        get_chapters_list.clear(self.id)
+        
     def is_read_by_user(self, user):
         try:
             return self.last_update < self.userlog_set.get(user=user, book=self).last_update
@@ -149,3 +165,11 @@ class Book(models.Model):
         self._create_cover_thumbnail()
 
         return ret
+
+@cache_it(expire=60*60*24*7)
+def get_chapters_list(book_id):
+    book = Book.objects.get(pk=book_id)
+    chapter_list = []
+    for chapter in book.chapter_set.all().order_by('number'):
+        chapter_list.append([chapter.number, chapter.title])
+    return chapter_list

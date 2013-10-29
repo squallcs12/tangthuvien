@@ -37,16 +37,15 @@ def require_login_simple(func):
 @require_login_simple
 def log_user_read_book(sender, **kwargs):
     user = kwargs.get('user')
-    page = kwargs.get('page')
     chapter = kwargs.get('chapter')
     book = chapter.book
 
     try:
         userLog = UserLog.objects.get(user=user, book=book)
-        userLog.page = page
+        userLog.page = chapter.number
         userLog.last_update = timezone.now()
     except ObjectDoesNotExist:
-        userLog = UserLog(user=user, book=book, page=page)
+        userLog = UserLog(user=user, book=book, page=chapter.number)
 
     userLog.save()
 
@@ -80,12 +79,17 @@ def set_favorited_status(sender, **kwargs):
 
 @dispatch.receiver(post_save, sender=Chapter)
 def new_chapter(sender, **kwargs):
+    chapter = kwargs.get('instance')
+
+    # reset book chapter list
+    chapter.book.reset_chapters_list()
+
     if kwargs.get('created'):
-        chapter = kwargs.get('instance')
 
         # increase user post
         chapter.user.book_profile.chapters_count += 1
         chapter.user.book_profile.save()
+
 
         # increase book last update and chapter count
         chapter.book.last_update = timezone.now()
@@ -105,9 +109,13 @@ def new_book(sender, **kwargs):
 def delete_chapter(sender, **kwargs):
     try:
         chapter = kwargs.get('instance')
+
+        # reset book chapter list
+        chapter.book.reset_chapters_list()
+        
         chapter.user.book_profile.chapters_count -= 1
         chapter.user.book_profile.save()
-    
+
         # increase book last update and chapter count
         chapter.book.chapters_count -= 1
         chapter.book.save()

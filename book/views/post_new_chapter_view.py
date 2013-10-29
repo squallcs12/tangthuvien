@@ -19,8 +19,8 @@ def main(request, book_id, post_new_chapter_form=PostNewChapterForm, template="b
     if request.method == "POST":
         form = post_new_chapter_form(request, book, data=request.POST)
         if form.is_valid():
-            form.process()
-            return HttpResponseRedirect("%s?page=%s" % (reverse('book_read', kwargs={'slug':book.slug}), book.chapter_set.count()))
+            chapter = form.process()
+            return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number': chapter.number}))
     else:
         form = post_new_chapter_form(request, book)
 

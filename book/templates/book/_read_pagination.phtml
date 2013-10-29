@@ -2,41 +2,38 @@
 {% load slice_page_range %}
 <div class="row chapters_pagination">
 	<div class="col-lg-9">
-		<ul class="pagination pagination-sm">
-		    {% if chapters.has_previous %}
-		    	<li><a class="first" href="{% url 'book_read' chapter.book.slug %}?page=1">««</a></li>
-		        <li><a class="prev" href="{% url 'book_read' chapter.book.slug %}?page={{ chapters.previous_page_number }}">«</a></li>
-		    {% else %}
-				<li class="disabled"><a class="first" href="#">««</a></li>
-		    {% endif %}
-		    
-		    {% for page_number in chapters|slice_page_range %}
-		    	{% if page_number ==  chapters.number %}
-					<li class="active"><a class="current" href="#">{{ chapters.number }}</a></li>
+	<ul class="pagination pagination-sm">
+		    {% for chapter_number in book.chapters_list|chapters_paging:chapter.number %}
+		    	{% if chapter_number ==  chapter.number %}
+					<li class="active">
+						<a class="current" href="#">
+							{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
+						</a>
+					</li>
 		    	{% else %}
-			    	<li><a href="{% url 'book_read' chapter.book.slug %}?page={{ page_number }}">{{ page_number }}</a></li>
+			    	<li>
+			    		<a href="{% url 'read_book_chapter' book.slug chapter_number %}">
+			    			{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
+			    		</a>
+			    	</li>
 		    	{% endif %}
 			{% endfor %}
-			
-		    {% if chapters.has_next %}
-		        <li><a class="next" href="{% url 'book_read' chapter.book.slug %}?page={{ chapters.next_page_number }}">»</a></li>
-				<li><a class="last" href="{% url 'book_read' chapter.book.slug %}?page={{ chapters.paginator.num_pages }}">»»</a></li>
-			{% else %}
-				<li class="disabled"><a class="last" href="#">»»</a></li>
-			{% endif %}
 		</ul>
 	</div>
 	<div class="col-lg-3">
 		<form>
 			{% trans "Read chapter" %}
 			<select name="chapter" class="form-control chapter-list">
-				{% for page_number in chapters.paginator.page_range %}
-				<option value="{{page_number}}" {% if page_number == chapters.number %}selected="selected"{% endif %}>{{page_number}}</option>
+				{% for page_info in book.chapters_list %}
+					<option value="{{ page_info.0 }}" data-href="{% url 'read_book_chapter' book.slug page_info.0 %}"
+						{% if chapter.number == page_info.0 %}selected="selected"{% endif %}>
+						{{ page_info.0 }} - {{ page_info.1 }}
+					</option>
 				{% endfor %}
 			</select>
 			<script>
 				jQuery(".chapter-list").unbind('click').change(function(){
-					location.href = '{% url 'book_read' chapter.book.slug %}?page=' + this.value
+					location.href = jQuery(this.options[this.selectedIndex]).data("href");
 				});
 			</script>
 		</form>

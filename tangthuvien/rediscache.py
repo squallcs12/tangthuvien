@@ -256,7 +256,7 @@ def cache_it(limit=10000, expire=60 * 60 * 24, cache=None):
                 return True
             
             if cache.hashkeys:
-                key = hashlib.md5(json.dumps(args)).hexdigest()
+                key = hashlib.md5(pickle.dumps(args)).hexdigest()
             else:
                 key = json.dumps(args)
             cache_key = '%s:%s' % (function.__name__, key)
