@@ -5,6 +5,9 @@ Created on Oct 29, 2013
 '''
 from book.models.attachment_model import Attachment
 from django.http.response import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def main(request, book_id=0, attachment_id=0):
     attachment = Attachment.objects.get(pk=attachment_id, book_id=book_id)
     
