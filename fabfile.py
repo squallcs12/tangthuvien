@@ -19,6 +19,10 @@ def test():
     "Testing commands"
     print Deploy.get_python_version()
 
+def restart_web():
+    Deploy.init()
+    Deploy.restart_web_services()
+
 class Deploy(object):
 
     @classmethod
