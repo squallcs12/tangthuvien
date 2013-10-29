@@ -70,7 +70,7 @@ def i_login_using_my_google_account(step):
         find("#gaia_loginform #signIn").click()
 
         find("#submit_approve_access")
-        until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 5)
+        until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 10)
         find("#submit_approve_access").click()
 
 @step(u'my account was associated with facebook, twitter and google')
