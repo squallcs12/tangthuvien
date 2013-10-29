@@ -410,4 +410,4 @@ msgstr "Đăng xuất"
 
 #: tangthuvien/templates/master.phtml:71
 msgid "Powered by <a href=\"/\">tangthuvien.vn</a>"
-msgstr "Bản quyền thuốc về <a href=\"/\">tangthuvien.vn</a>"
+msgstr "Bản quyền thuộc về <a href=\"http://tangthuvien.vn\">tangthuvien.vn</a>"
