@@ -21,3 +21,6 @@
 	width: 100%;
 	display: block;
 }
+#read_config button{
+	float: right;
+}
