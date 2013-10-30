@@ -25,5 +25,6 @@ urlpatterns = patterns('',
 
     url(r'^set_password', 'accounts.views.set_password_view.main', name='set_user_password'),
     url(r'^social_auth/', include('social_auth.urls')),
-    url(r'^social', 'accounts.views.social_view.main', name='accounts_social_list')
+    url(r'^social', 'accounts.views.social_view.main', name='accounts_social_list'),
+    url(r'^messages/', include('postman.urls')),
 )

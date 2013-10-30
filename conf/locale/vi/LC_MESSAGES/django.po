@@ -486,7 +486,7 @@ msgid "-create-new-"
 msgstr "-Tạo mới-"
 
 #: tangthuvien/templates/_top_banner.phtml:8
-#: tangthuvien/templates/master.phtml:14
+#: tangthuvien/templates/base.html:14
 msgid "Book reading website"
 msgstr "Website truyện kiếm hiệp Việt Nam."
 
@@ -498,7 +498,7 @@ msgstr "Đổi style"
 msgid "Log out"
 msgstr "Đăng xuất"
 
-#: tangthuvien/templates/master.phtml:71
+#: tangthuvien/templates/base.html:71
 msgid "Powered by <a href=\"/\">tangthuvien.vn</a>"
 msgstr ""
 "Bản quyền thuộc về <a href=\"http://tangthuvien.vn\">tangthuvien.vn</a>"

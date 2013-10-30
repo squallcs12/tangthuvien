@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'relish',
     'social_auth',
     'jsonify',
+    'postman',
 )
 SITE_ID = 1
 
@@ -302,6 +303,9 @@ LOCALE_PATHS = (
 
 TEST_EMAIL = 'tangthuvien.vn@gmail.com'
 TEST_PASSWORD = ";P/*Aor1%Q-2+c2"
+
+POSTMAN_AUTO_MODERATE_AS = True
+
 
 try:
     from local_settings import *
