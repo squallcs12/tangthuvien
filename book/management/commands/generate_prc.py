@@ -53,7 +53,7 @@ class Command(BaseCommand):
             except ObjectDoesNotExist:
                 attachment = Attachment(
                                 name=book.prc_file_name,
-                                url=book.prc_file,
+                                file=book.prc_file,
                                 uploader=book.user,
                                 is_approved=True,
                                 book=book,

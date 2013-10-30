@@ -30,7 +30,7 @@ class RelatedSimpleListFilter(SimpleListFilter):
         """
         active_objects = self.model.objects.all()
         for active_object in active_objects:
-            active_object.number_of_entries = active_object.book_set.count()
+            active_object.number_of_entries = getattr(active_object, '%s_set' % self.parameter_name).count()
 
         for active_object in active_objects:
             yield (
