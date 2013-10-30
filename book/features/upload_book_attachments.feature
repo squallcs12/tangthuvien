@@ -27,8 +27,9 @@ Feature: Book App :: Upload book attachments
 		When I reach the limited of approving attachment
 		Then I can not approve attachment anylonger
 
-	Scenario: Non-login user download attachment
-		When I read a book has approved attachments uploaded by normal user
+	Scenario: User download attachment
+		Given I was a logged-in user
+		When I read a book has approved attachment uploaded by normal user
 		Then I can download the attachment
 		After I reach the limited of downloading attachment
 		Then I can not download attachment anylonger

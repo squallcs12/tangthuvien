@@ -14,3 +14,13 @@
 .bootstrap-tagsinput {
     width: 100%;
 }
+#attachments .date{
+	display: block;
+}
+#attachments .approve{
+	width: 100%;
+	display: block;
+}
+#read_config button{
+	float: right;
+}

@@ -43,7 +43,7 @@ def i_update_my_account_password(step):
     find("#set_password_form input[name='new_password2']").send_keys(random_password())
     find("#set_password_form input[type='submit']").click()
 
-    browser().title.should.contain("Password set successful")
+    until(lambda: browser().title.should.contain("Password set successful"))
 
 @step(u'I login using my twitter account')
 def i_login_using_my_twitter_account(step):
@@ -53,6 +53,7 @@ def i_login_using_my_twitter_account(step):
         find("#oauth_form #username_or_email").send_keys(email_address())
         find("#oauth_form #password").send_keys(random_password())
         find("#oauth_form #allow").click()
+    until(lambda: browser().current_url.find("/accounts/") != -1)
 
 @step(u'my account was associated with both facebook and twitter')
 def my_account_was_associated_with_both_facebook_and_twitter(step):
@@ -69,7 +70,7 @@ def i_login_using_my_google_account(step):
         find("#gaia_loginform #signIn").click()
 
         find("#submit_approve_access")
-        until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 5)
+        until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 10)
         find("#submit_approve_access").click()
 
 @step(u'my account was associated with facebook, twitter and google')

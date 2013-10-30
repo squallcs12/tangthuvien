@@ -19,6 +19,10 @@ def test():
     "Testing commands"
     print Deploy.get_python_version()
 
+def restart_web():
+    Deploy.init()
+    Deploy.restart_web_services()
+
 class Deploy(object):
 
     @classmethod
@@ -70,6 +74,7 @@ class Deploy(object):
         sudo("mkdir -p %s/media/thumbs/books" % cls.share_dir)
         sudo("mkdir -p %s/media/thumbs/books/covers" % cls.share_dir)
         sudo("mkdir -p %s/media/books" % cls.share_dir)
+        sudo("mkdir -p %s/media/books/attachments" % cls.share_dir)
         sudo("mkdir -p %s/media/books/covers" % cls.share_dir)
         sudo("mkdir -p %s/media/books/prc" % cls.share_dir)
         sudo("mkdir -p %s" % cls.program_dir)
@@ -272,6 +277,23 @@ class Deploy(object):
         local("mkdir -p media/books")
         local("mkdir -p media/books/covers")
         local("mkdir -p media/uploads/ckeditor")
+        local("mkdir -p run")
+        local("mkdir -p static")
+        local("mkdir -p log")
+        local("mkdir -p log/copybook")
+        local("mkdir -p media")
+        local("mkdir -p media/uploads")
+        local("mkdir -p media/uploads/ckeditor")
+        local("mkdir -p media/thumbs")
+        local("mkdir -p media/thumbs/books")
+        local("mkdir -p media/thumbs/books/covers")
+        local("mkdir -p media/books")
+        local("mkdir -p media/books/attachments")
+        local("mkdir -p media/books/covers")
+        local("mkdir -p media/books/prc")
+        local("mkdir -p program")
+        local("cd program; wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
+        local("cd program; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
         local("sudo mkdir -p /var/log/tangthuvien.vn/")
         local("sudo chmod 777 /var/log/tangthuvien.vn/")
         local("python manage.py syncdb --migrate")

@@ -20,23 +20,28 @@ def fill_new_book_form(form, book_title):
     form.find("[name='title']").send_keys(book_title)
     form.find("[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
     form.find("[name='description']").fillin("Book description")
-
-    form.find("[name='author']").select("-create-new-")
-    fill_new_book_form.n += 1
-    time.sleep(0.5)
-    author_form = find("#new-author-form")
-    author_form.find("[name='author-name']").send_keys("New author %s" % fill_new_book_form.n)
-    author_form.find("[type='submit']").click()
-    until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
     
-    form.find("[name='ttv_type']").select("-create-new-")
-    time.sleep(0.5)
-    type_form = find("#new-type-form")
-    fill_new_book_form.n += 1
-    type_form.find("[name='type-name']").send_keys("New type %s" % fill_new_book_form.n)
-    type_form.find("[type='submit']").click()
-    until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
-fill_new_book_form.n = 0
+    author_name = "New author 1"
+    try:
+        form.find("[name='author']").select(author_name)
+    except:
+        form.find("[name='author']").select("-create-new-")
+        time.sleep(0.5)
+        author_form = find("#new-author-form")
+        author_form.find("[name='author-name']").send_keys(author_name)
+        author_form.find("[type='submit']").click()
+        until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
+    
+    type_name = "New type 1"
+    try:
+        form.find("[name='ttv_type']").select(type_name)
+    except:
+        form.find("[name='ttv_type']").select("-create-new-")
+        time.sleep(0.5)
+        type_form = find("#new-type-form")
+        type_form.find("[name='type-name']").send_keys(type_name)
+        type_form.find("[type='submit']").click()
+        until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
 
 @step(u'Then I see a book was published')
 def then_i_see_a_book_was_published(step):

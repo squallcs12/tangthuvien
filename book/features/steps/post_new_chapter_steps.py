@@ -46,7 +46,7 @@ def other_people_can_read_this_chapter(step):
     i_visit_book_index_page(step)
     find_book_in_list(world.choose_book_id).should_has_class("unread")
     i_click_on_a_book(step)
-    last_page_link(".chapters_pagination").get_attribute('href').should.contain('?page=%s' % (world.old_total_chapters + 1))
+    find(".chapters_pagination .chapter-list option[value='%s']" % (world.old_total_chapters + 1)).click()
 
 @step(u'my posted chapter was increased')
 def my_posted_chapter_was_increased(step):

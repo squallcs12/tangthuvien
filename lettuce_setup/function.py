@@ -80,7 +80,7 @@ def django_url(url="", host='localhost', port=8000):
 class TimeoutException(Exception):
     pass
 
-def until(method, timeout=3, message='', ignored_exceptions=True, interval=0.5):
+def until(method, timeout=10, message='', ignored_exceptions=True, interval=0.5):
     """Calls the method provided with the driver as an argument until the \
     return value is not False."""
     end_time = time.time() + timeout
@@ -202,7 +202,7 @@ def given_i_was_a_logged_in_user(step, number=1):
 
 @step(u'Given I was a logged-in super user')
 def given_i_was_a_logged_in_super_user(step, number=3):
-    given_i_was_a_logged_in_user(number)
+    given_i_was_a_logged_in_user(step, number)
 
 def super_group():
     if not hasattr(world, 'super_group'):

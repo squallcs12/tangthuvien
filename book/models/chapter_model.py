@@ -31,3 +31,4 @@ class Chapter(models.Model):
 
     class Meta:
         app_label = 'book'
+        unique_together = (("book", "number"),)

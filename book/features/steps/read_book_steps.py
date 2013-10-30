@@ -34,7 +34,7 @@ def and_i_see_the_first_chapter(step):
 
 @step(u'I go to next chapter')
 def i_go_to_next_chapter(step):
-    next_page_link(".chapters_pagination").click()
+    find_all(".chapters_pagination .pagination a").pop().click()
 
 @step(u'see the second chapter')
 def see_the_second_chapter(step):
@@ -59,8 +59,8 @@ def see_the_last_random_chapter(step):
 
 @step(u'I go to last chapter')
 def i_go_to_last_chapter(step):
-    last_page_link(".chapters_pagination").click()
+    find_all(".chapters_pagination .chapter-list option").pop().click()
 
 @step(u'see the last chapter')
 def see_the_last_chapter(step):
-    last_page_link(".chapters_pagination").should_be_temp_link()
+    find_all(".chapters_pagination .pagination a").pop().should_be_temp_link()
