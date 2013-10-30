@@ -15,12 +15,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.transaction import TransactionManagementError
+from django.utils.translation import ugettext_lazy
 from selenium.common.exceptions import NoSuchElementException
 
 import time
 import urlparse
 import time
 import urlparse
+def trans(text):
+    return ugettext_lazy(text).__unicode__()
 
 def find_all(selector):
     return browser().find_elements_by_css_selector(selector)
