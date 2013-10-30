@@ -4,7 +4,9 @@ Created on Sep 21, 2013
 @author: antipro
 '''
 from django import forms
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
+from book.models import Chapter
 from book.models.chapter_model import Chapter
 from book.models import ChapterType, Author, BookType
 from ckeditor.widgets import CKEditorWidget
@@ -35,6 +37,14 @@ class PostNewChapterForm(forms.Form):
         messages.success(self.request, _("New chapter was posted successfully."))
 
         return chapter
+
+class EditChapterForm(ModelForm):
+    class Meta:
+        model = Chapter
+        fields = ['title', 'number', 'content']
+
+
+
 
 class AddAuthorForm(forms.Form):
     name = forms.CharField()
