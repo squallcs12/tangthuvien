@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Your profile' %}{% endblock %}
+
+{% block content %}
+<div>
+	<div class="row">
+		<div class="col-lg-3">
+			{% include 'accounts/_user_menu.phtml' %}
+		</div>
+	</div>
+</div>
+{% endblock %}

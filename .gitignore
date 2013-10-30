@@ -1,2 +1,17 @@
+/local_settings.py
+/static
+/local_settings
+/.coverage
+/media/uploads
+/media
+/local_settings
+/.settings/org.eclipse.core.resources.prefs
+*.pyc
 /.pydevproject
 /.project
+/.feature_symlinks
+/python3
+/htmlcov
+/.idea
+/log
+/bin

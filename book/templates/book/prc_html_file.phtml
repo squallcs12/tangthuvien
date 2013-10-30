@@ -1,0 +1,37 @@
+{% load i18n %}
+<?xml version="1.0" encoding="UTF-8" ?>
+<html>
+	<head>
+		<title>{{book.title}} - {{book.author.name}}</title>
+		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+	</head>
+	<body>
+		<div id="toc">
+			<h1>{% trans 'Table of content' %}</h1>
+			<ul>
+				{% for chapter in book.chapter_set.all %}
+				<li>
+					<a href="#c{{chapter.id}}">
+						{% trans 'Chapter' %} {{chapter.number}}: {{chapter.title}}
+					</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div id="content">
+			{% for chapter in book.chapter_set.all %}
+				<div class="chapter">
+					<h2>
+						<a href="#" name="c{{chapter.id}}" id"c{{chapter.id}}">
+							{% trans 'Chapter' %} {{chapter.number}}: {{chapter.title}}
+						</a>
+					</h2>
+					<div>{{chapter.content|safe}}</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div id="footer">
+			Tangthuvien.vn
+		</div>
+	</body>
+</html>

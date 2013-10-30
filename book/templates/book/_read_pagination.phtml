@@ -1,0 +1,41 @@
+{% load i18n %}
+{% load slice_page_range %}
+<div class="row chapters_pagination">
+	<div class="col-lg-9">
+	<ul class="pagination pagination-sm">
+		    {% for chapter_number in book.chapters_list|chapters_paging:chapter.number %}
+		    	{% if chapter_number ==  chapter.number %}
+					<li class="active">
+						<a class="current" href="#">
+							{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
+						</a>
+					</li>
+		    	{% else %}
+			    	<li>
+			    		<a href="{% url 'read_book_chapter' book.slug chapter_number %}">
+			    			{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
+			    		</a>
+			    	</li>
+		    	{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-lg-3">
+		<form>
+			{% trans "Read chapter" %}
+			<select name="chapter" class="form-control chapter-list">
+				{% for page_info in book.chapters_list %}
+					<option value="{{ page_info.0 }}" data-href="{% url 'read_book_chapter' book.slug page_info.0 %}"
+						{% if chapter.number == page_info.0 %}selected="selected"{% endif %}>
+						{{ page_info.0 }} - {{ page_info.1 }}
+					</option>
+				{% endfor %}
+			</select>
+			<script>
+				jQuery(".chapter-list").unbind('click').change(function(){
+					location.href = jQuery(this.options[this.selectedIndex]).data("href");
+				});
+			</script>
+		</form>
+	</div>
+</div>

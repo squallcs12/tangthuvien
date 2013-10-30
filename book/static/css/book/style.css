@@ -1,0 +1,26 @@
+/* books listing section */
+.form-control.chapter-list{
+	width: 50%;
+	display: inline-block;
+	height: 29px;
+	margin: 20px 0;
+	padding: 4px 12px;
+}
+.sidebar-margin-top{
+	margin-top: 56px;
+}
+/* end books listing section */
+
+.bootstrap-tagsinput {
+    width: 100%;
+}
+#attachments .date{
+	display: block;
+}
+#attachments .approve{
+	width: 100%;
+	display: block;
+}
+#read_config button{
+	float: right;
+}

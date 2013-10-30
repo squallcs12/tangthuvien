@@ -1,0 +1,513 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-29 18:20-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: accounts/forms.py:16
+msgid ""
+"Please enter a correct %(username)s and password. Note that both fields may "
+"be case-sensitive."
+msgstr "Vui lòng điền đúng tên đăng nhập và mật khẩu."
+
+#: accounts/forms.py:18
+msgid ""
+"Your Web browser doesn't appear to have cookies enabled. Cookies are "
+"required for logging in."
+msgstr ""
+
+#: accounts/forms.py:20
+msgid "This account is inactive."
+msgstr ""
+
+#: accounts/templates/accounts/_user_menu.phtml:4
+#: accounts/templates/accounts/password_change.phtml:3
+#: accounts/templates/accounts/password_change.phtml:12
+#: accounts/templates/accounts/password_change.phtml:16
+msgid "Change password"
+msgstr "Đổi mật khẩu"
+
+#: accounts/templates/accounts/_user_menu.phtml:7
+msgid "Favorite books"
+msgstr "Ưa thích"
+
+#: accounts/templates/accounts/logged_out.phtml:3
+#: accounts/templates/accounts/logged_out.phtml:4
+msgid "Logged out"
+msgstr "Đã đăng xuất"
+
+#: accounts/templates/accounts/login.phtml:5
+#: accounts/templates/accounts/login.phtml:20
+#: tangthuvien/templates/_top_nav.phtml:45
+msgid "Log in"
+msgstr "Đăng nhập"
+
+#: accounts/templates/accounts/login.phtml:16
+msgid "Log in with your website account"
+msgstr "Đăng nhập bằng tài khoản website bạn đã đăng ký"
+
+#: accounts/templates/accounts/login.phtml:27
+msgid "You are currently logged in as"
+msgstr "Bạn đang đăng nhập với tên"
+
+#: accounts/templates/accounts/login.phtml:34
+msgid "Or log in with your social network account:"
+msgstr "Hoặc đăng nhập bằng tài khoản mạng xã hội của bạn"
+
+#: accounts/templates/accounts/login.phtml:36
+msgid "Associate your account with social network account:"
+msgstr "Liên kết tài khoản trên website với tài khoản mạng xã hội"
+
+#: accounts/templates/accounts/login.phtml:40
+msgid "Login with your Facebook account"
+msgstr "Đăng nhập bằng tài khoản Facebook"
+
+#: accounts/templates/accounts/login.phtml:41
+msgid "Facebook"
+msgstr "Facebook"
+
+#: accounts/templates/accounts/login.phtml:44
+msgid "Login with your Twitter account"
+msgstr "Đăng nhập bằng tài khoản Twitter"
+
+#: accounts/templates/accounts/login.phtml:45
+msgid "Twitter"
+msgstr ""
+
+#: accounts/templates/accounts/login.phtml:48
+msgid "Login with your Google account"
+msgstr "Đăng nhập bằng tài khoản Google"
+
+#: accounts/templates/accounts/login.phtml:49
+msgid "Google"
+msgstr ""
+
+#: accounts/templates/accounts/password_change_done.phtml:5
+#: accounts/templates/accounts/password_change_done.phtml:9
+msgid "Password change successful"
+msgstr "Thay đổi mật khẩu thành công"
+
+#: accounts/templates/accounts/password_change_done.phtml:11
+msgid "Your password was changed."
+msgstr "Mật khẩu của bạn đã được thay đổi"
+
+#: accounts/templates/accounts/password_set.phtml:4
+msgid "Password change"
+msgstr "Thay đổi mật khẩu"
+
+#: accounts/templates/accounts/password_set.phtml:12
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "Xin thay đổi thông tin sai sau đây"
+msgstr[1] "Xin thay đổi các thông tin sai sau đâ"
+
+#: accounts/templates/accounts/password_set.phtml:16
+msgid "Password set"
+msgstr "Đặt mật khẩu"
+
+#: accounts/templates/accounts/password_set.phtml:22
+msgid "New password"
+msgstr "Mật khẩu mới"
+
+#: accounts/templates/accounts/password_set.phtml:27
+msgid "Password (again)"
+msgstr "Gõ lại mật khẩu"
+
+#: accounts/templates/accounts/password_set.phtml:33
+msgid "Set password"
+msgstr "Đặt mật khẩu"
+
+#: accounts/templates/accounts/password_set_done.phtml:5
+#: accounts/templates/accounts/password_set_done.phtml:9
+msgid "Password set successful"
+msgstr "Đặt mật khẩu thành công"
+
+#: accounts/templates/accounts/password_set_done.phtml:11
+msgid "Your password was setted."
+msgstr "Bạn đã đặt mật khẩu."
+
+#: accounts/templates/accounts/profile.phtml:4
+#: tangthuvien/templates/_top_nav.phtml:39
+msgid "Your profile"
+msgstr "Trang cá nhân"
+
+#: accounts/templates/accounts/social.phtml:4
+#: accounts/templates/accounts/social.phtml:10
+msgid "Social accounts"
+msgstr "Tài khoản mạng xã hội"
+
+#: book/forms.py:34
+msgid "New chapter was posted successfully."
+msgstr "Thêm chương mới thành công."
+
+#: book/forms.py:82
+msgid "New book was published successfully."
+msgstr "Thêm sách mới thành công."
+
+#: book/admin/book_admin.py:25
+msgid "Authors"
+msgstr "Tác giả"
+
+#: book/admin/book_admin.py:27 book/admin/book_admin.py:40
+#: book/models/book_model.py:84
+msgid "book"
+msgstr "sách"
+
+#: book/admin/book_admin.py:28 book/admin/book_admin.py:41
+#: book/models/book_model.py:85
+msgid "books"
+msgstr "sách"
+
+#: book/admin/book_admin.py:37
+msgid "Book types"
+msgstr "Loại sách"
+
+#: book/admin/book_admin.py:71
+msgid "category(s)"
+msgstr "danh mục"
+
+#: book/admin/chapter_admin.py:21
+msgid "Chapter types"
+msgstr "Loại chương"
+
+#: book/admin/chapter_admin.py:33
+#, python-format
+msgid "%(item)s (%(count)i chapter)"
+msgid_plural "%(item)s (%(count)i chapters)"
+msgstr[0] "%(item)s (%(count)i chương)"
+msgstr[1] "%(item)s (%(count)i chương)"
+
+#: book/admin/filter_base.py:38
+#, python-format
+msgid "%(item)s (%(count)i %(verbose_name)s)"
+msgid_plural "%(item)s (%(count)i %(verbose_name_plurar)s)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: book/models/__init__.py:41 book/models/book_model.py:35
+#: book/models/category_model.py:37
+msgid "slug"
+msgstr ""
+
+#: book/models/__init__.py:42
+msgid "Used to build the author's URL."
+msgstr "Dùng đề tạo URL cho tác giả"
+
+#: book/models/attachment_model.py:17 book/models/book_model.py:55
+#: book/models/chapter_model.py:23 book/models/favorite_model.py:16
+msgid "creation date"
+msgstr "ngày tạo"
+
+#: book/models/attachment_model.py:46 book/models/attachment_model.py:47
+msgid "attachment"
+msgstr ""
+
+#: book/models/book_model.py:31
+msgid "tags"
+msgstr "các nhãn"
+
+#: book/models/book_model.py:36
+msgid "Used to build the book's URL."
+msgstr "Dùng để tạo URL cho truyện"
+
+#: book/models/book_model.py:43 book/models/category_model.py:88
+msgid "categories"
+msgstr "các danh mục"
+
+#: book/models/book_model.py:49
+msgid "sites"
+msgstr ""
+
+#: book/models/book_model.py:50
+msgid "Sites where the entry will be published."
+msgstr "Các trang mà bài nãy được đăng lên"
+
+#: book/models/book_model.py:57 book/models/chapter_model.py:26
+#: book/models/user_log_model.py:16
+msgid "last update"
+msgstr "lần chỉnh sửa cuối"
+
+#: book/models/category_model.py:34
+msgid "title"
+msgstr "tiêu đề"
+
+#: book/models/category_model.py:38
+msgid "Used to build the category's URL."
+msgstr "Dùng để tạo URL cho danh mục"
+
+#: book/models/category_model.py:41
+msgid "description"
+msgstr "Giới thiệu"
+
+#: book/models/category_model.py:47
+msgid "parent category"
+msgstr "danh mục cha"
+
+#: book/models/category_model.py:87
+msgid "category"
+msgstr "danh mục"
+
+#: book/models/profile_model.py:16
+msgid "Number of chapters was posted by this user"
+msgstr ""
+
+#: book/models/profile_model.py:17
+msgid "Number of attachments was uploaded by this user"
+msgstr ""
+
+#: book/models/profile_model.py:18
+msgid "Number of attachments was uploaded by this user in current day"
+msgstr ""
+
+#: book/models/profile_model.py:19
+msgid "Number of attachments was approved by this user in current day"
+msgstr ""
+
+#: book/models/profile_model.py:20
+msgid "Number of attachments was downloaded by this user in current day"
+msgstr ""
+
+#: book/templates/book/_book_attachments.phtml:4
+msgid "Book attachments"
+msgstr "Tệp đính kèm"
+
+#: book/templates/book/_book_attachments.phtml:13
+msgid "You need to login to be able to download"
+msgstr "Bạn cần đăng nhập để có thể tải vể"
+
+#: book/templates/book/_book_attachments.phtml:19
+msgid "Approve"
+msgstr "Xác nhận"
+
+#: book/templates/book/_books_list.phtml:11
+msgid ""
+"You can select book in the list by clicking to the spacing in book title "
+"block"
+msgstr ""
+"Bạn có thể chọn truyện bằng cách click vào khoản trống bên tiêu đề truyện"
+
+#: book/templates/book/_books_list.phtml:26
+msgid "Book name"
+msgstr "Tên sách"
+
+#: book/templates/book/_books_list.phtml:27
+msgid "Categories"
+msgstr "Danh mục"
+
+#: book/templates/book/_books_list.phtml:28
+msgid "Author"
+msgstr "Tác giả"
+
+#: book/templates/book/_config_reading_section.phtml:5
+#: book/templates/book/_config_reading_section.phtml:16
+msgid "Config reading section"
+msgstr "Tùy chỉnh phần đọc"
+
+#: book/templates/book/_inline_add_author_and_book_type.phtml:13
+msgid "Add author"
+msgstr "Thêm tác giả"
+
+#: book/templates/book/_inline_add_author_and_book_type.phtml:40
+msgid "Add type"
+msgstr "Thêm loại"
+
+#: book/templates/book/_read_pagination.phtml:10
+#: book/templates/book/_read_pagination.phtml:16
+msgid "Chapter %(number)s"
+msgstr "Chương %(number)s"
+
+#: book/templates/book/_read_pagination.phtml:25
+msgid "Read chapter"
+msgstr "Đọc chương"
+
+#: book/templates/book/_upload_attachment.phtml:71
+msgid "You reach upload count limited"
+msgstr "Bạn đã hết lượt upload"
+
+#: book/templates/book/_upload_attachment.phtml:73
+msgid "You need to log-in to upload document"
+msgstr "Bạn cần đăng nhập để upload"
+
+#: book/templates/book/copy_book.phtml:4 book/templates/book/index.phtml:19
+msgid "Copy book"
+msgstr "Chép sách"
+
+#: book/templates/book/copy_book.phtml:14
+msgid "Copy book from tangthuvien.vn to this site"
+msgstr "Chép sách từ tangthuvien.vn qua website này"
+
+#: book/templates/book/copy_book.phtml:18
+#: book/templates/book/copy_book_process.phtml:5
+msgid "Copy"
+msgstr "Chép"
+
+#: book/templates/book/favorite.phtml:11 book/templates/book/read.phtml:103
+#: book/templates/book/read.phtml.py:121
+msgid "Unfavorite"
+msgstr "Dừng thích"
+
+#: book/templates/book/favorite.phtml:15
+msgid "You did not mark any books as favorite yet."
+msgstr "Bạn chưa đánh dấu truyện yêu thích nào cả."
+
+#: book/templates/book/index.phtml:11 book/templates/book/index.phtml.py:13
+#: book/templates/book/index.phtml:17
+msgid "List of books"
+msgstr "Danh sách truyện"
+
+#: book/templates/book/index.phtml:18
+msgid "New book"
+msgstr "Đăng sách mới"
+
+#: book/templates/book/post_new_chapter.phtml:4
+msgid "Post new chapter"
+msgstr "Đăng chương mới"
+
+#: book/templates/book/post_new_chapter.phtml:14
+#: book/templates/book/post_new_chapter.phtml:18
+msgid "Post chapter"
+msgstr "Đăng chương"
+
+#: book/templates/book/prc_html_file.phtml:8
+msgid "Table of content"
+msgstr ""
+
+#: book/templates/book/prc_html_file.phtml:13
+#: book/templates/book/prc_html_file.phtml:24
+msgid "Chapter"
+msgstr "Chương"
+
+#: book/templates/book/publish_new_book.phtml:4
+#: book/templates/book/publish_new_book.phtml:14
+msgid "Publish new book"
+msgstr "Đăng sách mới"
+
+#: book/templates/book/publish_new_book.phtml:18
+msgid "Publish"
+msgstr "Đăng"
+
+#: book/templates/book/read.phtml:5
+msgid "Page"
+msgstr "Trang"
+
+#: book/templates/book/read.phtml:33
+msgid "Add Chapter"
+msgstr "Thêm chương"
+
+#: book/templates/book/read.phtml:42 book/templates/book/read.phtml.py:52
+msgid "Thank the poster"
+msgstr "Cám ơn người đăng"
+
+#: book/templates/book/read.phtml:52
+msgid "You thanked already"
+msgstr "Bạn đã cám ơn rồi"
+
+#: book/templates/book/read.phtml:52
+msgid "Required you be logged-in to thank"
+msgstr "Bạn cần đăng nhập để cám ơn"
+
+#: book/templates/book/read.phtml:54
+msgid "thank(s)"
+msgstr "cám ơn"
+
+#: book/templates/book/read.phtml:99
+msgid "Required you be logged-in to mark as favorite"
+msgstr "Bạn cần đăng nhập để đánh dấu ưa thích"
+
+#: book/templates/book/read.phtml:101 book/templates/book/read.phtml.py:126
+msgid "Favorite"
+msgstr "Ưa thích"
+
+#: book/templates/book/read.phtml:142
+msgid "Rate book"
+msgstr "Đánh giá truyện"
+
+#: book/templates/book/read.phtml:145
+#, python-format
+msgid ""
+"\n"
+"\t\t\t\t\t\tWas rated <strong><span class=\"average-result\">%(averate)s</"
+"span></strong> \n"
+"\t\t\t\t\t\tover <strong><span class=\"rating-count\">%(rating_count)s</"
+"span></strong> ratings\n"
+"\t\t\t\t\t"
+msgstr ""
+"\n"
+"\t\t\t\t\t\tĐược đánh giá <strong><span class=\"average-result\">"
+"%(averate)s</span></strong> \n"
+"\t\t\t\t\t\tqua <strong><span class=\"rating-count\">%(rating_count)s</"
+"span></strong> lượt\n"
+"\t\t\t\t\t"
+
+#: book/views/attachment_approve_view.py:29
+msgid "You reach the limited of book attachments approving count"
+msgstr "Bạn đã hết lượt xác nhận tệp upload"
+
+#: custom_admin/templates/admin/change_list_results.html:18
+msgid "Remove from sorting"
+msgstr ""
+
+#: custom_admin/templates/admin/change_list_results.html:19
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr ""
+
+#: custom_admin/templates/admin/change_list_results.html:20
+msgid "Toggle sorting"
+msgstr "Chuyển sắp xếp"
+
+#: custom_admin/templates/custom_admin/foreign_key.phtml:3
+msgid "--"
+msgstr "--"
+
+#: tangthuvien/templates/_footer_nav.phtml:5
+msgid "Back to top"
+msgstr "Về đầu trang"
+
+#: tangthuvien/templates/_footer_nav.phtml:8
+#: tangthuvien/templates/_top_nav.phtml:16
+msgid "Books"
+msgstr "Truyện"
+
+#: tangthuvien/templates/_js_defined_params.phtml:5
+msgid "-create-new-"
+msgstr "-Tạo mới-"
+
+#: tangthuvien/templates/_top_banner.phtml:8
+#: tangthuvien/templates/base.html:14
+msgid "Book reading website"
+msgstr "Website truyện kiếm hiệp Việt Nam."
+
+#: tangthuvien/templates/_top_nav.phtml:20
+msgid "Change style"
+msgstr "Đổi style"
+
+#: tangthuvien/templates/_top_nav.phtml:40
+msgid "Log out"
+msgstr "Đăng xuất"
+
+#: tangthuvien/templates/base.html:71
+msgid "Powered by <a href=\"/\">tangthuvien.vn</a>"
+msgstr ""
+"Bản quyền thuộc về <a href=\"http://tangthuvien.vn\">tangthuvien.vn</a>"
+
+#~ msgid "Login with Facebook"
+#~ msgstr "Đăng nhập bằng Facebook"
+
+#~ msgid "Login with Twitter"
+#~ msgstr "Đăng nhập bằng Twitter"
+
+#~ msgid "Login with Google"
+#~ msgstr "Đăng nhập bằng Google"

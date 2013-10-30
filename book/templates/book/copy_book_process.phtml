@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static_tags %}
+
+{% block title %}{% trans 'Copy'%} {{book.title}}{% endblock %}
+
+{% load_css static /book/style.css %}
+
+{% block content %}
+<div class="row">
+	<div class="col-lg-9">
+		<h3>{{book.title}} / {{book.author.name}}</h3>
+		<div class="panel panel-default">
+        	<div class="panel-body">
+        	    <div class="progress progress-striped active" id="process_bar">
+                    <div class="progress-bar progress-bar-info" style="width: 0%"></div>
+                </div>
+        	    <pre id="process_output"></pre>
+        	    <script>
+        	    (function($){
+        	        var start = 0;
+        	        var end = 0;
+        	        var total_chapter = 0;
+        	        var page_percent = 0;
+        	        var chapter_num = 0;
+        	        var each_page_percent = 1;
+        	        function change_percent(percent){
+        	            $("#process_bar .progress-bar").css('width', percent + '%');
+        	            $("#process_bar .progress-bar").html(percent + '%');
+        	        }
+            	    report_copy_process = function(command){
+            	        $("#process_output").append(command + "\n");
+            	        var args = command.split(' ');
+            	        switch(args[0]){
+            	            case 'start':
+            	               	start = parseInt(args[1]);
+            	               	break;
+            	            case 'end':
+            	               	end = parseInt(args[1]);
+            	               	each_page_percent = (100 / (end - start + 1)).toFixed(2);
+            	               	break;
+							case 'process_page':
+								var page = parseInt(args[1]) - 1;
+								var total = end - start + 1;
+								page_percent = ((page * 100 + 0.0) / total).toFixed(2);
+								change_percent(page_percent);
+								chapter_num = 0;
+								break;
+            	            case 'total_chapter':
+            	               	total_chapter = parseInt(args[1]);
+            	               	break;
+            	            case 'skip_post':
+            	            case 'process_chapter':
+            	               	chapter_num += 1;
+            	               	var chapter_percent = ((chapter_num * each_page_percent) / total_chapter ).toFixed(2);
+            	               	var current_percent = (parseFloat(page_percent) + parseFloat(chapter_percent)).toFixed(2);
+            	               	change_percent(current_percent);
+            	               	break;
+            	            case 'finish':
+            	            	clearInterval(interval_process);
+            	               	$("#process_bar").removeClass('active');
+            	               	$("#process_bar .progress-bar")
+            	                   .removeClass('progress-bar-info')
+            	                   .addClass('progress-bar-success');
+            	               	change_percent(100.00);
+            	               	break;
+            	            default:
+            	               break;
+            	        }
+            	    }
+        	    	var start_line = 0;
+        	    	var ajaxConf = {};
+        	    	ajaxConf['url'] = "{% url 'copy_book_process_output' book.id %}";
+        	    	ajaxConf['data'] = {}
+        	    	ajaxConf['success'] = function(data){
+        	    		if (!data){
+        	    			return;
+        	    		}
+        	    		var lines = data.split("\n");
+        	    		start_line += lines.length;
+        	    		for (var i = 0; i < lines.length; i++){
+        	    			var line = lines[i];
+        	    			report_copy_process(line);
+        	    			if (line == 'finish'){
+        	    				clearInterval(interval_process);
+        	    			}
+        	    		}
+            	        $("#process_output").scrollTop($("#process_output")[0].scrollHeight);
+        	    	}
+        	        var interval_process = setInterval(function(){
+        	        	ajaxConf['data']['start_line'] = start_line;
+        	        	$.ajax(ajaxConf);
+        	        }, 1000);
+        	    })(jQuery);
+        	    </script>
+            </div>
+        </div>
+	</div>
+	<div class="col-lg-3 sidebar-margin-top">
+		{% include 'book/_book_and_author_description.phtml' %}
+	</div>
+</div>
+{% endblock %}
