@@ -1,16 +1,13 @@
-{% load i18n %}
-{% for kind, messages in notification.messages.items %}
-    {% if messages %}
+{% if messages %}
+	{% for message in messages %}
         <div class="row notifications">
             <div class="col-lg-12">
-                <div class="alert alert-dismissable alert-{{kind}}">
-                    {% for message in messages %}
+                <div class="alert alert-dismissable alert-{% if message.tags %}{{ message.tags }}{% endif %}">
                     <p>
                         {{message}}
                     </p>
-                    {% endfor %}
                 </div>
             </div>
         </div>
-    {% endif %}
-{% endfor %}
+	{% endfor %}
+{% endif %}

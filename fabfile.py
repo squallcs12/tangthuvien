@@ -233,7 +233,7 @@ class Deploy(object):
     @classmethod
     def branch(cls):
         return local("git branch | grep \"*\"", capture=True)[2:]
-            
+
 
     @classmethod
     def setup(cls):
@@ -267,10 +267,6 @@ class Deploy(object):
 
     @classmethod
     def update_local(cls):
-        local("sudo apt-get install libjpeg-dev -y")
-        local("sudo apt-get install libpng-dev -y")
-        local("git pull origin %s" % cls.branch())
-        local("pip install -r requirements.txt")
         local("mkdir -p media/thumbs")
         local("mkdir -p media/thumbs/books")
         local("mkdir -p media/thumbs/books/covers")
@@ -292,6 +288,10 @@ class Deploy(object):
         local("mkdir -p media/books/covers")
         local("mkdir -p media/books/prc")
         local("mkdir -p program")
+        local("sudo apt-get install libjpeg-dev -y")
+        local("sudo apt-get install libpng-dev -y")
+        local("git pull origin %s" % cls.branch())
+        local("pip install -r requirements.txt")
         local("cd program; wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
         local("cd program; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
         local("sudo mkdir -p /var/log/tangthuvien.vn/")

@@ -11,6 +11,7 @@ from ckeditor.widgets import CKEditorWidget
 from book.models.book_model import Book
 from tangthuvien.functions import UserSettings
 from tangthuvien import settings
+from django.contrib import messages
 
 class PostNewChapterForm(forms.Form):
     title = forms.CharField(max_length=255)
@@ -31,7 +32,7 @@ class PostNewChapterForm(forms.Form):
             setattr(chapter, key, value)
         chapter.save()
 
-        self.request.notification.success(_("New chapter was posted successfully."))
+        messages.success(self.request, _("New chapter was posted successfully."))
 
         return chapter
 
@@ -79,7 +80,7 @@ class PublishNewBookForm(forms.Form):
             setattr(book, key, value)
         book.save()
 
-        self.request.notification.success(_("New book was published successfully."))
+        messages.success(self.request, _("New book was published successfully."))
 
         return book
 

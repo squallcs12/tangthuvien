@@ -104,6 +104,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
     'tangthuvien.context_processors.site_name',
     'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
@@ -119,7 +120,6 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.ClearTemplateJsCss',
-    'tangthuvien.middleware.Notification',
     'tangthuvien.middleware.GoogleAnalytics',
 )
 
