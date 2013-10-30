@@ -45,7 +45,7 @@ def fill_new_book_form(form, book_title):
 
 @step(u'Then I see a book was published')
 def then_i_see_a_book_was_published(step):
-    find(".notifications").text.should.contain("New book was published successfully.")
+    find(".notifications").text.should.contain(trans(u"New book was published successfully."))
 
 @step(u'And I was on the post new chapter page')
 def and_i_was_on_the_post_new_chapter_page(step):

@@ -34,7 +34,7 @@ def check_new_chapter_content():
 
 @step(u'I see new chapter was posted')
 def i_see_new_chapter_was_posted(step):
-    find(".notifications").text.should.contain("New chapter was posted successfully.")
+    find(".notifications").text.should.contain(trans(u"New chapter was posted successfully."))
     i_am_reading_a_book(step)
     get_total_chapters(int(world.choose_book_id)).should.be.equal(world.old_total_chapters + 1)
     check_new_chapter_content()
