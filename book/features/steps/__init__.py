@@ -68,13 +68,14 @@ def create_book_list():
         book = BookFactory()
         book.save()
         world.book_list.append(book)
-        for i in range(1, 11):
-            chapter = ChapterFactory()
-            chapter.number = i
-            chapter.book = book
-            chapter.chapter_type = chappter_type
-            chapter.user = book.user
-            chapter.save()
+        if i < 10:
+            for i in range(1, 11):
+                chapter = ChapterFactory()
+                chapter.number = i
+                chapter.book = book
+                chapter.chapter_type = chappter_type
+                chapter.user = book.user
+                chapter.save()
 
     for i in range(0, 4):
         category = CategoryFactory()
@@ -83,5 +84,5 @@ def create_book_list():
         for book in world.book_list:
             if random.randint(0, 1):
                 category.books.add(book)
-    
+
     subprocess.call(['rm',  '%s/*' % st.realpath('log/copybook'), '-f'])
