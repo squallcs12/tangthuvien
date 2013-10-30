@@ -20,7 +20,7 @@ def fill_new_book_form(form, book_title):
     form.find("[name='title']").send_keys(book_title)
     form.find("[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
     form.find("[name='description']").fillin("Book description")
-    
+
     author_name = "New author 1"
     try:
         form.find("[name='author']").select(author_name)
@@ -31,7 +31,7 @@ def fill_new_book_form(form, book_title):
         author_form.find("[name='author-name']").send_keys(author_name)
         author_form.find("[type='submit']").click()
         until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
-    
+
     type_name = "New type 1"
     try:
         form.find("[name='ttv_type']").select(type_name)
