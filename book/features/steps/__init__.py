@@ -73,7 +73,6 @@ def create_book_list():
             chapter.number = i
             chapter.book = book
             chapter.chapter_type = chappter_type
-            chapter.user = book.user
             chapter.save()
 
     for i in range(0, 4):

@@ -51,3 +51,19 @@ def other_people_can_read_this_chapter(step):
 @step(u'my posted chapter was increased')
 def my_posted_chapter_was_increased(step):
     default_user().book_profile.chapters_count.should.equal(world.user_total_chapter_before_post + 1)
+
+@step(u'And I edit that chapter')
+def and_i_edit_that_chapter(step):
+    find("#edit-chapter").click()
+    new_chapter_form = find("#new-chapter-form")
+    new_chapter_form.find("input[name='title']").send_keys("Title was edited")
+    new_chapter_form.find("textarea[name='content']").fillin("Content was edited")
+    new_chapter_form.find("button[type='submit']").click()
+
+@step(u'Then I see that chapter was edited')
+def then_i_see_that_chapter_was_edited(step):
+    chapter = find("#chapter")
+    find(".notifications").text.should.contain("Your chapter was edited successfully.")
+    chapter.find("h2").text.should.contain("Title was edited")
+    chapter.find(".content").text.should.contain("Content was edited")
+
