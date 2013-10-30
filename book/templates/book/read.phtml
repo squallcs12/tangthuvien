@@ -39,7 +39,7 @@
 	</div>
 	<div class="col-lg-3 sidebar-margin-top">
 		<div id="chapter-thank" class="panel panel-default">
-			<div class="panel-heading">{% trans 'Thank the poster' %}</div>
+			<div class="panel-heading">{% blocktrans with name=chapter.user.username %}Thank {{name}}{% endblocktrans %}</div>
 			<div class="panel-body">
 				<div class="thank-count">
 					<button 
