@@ -3,10 +3,8 @@ Created on Jul 25, 2013
 
 @author: antipro
 '''
-from lettuce_setup import all
+from . import all
 from lettuce import world, step, before, after
-import pdb
-import sure
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 from django.db import connection
@@ -18,8 +16,11 @@ from django.db.transaction import TransactionManagementError
 from django.utils.translation import ugettext_lazy
 from selenium.common.exceptions import NoSuchElementException
 
+import pdb
 import time
+import sure
 import urlparse
+
 import time
 import urlparse
 def trans(text):
@@ -216,7 +217,7 @@ def super_group():
             world.super_group = Group.objects.create(name='super_group')
         default_user(3).groups.add(world.super_group)
     return world.super_group
-    
+
 
 def right_nav_bar():
     return find(".nav.navbar-nav.navbar-right");

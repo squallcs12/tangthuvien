@@ -24,7 +24,7 @@ def ajax(request, book_id):
 						uploader=request.user,
 						book=book,
 						name=upload.name,
-						url=destination,
+						file=destination,
 						size=os.path.getsize(destination_full),
 						is_approved=request.user.has_perm('book.can_approve_attachment'),
 						downloads_count=0,

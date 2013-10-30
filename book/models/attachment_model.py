@@ -8,24 +8,26 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
+import os
+
+def upload_to(instance, filename):
+    return os.path.join(instance.book.upload_attachment_dir, filename)
 
 class Attachment(models.Model):
     name = models.CharField(max_length=255)
-    url = models.URLField()
+    file = models.FileField(upload_to=upload_to, default="")
     size = models.IntegerField()
     creation_date = models.DateTimeField(
         _('creation date'), default=timezone.now)
     uploader = models.ForeignKey(User)
     book = models.ForeignKey('book.Book')
-    downloads_count = models.IntegerField()
-    is_approved = models.BooleanField()
-    
-    
+    downloads_count = models.IntegerField(default=0)
+    is_approved = models.BooleanField(default=False)
+
+
     @property
     def real_url(self):
-        if self.url.startswith("/") or (self.url.find("//") != -1): # if a valid url
-            return self.url
-        return "/%s" % self.url #return url from home
+        return self.file.url  # return url from home
     @property
     def download_url(self):
         return reverse(
@@ -34,7 +36,7 @@ class Attachment(models.Model):
                         'book_id': self.book.id,
                         'attachment_id': self.id
                     })
-    
+
     class Meta:
         """
         CoreEntry's meta informations.
@@ -45,4 +47,4 @@ class Attachment(models.Model):
         get_latest_by = 'creation_date'
         verbose_name = _('attachment')
         verbose_name_plural = _('attachment')
-        permissions = (('can_approve', 'Can approve uploaded attachment'),)
+        permissions = (('can_approve_attachment', 'Can approve uploaded attachment'),)
