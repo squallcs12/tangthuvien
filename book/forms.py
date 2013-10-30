@@ -32,7 +32,7 @@ class PostNewChapterForm(forms.Form):
         chapter.save()
 
         self.request.notification.success(_("New chapter was posted successfully."))
-        
+
         return chapter
 
 class AddAuthorForm(forms.Form):
@@ -61,7 +61,7 @@ class AddBookTypeForm(forms.Form):
 class PublishNewBookForm(forms.Form):
     title = forms.CharField(max_length=255)
     description = forms.CharField(widget=CKEditorWidget())
-    cover = forms.ImageField()
+    cover = forms.ImageField(required=False)
     author = forms.ModelChoiceField(queryset=Author.objects.order_by('name'))
     ttv_type = forms.ModelChoiceField(queryset=BookType.objects.order_by('name'))
 
