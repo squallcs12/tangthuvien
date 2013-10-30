@@ -68,7 +68,7 @@ def create_book_list():
         book = BookFactory()
         book.save()
         world.book_list.append(book)
-        for i in range(1, 11):
+        for i in range(1, 15 if i > (TOTAL_BOOK_WILL_BE_CREATED - 15) else 2):
             chapter = ChapterFactory()
             chapter.number = i
             chapter.book = book
