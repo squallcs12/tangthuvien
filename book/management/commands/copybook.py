@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 from book.models.chapter_model import Chapter
 import sys
 import time
+from django.contrib.auth.models import User
+from tangthuvien import settings
 
 class Command(BaseCommand):
     help = """
@@ -108,17 +110,28 @@ class Command(BaseCommand):
                 if not vp:
                     yield "skip_post %s" % post_count
                     continue
+
+                poster = post.find(class_="bigusername")
+                username = poster.text.strip()
+
+                try:
+                    user = User.objects.get(username=username)
+                except:
+                    email = requests.get(
+                                "http://www.tangthuvien.vn/forum/vbb_migration/user_email.php",
+                                params={'username': username, 'code': '123qweasdzxc'}
+                            ).content
+                    user = User.objects.create_user(username, email, settings.TEST_PASSWORD)
+
                 yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
                 chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in vp.text.split("\n") if txt])
                 chapter.number = chapter_number
                 chapter.book = book
-                chapter.user = book.user
+                chapter.user = user
                 chapter.chapter_type_id = 1
                 chapter.save()
                 chapter_number += 1
-
-                time.sleep(2)
             yield "finish_page %s" % page
             yield ""
 

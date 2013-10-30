@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 import requests
 from django.contrib.auth.models import User
 import json
+from tangthuvien import settings
 
 class AuthenticationForm(auth_form.AuthenticationForm):
 
@@ -29,13 +30,25 @@ class AuthenticationForm(auth_form.AuthenticationForm):
                                            password=password)
 
             if self.user_cache is None:
-                live_verify_url = 'http://www.tangthuvien.vn/forum/vbb_migration/verify_user_login.php?username=%s&password=%s'
-                verify_result = requests.get(live_verify_url % (username, password)).content
+                live_verify_url = 'http://www.tangthuvien.vn/forum/vbb_migration/verify_user_login.php'
+                verify_result = requests.get(live_verify_url,
+                                            params={'username': username, 'password': password}
+                                        ).content
+
                 if verify_result != '0':  # verify success
                     user_data = json.loads(verify_result)
-                    User.objects.create_user(username, user_data['email'], password)
                     self.user_cache = authenticate(username=username,
+                                           password=settings.TEST_PASSWORD)
+                    if self.user_cache:
+                        self.user_cache.set_password(password)
+                        self.user_cache.save()
+                    else:
+                        try:
+                            User.objects.create_user(username, user_data['email'], password)
+                            self.user_cache = authenticate(username=username,
                                            password=password)
+                        except:
+                            pass
 
             if self.user_cache is None:
                 raise forms.ValidationError(
