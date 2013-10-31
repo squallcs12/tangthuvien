@@ -13,6 +13,8 @@ import sys
 import time
 from django.contrib.auth.models import User
 from tangthuvien import settings
+from book.models.copy_model import Copy
+from django.core.exceptions import ObjectDoesNotExist
 
 class Command(BaseCommand):
     help = """
@@ -69,7 +71,23 @@ class Command(BaseCommand):
         if not thread_id or not book_id:
             sys.stdout.write("You must specific thread and book")
 
+        post_count = 0
+        page = 0
+
         book = Book.objects.get(pk=book_id)
+
+        chapter_number = 1
+        try:
+            copy_log = Copy.objects.get(thread_id=thread_id)
+
+            if not copy_log.is_done:  # other process are running
+                return
+
+            copy_log.is_done = False
+        except ObjectDoesNotExist:
+            copy_log = Copy(book=book, thread_id=thread_id, last_chapter_number=chapter_number, last_page=page, last_post=post_count, is_done=False)
+        copy_log.save()
+
 
         content = self.get_thread_html(thread_id, start)
         content = BeautifulSoup(content)
@@ -83,8 +101,8 @@ class Command(BaseCommand):
         yield "end %s" % end
         yield ""
 
-        chapter_number = 1
         skip = True
+
         for page in range(start, end + 1):
             yield "process_page %s" % page
             content = self.get_thread_html(thread_id, page)
@@ -135,4 +153,9 @@ class Command(BaseCommand):
             yield "finish_page %s" % page
             yield ""
 
+        copy_log.last_chapter_number=chapter_number
+        copy_log.last_page = page
+        copy_log.last_post = post_count
+        copy_log.is_done = True
+        copy_log.save()
         yield "finish"

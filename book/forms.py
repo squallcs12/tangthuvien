@@ -14,6 +14,8 @@ from book.models.book_model import Book
 from tangthuvien.functions import UserSettings
 from tangthuvien import settings
 from django.contrib import messages
+from book.models.copy_model import Copy
+from django.core.exceptions import ObjectDoesNotExist
 
 class PostNewChapterForm(forms.Form):
     title = forms.CharField(max_length=255)
@@ -42,9 +44,6 @@ class EditChapterForm(ModelForm):
     class Meta:
         model = Chapter
         fields = ['title', 'number', 'content']
-
-
-
 
 class AddAuthorForm(forms.Form):
     name = forms.CharField()
@@ -96,6 +95,15 @@ class PublishNewBookForm(forms.Form):
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()
+
+    def is_valid(self):
+        is_valid = super(CopyBookForm, self).is_valid()
+        if is_valid:
+            thread_id = self.cleaned_data['thread_url'].split('?')[1].split('=')[1]  # last param number
+            if Copy.objects.filter(thread_id=thread_id).exists():
+                messages.error(self.request, _("The book is already copied to this site."))
+                return False
+        return is_valid
 
 
 class ConfigReadingSectionForm(forms.Form):
