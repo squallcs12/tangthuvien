@@ -95,7 +95,7 @@
 				<p>
 					{% blocktrans with thread_id=book.copy.thread_id%}This book was copy from <a href="http://www.tangthuvien.vn/forum/showthread.php?t={{thread_id}}">this</a>{% endblocktrans%}
 				</p>
-				<a class="btn btn-default" id="sync-copy-book" href="{% url copy_book_sync' book.id %}">{% trans "Sync new chapter" %}</a>
+				<a class="btn btn-default" id="sync-copy-book" href="{% url 'copy_book_sync' book.id %}">{% trans "Sync new chapter" %}</a>
 			</div>
 		</div>
 		{% endif %}

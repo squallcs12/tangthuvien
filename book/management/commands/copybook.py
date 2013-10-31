@@ -28,7 +28,7 @@ class Command(BaseCommand):
              help='Book ID from dev.tangthuvien.vn'),
         make_option('-s', '--start', action='store', dest='start', default=1,
              help='Start page'),
-        make_option('-sp', '--start-post', action='store', dest='start_post', default=1,
+        make_option('-p', '--start-post', action='store', dest='start_post', default=0,
              help='Start post index'),
         make_option('-e', '--end', action='store', dest='end', default=0,
              help='End page'),
@@ -57,7 +57,7 @@ class Command(BaseCommand):
         thread_id = (options.get('thread', 0))
         book_id = int(options.get('book', 0))
         start = int(options.get('start', 1))
-        start_post = int(options.get('start_post', 1))
+        start_post = int(options.get('start_post', 0))
         end = int(options.get('end', 0))
         log = options.get('log', '')
         if not log:
@@ -116,13 +116,18 @@ class Command(BaseCommand):
             posts = posts.split("<!-- / close content container -->")[0:-1]
 
 
+            post_count = 0
+            if page == 1:
+                post_count += 1
             if skip:
                 skip = False
-                posts = posts[start_post:]
+                post_count += start_post
+
+            if post_count:
+                posts = posts[post_count:]
 
             yield "total_chapter %s" % len(posts)
 
-            post_count = 0
             for post in posts:
                 post_count += 1
                 post = BeautifulSoup(post)
@@ -147,7 +152,7 @@ class Command(BaseCommand):
                 yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
                 chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in vp.text.split("\n") if txt])
-                chapter.number = chapter_number
+                chapter.number = book.chapters_count + 1
                 chapter.book = book
                 chapter.user = user
                 chapter.chapter_type_id = 1

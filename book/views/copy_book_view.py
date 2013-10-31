@@ -56,7 +56,7 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
     return TemplateResponse(request, template, data)
 
 @login_required
-def sync(request, book_id=0):
+def sync(request, book_id=0, template="book/copy_book_process.phtml"):
     data = {}
 
     book = Book.objects.get(pk=book_id)
