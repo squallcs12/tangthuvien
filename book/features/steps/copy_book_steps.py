@@ -34,11 +34,14 @@ def when_the_process_is_finished(step):
 
 @step(u'Then I see the whole book was copied')
 def then_i_see_the_whole_book_was_copied(step):
+    book = Book.objects.get(pk=world.copied_book_id)
+    book.chapter_set.all()[1].delete()
+    copy_log = book.copy
+    copy_log.last_post -= 1
+    copy_log.save()
     i_visit_book_index_page(step)
     get_book_title_list().should.contain("Copy book title")
     browser().find_element_by_link_text("Copy book title").click()
-    i_go_to_last_chapter(step)
-    see_the_last_chapter(step)
 
 @step(u'And I can not copy this thread again')
 def and_i_can_not_copy_this_thread_again(step):
@@ -57,11 +60,6 @@ def then_i_can_sync_the_new_posted_chapter_from_main_site_of_this_book(step):
 
 @step(u'When I sync the new posted chapter')
 def when_i_sync_the_new_posted_chapter(step):
-    book = Book.objects.get(pk=world.copied_book_id)
-    book.chapter_set.all()[1].delete()
-    copy_log = book.copy
-    copy_log.last_post -= 1
-    copy_log.save()
     find("#sync-copy-book").click()
 
 @step(u'Then I see only new posted chapter was copied')

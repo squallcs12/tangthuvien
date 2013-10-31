@@ -28,6 +28,8 @@ class Command(BaseCommand):
              help='Book ID from dev.tangthuvien.vn'),
         make_option('-s', '--start', action='store', dest='start', default=1,
              help='Start page'),
+        make_option('-sp', '--start-post', action='store', dest='start_post', default=1,
+             help='Start post index'),
         make_option('-e', '--end', action='store', dest='end', default=0,
              help='End page'),
         make_option('-k', '--skip', action='store', dest='skip', default=1,
@@ -55,19 +57,20 @@ class Command(BaseCommand):
         thread_id = (options.get('thread', 0))
         book_id = int(options.get('book', 0))
         start = int(options.get('start', 1))
+        start_post = int(options.get('start_post', 1))
         end = int(options.get('end', 0))
         log = options.get('log', '')
         if not log:
-            for message in self.copy(thread_id, book_id, start, end):
+            for message in self.copy(thread_id, book_id, start, end, start_post):
                 print message
         else:
             with open(log, "w+") as fb:
                 pass
-            for message in self.copy(thread_id, book_id, start, end):
+            for message in self.copy(thread_id, book_id, start, end, start_post):
                 with open(log, "a") as fb:
                     fb.write("\n%s" % message)
 
-    def copy(self, thread_id, book_id, start, end):
+    def copy(self, thread_id, book_id, start, end, start_post):
         if not thread_id or not book_id:
             sys.stdout.write("You must specific thread and book")
 
@@ -115,7 +118,7 @@ class Command(BaseCommand):
 
             if skip:
                 skip = False
-                posts = posts[1:]
+                posts = posts[start_post:]
 
             yield "total_chapter %s" % len(posts)
 
