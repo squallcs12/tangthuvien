@@ -10,6 +10,8 @@ Feature: Book App :: Book reading page
 		And I can not rate for the book
 		And I see the book title and description
 		And I see the author name and information
+		And I see the "Start reading" button
+		When I click on the "Start reading" button
 		And I see the first chapter
 		When I go to next chapter
 		Then I see the book title and description
@@ -38,7 +40,9 @@ Feature: Book App :: Book reading page
 		Then I see the book rating is 5.00
 		And I see the book rating count is 1
 		And I can not rate for the book anylonger
-		When I choose a random chapter from selection box
+		And I see the "Start reading" button
+		When I click on the "Start reading" button
+		And I choose a random chapter from selection box
 		And I visit book index page
 		And I click on the previous book
 		And I see the last random chapter
