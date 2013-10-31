@@ -37,7 +37,7 @@ def then_i_see_the_whole_book_was_copied(step):
     book = Book.objects.get(pk=world.copied_book_id)
     book.chapter_set.all()[1].delete()
     copy_log = book.copy
-    copy_log.last_post -= 1
+    copy_log.last_post = 1
     copy_log.save()
     i_visit_book_index_page(step)
     get_book_title_list().should.contain("Copy book title")
