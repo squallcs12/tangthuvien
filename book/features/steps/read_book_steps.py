@@ -34,7 +34,7 @@ def and_i_see_the_first_chapter(step):
 
 @step(u'I go to next chapter')
 def i_go_to_next_chapter(step):
-    find_all(".chapters_pagination .pagination a").pop().click()
+    find(".chapters_pagination").find_all(".pagination a").pop().click()
 
 @step(u'see the second chapter')
 def see_the_second_chapter(step):
