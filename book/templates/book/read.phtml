@@ -23,7 +23,22 @@
 				<div id="chapters">
 					<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
 						<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
-						<div class="content" style="{{config_reading_section_form.styles}}">{{chapter.content|safe}}</div>
+						<div class="content"><script type="text/javascript">
+							(function($){
+								var configStyles = '{{config_reading_section_form.styles}}';
+								var cookieStyles = $.cookie('config_reading_section_styles');
+								if(!cookieStyles){
+									cookieStyles = configStyles;
+									$.cookie('config_reading_section_styles', configStyles);
+								}
+								var styles = cookieStyles.split(';');
+								var contentDiv = $("#chapter .content");
+								for(var i = 0; i < styles.length; i++){
+									var styleParts = styles[i].split(':');
+									contentDiv.css(styleParts[0], styleParts[1]);
+								}
+							})(jQuery);
+						</script>{{chapter.content|safe}}</div>
 					</div>
 				</div>
 				{% include 'book/_read_pagination.phtml'%}
