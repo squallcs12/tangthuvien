@@ -13,6 +13,20 @@
 {% block meta-description %}{% if page_description %}{{page_description}}{% else %}{% trans 'List of books' %}{% endif %}{% endblock %}
 
 {% block content %}
+    {% if not onetime_show_notification.REGISTER_USER_WILL_BE_REDIRECT_TO_LAST_READ_CHAPTER %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="bs-example">
+                <div class="alert alert-dismissable alert-info">
+                    <button type="button" class="close onetime-notification" data-dismiss="alert" data-key="REGISTER_USER_WILL_BE_REDIRECT_TO_LAST_READ_CHAPTER">×</button>
+                    <p>
+                        {% trans "Registered user will be redirect to the last read chapter when visit the book introduction page." %}.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 	<h3>
 	    {% trans "List of books" %}
         <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
