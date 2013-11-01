@@ -45,7 +45,7 @@
 			<div class="panel-heading">{% blocktrans with name=chapter.user.username %}Thank {{name}}{% endblocktrans %}</div>
 			<div class="panel-body">
 				<div class="thank-count">
-					<button 
+					<button
 						class="
 						btn thank-button
 						{% if chapter.thanked_by_current_user %}btn-disable
@@ -89,15 +89,25 @@
 				{% csrf_token %}
 			</div>
 		</div>
+		{% if book.copy.thread_id %}
+		<div class="panel panel-default copy">
+			<div class="panel-body">
+				<p>
+					{% blocktrans with thread_id=book.copy.thread_id%}This book was copy from <a href="http://www.tangthuvien.vn/forum/showthread.php?t={{thread_id}}">this</a>{% endblocktrans%}
+				</p>
+				<a class="btn btn-default" id="sync-copy-book" href="{% url 'copy_book_sync' book.id %}">{% trans "Sync new chapter" %}</a>
+			</div>
+		</div>
+		{% endif %}
 		<div class="panel panel-default favorite">
 			<div class="panel-body">
-				<button class="btn 
+				<button class="btn
 					{% if not user.is_authenticated %}
 						btn-disable login_required
 					{% else %}
 						{% if chapter.book.favorited_by_current_user %}btn-disable{% else %}btn-default{% endif %}
 					{% endif %}
-					" id="favorite_book" 
+					" id="favorite_book"
 					favorite="{% if chapter.book.favorited_by_current_user %}yes{% else %}no{% endif %}"
 					{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
 					{% if chapter.book.favorited_by_current_user %}
@@ -146,7 +156,7 @@
 			<div class="panel-body">
 				<div class="result">
 					{% blocktrans with book.rating.average_result as averate and book.rating.rating_count as rating_count %}
-						Was rated <strong><span class="average-result">{{averate}}</span></strong> 
+						Was rated <strong><span class="average-result">{{averate}}</span></strong>
 						over <strong><span class="rating-count">{{rating_count}}</span></strong> ratings
 					{% endblocktrans %}
 				</div>

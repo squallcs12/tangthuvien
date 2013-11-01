@@ -16,7 +16,7 @@ from .rating_model import Rating, RatingLog
 from .favorite_model import Favorite
 from .profile_model import Profile
 from .attachment_model import Attachment
-
+from .copy_model import Copy
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)

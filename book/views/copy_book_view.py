@@ -42,7 +42,7 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
 
     thread_url = request.GET.get('url')
     thread_id = thread_url.split('?')[1].split('=')[1]
-    
+
     os.system(" ".join([
         settings.realpath('env/bin/python'),
         settings.realpath('manage.py'),
@@ -52,6 +52,30 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
         '-l %s' % get_log_file(book.id),
         "&"
     ]))
+
+    return TemplateResponse(request, template, data)
+
+@login_required
+def sync(request, book_id=0, template="book/copy_book_process.phtml"):
+    data = {}
+
+    book = Book.objects.get(pk=book_id)
+    data['book'] = book
+
+    thread_id = book.copy.thread_id
+
+    sync_command = " ".join([
+        settings.realpath('env/bin/python'),
+        settings.realpath('manage.py'),
+        'copybook',
+        '-b %s' % book.id,
+        '-t %s' % thread_id,
+        '-s %s' % book.copy.last_page,
+        '-p %s' % book.copy.last_post,
+        '-l %s' % get_log_file(book.id),
+        "&"
+    ])
+    os.system(sync_command)
 
     return TemplateResponse(request, template, data)
 
