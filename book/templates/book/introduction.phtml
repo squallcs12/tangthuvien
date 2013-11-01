@@ -9,6 +9,7 @@
 {% load_css static /book/style.css %}
 
 {% block content %}
+{% include 'book/onetime_notification/user_log_notification.phtml' %}
 <div class="row">
 	<h3 class="col-lg-9">{{book.title}} / {{book.author.name}}</h3>
 </div>
