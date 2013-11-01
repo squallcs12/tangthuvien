@@ -22,7 +22,7 @@ class Command(BaseCommand):
     """
 
     option_list = BaseCommand.option_list + (
-        make_option('-b', '--book', action='store', dest='book', default='',
+        make_option('-b', '--book', action='store', dest='book', default='0',
              help='Book ID from dev.tangthuvien.vn'),
     )
 
@@ -32,7 +32,7 @@ class Command(BaseCommand):
             books = [Book.objects.get(pk=book_id)]
         else:
             yesterday = datetime.date.today() - datetime.timedelta(1)
-            books = [Book.objects.filter(last_update__gt=yesterday)]
+            books = Book.objects.filter(last_update__gt=yesterday)
         for book in books:
             assert isinstance(book, Book)
             html_content = render_to_string('book/prc_html_file.phtml', {'book':book})
