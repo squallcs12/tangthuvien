@@ -8,22 +8,15 @@ Feature: Book App :: Book reading page
 		And I see the book rating result
 		And I see rating book button
 		And I can not rate for the book
-		And I see the book title and description
-		And I see the author name and information
 		And I see the "Start reading" button
 		When I click on the "Start reading" button
-		And I see the first chapter
+		Then I see the first chapter
 		When I go to next chapter
-		Then I see the book title and description
-		And I see the author name and information
-		And I see the second chapter
+		Then I see the second chapter
 		When I choose a random chapter from selection box
-		Then I see the book title and description
-		And I see the author name and information
-		And I see a random chapter
+		Then I see a random chapter
 		When I go to last chapter
-		Then I see the book title and description
-		And I see the last chapter
+		Then I see the last chapter
 		And I see chapter thank count
 		And I can not thank the poster
 

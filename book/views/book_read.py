@@ -14,20 +14,23 @@ from django.core.urlresolvers import reverse
 from tangthuvien.functions import disqus_append
 from book.forms import ConfigReadingSectionForm
 
-def main(request, slug, template="book/read.phtml"):
+def main(request, slug, template="book/introduction.phtml"):
     data = {}
     book = Book.objects.get(slug=slug)
     data['book'] = book
     
     if request.user.is_authenticated():
         try:
-            page = UserLog.objects.get(user=request.user, book=book).page
-            return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number' : page}))
+            book_read_log = UserLog.objects.get(user=request.user, book=book)
+            data['book_read_log'] = book_read_log
+            if not request.GET.get('r'):
+                page = book_read_log.page
+                return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number' : page}))
         except ObjectDoesNotExist:
             pass
-    
-    return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number' : 1}))
-    
+
+    return TemplateResponse(request, template, data)
+
 
 def chapter(request, slug, chapter_number, template="book/read.phtml"):
     data = {}

@@ -1,0 +1,53 @@
+{% load i18n %}
+<div class="panel panel-default favorite">
+	<div class="panel-body">
+		<button class="btn
+			{% if not user.is_authenticated %}
+				btn-disable login_required
+			{% else %}
+				{% if book.favorited_by_current_user %}btn-disable{% else %}btn-default{% endif %}
+			{% endif %}
+			" id="favorite_book"
+			favorite="{% if book.favorited_by_current_user %}yes{% else %}no{% endif %}"
+			{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
+			{% if book.favorited_by_current_user %}
+				{% trans "Favorite" %}
+			{% else %}
+				{% trans "Unfavorite" %}
+			{% endif %}
+		</button>
+	</div>
+</div>
+<script>
+(function($){
+	var loading = false;
+	$("#favorite_book").click(function(){
+		if(loading){
+			return;
+		}
+		loading = true;
+		var request = {};
+		request['url'] = '{% url "submit_favorite_book" %}';
+		request['data'] = {'id' : '{{book.id}}'};
+		request['type'] = 'POST';
+		if($(this).attr('favorite') == 'no'){
+			var ajaxComplete = function(){
+				$("#favorite_book").attr('favorite', 'yes');
+				$("#favorite_book").html('{% trans "Unfavorite" %}');
+			}
+		} else {
+			var ajaxComplete = function(){
+				$("#favorite_book").attr('favorite', 'no');
+				$("#favorite_book").html('{% trans "Favorite" %}');
+			}
+		};
+		request['success'] = function(data){
+			loading = false;
+			$("#favorite_book").removeClass('loading');
+			ajaxComplete();
+		};
+		$("#favorite_book").addClass('loading');
+		$.ajax(request);
+	});
+})(jQuery);
+</script>

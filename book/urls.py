@@ -30,5 +30,5 @@ urlpatterns = patterns('book.views',
     url(r'^copy_book_process_output/(?P<book_id>\d*)', 'copy_book_view.process_output', name='copy_book_process_output'),
     url(r'^s/(?P<book_id>\d*)', 'book_read.short', name='book_read_short'),
     url(r'^(?P<slug>[^/]+)/(?P<chapter_number>\d+)$', 'book_read.chapter', name='read_book_chapter'),
-    url(r'^(?P<slug>[^/]+)$', 'book_read.main', name='book_read'),
+    url(r'^(?P<slug>[^/]+)(/)?$', 'book_read.main', name='book_read'),
 )

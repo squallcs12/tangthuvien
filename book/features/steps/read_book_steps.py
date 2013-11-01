@@ -11,7 +11,7 @@ import random
 @step(u'I click on a book')
 def i_click_on_a_book(step):
     book_div = find_all("#books .book").pop()
-    world.choose_book_id = book_div.get_attribute('item_id')
+    world.book_id = book_div.get_attribute('item_id')
     book_div.find("a.title").click()
 
 @step(u'I see the book title and description')
@@ -28,8 +28,8 @@ def check_chapter(number):
     find("#chapter .number").text.should.equal(str(number))
     find("#chapter .content").text.should_not.be.empty
 
-@step(u'And I see the first chapter')
-def and_i_see_the_first_chapter(step):
+@step(u'I see the first chapter')
+def i_see_the_first_chapter(step):
     check_chapter(1)
 
 @step(u'I go to next chapter')
@@ -51,7 +51,7 @@ def see_a_random_chapter(step):
 
 @step(u'I click on the previous book')
 def i_click_on_the_previous_book(step):
-    find("#books .book[item_id='%s'] a.title" % world.choose_book_id).click()
+    find("#books .book[item_id='%s'] a.title" % world.book_id).click()
 
 @step(u'see the last random chapter')
 def see_the_last_random_chapter(step):
@@ -64,3 +64,11 @@ def i_go_to_last_chapter(step):
 @step(u'see the last chapter')
 def see_the_last_chapter(step):
     find_all(".chapters_pagination .pagination a").pop().should_be_temp_link()
+
+@step(u'I see the "([^"]*)" button')
+def i_see_the_button(step, text):
+    len(browser().find_elements_by_link_text(text)).should_not.equal(0)
+
+@step(u'I click on the "([^"]*)" button')
+def i_click_on_the_button(step, text):
+    browser().find_element_by_link_text(text).click()

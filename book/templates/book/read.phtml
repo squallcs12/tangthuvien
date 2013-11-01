@@ -2,9 +2,9 @@
 {% load i18n %}
 {% load static_tags %}
 
-{% block title %}{{chapter.book.title}} - {% trans 'Page'%} {{chapter.number}}{% endblock %}
+{% block title %}{{book.title}} - {% blocktrans with number=chapter.number%}Chapter {{number}}{% endblocktrans %}{% endblock %}
 
-{% block meta-description %}{{chapter.book.description|striptags|escapejs}}{% endblock %}
+{% block meta-description %}{{book.description|striptags|escapejs}}{% endblock %}
 
 {% load_css static /book/style.css %}
 
@@ -30,13 +30,13 @@
             </div>
         </div>
         <div id="after-chapter-content" class="btn-group btn-group-justified">
-            <a id="post-new-chapter" href="{% url 'post_new_chapter' chapter.book.id %}" class="btn btn-default">{% trans 'Add Chapter' %}</a>
+            <a id="post-new-chapter" href="{% url 'post_new_chapter' book.id %}" class="btn btn-default">{% trans 'Add Chapter' %}</a>
         	{% if chapter.user.id = request.user.id %}
         	<a id="edit-chapter" href="{% url 'edit_chapter' chapter.id %}" class="btn btn-default">{% trans 'Edit Chapter' %}</a>
         	{% endif %}
         </div>
 		<script>
-		    var disqus_url = get_real_link("{% url 'book_read' chapter.book.slug %}");
+		    var disqus_url = get_real_link("{% url 'book_read' book.slug %}");
 		</script>
 		{% include 'disqus.phtml'%}
 	</div>
@@ -89,125 +89,10 @@
 				{% csrf_token %}
 			</div>
 		</div>
-		{% if book.copy.thread_id %}
-		<div class="panel panel-default copy">
-			<div class="panel-body">
-				<p>
-					{% blocktrans with thread_id=book.copy.thread_id%}This book was copy from <a href="http://www.tangthuvien.vn/forum/showthread.php?t={{thread_id}}">this</a>{% endblocktrans%}
-				</p>
-				<a class="btn btn-default" id="sync-copy-book" href="{% url 'copy_book_sync' book.id %}">{% trans "Sync new chapter" %}</a>
-			</div>
-		</div>
-		{% endif %}
-		<div class="panel panel-default favorite">
-			<div class="panel-body">
-				<button class="btn
-					{% if not user.is_authenticated %}
-						btn-disable login_required
-					{% else %}
-						{% if chapter.book.favorited_by_current_user %}btn-disable{% else %}btn-default{% endif %}
-					{% endif %}
-					" id="favorite_book"
-					favorite="{% if chapter.book.favorited_by_current_user %}yes{% else %}no{% endif %}"
-					{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
-					{% if chapter.book.favorited_by_current_user %}
-						{% trans "Favorite" %}
-					{% else %}
-						{% trans "Unfavorite" %}
-					{% endif %}
-				</button>
-				<script>
-(function($){
-	var loading = false;
-	$("#favorite_book").click(function(){
-		if(loading){
-			return;
-		}
-		loading = true;
-		var request = {};
-		request['url'] = '{% url "submit_favorite_book" %}';
-		request['data'] = {'id' : '{{chapter.book.id}}'};
-		request['type'] = 'POST';
-		if($(this).attr('favorite') == 'no'){
-			var ajaxComplete = function(){
-				$("#favorite_book").attr('favorite', 'yes');
-				$("#favorite_book").html('{% trans "Unfavorite" %}');
-			}
-		} else {
-			var ajaxComplete = function(){
-				$("#favorite_book").attr('favorite', 'no');
-				$("#favorite_book").html('{% trans "Favorite" %}');
-			}
-		};
-		request['success'] = function(data){
-			loading = false;
-			$("#favorite_book").removeClass('loading');
-			ajaxComplete();
-		};
-		$("#favorite_book").addClass('loading');
-		$.ajax(request);
-	});
-})(jQuery);
-				</script>
-			</div>
-		</div>
-		<div class="panel panel-default rating" id="book_rating">
-			<div class="panel-heading">{% trans 'Rate book' %}</div>
-			<div class="panel-body">
-				<div class="result">
-					{% blocktrans with book.rating.average_result as averate and book.rating.rating_count as rating_count %}
-						Was rated <strong><span class="average-result">{{averate}}</span></strong>
-						over <strong><span class="rating-count">{{rating_count}}</span></strong> ratings
-					{% endblocktrans %}
-				</div>
-				<div class="rate-star">
-					{% for i in book.rating.rating_range %}
-					<button class="btn btn-default rate-star-{{i}}" data-rate-number="{{i}}"
-					{% if book.rated_by_current_user %}
-						disabled='disabled'
-					{% elif not user.is_authenticated %}
-					disabled='disabled' class='login_required'
-					{% endif %}>{{i}}</button>
-					{% endfor %}
-				</div>
-				<script type="text/javascript">
-(function($){
-	$("#book_rating .rate-star button").click(function(){
-		var clickedButton = this;
-		rateNumber = $(this).data('rate-number');
-
-		$("#book_rating .rate-star button").attr('disabled', true);
-		resultSpan = $("#book_rating .average-result");
-		countSpan = $("#book_rating .rating-count");
-
-		ratingCount = parseInt(countSpan.html());
-
-		var newResult = (ratingCount * parseFloat(resultSpan.html()) + rateNumber) / (ratingCount + 1);
-		newResult = newResult.toFixed(2);
-
-		resultSpan.html(newResult);
-		countSpan.html(ratingCount + 1);
-
-		request = {};
-		request['url'] = '{% url "submit_book_rating" %}';
-		request['type'] = 'POST';
-		request['data'] = {};
-		request['data']['number'] = rateNumber;
-		request['data']['book_id'] = '{{book.id}}';
-		request['success'] = function(data){
-			resultSpan.html(data['average_result'].toFixed(2));
-			countSpan.html(data['rating_count']);
-			$(clicked_button).removeClass('loading');
-		}
-		$(clickedButton).addClass('loading');
-		$.ajax(request);
-	});
-})(jQuery);
-				</script>
-			</div>
-		</div>
+		{% include 'book/_book_sync_copy.phtml' %}
+		{% include 'book/_book_favorite.phtml' %}
+		{% include 'book/_book_rating.phtml' %}
 		{% include 'book/_book_attachments.phtml' %}
-		{% include 'book/_book_and_author_description.phtml' %}
 	</div>
 </div>
 {% endblock %}
