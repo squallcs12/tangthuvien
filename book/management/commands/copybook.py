@@ -161,7 +161,7 @@ class Command(BaseCommand):
             yield "finish_page %s" % page
             yield ""
 
-        copy_log.last_chapter_number=chapter_number
+        copy_log.last_chapter_number = chapter_number
         copy_log.last_page = page
         copy_log.last_post = post_count
         copy_log.is_done = True
