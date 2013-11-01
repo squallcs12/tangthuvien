@@ -8,4 +8,6 @@ from django.template.response import TemplateResponse
 def main(request, template="homepage.phtml"):
     data = {}
 
+    data['show_top_banner'] = True
+
     return TemplateResponse(request, template, data)

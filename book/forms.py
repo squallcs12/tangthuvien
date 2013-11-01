@@ -109,11 +109,13 @@ class CopyBookForm(PublishNewBookForm):
 class ConfigReadingSectionForm(forms.Form):
     font_family = forms.ChoiceField(
                     widget=forms.Select(attrs={'data-css-name':'font-family'}),
-                    choices=[('', '---'), ('Arial', 'Arial'), ('Tahoma', 'Tahoma'), ]
+                    choices=[('', '---'), ('Arial', 'Arial'), ('Tahoma', 'Tahoma'), ],
+                    required=False,
                     )
     font_size = forms.ChoiceField(
                     widget=forms.Select(attrs={'data-css-name':'font-size'}),
-                    choices=[('', '---'), ('20px', '20px'), ('30px', '30px'), ]
+                    choices=[('', '---'), ('20px', '20px'), ('30px', '30px'), ],
+                    required=False
                     )
 
     def __init__(self, user, *args, **kwargs):

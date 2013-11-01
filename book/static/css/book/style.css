@@ -24,3 +24,9 @@
 #read_config button{
 	float: right;
 }
+.categories_filters label{
+	float: right;
+}
+.categories_filters label .bootstrap-tagsinput{
+	width: 350px;
+}
