@@ -108,6 +108,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'tangthuvien.context_processors.site_name',
     'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
+    'tangthuvien.context_processors.disqus',
   )  # Optional
 
 MIDDLEWARE_CLASSES = (
