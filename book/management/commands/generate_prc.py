@@ -40,7 +40,7 @@ class Command(BaseCommand):
                 fp.write(html_content)
 
         for book in books:
-            os.system("%s %s -c1 -o %s" % (
+            os.system("%s %s -c2 -o %s" % (
                 settings.realpath('program/kindlegen'),
                 settings.media_path(book.html_file),
                 book.prc_file_name
