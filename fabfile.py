@@ -1,5 +1,6 @@
 from fabric.api import task, run, require, put, sudo, local, env
 import threading
+import os
 
 env.hosts = ['root@210.211.109.43']
 
@@ -22,6 +23,7 @@ def test():
 def restart_web():
     Deploy.init()
     Deploy.restart_web_services()
+
 
 class Deploy(object):
 
@@ -234,6 +236,44 @@ class Deploy(object):
     def branch(cls):
         return local("git branch | grep \"*\"", capture=True)[2:]
 
+    @classmethod
+    def update_cronjob_files(cls):
+        replacements = {
+            'virtualenv_dir': cls.virtualenv_dir,
+            'current_dir': cls.current_dir,
+            'share_dir': cls.share_dir,
+            'bin_dir': cls.bin_dir,
+            'program_dir': cls.program_dir,
+            'log_dir': cls.log_dir,
+        }
+        dirs = os.listdir(".")
+        sub_dirs = ('cron.daily', 'cron.hourly', 'cron.monthly', 'cron.weekly', 'cron.d',)
+        for sub_dir in sub_dirs:
+            cron_dir = os.path.join('/', 'etc', sub_dir)
+            sudo("rm -f %s/%s*" % (cron_dir, cls.project_name))
+        for dir_name in dirs:
+            if not os.path.isdir(dir_name):  # if not a folder
+                continue
+
+            cronjobs_dir = "%s/cronjobs" % dir_name
+            if not os.path.isdir(cronjobs_dir):  # if no crontabs
+                continue
+            for sub_dir in sub_dirs:
+                cron_dir = "%s/%s" % (cronjobs_dir, sub_dir)
+                if not os.path.isdir(cron_dir):
+                    continue
+                cron_files = os.listdir(cron_dir)
+                for cron_file in cron_files:
+                    source_file = os.path.join(cls.current_dir, dir_name, "cronjobs", sub_dir, cron_file)
+                    destination_file_name = "%s_%s_%s" % (cls.project_name, dir_name, cron_file)
+                    destination_file = os.path.join('/', 'etc', sub_dir, destination_file_name)
+                    command = "cat %s" % source_file
+                    for key, value in replacements.items():
+                        command += " | sed 's/{{%s}}/%s/g'" % (key, value.replace('/', '\/'))
+                    command += " > %s" % destination_file
+                    sudo(command)
+
+                    sudo("chmod 777 %s" % destination_file)
 
     @classmethod
     def setup(cls):
@@ -263,6 +303,7 @@ class Deploy(object):
         cls.collect_statics()
         cls.combine_django_messages()
         cls.copy_system_config_files()
+        cls.update_cronjob_files()
         cls.restart_web_services()
 
     @classmethod
