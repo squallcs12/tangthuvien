@@ -93,6 +93,8 @@ def new_chapter(sender, **kwargs):
 
         # increase book last update and chapter count
         chapter.book.last_update = timezone.now()
+        chapter.book.last_chapter_number = chapter.number
+        chapter.book.last_chapter_title = chapter.title
         chapter.book.chapters_count += 1
         chapter.book.save()
 
@@ -112,7 +114,7 @@ def delete_chapter(sender, **kwargs):
 
         # reset book chapter list
         chapter.book.reset_chapters_list()
-        
+
         chapter.user.book_profile.chapters_count -= 1
         chapter.user.book_profile.save()
 

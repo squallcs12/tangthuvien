@@ -25,8 +25,11 @@ urlpatterns = patterns('',
     url(r'^ckeditor/', include('ckeditor.urls')),
 
     # zinnia
-#      url(r'^zinnia/', include('zinnia.urls')),
-#     url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^blog/', include('zinnia.urls.capabilities')),
+    url(r'^blog/feeds', include('zinnia.urls.feeds')),
+    url(r'^blog/', include('zinnia.urls.entries')),
+    url(r'^blog/', include('zinnia.urls.archives')),
+    url(r'^blog/', include('zinnia.urls.shortlink')),
 
     url(r'^accounts/', include('accounts.urls')),
 
@@ -34,8 +37,8 @@ urlpatterns = patterns('',
 
 from tangthuvien import settings
 if settings.DEBUG:
-    urlpatterns += patterns('', 
-                            (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|ico|avi|mp3|mp4|wav|pdf|prc|zip|rar|doc))$', 
+    urlpatterns += patterns('',
+                            (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|ico|avi|mp3|mp4|wav|pdf|prc|zip|rar|doc))$',
                              'django.views.static.serve',
                             {'document_root': settings.realpath('media')}))
     # put the favicon in ano the place so that warning will not be thrown durring the test
