@@ -1,6 +1,5 @@
 from fabric.api import task, run, require, put, sudo, local, env
 import threading
-import os
 
 env.hosts = ['root@210.211.109.43']
 
@@ -24,6 +23,8 @@ def restart_web():
     Deploy.init()
     Deploy.restart_web_services()
 
+def init_folder_tree():
+    Deploy.init_folder_tree()
 
 class Deploy(object):
 
@@ -307,7 +308,7 @@ class Deploy(object):
         cls.restart_web_services()
 
     @classmethod
-    def update_local(cls):
+    def init_folder_tree(cls):
         local("mkdir -p media/thumbs")
         local("mkdir -p media/thumbs/books")
         local("mkdir -p media/thumbs/books/covers")
@@ -329,6 +330,12 @@ class Deploy(object):
         local("mkdir -p media/books/covers")
         local("mkdir -p media/books/prc")
         local("mkdir -p program")
+        local("python manage.py syncdb --migrate")
+
+
+    @classmethod
+    def update_local(cls):
+        cls.init_folder_tree()
         local("sudo apt-get install libjpeg-dev -y")
         local("sudo apt-get install libpng-dev -y")
         local("git pull origin %s" % cls.branch())

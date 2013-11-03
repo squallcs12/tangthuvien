@@ -87,6 +87,10 @@
 			</div>
 			<div id="testimonials" class="col-lg-6">
 				<h3>{% trans "Testimonials" %}</h3>
+				<script>
+				    var disqus_url = get_real_link("{% url 'book_read' book.slug %}") + "/reviews";
+				</script>
+				{% include 'disqus.phtml'%}
 			</div>
 		</div>
 	</div>
