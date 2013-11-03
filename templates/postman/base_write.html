@@ -27,9 +27,13 @@
 			{% csrf_token %}
 			{% block pm_write_recipient %}{% endblock %}
 			{% include 'general/form_render.phtml' %}
-			<button type="submit" class="btn btn-primary">
-				{% trans "Send" %}
-			</button>
+			<div class="row">
+				<div class="col-lg-9  col-lg-offset-3">
+					<button type="submit" class="btn btn-primary">
+						{% trans "Send" %}
+					</button>
+				</div>
+			</div>
 		</form>
 	</div>
 {% endblock %}
