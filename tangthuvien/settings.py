@@ -150,30 +150,30 @@ RELISH_APPS = (
 RELISH_PROJECT_NAME = 'tangthuvien'
 RELISH_PROJECT_VERSION = '1.0'
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.comments',
-    'django.contrib.sessions',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
-    'lettuce.django',
-    'tangthuvien',
-    'tagging',
-    'mptt',
-    'south',
+    'accounts',
     'book',
-    'django_coverage',
     'ckeditor',
     'custom_admin',
-    'accounts',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    'django.contrib.auth',
+    'django.contrib.comments',
+    'django.contrib.contenttypes',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.staticfiles',
+    'django_coverage',
+    'jsonify',
+    'lettuce.django',
+    'mptt',
+    'postman',
     'relish',
     'social_auth',
-    'jsonify',
-    'postman',
+    'south',
+    'tagging',
+    'tangthuvien',
+    'zinnia',
 )
 SITE_ID = 1
 
@@ -309,6 +309,13 @@ TEST_PASSWORD = ";P/*Aor1%Q-2+c2"
 
 POSTMAN_AUTO_MODERATE_AS = True
 
+# Zinnia
+ZINNIA_AUTO_CLOSE_COMMENTS_AFTER = 0
+ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
+
+# Homepage
+HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
+HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
 try:
     from local_settings import *
