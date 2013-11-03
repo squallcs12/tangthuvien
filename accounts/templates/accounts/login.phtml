@@ -31,7 +31,8 @@
 							{% include "general/form_render.phtml" %}
 			            	<div class="form-group">
 		                    	<div class="col-lg-9 col-lg-offset-3">
-		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button> 
+		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button>
+		                      		<a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
 		                    	</div>
 		                  	</div>
 						</fieldset>
@@ -50,7 +51,7 @@
 				<p>{% trans 'Associate your account with social network account:' %}</p>
 				{% endif %}
 				<div id="social_login">
-				    <a href="{% url 'socialauth_begin' 'facebook' %}{% back_url %}" class="zocial facebook" 
+				    <a href="{% url 'socialauth_begin' 'facebook' %}{% back_url %}" class="zocial facebook"
 				    	id="facebook" title="{% trans 'Login with your Facebook account' %}">
 				    	{% trans 'Facebook' %}
 				    </a>

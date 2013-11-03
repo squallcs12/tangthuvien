@@ -26,57 +26,59 @@
 {% block content %}
 <div class="row">
 	<div class="col-lg-9">
-		<div>
-			{% block entry-content %}
-				{% include object.content_template with object_content=object.html_content|safe %}
-			{% endblock %}
-			{% block admin_tools %}
-			{% if perms.zinnia.change_entry %}
-				<a href="{% url 'admin:zinnia_entry_change' object.pk %}" title="{% trans 'Edit the entry' %}"> {% trans "Edit the entry" %} </a>
-			{% endif %}
-		</div>
-		<div>
-			{% block entry-widgets %}
-			<div class="entry-widgets">
-				{% with next_entry=object.next_entry %}
-					{% if next_entry %}
-					<div class="entry-next">
-						<h3>{% trans "Next entry" %}</h3>
-						<p>
-							<a href="{{ next_entry.get_absolute_url }}" title="{{ next_entry.title }}" rel="next"> {{ next_entry.title }} </a>
-						</p>
-					</div>
-					{% endif %}
-				{% endwith %}
-				{% with previous_entry=object.previous_entry %}
-					{% if previous_entry %}
-					<div class="entry-previous">
-						<h3>{% trans "Previous entry" %}</h3>
-						<p>
-							<a href="{{ previous_entry.get_absolute_url }}" title="{{ previous_entry.title }}" rel="prev"> {{ previous_entry.title }} </a>
-						</p>
-					</div>
-					{% endif %}
-				{% endwith %}
-				{% with entry_related=object.related_published %}
-					{% if entry_related %}
-					<div class="entry-related">
-						<h3>{% trans "Related entries" %}</h3>
-						<ul>
-							{% for entry in entry_related %}
-							<li>
-								<a href="{{ entry.get_absolute_url }}" title="{{ entry.title }}" rel="bookmark">{{ entry.title }}</a>
-							</li>
-							{% endfor %}
-						</ul>
-					</div>
-					{% endif %}
-				{% endwith %}
+		<div class="well">
+			<div>
+				{% block entry-content %}
+					{% include object.content_template with object_content=object.html_content|safe %}
+				{% endblock %}
+				{% block admin_tools %}
+				{% if perms.zinnia.change_entry %}
+					<a href="{% url 'admin:zinnia_entry_change' object.pk %}" title="{% trans 'Edit the entry' %}"> {% trans "Edit the entry" %} </a>
+				{% endif %}
 			</div>
-			{% endblock %}
-		</div>
-		<div>
-			{% include 'disqus.phtml' %}
+			<div>
+				{% block entry-widgets %}
+				<div class="entry-widgets">
+					{% with next_entry=object.next_entry %}
+						{% if next_entry %}
+						<div class="entry-next">
+							<h3>{% trans "Next entry" %}</h3>
+							<p>
+								<a href="{{ next_entry.get_absolute_url }}" title="{{ next_entry.title }}" rel="next"> {{ next_entry.title }} </a>
+							</p>
+						</div>
+						{% endif %}
+					{% endwith %}
+					{% with previous_entry=object.previous_entry %}
+						{% if previous_entry %}
+						<div class="entry-previous">
+							<h3>{% trans "Previous entry" %}</h3>
+							<p>
+								<a href="{{ previous_entry.get_absolute_url }}" title="{{ previous_entry.title }}" rel="prev"> {{ previous_entry.title }} </a>
+							</p>
+						</div>
+						{% endif %}
+					{% endwith %}
+					{% with entry_related=object.related_published %}
+						{% if entry_related %}
+						<div class="entry-related">
+							<h3>{% trans "Related entries" %}</h3>
+							<ul>
+								{% for entry in entry_related %}
+								<li>
+									<a href="{{ entry.get_absolute_url }}" title="{{ entry.title }}" rel="bookmark">{{ entry.title }}</a>
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+						{% endif %}
+					{% endwith %}
+				</div>
+				{% endblock %}
+			</div>
+			<div>
+				{% include 'disqus.phtml' %}
+			</div>
 		</div>
 	</div>
 	<div class="col-lg-3">

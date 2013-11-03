@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load slice_page_range %}
 <div class="row chapters_pagination">
-	<div class="col-lg-9">
+	<div class="col-lg-6">
 	<ul class="pagination pagination-sm">
 		    {% for chapter_number in book.chapters_list|chapters_paging:chapter.number %}
 				<li {% if chapter_number ==  chapter.number %}class="active"{% endif %}>
@@ -22,9 +22,8 @@
 			{% endfor %}
 		</ul>
 	</div>
-	<div class="col-lg-3">
+	<div class="col-lg-6">
 		<form>
-			{% trans "Read chapter" %}
 			<select name="chapter" class="form-control chapter-list">
 				{% for page_info in book.chapters_list %}
 					<option value="{{ page_info.0 }}" data-href="{% url 'read_book_chapter' book.slug page_info.0 %}"
