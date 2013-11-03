@@ -1,6 +1,12 @@
-user private message
-user public message page
-user gavartar
-book pdf generator
-
-
+^accounts/ ^messages/ ^inbox/(?:(?P<option>m)/)?$ [name='postman_inbox']
+^accounts/ ^messages/ ^sent/(?:(?P<option>m)/)?$ [name='postman_sent']
+^accounts/ ^messages/ ^archives/(?:(?P<option>m)/)?$ [name='postman_archives']
+^accounts/ ^messages/ ^trash/(?:(?P<option>m)/)?$ [name='postman_trash']
+^accounts/ ^messages/ ^write/(?:(?P<recipients>[\w.@+-:]+)/)?$ [name='postman_write']
+^accounts/ ^messages/ ^reply/(?P<message_id>[\d]+)/$ [name='postman_reply']
+^accounts/ ^messages/ ^view/(?P<message_id>[\d]+)/$ [name='postman_view']
+^accounts/ ^messages/ ^view/t/(?P<thread_id>[\d]+)/$ [name='postman_view_conversation']
+^accounts/ ^messages/ ^archive/$ [name='postman_archive']
+^accounts/ ^messages/ ^delete/$ [name='postman_delete']
+^accounts/ ^messages/ ^undelete/$ [name='postman_undelete']
+^accounts/ ^messages/ ^$

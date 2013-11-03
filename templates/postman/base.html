@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}{% load postman_tags %}
+{% block title %}{% trans "Messaging" %}{% endblock %}
+
+{% block link %}
+	{{ block.super }}
+	<link type="text/css" media="all" rel="stylesheet" href="
+	{# dj v1.4 #}{% load static %}{% static 'postman/css/postman.css' %}
+	{# dj v1.3 #}{# {{ STATIC_URL }}postman/css/postman.css #}
+	{# dj v1.2 #}{# {{ MEDIA_URL }}postman/css/postman.css #}
+	" />
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-lg-9">
+		{% block postman-content %}
+		{% endblock %}
+	</div>
+	<div class="col-lg-3">
+		<div class="well">
+			<ul id="postman_menu" class="nav nav-pills nav-stacked">
+				{% postman_unread as unread_count %}
+				<li>
+					<a href="{% url 'postman_inbox' %}">{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+				</li>
+				<li>
+					<a href="{% url 'postman_sent' %}">{% trans "Sent Messages" %}</a>
+				</li>
+				<li>
+					<a href="{% url 'postman_write' %}">{% trans "Write" %}</a>
+				</li>
+				<li>
+					<a href="{% url 'postman_archives' %}">{% trans "Archives" %}</a>
+				</li>
+				<li>
+					<a href="{% url 'postman_trash' %}">{% trans "Trash" %}</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
