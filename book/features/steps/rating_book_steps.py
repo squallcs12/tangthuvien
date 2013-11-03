@@ -38,7 +38,10 @@ def i_rate_star_for_the_book(step, number):
 
 @step(u'I see the book rating is (.*)')
 def i_see_the_book_rating_is(step, number):
-    find("#book_rating .average-result").text.should.equal(number)
+    try:
+        find("#book_rating .average-result").text.should.equal(number)
+    except:
+        find("#book_rating .average-result").text.should.equal(number.replace('.', ','))
 
 @step(u'I see the book rating count is (.*)')
 def i_see_the_book_rating_count_is(step, number):

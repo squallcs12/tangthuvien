@@ -4,19 +4,21 @@
 	<div class="col-lg-9">
 	<ul class="pagination pagination-sm">
 		    {% for chapter_number in book.chapters_list|chapters_paging:chapter.number %}
-		    	{% if chapter_number ==  chapter.number %}
-					<li class="active">
-						<a class="current" href="#">
+				<li {% if chapter_number ==  chapter.number %}class="active"{% endif %}>
+					<a class="current"
+						{% if chapter_number ==  chapter.number %}
+							href="#"
+						{% else %}
+							href="{% url 'read_book_chapter' book.slug chapter_number %}"
+						{% endif %}
+						>
+						{% if chapter.number < 99 %}
 							{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
-						</a>
-					</li>
-		    	{% else %}
-			    	<li>
-			    		<a href="{% url 'read_book_chapter' book.slug chapter_number %}">
-			    			{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
-			    		</a>
-			    	</li>
-		    	{% endif %}
+						{% else %}
+							{{chapter_number}}
+						{% endif %}
+					</a>
+				</li>
 			{% endfor %}
 		</ul>
 	</div>

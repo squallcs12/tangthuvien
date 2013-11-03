@@ -43,7 +43,7 @@ def i_update_my_account_password(step):
     find("#set_password_form input[name='new_password2']").send_keys(random_password())
     find("#set_password_form input[type='submit']").click()
 
-    until(lambda: browser().title.should.contain("Password set successful"))
+    until(lambda: browser().title.should.contain(trans(u"Password set successful")))
 
 @step(u'I login using my twitter account')
 def i_login_using_my_twitter_account(step):
@@ -88,7 +88,7 @@ def then_i_did_not_see_the_login_form(step):
 
 @step(u'And I see the notification that I am currently login')
 def and_i_see_the_notification_that_i_am_currently_login(step):
-    find("body").text.should.contain("You are currently logged in as")
+    find("body").text.should.contain(trans(u"You are currently logged in as"))
 
 @step(u'Then my account was associated with facebook')
 def then_my_account_was_associated_with_facebook(step):

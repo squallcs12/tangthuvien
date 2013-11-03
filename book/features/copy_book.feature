@@ -10,4 +10,10 @@ Feature: Book App :: Copy book
         Then I see the copying was processed
         When the process is finished
         Then I see the whole book was copied
-        
+        And I can not copy this thread again
+        When I visit the copied book
+        Then I can sync the new posted chapter from main-site of this book
+        When I sync the new posted chapter
+        Then I see the copying was processed
+        When the process is finished
+        Then I see only new posted chapter was copied

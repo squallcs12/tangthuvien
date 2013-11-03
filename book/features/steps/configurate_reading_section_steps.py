@@ -25,3 +25,5 @@ def i_read_another_book(step):
     i_visit_book_index_page(step)
     book_div = find_all("#books .book")[1]
     book_div.find("a.title").click()
+    if len(find_all("#read_book")):
+        find("#read_book").click()

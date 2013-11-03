@@ -1,5 +1,5 @@
 from fabric.api import task, run, require, put, sudo, local, env
-import threading
+import os
 
 env.hosts = ['root@210.211.109.43']
 
@@ -22,6 +22,9 @@ def test():
 def restart_web():
     Deploy.init()
     Deploy.restart_web_services()
+
+def init_folder_tree():
+    Deploy.init_folder_tree()
 
 class Deploy(object):
 
@@ -85,23 +88,22 @@ class Deploy(object):
 
     @classmethod
     def checkout_source(cls, current_time):
-        release_dir = "%s/releases/%s" % (cls.deploy_dir, current_time)
-        sudo("git clone %s %s;" % (cls.git_source, release_dir))
-        sudo("rm %s" % cls.current_dir)
+        cls.release_dir = "%s/releases/%s" % (cls.deploy_dir, current_time)
+        sudo("git clone %s %s;" % (cls.git_source, cls.release_dir))
 
-        sudo("ln -s %s/releases/%s %s" % (cls.deploy_dir, current_time, cls.current_dir))
-        sudo("cd %s; git checkout %s" % (cls.current_dir, cls.branch()))
-        sudo("chown -R www-data:www-data %s" % release_dir)
+        sudo("cd %s; git checkout %s" % (cls.release_dir, cls.branch()))
+        sudo("chown -R www-data:www-data %s" % cls.release_dir)
 
-        cls.sudo("ln -s %s/media %s/media" % (cls.share_dir, cls.current_dir))
-        cls.sudo("ln -s %s/static %s/static" % (cls.share_dir, cls.current_dir))
+        cls.sudo("ln -s %s/media %s/media" % (cls.share_dir, cls.release_dir))
+        cls.sudo("ln -s %s/static %s/static" % (cls.share_dir, cls.release_dir))
 
-        cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.current_dir))
+        cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.release_dir))
 
-        cls.sudo("ln -s %s/bin %s" % (cls.current_dir, cls.bin_dir))
-        cls.sudo("ln -s %s %s/env" % (cls.virtualenv_dir, cls.current_dir))
-        cls.sudo("ln -s %s %s/program" % (cls.program_dir, cls.current_dir))
-        cls.sudo("ln -s %s %s/log" % (cls.log_dir, cls.current_dir))
+        cls.sudo("rm -f %s" % cls.bin_dir)
+        cls.sudo("ln -s %s/bin %s" % (cls.release_dir, cls.bin_dir))
+        cls.sudo("ln -s %s %s/env" % (cls.virtualenv_dir, cls.release_dir))
+        cls.sudo("ln -s %s %s/program" % (cls.program_dir, cls.release_dir))
+        cls.sudo("ln -s %s %s/log" % (cls.log_dir, cls.release_dir))
 
     @classmethod
     def sudo_virtualenv(cls, command):
@@ -109,7 +111,7 @@ class Deploy(object):
 
     @classmethod
     def install_requirements(cls):
-        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.current_dir)
+        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.release_dir)
 
     @classmethod
     def get_python_version(cls):
@@ -191,11 +193,15 @@ class Deploy(object):
     @classmethod
     def copy_system_config_files(cls):
         sudo("rm -f /etc/nginx/sites-enabled/tangthuvien.vn.conf")
-        sudo("cp %s/bin/nginx.conf /etc/nginx/sites-enabled/tangthuvien.vn.conf" % cls.current_dir)
+        sudo("cp %s/bin/nginx.conf /etc/nginx/sites-enabled/tangthuvien.vn.conf" % cls.release_dir)
 
     @classmethod
     def restart_web_services(cls):
-        sudo("chmod 777 %s/bin/gunicorn_start.sh" % cls.current_dir)
+
+        sudo("rm %s" % cls.current_dir)
+        sudo("ln -s %s %s" % (cls.release_dir, cls.current_dir))
+
+        sudo("chmod 777 %s/bin/gunicorn_start.sh" % cls.release_dir)
 
         cls.sudo_virtualenv("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
         cls.sudo_virtualenv("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
@@ -204,11 +210,11 @@ class Deploy(object):
 
     @classmethod
     def run_migration(cls):
-        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.current_dir)
+        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.release_dir)
 
     @classmethod
     def collect_statics(cls):
-        cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.current_dir)
+        cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.release_dir)
 
     @classmethod
     def install_image_libs(cls):
@@ -221,7 +227,7 @@ class Deploy(object):
 
     @classmethod
     def combine_django_messages(cls):
-        cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.current_dir)
+        cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.release_dir)
 
     @classmethod
     def install_kindlegen(cls):
@@ -234,6 +240,44 @@ class Deploy(object):
     def branch(cls):
         return local("git branch | grep \"*\"", capture=True)[2:]
 
+    @classmethod
+    def update_cronjob_files(cls):
+        replacements = {
+            'virtualenv_dir': cls.virtualenv_dir,
+            'release_dir': cls.release_dir,
+            'share_dir': cls.share_dir,
+            'bin_dir': cls.bin_dir,
+            'program_dir': cls.program_dir,
+            'log_dir': cls.log_dir,
+        }
+        dirs = os.listdir(".")
+        sub_dirs = ('cron.daily', 'cron.hourly', 'cron.monthly', 'cron.weekly', 'cron.d',)
+        for sub_dir in sub_dirs:
+            cron_dir = os.path.join('/', 'etc', sub_dir)
+            sudo("rm -f %s/%s*" % (cron_dir, cls.project_name))
+        for dir_name in dirs:
+            if not os.path.isdir(dir_name):  # if not a folder
+                continue
+
+            cronjobs_dir = "%s/cronjobs" % dir_name
+            if not os.path.isdir(cronjobs_dir):  # if no crontabs
+                continue
+            for sub_dir in sub_dirs:
+                cron_dir = "%s/%s" % (cronjobs_dir, sub_dir)
+                if not os.path.isdir(cron_dir):
+                    continue
+                cron_files = os.listdir(cron_dir)
+                for cron_file in cron_files:
+                    source_file = os.path.join(cls.release_dir, dir_name, "cronjobs", sub_dir, cron_file)
+                    destination_file_name = "%s_%s_%s" % (cls.project_name, dir_name, cron_file)
+                    destination_file = os.path.join('/', 'etc', sub_dir, destination_file_name)
+                    command = "cat %s" % source_file
+                    for key, value in replacements.items():
+                        command += " | sed 's/{{%s}}/%s/g'" % (key, value.replace('/', '\/'))
+                    command += " > %s" % destination_file
+                    sudo(command)
+
+                    sudo("chmod 777 %s" % destination_file)
 
     @classmethod
     def setup(cls):
@@ -263,10 +307,11 @@ class Deploy(object):
         cls.collect_statics()
         cls.combine_django_messages()
         cls.copy_system_config_files()
+        cls.update_cronjob_files()
         cls.restart_web_services()
 
     @classmethod
-    def update_local(cls):
+    def init_folder_tree(cls):
         local("mkdir -p media/thumbs")
         local("mkdir -p media/thumbs/books")
         local("mkdir -p media/thumbs/books/covers")
@@ -288,6 +333,12 @@ class Deploy(object):
         local("mkdir -p media/books/covers")
         local("mkdir -p media/books/prc")
         local("mkdir -p program")
+        local("python manage.py syncdb --migrate")
+
+
+    @classmethod
+    def update_local(cls):
+        cls.init_folder_tree()
         local("sudo apt-get install libjpeg-dev -y")
         local("sudo apt-get install libpng-dev -y")
         local("git pull origin %s" % cls.branch())

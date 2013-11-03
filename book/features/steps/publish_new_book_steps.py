@@ -17,30 +17,30 @@ def when_i_publish_a_new_book(step):
     publish_book_form.find("button[type='submit']").click()
 
 def fill_new_book_form(form, book_title):
-    form.find("[name='title']").send_keys(book_title)
-    form.find("[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
-    form.find("[name='description']").fillin("Book description")
+    form.find("input[name='title']").send_keys(book_title)
+    form.find("input[name='cover']").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
+    form.find("textarea[name='description']").fillin("Book description")
 
     author_name = "New author 1"
     try:
-        form.find("[name='author']").select(author_name)
+        form.find("select[name='author']").select(author_name)
     except:
-        form.find("[name='author']").select("-create-new-")
+        form.find("select[name='author']").select("-create-new-")
         time.sleep(0.5)
         author_form = find("#new-author-form")
-        author_form.find("[name='author-name']").send_keys(author_name)
-        author_form.find("[type='submit']").click()
+        author_form.find("input[name='author-name']").send_keys(author_name)
+        author_form.find("button[type='submit']").click()
         until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
 
     type_name = "New type 1"
     try:
-        form.find("[name='ttv_type']").select(type_name)
+        form.find("select[name='ttv_type']").select(type_name)
     except:
-        form.find("[name='ttv_type']").select("-create-new-")
+        form.find("select[name='ttv_type']").select("-create-new-")
         time.sleep(0.5)
         type_form = find("#new-type-form")
-        type_form.find("[name='type-name']").send_keys(type_name)
-        type_form.find("[type='submit']").click()
+        type_form.find("input[name='type-name']").send_keys(type_name)
+        type_form.find("button[type='submit']").click()
         until(lambda: len(find_all(".modal-scrollable")) == 0, timeout=5)
 
 @step(u'Then I see a book was published')
