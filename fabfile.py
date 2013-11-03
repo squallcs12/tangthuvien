@@ -88,23 +88,22 @@ class Deploy(object):
 
     @classmethod
     def checkout_source(cls, current_time):
-        release_dir = "%s/releases/%s" % (cls.deploy_dir, current_time)
-        sudo("git clone %s %s;" % (cls.git_source, release_dir))
-        sudo("rm %s" % cls.current_dir)
+        cls.release_dir = "%s/releases/%s" % (cls.deploy_dir, current_time)
+        sudo("git clone %s %s;" % (cls.git_source, cls.release_dir))
 
-        sudo("ln -s %s/releases/%s %s" % (cls.deploy_dir, current_time, cls.current_dir))
-        sudo("cd %s; git checkout %s" % (cls.current_dir, cls.branch()))
-        sudo("chown -R www-data:www-data %s" % release_dir)
+        sudo("cd %s; git checkout %s" % (cls.release_dir, cls.branch()))
+        sudo("chown -R www-data:www-data %s" % cls.release_dir)
 
-        cls.sudo("ln -s %s/media %s/media" % (cls.share_dir, cls.current_dir))
-        cls.sudo("ln -s %s/static %s/static" % (cls.share_dir, cls.current_dir))
+        cls.sudo("ln -s %s/media %s/media" % (cls.share_dir, cls.release_dir))
+        cls.sudo("ln -s %s/static %s/static" % (cls.share_dir, cls.release_dir))
 
-        cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.current_dir))
+        cls.sudo("ln -s %s/local_settings.py %s/local_settings.py" % (cls.share_dir, cls.release_dir))
 
-        cls.sudo("ln -s %s/bin %s" % (cls.current_dir, cls.bin_dir))
-        cls.sudo("ln -s %s %s/env" % (cls.virtualenv_dir, cls.current_dir))
-        cls.sudo("ln -s %s %s/program" % (cls.program_dir, cls.current_dir))
-        cls.sudo("ln -s %s %s/log" % (cls.log_dir, cls.current_dir))
+        cls.sudo("rm -f %s" % cls.bin_dir)
+        cls.sudo("ln -s %s/bin %s" % (cls.release_dir, cls.bin_dir))
+        cls.sudo("ln -s %s %s/env" % (cls.virtualenv_dir, cls.release_dir))
+        cls.sudo("ln -s %s %s/program" % (cls.program_dir, cls.release_dir))
+        cls.sudo("ln -s %s %s/log" % (cls.log_dir, cls.release_dir))
 
     @classmethod
     def sudo_virtualenv(cls, command):
@@ -112,7 +111,7 @@ class Deploy(object):
 
     @classmethod
     def install_requirements(cls):
-        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.current_dir)
+        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.release_dir)
 
     @classmethod
     def get_python_version(cls):
@@ -194,11 +193,15 @@ class Deploy(object):
     @classmethod
     def copy_system_config_files(cls):
         sudo("rm -f /etc/nginx/sites-enabled/tangthuvien.vn.conf")
-        sudo("cp %s/bin/nginx.conf /etc/nginx/sites-enabled/tangthuvien.vn.conf" % cls.current_dir)
+        sudo("cp %s/bin/nginx.conf /etc/nginx/sites-enabled/tangthuvien.vn.conf" % cls.release_dir)
 
     @classmethod
     def restart_web_services(cls):
-        sudo("chmod 777 %s/bin/gunicorn_start.sh" % cls.current_dir)
+
+        sudo("rm %s" % cls.current_dir)
+        sudo("ln -s %s %s" % (cls.release_dir, cls.current_dir))
+
+        sudo("chmod 777 %s/bin/gunicorn_start.sh" % cls.release_dir)
 
         cls.sudo_virtualenv("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
         cls.sudo_virtualenv("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
@@ -207,11 +210,11 @@ class Deploy(object):
 
     @classmethod
     def run_migration(cls):
-        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.current_dir)
+        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.release_dir)
 
     @classmethod
     def collect_statics(cls):
-        cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.current_dir)
+        cls.sudo_virtualenv("cd %s; python manage.py collectstatic --noinput" % cls.release_dir)
 
     @classmethod
     def install_image_libs(cls):
@@ -224,7 +227,7 @@ class Deploy(object):
 
     @classmethod
     def combine_django_messages(cls):
-        cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.current_dir)
+        cls.sudo_virtualenv("cd %s; python manage.py compilemessages" % cls.release_dir)
 
     @classmethod
     def install_kindlegen(cls):
@@ -241,7 +244,7 @@ class Deploy(object):
     def update_cronjob_files(cls):
         replacements = {
             'virtualenv_dir': cls.virtualenv_dir,
-            'current_dir': cls.current_dir,
+            'release_dir': cls.release_dir,
             'share_dir': cls.share_dir,
             'bin_dir': cls.bin_dir,
             'program_dir': cls.program_dir,
@@ -265,7 +268,7 @@ class Deploy(object):
                     continue
                 cron_files = os.listdir(cron_dir)
                 for cron_file in cron_files:
-                    source_file = os.path.join(cls.current_dir, dir_name, "cronjobs", sub_dir, cron_file)
+                    source_file = os.path.join(cls.release_dir, dir_name, "cronjobs", sub_dir, cron_file)
                     destination_file_name = "%s_%s_%s" % (cls.project_name, dir_name, cron_file)
                     destination_file = os.path.join('/', 'etc', sub_dir, destination_file_name)
                     command = "cat %s" % source_file
