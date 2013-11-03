@@ -75,7 +75,7 @@ class Command(BaseCommand):
             sys.stdout.write("You must specific thread and book")
 
         post_count = 0
-        page = 0
+        page = 1
 
         book = Book.objects.get(pk=book_id)
 
@@ -158,12 +158,13 @@ class Command(BaseCommand):
                 chapter.chapter_type_id = 1
                 chapter.save()
                 chapter_number += 1
+
+                copy_log.last_chapter_number = chapter_number
+                copy_log.last_page = page
+                copy_log.last_post = post_count
+                copy_log.is_done = True
+                copy_log.save()
             yield "finish_page %s" % page
             yield ""
 
-        copy_log.last_chapter_number = chapter_number
-        copy_log.last_page = page
-        copy_log.last_post = post_count
-        copy_log.is_done = True
-        copy_log.save()
         yield "finish"
