@@ -11,11 +11,11 @@
 				<form method="post" action="{% url 'edit_chapter' chapter.id %}" class="form-horizontal" id="new-chapter-form">
 					{% csrf_token %}
 					<fieldset>
-						<legend>{% trans 'Edi chapter' %}</legend>
+						<legend>{% trans 'Edit chapter' %}</legend>
 						{% include 'general/form_render.phtml' %}
 						<div class="form-group">
 		                    <div class="col-lg-9 col-lg-offset-3">
-	                      		<button type="submit" id="id_submit" class="btn btn-primary">{% trans 'Save' %}</button> 
+	                      		<button type="submit" id="id_submit" class="btn btn-primary">{% trans 'Save' %}</button>
 	                    	</div>
 	                  	</div>
 					</fieldset>
