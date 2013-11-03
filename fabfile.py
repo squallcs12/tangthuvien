@@ -1,5 +1,5 @@
 from fabric.api import task, run, require, put, sudo, local, env
-import threading
+import os
 
 env.hosts = ['root@210.211.109.43']
 
