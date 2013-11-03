@@ -34,7 +34,7 @@
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		
+
 		  ga('create', 'UA-45006270-1', 'tangthuvien.vn');
 		  {% if request.google_analytic.pageview %}
 		  options = {{request.google_analytic.pageview|jsonify}}
@@ -42,7 +42,7 @@
 		  options = {}
 		  {% endif %}
 		  ga('send', 'pageview', options);
-		
+
 		</script>
 		{% include '_js_defined_params.phtml' %}
 		<script src="{{ STATIC_URL }}js/head_define.js"></script>
@@ -75,5 +75,6 @@
 			</footer>
 		</div>
 	{% print_js %}
+	{% include '_addthis.phtml' %}
 	</body>
 </html>
