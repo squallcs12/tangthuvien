@@ -29,6 +29,12 @@ def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtm
     else:
         form = post_new_book_form(request)
 
+        author_form = AddAuthorForm(prefix='author')
+        type_form = AddBookTypeForm(prefix='type')
+
+        data['author_form'] = author_form
+        data['type_form'] = type_form
+
     data['form'] = form
 
     return TemplateResponse(request, template, data)
