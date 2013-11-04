@@ -5,7 +5,7 @@ Created on Oct 23, 2013
 '''
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
-from book.forms import CopyBookForm
+from book.forms import CopyBookForm, AddAuthorForm, AddBookTypeForm
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from book.models.book_model import Book
@@ -22,12 +22,12 @@ def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtm
     data = {}
 
     if request.method == "POST":
-        form = post_new_book_form(request, data=request.POST, files=request.FILES)
+        form = post_new_book_form(request.user, data=request.POST, files=request.FILES)
         if form.is_valid():
-            book = form.process()
+            book = form.save()
             return HttpResponseRedirect("%s?url=%s" % (reverse('copy_book_process', kwargs={'book_id':book.id}), form.cleaned_data['thread_url']))
     else:
-        form = post_new_book_form(request)
+        form = post_new_book_form(request.user)
 
         author_form = AddAuthorForm(prefix='author')
         type_form = AddBookTypeForm(prefix='type')

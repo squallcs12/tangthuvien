@@ -63,13 +63,40 @@
             $(new_author_option)
                 .html(STR_CREATE_NEW)
                 .prop('value', '-1');
+            $('#new-author-form-div').on('hide.bs.modal', function(){
+                $("#{{form_id}} select[name='author']").val('');
+                $("#{{form_id}} select[name='author']").change();
+            });
+            
+            (function(){
+                function replaceCkeditor(){
+                    $('#new-author-form-div').off('shown.bs.modal', replaceCkeditor);
+                    $('#new-author-form-div textarea').each(function(){
+
+                    CKEDITOR.replace(this, {
+                        "filebrowserWindowWidth": 940,
+                        "toolbar_Basic": [["Styles", "Format", "Bold", "Italic", "Underline"]],
+                        "toolbar_Full": [
+                            ["Styles", "Format", "Bold", "Italic", "Underline"],
+                            ["Image", "Flash", "Table", "HorizontalRule"],
+                            ["TextColor", "BGColor"],
+                            ["Smiley", "SpecialChar"],
+                            ["Source"]],
+                        "filebrowserUploadUrl": "/ckeditor/upload/",
+                        "height": 150,
+                        "width": "100%",
+                        "filebrowserBrowseUrl": "/ckeditor/browse/",
+                        "skin": "moono",
+                        "filebrowserWindowHeight": 725,
+                        "toolbar": "Basic"});
+                    });
+                }
+                $('#new-author-form-div').on('shown.bs.modal', replaceCkeditor);
+            })();
+
             $("#{{form_id}} select[name='author']").change(function(){
                 if($(this).val() == '-1'){
                     $('#new-author-form-div').modal('show'); //it seem that the modal was destroyed and re-created
-                    $('#new-author-form-div').on('hide.bs.modal', function(){
-                        $("#{{form_id}} select[name='author']").val('');
-                        $("#{{form_id}} select[name='author']").change();
-                    });
                 }
             });
             $("#{{form_id}} select[name='author'] option:first").after(new_author_option);
@@ -117,13 +144,13 @@
             $(new_type_option)
                 .html(STR_CREATE_NEW)
                 .prop('value', '-1');
+            $('#new-type-form-div').on('hide.bs.modal', function(){
+                $("#{{form_id}} select[name='ttv_type']").val('');
+                $("#{{form_id}} select[name='ttv_type']").change();
+            });
             $("#{{form_id}} select[name='ttv_type']").change(function(){
                 if($(this).val() == '-1'){
                     $('#new-type-form-div').modal('show');
-                    $('#new-type-form-div').on('hide.bs.modal', function(){
-                        $("#{{form_id}} select[name='ttv_type']").val('');
-                        $("#{{form_id}} select[name='ttv_type']").change();
-                    });
                 }
             });
             $("#{{form_id}} select[name='ttv_type'] option:first").after(new_type_option);

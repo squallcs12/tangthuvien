@@ -42,6 +42,7 @@ class AddAuthorForm(forms.ModelForm):
     def __init__(self,*args, **kwargs):
         super(AddAuthorForm, self).__init__(*args, **kwargs)
         self.fields['information'].required = False
+        self.fields['information'].widget = forms.Textarea()
     class Meta:
         model = Author
         fields = ['name', 'information']
@@ -56,6 +57,9 @@ class PublishNewBookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['user', 'title', 'description', 'cover', 'author', 'ttv_type']
+        widgets = {
+            'user': forms.HiddenInput(),
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(PublishNewBookForm, self).__init__(*args, **kwargs)

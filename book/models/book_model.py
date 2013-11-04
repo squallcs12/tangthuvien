@@ -21,6 +21,7 @@ from tangthuvien import settings
 from unidecode import unidecode
 from django.template.defaultfilters import slugify
 from tangthuvien.rediscache import cache_it
+from ckeditor.fields import RichTextField
 
 class Book(models.Model):
 
@@ -34,7 +35,7 @@ class Book(models.Model):
     slug = models.SlugField(
         _('slug'), unique=True, max_length=255,
         help_text=_("Used to build the book's URL."))
-    description = models.TextField(blank=True)
+    description = RichTextField(blank=True)
     author = models.ForeignKey('book.Author')
     categories = models.ManyToManyField(
         'book.Category',
