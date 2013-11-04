@@ -68,6 +68,7 @@ def and_i_was_at_the_last_page_of_listing(step):
 def choose_category_filter(name):
     world.current_url = browser().current_url
     find(".categories_filters .bootstrap-tagsinput input").send_keys('c')
+    until(lambda: find(".typeahead.dropdown-menu").find_element_by_link_text(name))
     find(".typeahead.dropdown-menu").find_element_by_link_text(name).click()
 
 
