@@ -65,6 +65,7 @@ class PublishNewBookForm(forms.ModelForm):
         super(PublishNewBookForm, self).__init__(*args, **kwargs)
         self.fields['user'].editable = False
         self.fields['user'].initial = user.id
+        self.fields['cover'].required = False
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()
