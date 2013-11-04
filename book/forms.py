@@ -50,29 +50,17 @@ class AddBookTypeForm(forms.ModelForm):
     class Meta:
         model = BookType
         fields = ['name']
-    name = forms.CharField()
 
-class PublishNewBookForm(forms.Form):
-    title = forms.CharField(max_length=255)
-    description = forms.CharField(widget=CKEditorWidget())
-    cover = forms.ImageField(required=False)
-    author = forms.ModelChoiceField(queryset=Author.objects.order_by('name'))
-    ttv_type = forms.ModelChoiceField(queryset=BookType.objects.order_by('name'))
+class PublishNewBookForm(forms.ModelForm):
 
-    def __init__(self, request, *args, **kwargs):
-        self.request = request
+    class Meta:
+        model = Book
+        fields = ['user', 'title', 'description', 'cover', 'author', 'ttv_type']
+
+    def __init__(self, user, *args, **kwargs):
         super(PublishNewBookForm, self).__init__(*args, **kwargs)
-
-    def process(self):
-        book = Book()
-        book.user = self.request.user
-        for key, value in self.cleaned_data.items():
-            setattr(book, key, value)
-        book.save()
-
-        messages.success(self.request, _("New book was published successfully."))
-
-        return book
+        self.fields['user'].editable = False
+        self.fields['user'].initial = user.id
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()
