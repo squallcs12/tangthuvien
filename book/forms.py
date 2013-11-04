@@ -79,16 +79,20 @@ class CopyBookForm(PublishNewBookForm):
                 return False
         return is_valid
 
+style_font_size_choices = [(item, item) for item in settings.BOOK_READING_STYLE_FONT_SIZES]
+style_font_size_choices.insert(0, ('', '---'))
+style_font_family_choices = [(item, item) for item in settings.BOOK_READING_STYLE_FONT_FAMILIES]
+style_font_family_choices.insert(0, ('', '---'))
 
 class ConfigReadingSectionForm(forms.Form):
     font_family = forms.ChoiceField(
                     widget=forms.Select(attrs={'data-css-name':'font-family'}),
-                    choices=[('', '---'), ('Arial', 'Arial'), ('Tahoma', 'Tahoma'), ],
+                    choices=style_font_family_choices,
                     required=False,
                     )
     font_size = forms.ChoiceField(
                     widget=forms.Select(attrs={'data-css-name':'font-size'}),
-                    choices=[('', '---'), ('20px', '20px'), ('30px', '30px'), ],
+                    choices=style_font_size_choices,
                     required=False
                     )
 
