@@ -14,18 +14,18 @@ from tangthuvien import settings as st
 @step(u'Given a book exist')
 def given_a_book_exist(step):
     world.book = Book.objects.all()[0]
-    
+
 @step(u'And some chapter was posted')
 def and_some_chapter_was_posted(step):
     a_new_chapter_was_posted_to_the_book(step, world.book)
-    
+
 @step(u'And after period of time')
 def and_after_period_of_time(step):
     call_command("generate_prc", book=world.book.id)
-    
+
 @step(u'Then a prc file was generated for this book')
 def then_a_prc_file_was_generated_for_this_book(step):
-    prc_file = st.realpath(world.book.prc_file)
+    prc_file = st.media_path(world.book.prc_file)
     os.path.isfile(prc_file).should.be.true
 
 @step(u'And the prc file was listed in the list of attachments')
