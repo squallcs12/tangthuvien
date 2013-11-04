@@ -102,7 +102,7 @@ def new_chapter(sender, **kwargs):
 def new_book(sender, **kwargs):
     if kwargs.get('created'):
         book = kwargs.get('instance')
-        folder = settings.realpath(book.upload_attachment_dir)
+        folder = settings.media_path(book.upload_attachment_dir)
         if not os.path.exists(folder):
             os.mkdir(folder)
 

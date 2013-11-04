@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from book.forms import PostNewChapterForm
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 
 @login_required
 def main(request, book_id, post_new_chapter_form=PostNewChapterForm, template="book/post_new_chapter.phtml"):
@@ -17,12 +19,13 @@ def main(request, book_id, post_new_chapter_form=PostNewChapterForm, template="b
     data['book'] = book
 
     if request.method == "POST":
-        form = post_new_chapter_form(request, book, data=request.POST)
+        form = post_new_chapter_form(book, request.user, request.POST)
         if form.is_valid():
-            chapter = form.process()
+            chapter = form.save()
+            messages.success(request, _('New chapter was posted successfully.'))
             return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number': chapter.number}))
     else:
-        form = post_new_chapter_form(request, book)
+        form = post_new_chapter_form(book, request.user)
 
     data['form'] = form
 

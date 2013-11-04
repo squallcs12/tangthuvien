@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 @login_required
 def main(request, chapter_id, edit_chapter_form=EditChapterForm, template="book/edit_chapter.phtml"):
