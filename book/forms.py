@@ -4,8 +4,7 @@ Created on Sep 21, 2013
 @author: antipro
 '''
 from django import forms
-from django.forms import ModelForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from book.models import Chapter
 from book.models.chapter_model import Chapter
 from book.models import ChapterType, Author, BookType
@@ -17,81 +16,56 @@ from django.contrib import messages
 from book.models.copy_model import Copy
 from django.core.exceptions import ObjectDoesNotExist
 
-class PostNewChapterForm(forms.Form):
-    title = forms.CharField(max_length=255)
-    number = forms.IntegerField()
-    content = forms.CharField(widget=CKEditorWidget())
-    chapter_type = forms.ModelChoiceField(queryset=ChapterType.objects)
+class PostNewChapterForm(forms.ModelForm):
 
-    def __init__(self, request, book, *args, **kwargs):
-        self.request = request
-        self.book = book
+    def __init__(self, book, user, *args, **kwargs):
         super(PostNewChapterForm, self).__init__(*args, **kwargs)
+        self.fields['book'].initial = book.id
+        self.fields['user'].initial = user.id
+        self.fields['user'].editable = False
+        self.fields['book'].editable = False
 
-    def process(self):
-        chapter = Chapter()
-        chapter.book = self.book
-        chapter.user = self.request.user
-        for key, value in self.cleaned_data.items():
-            setattr(chapter, key, value)
-        chapter.save()
+    class Meta:
+        model = Chapter
+        fields = ['book', 'user', 'title', 'number', 'content', 'chapter_type']
+        widgets = {
+            'book': forms.HiddenInput(),
+            'user': forms.HiddenInput(),
+        }
 
-        messages.success(self.request, _("New chapter was posted successfully."))
-
-        return chapter
-
-class EditChapterForm(ModelForm):
+class EditChapterForm(forms.ModelForm):
     class Meta:
         model = Chapter
         fields = ['title', 'number', 'content']
 
-class AddAuthorForm(forms.Form):
-    name = forms.CharField()
-    description = forms.CharField(widget=forms.Textarea(), required=False)
+class AddAuthorForm(forms.ModelForm):
+    def __init__(self,*args, **kwargs):
+        super(AddAuthorForm, self).__init__(*args, **kwargs)
+        self.fields['information'].required = False
+        self.fields['information'].widget = forms.Textarea()
+    class Meta:
+        model = Author
+        fields = ['name', 'information']
 
-    def process(self):
-        author = Author()
-        for key, value in self.cleaned_data.items():
-            setattr(author, key, value)
-        author.save()
+class AddBookTypeForm(forms.ModelForm):
+    class Meta:
+        model = BookType
+        fields = ['name']
 
-        return author
+class PublishNewBookForm(forms.ModelForm):
 
-class AddBookTypeForm(forms.Form):
-    name = forms.CharField()
+    class Meta:
+        model = Book
+        fields = ['user', 'title', 'description', 'cover', 'author', 'ttv_type']
+        widgets = {
+            'user': forms.HiddenInput(),
+        }
 
-    def process(self):
-        ttv_type = BookType()
-        for key, value in self.cleaned_data.items():
-            setattr(ttv_type, key, value)
-        ttv_type.save()
-
-        return ttv_type
-
-class PublishNewBookForm(forms.Form):
-    title = forms.CharField(max_length=255)
-    description = forms.CharField(widget=CKEditorWidget())
-    cover = forms.ImageField(required=False)
-    author = forms.ModelChoiceField(queryset=Author.objects.order_by('name'))
-    ttv_type = forms.ModelChoiceField(queryset=BookType.objects.order_by('name'))
-
-    def __init__(self, request, *args, **kwargs):
-        self.request = request
+    def __init__(self, user, *args, **kwargs):
         super(PublishNewBookForm, self).__init__(*args, **kwargs)
-        self.author_form = AddAuthorForm(prefix='author')
-        self.type_form = AddBookTypeForm(prefix='type')
-
-
-    def process(self):
-        book = Book()
-        book.user = self.request.user
-        for key, value in self.cleaned_data.items():
-            setattr(book, key, value)
-        book.save()
-
-        messages.success(self.request, _("New book was published successfully."))
-
-        return book
+        self.fields['user'].editable = False
+        self.fields['user'].initial = user.id
+        self.fields['cover'].required = False
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()

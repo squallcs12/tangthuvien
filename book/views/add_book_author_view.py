@@ -11,7 +11,7 @@ def ajax(request, new_author_form=AddAuthorForm):
     form = AddAuthorForm(request.POST, prefix='author')
     returnJson['success'] = False
     if form.is_valid():
-        author = form.process()
+        author = form.save()
         returnJson['success'] = True
         returnJson['id'] = author.id
         returnJson['name'] = author.name

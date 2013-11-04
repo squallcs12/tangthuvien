@@ -152,7 +152,6 @@ RELISH_PROJECT_VERSION = '1.0'
 INSTALLED_APPS = (
     'accounts',
     'book',
-    'ckeditor',
     'custom_admin',
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -174,6 +173,7 @@ INSTALLED_APPS = (
     'tagging',
     'tangthuvien',
     'zinnia',
+    'ckeditor',
 )
 SITE_ID = 1
 
