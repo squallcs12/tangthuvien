@@ -38,28 +38,19 @@ class EditChapterForm(forms.ModelForm):
         model = Chapter
         fields = ['title', 'number', 'content']
 
-class AddAuthorForm(forms.Form):
+class AddAuthorForm(forms.ModelForm):
+    def __init__(self,*args, **kwargs):
+        super(AddAuthorForm, self).__init__(*args, **kwargs)
+        self.fields['information'].required = False
+    class Meta:
+        model = Author
+        fields = ['name', 'information']
+
+class AddBookTypeForm(forms.ModelForm):
+    class Meta:
+        model = BookType
+        fields = ['name']
     name = forms.CharField()
-    description = forms.CharField(widget=forms.Textarea(), required=False)
-
-    def process(self):
-        author = Author()
-        for key, value in self.cleaned_data.items():
-            setattr(author, key, value)
-        author.save()
-
-        return author
-
-class AddBookTypeForm(forms.Form):
-    name = forms.CharField()
-
-    def process(self):
-        ttv_type = BookType()
-        for key, value in self.cleaned_data.items():
-            setattr(ttv_type, key, value)
-        ttv_type.save()
-
-        return ttv_type
 
 class PublishNewBookForm(forms.Form):
     title = forms.CharField(max_length=255)
@@ -71,9 +62,6 @@ class PublishNewBookForm(forms.Form):
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(PublishNewBookForm, self).__init__(*args, **kwargs)
-        self.author_form = AddAuthorForm(prefix='author')
-        self.type_form = AddBookTypeForm(prefix='type')
-
 
     def process(self):
         book = Book()
