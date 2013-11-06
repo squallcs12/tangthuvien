@@ -7,17 +7,20 @@ Created on Aug 13, 2013
 from lettuce_setup.function import *  # @UnusedWildImport
 from book.features.steps.index_steps import i_visit_book_index_page
 from book.features.steps.read_book_steps import i_click_on_a_book, \
-    i_go_to_last_chapter
+    i_go_to_last_chapter, i_click_on_the_button
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.chapter_model import Chapter
 from book.models.book_model import Book
 from book.models import ChapterType
 
+
+@step(u'I am reading a book')
 @step(u'I read a book$')
 def i_read_a_book(step):
     i_visit_book_index_page(step)
     i_click_on_a_book(step)
-    world.book_id = find("#book").get_attribute("item_id")  # @UnusedVariable
+    if len(find_all("#read_book")):
+        find("#read_book").click()
 
 def mark_as_favorite_button():
     return find("#favorite_book")

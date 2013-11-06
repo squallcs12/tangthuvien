@@ -16,7 +16,7 @@ def ajax(request, book_id):
 	upload = request.FILES.get('file')
 	if upload:
 		destination = os.path.join(book.upload_attachment_dir, upload.name)
-		destination_full = settings.realpath(destination)
+		destination_full = settings.media_path(destination)
 		with open(destination_full, "w") as des:
 			for chunk in upload.chunks():
 				des.write(chunk)

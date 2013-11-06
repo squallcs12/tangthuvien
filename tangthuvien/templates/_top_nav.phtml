@@ -15,6 +15,9 @@
 				<li>
 					<a href="{% url 'books_home' %}">{% trans "Books" %}</a>
 				</li>
+				<li>
+					<a href="{% url 'zinnia_entry_archive_index' %}">{% trans "Blog" %}</a>
+				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="change_style_link">
 						{% trans 'Change style' %}
@@ -42,7 +45,7 @@
 				</li>
 				{% else %}
 				<li>
-					<a href="{% url 'login' %}?next={{request.path}}">{% trans "Log in" %}</a>
+					<a href="{% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{request.path}}{% endif %}">{% trans "Log in" %}</a>
 				</li>
 				{% endif %}
 			</ul>

@@ -5,6 +5,20 @@
 {% block title %}{% trans 'Log in' %}{% endblock %}
 {% load_css static /accounts/zocial.css %}
 {% block content %}
+{% if not onetime_show_notification.CAN_LOGIN_WITH_OLD_TANGTHUVIEN_ACCOUNT %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="bs-example">
+            <div class="alert alert-dismissable alert-info">
+                <button type="button" class="close onetime-notification" data-dismiss="alert" data-key="CAN_LOGIN_WITH_OLD_TANGTHUVIEN_ACCOUNT">×</button>
+                <p>
+                    {% trans "You can login with tangthuvien forum account on this site" %}.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="login_page">
 	<div class="row">
 		<div class="col-lg-6">
@@ -17,7 +31,8 @@
 							{% include "general/form_render.phtml" %}
 			            	<div class="form-group">
 		                    	<div class="col-lg-9 col-lg-offset-3">
-		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button> 
+		                      		<button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button>
+		                      		<a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
 		                    	</div>
 		                  	</div>
 						</fieldset>
@@ -36,7 +51,7 @@
 				<p>{% trans 'Associate your account with social network account:' %}</p>
 				{% endif %}
 				<div id="social_login">
-				    <a href="{% url 'socialauth_begin' 'facebook' %}{% back_url %}" class="zocial facebook" 
+				    <a href="{% url 'socialauth_begin' 'facebook' %}{% back_url %}" class="zocial facebook"
 				    	id="facebook" title="{% trans 'Login with your Facebook account' %}">
 				    	{% trans 'Facebook' %}
 				    </a>

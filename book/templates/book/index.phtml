@@ -13,6 +13,7 @@
 {% block meta-description %}{% if page_description %}{{page_description}}{% else %}{% trans 'List of books' %}{% endif %}{% endblock %}
 
 {% block content %}
+	{% include 'book/onetime_notification/user_log_notification.phtml' %}
 	<h3>
 	    {% trans "List of books" %}
         <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
@@ -21,7 +22,10 @@
 	<div class="row">
         <div class="col-lg-6 col-lg-offset-6">
             <form class="categories_filters">
-                <input type="text" name="categories" />
+                <label>
+                    {% trans "Filter book by category" %}
+                    <input type="text" name="categories" class="bootstrap-tagsinput" />
+                </label>
             </form>
             <script>
             (function ($){
@@ -41,7 +45,7 @@
                             $("input[name='categories']").tagsinput('focus');
                         }
                     })
-                    
+
                     {% for category in selectedCategories %}
                     $("input[name='categories']").tagsinput('add', {
                         'id': '{{category.id}}',
@@ -52,7 +56,7 @@
                         reload_book_list_by_category(this);
                     });
                 });
-                
+
                 var loading = false;
                 var current_ajax_request = null;
                 function reload_book_list_by_category(filter){
@@ -72,7 +76,7 @@
                         } else {
                             alert("Not implemented yet");
                         }
-                        
+
                     }
                     loading = true;
                     $("#books_list_block").putLoading();

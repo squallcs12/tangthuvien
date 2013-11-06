@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from unidecode import unidecode
+from ckeditor.fields import RichTextField
 
 from .book_model import Book
 from .category_model import Category
@@ -16,7 +17,7 @@ from .rating_model import Rating, RatingLog
 from .favorite_model import Favorite
 from .profile_model import Profile
 from .attachment_model import Attachment
-
+from .copy_model import Copy
 
 class BookType(models.Model):
     name = models.CharField(max_length=255)
@@ -40,7 +41,7 @@ class Author(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(_('slug'), unique=True, max_length=255,
         help_text=_("Used to build the author's URL."))
-    information = models.TextField(blank=True)
+    information = RichTextField(blank=True)
 
     def __unicode__(self):
         return self.name

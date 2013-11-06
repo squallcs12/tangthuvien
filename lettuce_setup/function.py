@@ -21,8 +21,6 @@ import time
 import sure
 import urlparse
 
-import time
-import urlparse
 def trans(text):
     return ugettext_lazy(text).__unicode__()
 

@@ -1,22 +1,6 @@
 {% load i18n %}
 {% load static_tags %}
 {% load_css static /book/style.css %}
-{% if showcheckbox and not onetime_show_notification.SELECT_BOOK_IN_LIST %}
-<div class="row">
-	<div class="col-lg-12">
-		<div class="bs-example">
-			<div class="alert alert-dismissable alert-info">
-				<button type="button" class="close onetime-notification" data-dismiss="alert" data-key="SELECT_BOOK_IN_LIST">×</button>
-				<p>
-					{% trans "You can select book in the list by clicking to the spacing in book title block" %}.
-					<img src="{{ STATIC_URL }}img/book/help/book_select_before_click.png" />
-					<img src="{{ STATIC_URL }}img/book/help/book_select_after_click.png" />
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-{% endif %}
 <div id="books" class="list {{class}}">
     <div class="row">
         <div class="col-lg-12">

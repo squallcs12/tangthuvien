@@ -11,7 +11,7 @@ def ajax(request, new_type_form=AddBookTypeForm):
     form = new_type_form(request.POST, prefix='type')
     returnJson['success'] = False
     if form.is_valid():
-        ttv_type = form.process()
+        ttv_type = form.save()
         returnJson['success'] = True
         returnJson['id'] = ttv_type.id
         returnJson['name'] = ttv_type.name

@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'accounts/base.phtml' %}
 {% load i18n %}
-{% block title %}List of books{% endblock %}
+{% block title %}Favorite books{{% endblock %}
 
-{% block content %}
+{% block accounts-content %}
 {% if books %}
 <form method="POST" action="{% url 'unfavorite_books' %}">
     {% csrf_token %}
@@ -12,6 +12,6 @@
     </div>
 </form>
 {% else %}
-{% trans "You did not mark any books as favorite yet." %}
+	{% trans "You did not mark any books as favorite yet." %}
 {% endif %}
 {% endblock %}

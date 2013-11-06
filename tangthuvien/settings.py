@@ -57,6 +57,8 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = realpath('media') + '/'
+def media_path(path):
+    return realpath(os.path.join('media', path))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -108,6 +110,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'tangthuvien.context_processors.site_name',
     'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
+    'tangthuvien.context_processors.disqus',
   )  # Optional
 
 MIDDLEWARE_CLASSES = (
@@ -116,7 +119,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    # 'django.middleware.locale.LocaleMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.ClearTemplateJsCss',
@@ -147,30 +150,30 @@ RELISH_APPS = (
 RELISH_PROJECT_NAME = 'tangthuvien'
 RELISH_PROJECT_VERSION = '1.0'
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.comments',
-    'django.contrib.sessions',
+    'accounts',
+    'book',
+    'custom_admin',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'lettuce.django',
-    'tangthuvien',
-    'tagging',
-    'mptt',
-    'south',
-    'book',
+    'django.contrib.auth',
+    'django.contrib.comments',
+    'django.contrib.contenttypes',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.staticfiles',
     'django_coverage',
-    'ckeditor',
-    'custom_admin',
-    'accounts',
+    'jsonify',
+    'lettuce.django',
+    'mptt',
+    'postman',
     'relish',
     'social_auth',
-    'jsonify',
-    'postman',
+    'south',
+    'tagging',
+    'tangthuvien',
+    'zinnia',
+    'ckeditor',
 )
 SITE_ID = 1
 
@@ -197,7 +200,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': "/var/log/tangthuvien.vn/django.log",
+            'filename': "log/django.log",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -245,6 +248,8 @@ REDIS_READING_BOOK_STYLE_KEY = 'READING_BOOK_STYLE'
 BOOK_ATTACHMENTS_COUNT_UPLOAD_LIMIT = 10
 BOOK_ATTACHMENTS_COUNT_APPROVE_LIMIT = 30
 BOOK_ATTACHMENTS_COUNT_DOWNLOAD_LIMIT = 20
+BOOK_READING_STYLE_FONT_FAMILIES = ('Arial', 'Tahoma')
+BOOK_READING_STYLE_FONT_SIZES = ["%spx" % size for size in range(13, 30)]
 
 # social auth
 
@@ -306,6 +311,13 @@ TEST_PASSWORD = ";P/*Aor1%Q-2+c2"
 
 POSTMAN_AUTO_MODERATE_AS = True
 
+# Zinnia
+ZINNIA_AUTO_CLOSE_COMMENTS_AFTER = 0
+ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
+
+# Homepage
+HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
+HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
 try:
     from local_settings import *

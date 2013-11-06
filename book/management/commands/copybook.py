@@ -13,6 +13,8 @@ import sys
 import time
 from django.contrib.auth.models import User
 from tangthuvien import settings
+from book.models.copy_model import Copy
+from django.core.exceptions import ObjectDoesNotExist
 
 class Command(BaseCommand):
     help = """
@@ -26,6 +28,8 @@ class Command(BaseCommand):
              help='Book ID from dev.tangthuvien.vn'),
         make_option('-s', '--start', action='store', dest='start', default=1,
              help='Start page'),
+        make_option('-p', '--start-post', action='store', dest='start_post', default=0,
+             help='Start post index'),
         make_option('-e', '--end', action='store', dest='end', default=0,
              help='End page'),
         make_option('-k', '--skip', action='store', dest='skip', default=1,
@@ -53,23 +57,40 @@ class Command(BaseCommand):
         thread_id = (options.get('thread', 0))
         book_id = int(options.get('book', 0))
         start = int(options.get('start', 1))
+        start_post = int(options.get('start_post', 0))
         end = int(options.get('end', 0))
         log = options.get('log', '')
         if not log:
-            for message in self.copy(thread_id, book_id, start, end):
+            for message in self.copy(thread_id, book_id, start, end, start_post):
                 print message
         else:
             with open(log, "w+") as fb:
                 pass
-            for message in self.copy(thread_id, book_id, start, end):
+            for message in self.copy(thread_id, book_id, start, end, start_post):
                 with open(log, "a") as fb:
                     fb.write("\n%s" % message)
 
-    def copy(self, thread_id, book_id, start, end):
+    def copy(self, thread_id, book_id, start, end, start_post):
         if not thread_id or not book_id:
             sys.stdout.write("You must specific thread and book")
 
+        post_count = 0
+        page = 1
+
         book = Book.objects.get(pk=book_id)
+
+        chapter_number = 1
+        try:
+            copy_log = Copy.objects.get(thread_id=thread_id)
+
+            if not copy_log.is_done:  # other process are running
+                return
+
+            copy_log.is_done = False
+        except ObjectDoesNotExist:
+            copy_log = Copy(book=book, thread_id=thread_id, last_chapter_number=chapter_number, last_page=page, last_post=post_count, is_done=False)
+        copy_log.save()
+
 
         content = self.get_thread_html(thread_id, start)
         content = BeautifulSoup(content)
@@ -83,8 +104,8 @@ class Command(BaseCommand):
         yield "end %s" % end
         yield ""
 
-        chapter_number = 1
         skip = True
+
         for page in range(start, end + 1):
             yield "process_page %s" % page
             content = self.get_thread_html(thread_id, page)
@@ -95,13 +116,18 @@ class Command(BaseCommand):
             posts = posts.split("<!-- / close content container -->")[0:-1]
 
 
+            post_count = 0
+            if page == 1:
+                post_count += 1
             if skip:
                 skip = False
-                posts = posts[1:]
+                post_count += start_post
+
+            if post_count:
+                posts = posts[post_count:]
 
             yield "total_chapter %s" % len(posts)
 
-            post_count = 0
             for post in posts:
                 post_count += 1
                 post = BeautifulSoup(post)
@@ -126,12 +152,18 @@ class Command(BaseCommand):
                 yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
                 chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in vp.text.split("\n") if txt])
-                chapter.number = chapter_number
+                chapter.number = book.chapters_count + 1
                 chapter.book = book
                 chapter.user = user
                 chapter.chapter_type_id = 1
                 chapter.save()
                 chapter_number += 1
+
+                copy_log.last_chapter_number = chapter_number
+                copy_log.last_page = page
+                copy_log.last_post = post_count
+                copy_log.is_done = True
+                copy_log.save()
             yield "finish_page %s" % page
             yield ""
 

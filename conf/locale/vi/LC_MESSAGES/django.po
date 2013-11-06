@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-29 18:20-0500\n"
+"POT-Creation-Date: 2013-11-03 00:36-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,21 +16,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/forms.py:16
+#: accounts/forms.py:17
 msgid ""
 "Please enter a correct %(username)s and password. Note that both fields may "
 "be case-sensitive."
-msgstr "Vui lòng điền đúng tên đăng nhập và mật khẩu."
+msgstr "Vui lòng điền đúng %(username)s và mật khẩu."
 
-#: accounts/forms.py:18
+#: accounts/forms.py:19
 msgid ""
 "Your Web browser doesn't appear to have cookies enabled. Cookies are "
 "required for logging in."
 msgstr ""
 
-#: accounts/forms.py:20
+#: accounts/forms.py:21
 msgid "This account is inactive."
-msgstr ""
+msgstr "Tài khoản đã bị khóa."
 
 #: accounts/templates/accounts/_user_menu.phtml:4
 #: accounts/templates/accounts/password_change.phtml:3
@@ -49,48 +49,52 @@ msgid "Logged out"
 msgstr "Đã đăng xuất"
 
 #: accounts/templates/accounts/login.phtml:5
-#: accounts/templates/accounts/login.phtml:20
-#: tangthuvien/templates/_top_nav.phtml:45
+#: accounts/templates/accounts/login.phtml:34
+#: tangthuvien/templates/_top_nav.phtml:48
 msgid "Log in"
 msgstr "Đăng nhập"
 
-#: accounts/templates/accounts/login.phtml:16
+#: accounts/templates/accounts/login.phtml:15
+msgid "You can login with tangthuvien forum account on this site"
+msgstr "Bạn có thể đăng nhập bằng tài khoản diễn đàn Tàng Thư Viện"
+
+#: accounts/templates/accounts/login.phtml:30
 msgid "Log in with your website account"
 msgstr "Đăng nhập bằng tài khoản website bạn đã đăng ký"
 
-#: accounts/templates/accounts/login.phtml:27
+#: accounts/templates/accounts/login.phtml:41
 msgid "You are currently logged in as"
 msgstr "Bạn đang đăng nhập với tên"
 
-#: accounts/templates/accounts/login.phtml:34
+#: accounts/templates/accounts/login.phtml:48
 msgid "Or log in with your social network account:"
 msgstr "Hoặc đăng nhập bằng tài khoản mạng xã hội của bạn"
 
-#: accounts/templates/accounts/login.phtml:36
+#: accounts/templates/accounts/login.phtml:50
 msgid "Associate your account with social network account:"
 msgstr "Liên kết tài khoản trên website với tài khoản mạng xã hội"
 
-#: accounts/templates/accounts/login.phtml:40
+#: accounts/templates/accounts/login.phtml:54
 msgid "Login with your Facebook account"
 msgstr "Đăng nhập bằng tài khoản Facebook"
 
-#: accounts/templates/accounts/login.phtml:41
+#: accounts/templates/accounts/login.phtml:55
 msgid "Facebook"
 msgstr "Facebook"
 
-#: accounts/templates/accounts/login.phtml:44
+#: accounts/templates/accounts/login.phtml:58
 msgid "Login with your Twitter account"
 msgstr "Đăng nhập bằng tài khoản Twitter"
 
-#: accounts/templates/accounts/login.phtml:45
+#: accounts/templates/accounts/login.phtml:59
 msgid "Twitter"
 msgstr ""
 
-#: accounts/templates/accounts/login.phtml:48
+#: accounts/templates/accounts/login.phtml:62
 msgid "Login with your Google account"
 msgstr "Đăng nhập bằng tài khoản Google"
 
-#: accounts/templates/accounts/login.phtml:49
+#: accounts/templates/accounts/login.phtml:63
 msgid "Google"
 msgstr ""
 
@@ -110,8 +114,8 @@ msgstr "Thay đổi mật khẩu"
 #: accounts/templates/accounts/password_set.phtml:12
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] "Xin thay đổi thông tin sai sau đây"
-msgstr[1] "Xin thay đổi các thông tin sai sau đâ"
+msgstr[0] "Xin thay đổi thông tin sai sau đây."
+msgstr[1] "Xin thay đổi các thông tin sai sau đây."
 
 #: accounts/templates/accounts/password_set.phtml:16
 msgid "Password set"
@@ -139,7 +143,7 @@ msgid "Your password was setted."
 msgstr "Bạn đã đặt mật khẩu."
 
 #: accounts/templates/accounts/profile.phtml:4
-#: tangthuvien/templates/_top_nav.phtml:39
+#: tangthuvien/templates/_top_nav.phtml:42
 msgid "Your profile"
 msgstr "Trang cá nhân"
 
@@ -148,25 +152,42 @@ msgstr "Trang cá nhân"
 msgid "Social accounts"
 msgstr "Tài khoản mạng xã hội"
 
-#: book/forms.py:34
+#: book/forms.py:39
 msgid "New chapter was posted successfully."
 msgstr "Thêm chương mới thành công."
 
-#: book/forms.py:82
+#: book/forms.py:92
 msgid "New book was published successfully."
 msgstr "Thêm sách mới thành công."
+
+#: book/forms.py:104
+msgid "The book is already copied to this site."
+msgstr "Sách này đã được chép qua website này."
+
+#: book/admin/attachment_admin.py:19 tangthuvien/templates/_footer_nav.phtml:8
+#: tangthuvien/templates/_top_nav.phtml:16
+msgid "Books"
+msgstr "Truyện"
+
+#: book/admin/attachment_admin.py:22
+msgid "attacment"
+msgstr "Tệp đính kèm"
+
+#: book/admin/attachment_admin.py:23
+msgid "attachments"
+msgstr "Tệp đính kèm"
 
 #: book/admin/book_admin.py:25
 msgid "Authors"
 msgstr "Tác giả"
 
 #: book/admin/book_admin.py:27 book/admin/book_admin.py:40
-#: book/models/book_model.py:84
+#: book/models/book_model.py:86
 msgid "book"
 msgstr "sách"
 
 #: book/admin/book_admin.py:28 book/admin/book_admin.py:41
-#: book/models/book_model.py:85
+#: book/models/book_model.py:87
 msgid "books"
 msgstr "sách"
 
@@ -183,14 +204,14 @@ msgid "Chapter types"
 msgstr "Loại chương"
 
 #: book/admin/chapter_admin.py:33
-#, python-format
+
 msgid "%(item)s (%(count)i chapter)"
 msgid_plural "%(item)s (%(count)i chapters)"
 msgstr[0] "%(item)s (%(count)i chương)"
 msgstr[1] "%(item)s (%(count)i chương)"
 
 #: book/admin/filter_base.py:38
-#, python-format
+
 msgid "%(item)s (%(count)i %(verbose_name)s)"
 msgid_plural "%(item)s (%(count)i %(verbose_name_plurar)s)"
 msgstr[0] ""
@@ -205,14 +226,14 @@ msgstr ""
 msgid "Used to build the author's URL."
 msgstr "Dùng đề tạo URL cho tác giả"
 
-#: book/models/attachment_model.py:17 book/models/book_model.py:55
+#: book/models/attachment_model.py:21 book/models/book_model.py:55
 #: book/models/chapter_model.py:23 book/models/favorite_model.py:16
 msgid "creation date"
 msgstr "ngày tạo"
 
-#: book/models/attachment_model.py:46 book/models/attachment_model.py:47
+#: book/models/attachment_model.py:48 book/models/attachment_model.py:49
 msgid "attachment"
-msgstr ""
+msgstr "Tệp đính kèm"
 
 #: book/models/book_model.py:31
 msgid "tags"
@@ -269,15 +290,15 @@ msgstr ""
 
 #: book/models/profile_model.py:18
 msgid "Number of attachments was uploaded by this user in current day"
-msgstr ""
+msgstr "Số tệp được tải lên bởi người dùng này trong ngày hôm nay"
 
 #: book/models/profile_model.py:19
 msgid "Number of attachments was approved by this user in current day"
-msgstr ""
+msgstr "Số tệp được xác nhận bởi người dùng ngày trong ngày hôm nay"
 
 #: book/models/profile_model.py:20
 msgid "Number of attachments was downloaded by this user in current day"
-msgstr ""
+msgstr "Số tệp được tải xuống bởi người dùng này trong ngày hôm nay"
 
 #: book/templates/book/_book_attachments.phtml:4
 msgid "Book attachments"
@@ -291,22 +312,64 @@ msgstr "Bạn cần đăng nhập để có thể tải vể"
 msgid "Approve"
 msgstr "Xác nhận"
 
-#: book/templates/book/_books_list.phtml:11
-msgid ""
-"You can select book in the list by clicking to the spacing in book title "
-"block"
-msgstr ""
-"Bạn có thể chọn truyện bằng cách click vào khoản trống bên tiêu đề truyện"
+#: book/templates/book/_book_favorite.phtml:12
+msgid "Required you be logged-in to mark as favorite"
+msgstr "Bạn cần đăng nhập để đánh dấu ưa thích"
 
-#: book/templates/book/_books_list.phtml:26
+#: book/templates/book/_book_favorite.phtml:14
+#: book/templates/book/_book_favorite.phtml:41
+msgid "Favorite"
+msgstr "Ưa thích"
+
+#: book/templates/book/_book_favorite.phtml:16
+#: book/templates/book/_book_favorite.phtml:36
+#: book/templates/book/favorite.phtml:11
+msgid "Unfavorite"
+msgstr "Dừng thích"
+
+#: book/templates/book/_book_rating.phtml:3
+msgid "Rate book"
+msgstr "Đánh giá truyện"
+
+#: book/templates/book/_book_rating.phtml:6
+
+msgid ""
+"\n"
+"\t\t\t\tWas rated <strong><span class=\"average-result\">%(averate)s</span></"
+"strong>\n"
+"\t\t\t\tover <strong><span class=\"rating-count\">%(rating_count)s</span></"
+"strong> ratings\n"
+"\t\t\t"
+msgstr ""
+"\n"
+"\t\t\t\t\t\tĐược đánh giá <strong><span class=\"average-result\">"
+"%(averate)s</span></strong> \n"
+"\t\t\t\t\t\tqua <strong><span class=\"rating-count\">%(rating_count)s</"
+"span></strong> lượt\n"
+"\t\t\t\t\t"
+
+#: book/templates/book/_book_sync_copy.phtml:6
+
+msgid ""
+"This book was copy from <a href=\"http://www.tangthuvien.vn/forum/showthread."
+"php?t=%(thread_id)s\">this</a>"
+msgstr ""
+
+#: book/templates/book/_book_sync_copy.phtml:8
+msgid "Sync new chapter"
+msgstr "Đồng bộ"
+
+#: book/templates/book/_books_list.phtml:10
 msgid "Book name"
 msgstr "Tên sách"
 
-#: book/templates/book/_books_list.phtml:27
+#: book/templates/book/_books_list.phtml:11
 msgid "Categories"
 msgstr "Danh mục"
 
-#: book/templates/book/_books_list.phtml:28
+#: book/templates/book/_books_list.phtml:12
+#: book/templates/book/introduction.phtml:44
+#: tangthuvien/templates/zinnia/entry_list.html:11
 msgid "Author"
 msgstr "Tác giả"
 
@@ -323,12 +386,13 @@ msgstr "Thêm tác giả"
 msgid "Add type"
 msgstr "Thêm loại"
 
-#: book/templates/book/_read_pagination.phtml:10
 #: book/templates/book/_read_pagination.phtml:16
+#: book/templates/book/read.phtml:5
+
 msgid "Chapter %(number)s"
 msgstr "Chương %(number)s"
 
-#: book/templates/book/_read_pagination.phtml:25
+#: book/templates/book/_read_pagination.phtml:27
 msgid "Read chapter"
 msgstr "Đọc chương"
 
@@ -340,7 +404,7 @@ msgstr "Bạn đã hết lượt upload"
 msgid "You need to log-in to upload document"
 msgstr "Bạn cần đăng nhập để upload"
 
-#: book/templates/book/copy_book.phtml:4 book/templates/book/index.phtml:19
+#: book/templates/book/copy_book.phtml:4 book/templates/book/index.phtml:20
 msgid "Copy book"
 msgstr "Chép sách"
 
@@ -353,23 +417,72 @@ msgstr "Chép sách từ tangthuvien.vn qua website này"
 msgid "Copy"
 msgstr "Chép"
 
-#: book/templates/book/favorite.phtml:11 book/templates/book/read.phtml:103
-#: book/templates/book/read.phtml.py:121
-msgid "Unfavorite"
-msgstr "Dừng thích"
+#: book/templates/book/edit_chapter.phtml:4
+#: book/templates/book/edit_chapter.phtml:14
+msgid "Edit chapter"
+msgstr "Sửa chương"
+
+#: book/templates/book/edit_chapter.phtml:18
+msgid "Save"
+msgstr "Lưu"
 
 #: book/templates/book/favorite.phtml:15
 msgid "You did not mark any books as favorite yet."
 msgstr "Bạn chưa đánh dấu truyện yêu thích nào cả."
 
 #: book/templates/book/index.phtml:11 book/templates/book/index.phtml.py:13
-#: book/templates/book/index.phtml:17
+#: book/templates/book/index.phtml:18
 msgid "List of books"
 msgstr "Danh sách truyện"
 
-#: book/templates/book/index.phtml:18
+#: book/templates/book/index.phtml:19
 msgid "New book"
 msgstr "Đăng sách mới"
+
+#: book/templates/book/index.phtml:26
+msgid "Filter book by category"
+msgstr "Lọc theo danh mục"
+
+#: book/templates/book/introduction.phtml:28
+msgid "Number of chapters"
+msgstr "Tổng số chương"
+
+#: book/templates/book/introduction.phtml:32
+msgid "Alternate titles"
+msgstr "Các tên khác"
+
+#: book/templates/book/introduction.phtml:36
+msgid "Year of Release"
+msgstr "Năm phát hành"
+
+#: book/templates/book/introduction.phtml:40
+msgid "Status"
+msgstr "Trạng thái"
+
+#: book/templates/book/introduction.phtml:48
+msgid "Genre"
+msgstr "Thể loại"
+
+#: book/templates/book/introduction.phtml:71
+msgid "Introduction"
+msgstr "Giới thiệu"
+
+#: book/templates/book/introduction.phtml:77
+msgid "Posted chapters"
+msgstr "Chương đã đăng"
+
+#: book/templates/book/introduction.phtml:89
+#: tangthuvien/templates/homepage.phtml:41
+msgid "Testimonials"
+msgstr ""
+
+#: book/templates/book/introduction.phtml:103
+msgid "Continue reading"
+msgstr "Đọc tiếp"
+
+#: book/templates/book/introduction.phtml:108
+msgid "Start reading"
+msgstr "Bắt đầu đọc"
 
 #: book/templates/book/post_new_chapter.phtml:4
 msgid "Post new chapter"
@@ -380,12 +493,12 @@ msgstr "Đăng chương mới"
 msgid "Post chapter"
 msgstr "Đăng chương"
 
-#: book/templates/book/prc_html_file.phtml:8
+#: book/templates/book/prc_html_file.phtml:9
 msgid "Table of content"
-msgstr ""
+msgstr "Mục lục"
 
-#: book/templates/book/prc_html_file.phtml:13
-#: book/templates/book/prc_html_file.phtml:24
+#: book/templates/book/prc_html_file.phtml:14
+#: book/templates/book/prc_html_file.phtml:25
 msgid "Chapter"
 msgstr "Chương"
 
@@ -398,69 +511,57 @@ msgstr "Đăng sách mới"
 msgid "Publish"
 msgstr "Đăng"
 
-#: book/templates/book/read.phtml:5
-msgid "Page"
-msgstr "Trang"
-
-#: book/templates/book/read.phtml:33
+#: book/templates/book/read.phtml:49
 msgid "Add Chapter"
 msgstr "Thêm chương"
 
-#: book/templates/book/read.phtml:42 book/templates/book/read.phtml.py:52
-msgid "Thank the poster"
-msgstr "Cám ơn người đăng"
+#: book/templates/book/read.phtml:51
+msgid "Edit Chapter"
+msgstr "Sửa chương"
 
-#: book/templates/book/read.phtml:52
+#: book/templates/book/read.phtml:61
+
+msgid "Thank %(name)s"
+msgstr "Cám ơn %(name)s"
+
+#: book/templates/book/read.phtml:71
 msgid "You thanked already"
 msgstr "Bạn đã cám ơn rồi"
 
-#: book/templates/book/read.phtml:52
+#: book/templates/book/read.phtml:71
 msgid "Required you be logged-in to thank"
 msgstr "Bạn cần đăng nhập để cám ơn"
 
-#: book/templates/book/read.phtml:54
+#: book/templates/book/read.phtml:71
+msgid "Thank the poster"
+msgstr "Cám ơn người đăng"
+
+#: book/templates/book/read.phtml:73
 msgid "thank(s)"
 msgstr "cám ơn"
 
-#: book/templates/book/read.phtml:99
-msgid "Required you be logged-in to mark as favorite"
-msgstr "Bạn cần đăng nhập để đánh dấu ưa thích"
-
-#: book/templates/book/read.phtml:101 book/templates/book/read.phtml.py:126
-msgid "Favorite"
-msgstr "Ưa thích"
-
-#: book/templates/book/read.phtml:142
-msgid "Rate book"
-msgstr "Đánh giá truyện"
-
-#: book/templates/book/read.phtml:145
-#, python-format
+#: book/templates/book/onetime_notification/user_log_notification.phtml:9
 msgid ""
-"\n"
-"\t\t\t\t\t\tWas rated <strong><span class=\"average-result\">%(averate)s</"
-"span></strong> \n"
-"\t\t\t\t\t\tover <strong><span class=\"rating-count\">%(rating_count)s</"
-"span></strong> ratings\n"
-"\t\t\t\t\t"
+"Registered user will be redirect to the last read chapter when visit the "
+"book introduction page."
 msgstr ""
-"\n"
-"\t\t\t\t\t\tĐược đánh giá <strong><span class=\"average-result\">"
-"%(averate)s</span></strong> \n"
-"\t\t\t\t\t\tqua <strong><span class=\"rating-count\">%(rating_count)s</"
-"span></strong> lượt\n"
-"\t\t\t\t\t"
+"Người dùng đã đăng ký khi xem trang giới thiệu sách sẽ được chuyển ngay đến "
+"chương đang đọc lần cuối"
 
 #: book/views/attachment_approve_view.py:29
 msgid "You reach the limited of book attachments approving count"
 msgstr "Bạn đã hết lượt xác nhận tệp upload"
+
+#: book/views/edit_chapter_view.py:27
+msgid "Your chapter was edited successfully."
+msgstr "Thêm chương mới thành công."
 
 #: custom_admin/templates/admin/change_list_results.html:18
 msgid "Remove from sorting"
 msgstr ""
 
 #: custom_admin/templates/admin/change_list_results.html:19
-#, python-format
+
 msgid "Sorting priority: %(priority_number)s"
 msgstr ""
 
@@ -476,25 +577,24 @@ msgstr "--"
 msgid "Back to top"
 msgstr "Về đầu trang"
 
-#: tangthuvien/templates/_footer_nav.phtml:8
-#: tangthuvien/templates/_top_nav.phtml:16
-msgid "Books"
-msgstr "Truyện"
-
 #: tangthuvien/templates/_js_defined_params.phtml:5
 msgid "-create-new-"
 msgstr "-Tạo mới-"
 
-#: tangthuvien/templates/_top_banner.phtml:8
+#: tangthuvien/templates/_top_banner.phtml:9
 #: tangthuvien/templates/base.html:14
 msgid "Book reading website"
 msgstr "Website truyện kiếm hiệp Việt Nam."
 
-#: tangthuvien/templates/_top_nav.phtml:20
+#: tangthuvien/templates/_top_nav.phtml:19
+msgid "Blog"
+msgstr ""
+
+#: tangthuvien/templates/_top_nav.phtml:23
 msgid "Change style"
 msgstr "Đổi style"
 
-#: tangthuvien/templates/_top_nav.phtml:40
+#: tangthuvien/templates/_top_nav.phtml:43
 msgid "Log out"
 msgstr "Đăng xuất"
 
@@ -502,6 +602,343 @@ msgstr "Đăng xuất"
 msgid "Powered by <a href=\"/\">tangthuvien.vn</a>"
 msgstr ""
 "Bản quyền thuộc về <a href=\"http://tangthuvien.vn\">tangthuvien.vn</a>"
+
+#: tangthuvien/templates/homepage.phtml:7
+msgid "News"
+msgstr "Thông báo"
+
+#: tangthuvien/templates/homepage.phtml:20
+msgid "Recent new chapters"
+msgstr "Chương mới cập nhật"
+
+#: tangthuvien/templates/zinnia/_entry_detail_base.html:15
+msgid "Last update on"
+msgstr "lần chỉnh sửa cuối"
+
+#: tangthuvien/templates/zinnia/_entry_detail_base.html:50
+msgid "Short url"
+msgstr "Link tắt"
+
+#: tangthuvien/templates/zinnia/_entry_detail_base.html:52
+
+msgid "Short URL to %(object)s"
+msgstr "Link tắt tới %(object)s"
+
+#: tangthuvien/templates/zinnia/_sidebar.phtml:4
+msgid "Yearly archives"
+msgstr "Bài theo năm"
+
+#: tangthuvien/templates/zinnia/_sidebar.phtml:17
+msgid "Recent entries"
+msgstr "Bài gần đây"
+
+#: tangthuvien/templates/zinnia/_sidebar.phtml:23
+msgid "Popular entries"
+msgstr "Bài nhiều lượt đọc"
+
+#: tangthuvien/templates/zinnia/entry_archive.html:5
+#: tangthuvien/templates/zinnia/entry_archive.html:7
+#: tangthuvien/templates/zinnia/entry_list.html:11
+msgid "Latest entries"
+msgstr "Bài mới nhất"
+
+#: tangthuvien/templates/zinnia/entry_archive.html:22
+#: tangthuvien/templates/zinnia/entry_list.html:39
+msgid "No entries yet."
+msgstr "Chưa có bài nào"
+
+#: tangthuvien/templates/zinnia/entry_detail_base.html:35
+msgid "Edit the entry"
+msgstr "Sửa bài viết"
+
+#: tangthuvien/templates/zinnia/entry_detail_base.html:44
+msgid "Next entry"
+msgstr "Bài viết tiếp theo"
+
+#: tangthuvien/templates/zinnia/entry_detail_base.html:54
+msgid "Previous entry"
+msgstr "Bài viết trước"
+
+#: tangthuvien/templates/zinnia/entry_detail_base.html:64
+msgid "Related entries"
+msgstr "Bài viết liên quan"
+
+#: tangthuvien/templates/zinnia/entry_list.html:5
+msgid "Latest entries for"
+msgstr "Bài viết mới nhất cho"
+
+#: tangthuvien/templates/zinnia/entry_list.html:5
+msgid "the category"
+msgstr "danh mục"
+
+#: tangthuvien/templates/zinnia/entry_list.html:5
+msgid "the tag"
+msgstr "nhãn"
+
+#: tangthuvien/templates/zinnia/entry_list.html:5
+msgid "the author"
+msgstr "tác giả"
+
+#: tangthuvien/templates/zinnia/entry_list.html:5
+msgid "page"
+msgstr "trang"
+
+#: tangthuvien/templates/zinnia/entry_list.html:11
+msgid "Category"
+msgstr "danh mục"
+
+#: tangthuvien/templates/zinnia/entry_list.html:11
+msgid "Tag"
+msgstr "Nhãn"
+
+#: tangthuvien/templates/zinnia/entry_list.html:11
+msgid "Page"
+msgstr "Trang"
+
+#: tangthuvien/templates/zinnia/entry_list.html:19
+
+msgid "Category archives: %(category)s"
+msgstr ""
+
+#: tangthuvien/templates/zinnia/entry_list.html:26
+
+msgid "Tag archives: %(tag)s"
+msgstr ""
+
+#: tangthuvien/templates/zinnia/entry_list.html:30
+
+msgid "Author archives: %(author)s"
+msgstr ""
+
+#: tangthuvien/templates/zinnia/entry_list.html:58
+#: tangthuvien/templates/zinnia/entry_list.html:59
+msgid "Edit the category"
+msgstr "Sửa danh mục"
+
+#: tangthuvien/templates/zinnia/entry_list.html:65
+#: tangthuvien/templates/zinnia/entry_list.html:66
+msgid "Edit the tag"
+msgstr "Sửa nhãn"
+
+#: tangthuvien/templates/zinnia/entry_list.html:72
+#: tangthuvien/templates/zinnia/entry_list.html:73
+msgid "Edit the author"
+msgstr "Sửa tác giả"
+
+#: templates/postman/archives.html:3
+msgid "Archived Messages"
+msgstr ""
+
+#: templates/postman/archives.html:7
+msgid ""
+"Messages in this folder will never be removed. You can use this folder for "
+"long term storage."
+msgstr ""
+
+#: templates/postman/base.html:4
+msgid "Messaging"
+msgstr ""
+
+#: templates/postman/base.html:26
+msgid "Inbox"
+msgstr ""
+
+#: templates/postman/base.html:29 templates/postman/sent.html:3
+msgid "Sent Messages"
+msgstr ""
+
+#: templates/postman/base.html:32 templates/postman/write.html:3
+msgid "Write"
+msgstr "Gởi tin"
+
+#: templates/postman/base.html:35
+msgid "Archives"
+msgstr "Lưu trữ"
+
+#: templates/postman/base.html:38
+msgid "Trash"
+msgstr "Thùng rác"
+
+#: templates/postman/base_folder.html:16
+msgid "Sorry, this page number is invalid."
+msgstr "Xin lỗi, số trang không hợp lý."
+
+#: templates/postman/base_folder.html:20
+msgid "by conversation"
+msgstr "theo cuộc trò chuyện"
+
+#: templates/postman/base_folder.html:21
+msgid "by message"
+msgstr "theo tin"
+
+#: templates/postman/base_folder.html:25 templates/postman/view.html:44
+msgid "Delete"
+msgstr "Xóa"
+
+#: templates/postman/base_folder.html:26 templates/postman/view.html:48
+msgid "Archive"
+msgstr "Lưu trữ"
+
+#: templates/postman/base_folder.html:27
+msgid "Undelete"
+msgstr "Khôi phục"
+
+#: templates/postman/base_folder.html:32
+msgid "Action"
+msgstr "Hành động"
+
+#: templates/postman/base_folder.html:33
+msgid "Sender"
+msgstr "Người gởi"
+
+#: templates/postman/base_folder.html:34 templates/postman/reply.html:4
+msgid "Recipient"
+msgstr "Người nhận"
+
+#: templates/postman/base_folder.html:35
+msgid "Subject"
+msgstr "Tiêu đề"
+
+#: templates/postman/base_folder.html:36
+msgid "Date"
+msgstr "Ngày"
+
+#: templates/postman/base_folder.html:51
+msgid "g:i A,M j,n/j/y"
+msgstr ""
+
+#: templates/postman/base_folder.html:58
+msgid "No messages."
+msgstr "Không có tin nhắn."
+
+#: templates/postman/base_write.html:31
+msgid "Send"
+msgstr "Gởi"
+
+#: templates/postman/email_user.txt:1
+msgid "Dear user,"
+msgstr "Gởi người dùng,"
+
+#: templates/postman/email_user.txt:3 templates/postman/email_visitor.txt:3
+
+msgid "On %(date)s, you asked to send a message to the user '%(recipient)s'."
+msgstr "Vào %(date)s, bạn đã đề nghị gởi một tin nhắn tới người dùng '%(recipient)s'."
+
+#: templates/postman/email_user.txt:5 templates/postman/email_visitor.txt:5
+msgid "Your message has been rejected by the moderator"
+msgstr "Tin của bạn đã bị từ chối bởi quản trị viên"
+
+#: templates/postman/email_user.txt:5 templates/postman/email_visitor.txt:5
+msgid ", for the following reason:"
+msgstr ", vì lý do sau đây:"
+
+#: templates/postman/email_user.txt:9 templates/postman/email_visitor.txt:10
+
+msgid "On %(date)s, you sent a message to the user '%(sender)s'."
+msgstr "Vào %(date)s, bạn đã gởi một tin nhắn tới người dùng '%(sender)s'."
+
+#: templates/postman/email_user.txt:10
+msgid "Your correspondent has given you an answer."
+msgstr "Người nhận đã gởi cho bạn một trả lời."
+
+#: templates/postman/email_user.txt:11
+
+msgid "You have received a copy of a response from the user '%(sender)s'."
+msgstr "Bạn đã nhận được một sao chép của trả lời từ người dùng '%(sender)s'."
+
+#: templates/postman/email_user.txt:13
+
+msgid "You have received a message from the user '%(sender)s'."
+msgstr "Bạn đã nhận được một tin nhắn từ người dùng '%(sender)s'."
+
+#: templates/postman/email_user.txt:16 templates/postman/email_visitor.txt:14
+msgid "Thank you again for your interest in our services."
+msgstr "Cám ơn bạn lần nữa vì đã tin tưởng vào dịch vụ của chúng tôi."
+
+#: templates/postman/email_user.txt:17 templates/postman/email_visitor.txt:16
+msgid "The site administrator"
+msgstr "Quảng trị viên website"
+
+#: templates/postman/email_user.txt:19 templates/postman/email_visitor.txt:18
+msgid ""
+"Note: This message is issued by an automated system.\n"
+"Do not reply, this would not be taken into account."
+msgstr "Ghi chú: Đây là thư tự động, vui lòng không trả lời thư này."
+
+#: templates/postman/email_user_subject.txt:1
+#: templates/postman/email_visitor_subject.txt:1
+
+msgid "Message \"%(subject)s\" on the site %(sitename)s"
+msgstr "Tin nhắn \"%(subject)s\" trên website %(sitename)s"
+
+#: templates/postman/email_visitor.txt:1
+msgid "Dear visitor,"
+msgstr "Gởi khách viếng thăm,"
+
+#: templates/postman/email_visitor.txt:8
+msgid "As a reminder, please find below the content of your message."
+msgstr ""
+
+#: templates/postman/email_visitor.txt:11
+msgid "Please find below the answer from your correspondent."
+msgstr "Vui lòng tìm dưới đây câu trả lời từ người cùng trò chuyện."
+
+#: templates/postman/email_visitor.txt:15
+msgid "For more comfort, we encourage you to open an account on the site."
+msgstr "Để tiện hơn, bạn nên tạo một tài khoản trên website."
+
+#: templates/postman/inbox.html:3
+msgid "Received Messages"
+msgstr "Các tin đã nhận"
+
+#: templates/postman/inbox.html:6
+msgid "Received"
+msgstr "Đã nhận"
+
+#: templates/postman/reply.html:3 templates/postman/view.html:52
+#: templates/postman/view.html.py:58 templates/postman/view.html:65
+msgid "Reply"
+msgstr "Trả lời"
+
+#: templates/postman/sent.html:6
+msgid "Sent"
+msgstr "Đã gởi"
+
+#: templates/postman/trash.html:3
+msgid "Deleted Messages"
+msgstr "Các tin đã xóa"
+
+#: templates/postman/trash.html:10
+msgid ""
+"Messages in this folder can be removed from time to time. For long term "
+"storage, use instead the archive folder."
+msgstr ""
+
+#: templates/postman/view.html:6
+msgid "Conversation"
+msgstr "Cuộc trò chuyện"
+
+#: templates/postman/view.html:6
+msgid "Message"
+msgstr "Tin"
+
+#: templates/postman/view.html:23
+msgid "Rejected"
+msgstr "Bị từ chối"
+
+#: templates/postman/view.html:23
+msgid ":"
+msgstr ""
+
+#: templates/postman/view.html:40
+msgid "Back"
+msgstr "Quay lại"
+
+#~ msgid ""
+#~ "You can select book in the list by clicking to the spacing in book title "
+#~ "block"
+#~ msgstr ""
+#~ "Bạn có thể chọn truyện bằng cách click vào khoản trống bên tiêu đề truyện"
 
 #~ msgid "Login with Facebook"
 #~ msgstr "Đăng nhập bằng Facebook"

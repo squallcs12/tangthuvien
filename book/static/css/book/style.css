@@ -1,6 +1,5 @@
 /* books listing section */
 .form-control.chapter-list{
-	width: 50%;
 	display: inline-block;
 	height: 29px;
 	margin: 20px 0;
@@ -23,4 +22,10 @@
 }
 #read_config button{
 	float: right;
+}
+.categories_filters label{
+	float: right;
+}
+.categories_filters label .bootstrap-tagsinput{
+	width: 350px;
 }

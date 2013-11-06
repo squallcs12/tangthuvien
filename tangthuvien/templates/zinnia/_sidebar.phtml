@@ -1,0 +1,27 @@
+{% load i18n comments zinnia_tags %}
+{% if date_list %}
+<div class="panel panel-default">
+	<div class="panel-heading">{% trans "Yearly archives" %}</div>
+	<div class="panel-body">
+		<ul>
+			{% for date in date_list %}
+			<li>
+				<a href="{% url 'zinnia_entry_archive_year' date|date:"Y" %}" rel="archives">{{ date|date:"Y" }}</a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endif %}
+<div id="widget-recents" class="panel panel-default">
+	<div class="panel-heading">{% trans "Recent entries" %}</div>
+	<div class="panel-body">
+		{% get_recent_entries %}
+	</div>
+</div>
+<div id="widget-populars" class="panel panel-default">
+	<div class="panel-heading">{% trans "Popular entries" %}</div>
+	<div class="panel-body">
+		{% get_popular_entries %}
+	</div>
+</div>

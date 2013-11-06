@@ -22,30 +22,37 @@ class Command(BaseCommand):
     """
 
     option_list = BaseCommand.option_list + (
-        make_option('-b', '--book', action='store', dest='book', default='',
+        make_option('-b', '--book', action='store', dest='book', default='0',
+             help='Book ID from dev.tangthuvien.vn'),
+        make_option('-a', '--all', action='store', dest='all', default=0,
              help='Book ID from dev.tangthuvien.vn'),
     )
 
     def handle(self, *args, **options):
         book_id = int(options.get('book', 0))
-        if book_id:
+        is_all = int(options.get('all', 0))
+
+        if is_all:
+            books = Book.objects.all()
+        elif book_id:
             books = [Book.objects.get(pk=book_id)]
         else:
             yesterday = datetime.date.today() - datetime.timedelta(1)
-            books = [Book.objects.filter(last_update__gt=yesterday)]
+            books = Book.objects.filter(last_update__gt=yesterday)
+
         for book in books:
             assert isinstance(book, Book)
             html_content = render_to_string('book/prc_html_file.phtml', {'book':book})
-            with codecs.open(settings.realpath(book.html_file), "w", "utf-8") as fp:
+            with codecs.open(settings.media_path(book.html_file), "w", "utf-8") as fp:
                 fp.write(html_content)
 
         for book in books:
-            os.system("%s %s -c1 -o %s" % (
+            os.system("%s %s -c2 -o %s" % (
                 settings.realpath('program/kindlegen'),
-                settings.realpath(book.html_file),
+                settings.media_path(book.html_file),
                 book.prc_file_name
             ))
-            file_size = os.path.getsize(settings.realpath(book.prc_file))
+            file_size = os.path.getsize(settings.media_path(book.prc_file))
             try:
                 attachment = Attachment.objects.get(name=book.prc_file_name)
                 attachment.size = file_size
