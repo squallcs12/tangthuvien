@@ -8,9 +8,15 @@
 			<li{% if active_profile %} class="active"{% endif %}>
 				<a href="{% url 'accounts_profile' %}">{% trans 'Profile' %}</a>
 			</li>
-			<li{% if active_changepassword %} class="active"{% endif %}>
-				<a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
-			</li>
+			{% if request.user.password != '!' %}
+				<li{% if active_changepassword %} class="active"{% endif %}>
+					<a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
+				</li>
+			{% else %}
+				<li{% if active_setpassword %} class="active"{% endif %}>
+					<a href="{% url 'set_user_password' %}">{% trans 'Set password' %}</a>
+				</li>
+			{% endif %}
 			<li{% if active_socialaccounts %} class="active"{% endif %}>
 				<a href="{% url 'accounts_social_list' %}">{% trans 'Social accounts' %}</a>
 			</li>
