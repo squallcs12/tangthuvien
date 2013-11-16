@@ -21,6 +21,8 @@ Feature: Book App :: Book listing page
 		And the loading animation finished
 		Then I see only books in those categories was listed
 		And I see the books still there after reload the page
+		When I click browser back button
+		Then I see the previous books was listed
 		When I clear selected book categories
 		And the loading animation finished
 		Then I see all the books were listed

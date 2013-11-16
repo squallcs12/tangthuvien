@@ -68,8 +68,7 @@
                     ajaxSettings['data'] = {};
                     ajaxSettings['data']['categories'] = $(filter).val();
                     ajaxSettings['success'] = function(data){
-                        $("#books_list_block").html(data['content']);
-                        $('title').html(data['title']);
+                        updateBookList(data);
                         $("#books_list_block").removeLoading();
                         if (typeof window.history.pushState != 'undefined'){
                             window.history.pushState(data,"", data['url']);
@@ -81,6 +80,18 @@
                     loading = true;
                     $("#books_list_block").putLoading();
                     current_ajax_request = $.ajax(ajaxSettings);
+                }
+                $(window).on("popstate", function(e){
+                	var data = e.originalEvent.state;
+                	if(data){
+                		updateBookList(data);
+                	} else {
+                		$("input[name='categories']").val("").change();
+                	}
+                });
+                function updateBookList(data){
+                	$("#books_list_block").html(data['content']);
+                    $('title').html(data['title']);
                 }
             })(jQuery);
             </script>
