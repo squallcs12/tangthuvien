@@ -7,11 +7,13 @@ Created on Jul 29, 2013
 from lettuce import step
 from lettuce_setup.function import *  # @UnusedWildImport
 import random
+from book.models.book_model import Book
 
 @step(u'I click on a book')
 def i_click_on_a_book(step):
     book_div = find_all("#books .book").pop()
     world.book_id = book_div.get_attribute('item_id')
+    world.book = Book.objects.get(pk=world.book_id)
     book_div.find("a.title").click()
 
 @step(u'I see the book title and description')

@@ -35,7 +35,7 @@ WebElement.find_all = WebElement.find_elements_by_css_selector
 WebElement.xpath = WebElement.find_element_by_xpath
 
 def has_class(self, class_name):
-    return self.get_attribute('class').split(' ')
+    return class_name in self.get_attribute('class').split(' ')
 WebElement.has_class = has_class
 
 def should_has_class(self, class_name):
