@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django_coverage',
+    'django_extensions',
     'jsonify',
     'lettuce.django',
     'mptt',

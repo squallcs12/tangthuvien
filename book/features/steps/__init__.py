@@ -27,17 +27,23 @@ def clear_user_in_db():
 def clear_prc_folder():
     os.system("rm -f %s/*" % 'media/books/prc')
 
+def execute_ignore(func):
+    try:
+        func()
+    except:
+        pass
+
 @before.all
 def add_super_group_permission():
     from django.contrib.auth.models import Permission
     from django.contrib.contenttypes.models import ContentType
-    content_type = ContentType.objects.get_for_model(Attachment)
+    attachment_content_type = ContentType.objects.get_for_model(Attachment)
+    book_content_type = ContentType.objects.get_for_model(Book)
     group = super_group()
-    can_approve_attachment = Permission.objects.get(codename='can_approve_attachment', content_type=content_type)
-    try:
-        group.permissions.add(can_approve_attachment)
-    except:
-        pass
+    can_approve_attachment = Permission.objects.get(codename='can_approve_attachment', content_type=attachment_content_type)
+    can_generate_prc = Permission.objects.get(codename='can_generate_prc', content_type=book_content_type)
+    execute_ignore(lambda: group.permissions.add(can_approve_attachment))
+    execute_ignore(lambda: group.permissions.add(can_generate_prc))
 
 @before.each_feature
 def before_book_feature(feature):
@@ -82,5 +88,5 @@ def create_book_list():
         for book in world.book_list:
             if random.randint(0, 1):
                 category.books.add(book)
-    
+
     subprocess.call(['rm',  '%s/*' % st.realpath('log/copybook'), '-f'])

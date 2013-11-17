@@ -211,6 +211,7 @@ class Deploy(object):
     @classmethod
     def run_migration(cls):
         cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.release_dir)
+        cls.sudo_virtualenv('cd %s; python manage.py update_permissions;' % cls.release_dir)
 
     @classmethod
     def collect_statics(cls):
