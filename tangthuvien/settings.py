@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django_coverage',
+    'django_extensions',
     'jsonify',
     'lettuce.django',
     'mptt',
@@ -318,6 +319,8 @@ ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
 # Homepage
 HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
 HOMEPAGE_RECENT_ENTRY_COUNT = 3
+
+SOCKET_IO_URL = 'http://localhost:8001'
 
 try:
     from local_settings import *

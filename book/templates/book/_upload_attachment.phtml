@@ -24,6 +24,28 @@
 			var kb = parseInt(bytes / 1024);
 			return kb + " KB";
 		}
+
+		append_new_book_attachment = function (file){
+			var file_id = 'book_attachment_' + file['id'];
+			$('#' + file_id).remove();
+            $("#attachments ul").prepend(
+            	$("<li></li>").prop('id', file_id).html(
+            		$("<a></a>")
+            			.attr('href', file['url'])
+            			.append(
+            				$("<span></span>").addClass("filename").html(file['name'])
+            			)
+            			.append(" ")
+            			.append(
+            				$("<span></span>").addClass("filesize").html(get_size_in_kb(file['size']))
+            			)
+            			.append("<br />")
+            			.append(
+            				$("<span></span>").addClass("date").html(file['creation_date'])
+            			)
+            	)
+            );
+		}
 		$(window).load(function(){
 		    $('#fileupload').fileupload({
 		        url: "{% url 'upload_book_attachment_ajax' book.id %}",
@@ -33,23 +55,7 @@
 		        },
 		        done: function (e, data) {
 		            $.each(data.result.files, function (index, file) {
-		                $("#attachments ul").prepend(
-		                	$("<li></li>").html(
-		                		$("<a></a>")
-		                			.attr('href', file['url'])
-		                			.append(
-		                				$("<span></span>").addClass("filename").html(file['name'])
-		                			)
-		                			.append(" ")
-		                			.append(
-		                				$("<span></span>").addClass("filesize").html(get_size_in_kb(file['size']))
-		                			)
-		                			.append("<br />")
-		                			.append(
-		                				$("<span></span>").addClass("date").html(file['creation_date'])
-		                			)
-		                	)
-		                );
+		            	append_new_book_attachment(file);
 		            });
 		            $('#upload_attachment .progress').hide();
 		        },

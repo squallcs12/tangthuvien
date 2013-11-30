@@ -32,3 +32,16 @@ def then_a_prc_file_was_generated_for_this_book(step):
 def and_the_prc_file_was_listed_in_the_list_of_attachments(step):
     read_book_by_id(world.book.id)
     get_attachments_list().should.contain(world.book.prc_file_name)
+
+@step(u'And I press generate prc button')
+def and_i_press_generate_prc_button(step):
+    until(lambda : not  find("#generate_book_prc").has_class('disabled'))
+    find("#generate_book_prc").click();
+
+@step(u'Then I see the generate prc process was shown')
+def then_i_see_the_generate_prc_process_was_shown(step):
+    find("#generate_book_prc_div .progress").is_displayed().should.be.true
+
+@step(u'When the process is done')
+def when_the_process_is_done(step):
+    until(lambda: not find("#generate_book_prc_div .progress").is_displayed(), 30)

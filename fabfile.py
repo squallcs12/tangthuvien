@@ -211,6 +211,7 @@ class Deploy(object):
     @classmethod
     def run_migration(cls):
         cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.release_dir)
+        cls.sudo_virtualenv('cd %s; python manage.py update_permissions;' % cls.release_dir)
 
     @classmethod
     def collect_statics(cls):
@@ -280,6 +281,19 @@ class Deploy(object):
                     sudo("chmod 777 %s" % destination_file)
 
     @classmethod
+    def install_socket_io(cls):
+        if not cls.is_command_exists("npm"):
+            sudo("cd /tmp; wget http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz")
+            sudo("cd /tmp; tar -xf node-v0.10.22.tar.gz")
+            sudo("cd /tmp/node-v0.10.22; ./configure")
+            sudo("cd /tmp/node-v0.10.22; make")
+            sudo("cd /tmp/node-v0.10.22; make install")
+            path = sudo("whereis npm").split(" ")[1]
+            sudo("%s install socket.io" % path)
+            sudo("%s install express" % path)
+
+
+    @classmethod
     def setup(cls):
         cls.init()
         cls.mkdirs()
@@ -296,6 +310,7 @@ class Deploy(object):
         cls.install_redis()
         cls.install_image_libs()
         cls.install_kindlegen()
+        cls.install_socket_io()
 
     @classmethod
     def deploy(cls):

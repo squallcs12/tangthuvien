@@ -3,6 +3,8 @@ from book.models import Book
 from tangthuvien import settings
 
 import os
+from book.models.attachment_model import Attachment
+from django.contrib.auth.decorators import login_required
 
 @login_required
 def ajax(request, book_id):
@@ -25,10 +27,5 @@ def ajax(request, book_id):
 						size=os.path.getsize(destination_full),
 						is_approved=False,
 					)
-		returnJson['files'] = [{
-			'name': attachment.name,
-			'url': attachment.real_url,
-			'size': attachment.size,
-			'date_creation': attachment.date_creation.strftime("%D %d %M %Y")
-		}]
+		returnJson['files'] = [attachment.json_output]
 	return HttpJson(returnJson)

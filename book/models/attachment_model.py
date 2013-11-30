@@ -28,6 +28,17 @@ class Attachment(models.Model):
     @property
     def real_url(self):
         return self.file.url  # return url from home
+
+    @property
+    def json_output(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'url': self.download_url,
+            'size': self.size,
+            'creation_date': self.creation_date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+
     @property
     def download_url(self):
         return reverse(
