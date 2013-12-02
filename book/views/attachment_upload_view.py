@@ -8,9 +8,10 @@ import os
 from book.models.attachment_model import Attachment
 
 @login_required
-def ajax(request, book_id):
+def ajax(request):
 	returnJson = {}
 
+	book_id = request.GET.get('book_id', 0)
 	book = Book.objects.get(pk=book_id)
 
 	upload = request.FILES.get('file')
