@@ -1,7 +1,7 @@
 /**
  * 
  */
-jQuery(window).load(function(){
+function inline_add_author_and_type(form_id){
     jQuery.fn.modalmanager.defaults.resize = true;
     
     (function($){
@@ -10,8 +10,8 @@ jQuery(window).load(function(){
             .html(STR_CREATE_NEW)
             .prop('value', '-1');
         $('#new-author-form-div').on('hide.bs.modal', function(){
-            $("#{{form_id}} select[name='author']").val('');
-            $("#{{form_id}} select[name='author']").change();
+            $("#" + form_id + " select[name='author']").val('');
+            $("#" + form_id + " select[name='author']").change();
         });
         
         (function(){
@@ -40,12 +40,12 @@ jQuery(window).load(function(){
             $('#new-author-form-div').on('shown.bs.modal', replaceCkeditor);
         })();
 
-        $("#{{form_id}} select[name='author']").change(function(){
+        $("#" + form_id + " select[name='author']").change(function(){
             if($(this).val() == '-1'){
                 $('#new-author-form-div').modal('show'); //it seem that the modal was destroyed and re-created
             }
         });
-        $("#{{form_id}} select[name='author'] option:first").after(new_author_option);
+        $("#" + form_id + " select[name='author'] option:first").after(new_author_option);
         $("#new-author-form").submit(function(){
             var _this = this;
             var ajaxConf = {}
@@ -60,7 +60,7 @@ jQuery(window).load(function(){
                         .prop('value', data['id'])
                         .html(data['name']);
                     
-                    $("#{{form_id}} select[name='author'] option").slice(2).each(function(){
+                    $("#" + form_id + " select[name='author'] option").slice(2).each(function(){
                         if(added){
                             return;
                         }
@@ -70,12 +70,12 @@ jQuery(window).load(function(){
                         }
                     });
                     if(!added){
-                        $("#{{form_id}} select[name='author']").append(new_option);
+                        $("#" + form_id + " select[name='author']").append(new_option);
                     }
                     
                     // hide modal first
                     $('#new-author-form-div').modal('hide');
-                    $("#{{form_id}} select[name='author']").val(data['id']);
+                    $("#" + form_id + " select[name='author']").val(data['id']);
                 }
             };
             ajaxConf['complete'] = function(){
@@ -91,15 +91,15 @@ jQuery(window).load(function(){
             .html(STR_CREATE_NEW)
             .prop('value', '-1');
         $('#new-type-form-div').on('hide.bs.modal', function(){
-            $("#{{form_id}} select[name='ttv_type']").val('');
-            $("#{{form_id}} select[name='ttv_type']").change();
+            $("#" + form_id + " select[name='ttv_type']").val('');
+            $("#" + form_id + " select[name='ttv_type']").change();
         });
-        $("#{{form_id}} select[name='ttv_type']").change(function(){
+        $("#" + form_id + " select[name='ttv_type']").change(function(){
             if($(this).val() == '-1'){
                 $('#new-type-form-div').modal('show');
             }
         });
-        $("#{{form_id}} select[name='ttv_type'] option:first").after(new_type_option);
+        $("#" + form_id + " select[name='ttv_type'] option:first").after(new_type_option);
         $("#new-type-form").submit(function(){
             var _this = this;
             var ajaxConf = {}
@@ -114,7 +114,7 @@ jQuery(window).load(function(){
                         .prop('value', data['id'])
                         .html(data['name']);
                     
-                    $("#{{form_id}} select[name='ttv_type'] option").slice(2).each(function(){
+                    $("#" + form_id + " select[name='ttv_type'] option").slice(2).each(function(){
                         if(added){
                             return;
                         }
@@ -124,12 +124,12 @@ jQuery(window).load(function(){
                         }
                     });
                     if(!added){
-                        $("#{{form_id}} select[name='ttv_type']").append(new_option);
+                        $("#" + form_id + " select[name='ttv_type']").append(new_option);
                     }
                     
                     // hide modal first
                     $('#new-type-form-div').modal('hide');
-                    $("#{{form_id}} select[name='ttv_type']").val(data['id']);
+                    $("#" + form_id + " select[name='ttv_type']").val(data['id']);
                 }
             };
             ajaxConf['complete'] = function(){
@@ -140,4 +140,4 @@ jQuery(window).load(function(){
             return false;
         });
     })(jQuery);
-});
+};

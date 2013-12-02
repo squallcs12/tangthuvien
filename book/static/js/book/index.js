@@ -2,7 +2,7 @@
  * Main js for index page
  */
 (function ($){
-	filter_books_by_category = function (selectedCategories) {
+	filter_books_by_category = function (selectedCategories, categories) {
         $("input[name='categories']").tagsinput({
             itemValue: 'id',
             itemText: 'title',
@@ -10,7 +10,7 @@
         $("input[name='categories']").tagsinput('input').typeahead({
             val: {},
             display: 'title',
-            source: {{categories|list|jsonify}},
+            source: categories,
             template: '<p>{{text}}</p>',
             itemSelected: function(obj){
                 $("input[name='categories']").tagsinput('add', obj);

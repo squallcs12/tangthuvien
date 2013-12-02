@@ -34,7 +34,7 @@
                 {% for category in selectedCategories %}
                 selectedCategories['{{category.id}}'] = '{{category.title|escapejs}}';
                 {% endfor %}
-                filter_books_by_category(selectedCategories);
+                filter_books_by_category(selectedCategories, {{categories|list|jsonify}});
             });
             </script>
         </div>
