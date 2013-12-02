@@ -7,6 +7,7 @@
 {% block meta-description %}{{book.description|striptags|escapejs}}{% endblock %}
 
 {% load_css static /book/style.css %}
+{% load_js static /book/read.js %}
 
 {% block content %}
 {% include 'book/onetime_notification/user_log_notification.phtml' %}
@@ -24,20 +25,9 @@
 				<div id="chapter" class="item chapter" item_id="{{chapter.id}}">
 					<h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
 					<div class="content"><script type="text/javascript">
-						(function($){
-							var configStyles = '{{config_reading_section_form.styles}}';
-							var cookieStyles = $.cookie('config_reading_section_styles');
-							if(!cookieStyles){
-								cookieStyles = configStyles;
-								$.cookie('config_reading_section_styles', configStyles);
-							}
-							var styles = cookieStyles.split(';');
-							var contentDiv = $("#chapter .content");
-							for(var i = 0; i < styles.length; i++){
-								var styleParts = styles[i].split(':');
-								contentDiv.css(styleParts[0], styleParts[1]);
-							}
-						})(jQuery);
+						jQuery(function(){
+							apply_reading_section_config(jQuery, '{{config_reading_section_form.styles}}');
+						});
 					</script>{{chapter.content|safe}}</div>
 				</div>
 			</div>
@@ -72,33 +62,9 @@
 					</button>
 				</div>
 				<script type="text/javascript">
-(function($){
-	var thankButton = $("#chapter-thank .thank-button");
-	var thankCountDiv = $("#chapter-thank .count");
-	var thankCount = parseInt(thankCountDiv.text());
-	function thank(event){
-		thankButton
-			.unbind('click', thank)
-			.removeClass('btn-default')
-			.addClass('btn-disable');
-		var request = {};
-		request['url'] = '{% url "summit_thank_request" %}';
-		request['data'] = {};
-		request['data']['chapter_id'] = '{{chapter.id}}';
-		request['type'] = 'POST';
-		request['success'] = function(data){
-			console.log(data);
-			thankButton.removeClass('loading');
-		};
-		thankButton.addClass('loading');
-		$.ajax(request);
-
-		thankCountDiv.html(thankCount + 1);
-	}
-	if(!thankButton.hasClass('btn-disable')){
-		thankButton.click(thank)
-	}
-})(jQuery);
+				jQuery(function(){
+					attach_thank_button(jQuery, '{{chapter.id}}', '{% url "summit_thank_request" %}');
+				});
 				</script>
 				{% csrf_token %}
 			</div>
