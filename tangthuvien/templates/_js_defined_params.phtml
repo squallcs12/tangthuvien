@@ -1,6 +1,7 @@
 {% load i18n %}
 <script>
 ONETIME_NOTIFICATION_SUBMIT_URL = '{% url "submit_onetime_notification" %}';
+AJAX_LIST_BOOK_URL = "{% url 'ajax_list_books' %}";
 LOADING_IMAGE_HTML = '<img class="loading" src="{{STATIC_URL}}{{CURRENT_STYLE}}/img/ajax-loader.gif" />';
 STR_CREATE_NEW = '{% trans "-create-new-" %}'
 </script>

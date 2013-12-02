@@ -7,6 +7,7 @@
 {% load_js static /bootstrap-tagsinput/bootstrap-tagsinput.js %}
 {% load_js static /bootstrap-tagsinput/bootstrap-typeahead.js %}
 {% load_js static /plugins/jquery.loading.js %}
+{% load_js static /book/index.js %}
 
 {% block title %}{% if page_title %}{{page_title}}{% else %}{% trans "List of books" %}{% endif %}{% endblock %}
 
@@ -28,72 +29,13 @@
                 </label>
             </form>
             <script>
-            (function ($){
-                $(window).load(function() {
-                    $("input[name='categories']").tagsinput({
-                        itemValue: 'id',
-                        itemText: 'title',
-                    });
-                    $("input[name='categories']").tagsinput('input').typeahead({
-                        val: {},
-                        display: 'title',
-                        source: {{categories|list|jsonify}},
-                        template: '<p>{{text}}</p>',
-                        itemSelected: function(obj){
-                            $("input[name='categories']").tagsinput('add', obj);
-                            $("input[name='categories']").tagsinput('input').val('');
-                            $("input[name='categories']").tagsinput('focus');
-                        }
-                    })
-
-                    {% for category in selectedCategories %}
-                    $("input[name='categories']").tagsinput('add', {
-                        'id': '{{category.id}}',
-                        'title': '{{category.title|escapejs}}'
-                    });
-                    {% endfor %}
-                    $("input[name='categories']").change(function(){
-                        reload_book_list_by_category(this);
-                    });
-                });
-
-                var loading = false;
-                var current_ajax_request = null;
-                function reload_book_list_by_category(filter){
-                    if (loading){
-                        current_ajax_request.abort();
-                    }
-                    var ajaxSettings = {}
-                    ajaxSettings['url'] = "{% url 'ajax_list_books' %}";
-                    ajaxSettings['data'] = {};
-                    ajaxSettings['data']['categories'] = $(filter).val();
-                    ajaxSettings['success'] = function(data){
-                        updateBookList(data);
-                        $("#books_list_block").removeLoading();
-                        if (typeof window.history.pushState != 'undefined'){
-                            window.history.pushState(data,"", data['url']);
-                        } else {
-                            alert("Not implemented yet");
-                        }
-
-                    }
-                    loading = true;
-                    $("#books_list_block").putLoading();
-                    current_ajax_request = $.ajax(ajaxSettings);
-                }
-                $(window).on("popstate", function(e){
-                	var data = e.originalEvent.state;
-                	if(data){
-                		updateBookList(data);
-                	} else {
-                		// TODO: implement back to home
-                	}
-                });
-                function updateBookList(data){
-                	$("#books_list_block").html(data['content']);
-                    $('title').html(data['title']);
-                }
-            })(jQuery);
+            jQuery(window).load(function() {
+				var selectedCategories = {};
+                {% for category in selectedCategories %}
+                selectedCategories['{{category.id}}'] = '{{category.title|escapejs}}';
+                {% endfor %}
+                filter_books_by_category(selectedCategories);
+            });
             </script>
         </div>
 	</div>
