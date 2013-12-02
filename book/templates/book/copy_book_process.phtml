@@ -29,7 +29,6 @@
         	            $("#process_bar .progress-bar").html(percent + '%');
         	        }
             	    report_copy_process = function(command){
-            	        $("#process_output").append(command + "\n");
             	        var args = command.split(' ');
             	        switch(args[0]){
             	            case 'start':
@@ -41,6 +40,9 @@
             	               	break;
 							case 'process_page':
 								var page = parseInt(args[1]) - 1;
+								if(page == 100){
+									$("#process_output").html('');
+								}
 								var total = end - start + 1;
 								page_percent = ((page * 100 + 0.0) / total).toFixed(2);
 								change_percent(page_percent);
@@ -67,7 +69,9 @@
             	            default:
             	               break;
             	        }
+            	   		$("#process_output").append(command + "\n");
             	    }
+            	        
         	    	var start_line = 0;
         	    	var ajaxConf = {};
         	    	ajaxConf['url'] = "{% url 'copy_book_process_output' book.id %}";
