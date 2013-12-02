@@ -1,4 +1,8 @@
 {% load i18n %}
+{% load statig_tags %}
+
+{% load_js static /book/rating.js %}
+
 <div class="panel panel-default rating" id="book_rating">
 	<div class="panel-heading">{% trans 'Rate book' %}</div>
 	<div class="panel-body">
@@ -10,7 +14,7 @@
 		</div>
 		<div class="rate-star">
 			{% for i in book.rating.rating_range %}
-			<button class="btn btn-default rate-star-{{i}}" data-rate-number="{{i}}"
+			<button class="btn btn-default rate-star-{{i}}" data-rate-number="{{i}}" data-book_id="{{book.id}}"
 			{% if book.rated_by_current_user %}
 				disabled='disabled'
 			{% elif not user.is_authenticated %}
@@ -20,37 +24,3 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-(function($){
-	$("#book_rating .rate-star button").click(function(){
-		var clickedButton = this;
-		rateNumber = $(this).data('rate-number');
-
-		$("#book_rating .rate-star button").attr('disabled', true);
-		resultSpan = $("#book_rating .average-result");
-		countSpan = $("#book_rating .rating-count");
-
-		ratingCount = parseInt(countSpan.html());
-
-		var newResult = (ratingCount * parseFloat(resultSpan.html()) + rateNumber) / (ratingCount + 1);
-		newResult = newResult.toFixed(2);
-
-		resultSpan.html(newResult);
-		countSpan.html(ratingCount + 1);
-
-		request = {};
-		request['url'] = '{% url "submit_book_rating" %}';
-		request['type'] = 'POST';
-		request['data'] = {};
-		request['data']['number'] = rateNumber;
-		request['data']['book_id'] = '{{book.id}}';
-		request['success'] = function(data){
-			resultSpan.html(data['average_result'].toFixed(2));
-			countSpan.html(data['rating_count']);
-			$(clicked_button).removeClass('loading');
-		}
-		$(clickedButton).addClass('loading');
-		$.ajax(request);
-	});
-})(jQuery);
-</script>
