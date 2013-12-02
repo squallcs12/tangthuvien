@@ -2,7 +2,7 @@
  * Main js for read page
  */
 
-function show_reading_section_config($, configStyles){
+function apply_reading_section_config($, configStyles){
 	var cookieStyles = $.cookie('config_reading_section_styles');
 	if(!cookieStyles){
 		cookieStyles = configStyles;
