@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 (function($){
 	function get_size_in_kb(bytes){
@@ -27,13 +27,14 @@
         			)
         	)
         );
-	}
+	};
 	ajax_upload_book_attachment = function(book_id){
 	    $('#fileupload').fileupload({
 	        url: UPLOAD_BOOK_ATTACHMENT_AJAX_URL,
 	        dataType: 'json',
 	        formData: {
-	        	book_id: book_id
+	        	book_id: book_id,
+	        	csrfmiddlewaretoken: $.cookie('csrftoken')
 	        },
 	        beforeSend: function(){
 	        	$('#upload_attachment .progress').show();

@@ -11,7 +11,7 @@ from book.models.attachment_model import Attachment
 def ajax(request):
 	returnJson = {}
 
-	book_id = request.GET.get('book_id', 0)
+	book_id = request.REQUEST.get('book_id', 0)
 	book = Book.objects.get(pk=book_id)
 
 	upload = request.FILES.get('file')

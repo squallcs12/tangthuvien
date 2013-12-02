@@ -12,7 +12,9 @@
 			<div class="progress-bar" style="width: 100%"></div>
 		</div>
 		<script>
-			
+			jQuery(window).load(function(){
+				generate_prc_socket_io({{book.id}});
+			});
 		</script>
 	</div>
 {% endif %}
