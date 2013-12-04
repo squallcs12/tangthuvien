@@ -2,21 +2,6 @@
  * Main js for read page
  */
 
-function apply_reading_section_config($, configStyles){
-	var cookieStyles = $.cookie('config_reading_section_styles');
-	if(!cookieStyles){
-		cookieStyles = configStyles;
-		$.cookie('config_reading_section_styles', configStyles);
-	}
-	var styles = cookieStyles.split(';');
-	var contentDiv = $("#chapter .content");
-	for(var i = 0; i < styles.length; i++){
-		var styleParts = styles[i].split(':');
-		contentDiv.css(styleParts[0], styleParts[1]);
-	}
-};
-
-
 function attach_thank_button($, chapter_id, submit_thank_url){
 	var thankButton = $("#chapter-thank .thank-button");
 	var thankCountDiv = $("#chapter-thank .count");
