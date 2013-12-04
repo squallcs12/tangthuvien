@@ -25,8 +25,10 @@ urlpatterns = patterns('',
     url(r'^ckeditor/', include('ckeditor.urls')),
 
     # zinnia
+    url(r'^blog/search/', include('zinnia.urls.search')),
+    url(r'^blog/site_map/', include('zinnia.urls.sitemap')),
     url(r'^blog/', include('zinnia.urls.capabilities')),
-    url(r'^blog/feeds', include('zinnia.urls.feeds')),
+    url(r'^blog/feeds/', include('zinnia.urls.feeds')),
     url(r'^blog/', include('zinnia.urls.entries')),
     url(r'^blog/', include('zinnia.urls.archives')),
     url(r'^blog/', include('zinnia.urls.shortlink')),
