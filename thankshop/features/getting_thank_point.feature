@@ -25,7 +25,7 @@ Feature: As a user
 		Then I can not give any thank in a short time
 		
 	Scenario: Prevent get too many thank each days
-		Given I was a poster
+		Given I was a logged-in user
 		Then I can not receive more than a limited number of thank points for a chapter on a day
 		
 	Scenario: User buy thank points
