@@ -172,6 +172,7 @@ INSTALLED_APPS = (
     'social_auth',
     'south',
     'tagging',
+    'thankshop',
     'tangthuvien',
     'zinnia',
     'ckeditor',

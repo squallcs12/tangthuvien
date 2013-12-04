@@ -27,3 +27,10 @@ Feature: As a user
 	Scenario: Prevent get too many thank each days
 		Given I was a poster
 		Then I can not receive more than a limited number of thank points for a chapter on a day
+		
+	Scenario: User buy thank points
+		Given I was a logged-in user
+		When I go to the buy thank points page
+		Then I see a list of thank points packages
+		When I buy a packages
+		Then I receive an amount of thank points to spend
