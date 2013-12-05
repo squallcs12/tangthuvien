@@ -41,7 +41,7 @@ msgstr "Đổi mật khẩu"
 
 #: accounts/templates/accounts/_user_menu.phtml:7
 msgid "Favorite books"
-msgstr "Ưa thích"
+msgstr "Sách ưa thích"
 
 #: accounts/templates/accounts/logged_out.phtml:3
 #: accounts/templates/accounts/logged_out.phtml:4

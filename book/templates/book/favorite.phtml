@@ -3,15 +3,16 @@
 {% block title %}Favorite books{{% endblock %}
 
 {% block accounts-content %}
-{% if books %}
-<form method="POST" action="{% url 'unfavorite_books' %}">
-    {% csrf_token %}
-    {% include 'book/_books_list.phtml' with class='favorite' showcheckbox=1%}
-    <div class"actions">
-        <button type="submit" name="unfavorite_books" id="unfavorite_books" class="btn btn-default">{% trans 'Unfavorite' %}</button>
-    </div>
-</form>
-{% else %}
-	{% trans "You did not mark any books as favorite yet." %}
-{% endif %}
+	<h1>{% trans 'Favorite books' %}</h1>
+	{% if books %}
+	<form method="POST" action="{% url 'unfavorite_books' %}">
+	    {% csrf_token %}
+	    {% include 'book/_books_list.phtml' with class='favorite' showcheckbox=1%}
+	    <div class"actions">
+	        <button type="submit" name="unfavorite_books" id="unfavorite_books" class="btn btn-default">{% trans 'Unfavorite' %}</button>
+	    </div>
+	</form>
+	{% else %}
+		{% trans "You did not mark any books as favorite yet." %}
+	{% endif %}
 {% endblock %}
