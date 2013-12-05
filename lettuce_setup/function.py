@@ -20,6 +20,7 @@ import pdb
 import time
 import sure
 import urlparse
+import datetime
 
 def trans(text):
     return ugettext_lazy(text).__unicode__()
@@ -173,11 +174,14 @@ def default_user(number=1):
     user.raw_password = 'password'
     return user
 
-def eval_sql(sql):
+def commit():
     try:
         connection.commit()
     except TransactionManagementError:
         pass
+
+def eval_sql(sql):
+    commit()
     cursor = connection.cursor()
     cursor.execute(sql)
     value = cursor.fetchone()
@@ -244,3 +248,14 @@ def db_commit():
         connection.commit()
     except TransactionManagementError:
         pass  # this is expteced error
+
+class datetime_fake:
+    timedelta = datetime.timedelta(0)
+
+    @classmethod
+    def timepass(cls, timedelta):
+        cls.timedelta += timedelta
+
+    @classmethod
+    def now(cls):
+        return datetime.datetime.now() + cls.timedelta

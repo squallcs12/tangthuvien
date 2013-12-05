@@ -330,6 +330,9 @@ HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
 SOCKET_IO_URL = 'http://localhost:8001'
 
+THANKSHOP_DAILY_LOGIN_THANK_POINTS = 100
+THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS = -10
+
 try:
     from local_settings import *  # @UnusedWildImport
 except ImportError:
