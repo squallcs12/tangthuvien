@@ -20,6 +20,14 @@ function attach_thank_button($, chapter_id, submit_thank_url){
 			console.log(data);
 			thankButton.removeClass('loading');
 		};
+		request['error'] = function(xhr){
+			thankButton
+			.bind('click', thank)
+			.removeClass('btn-disable')
+			.addClass('btn-default');
+			catch_notification_messages(xhr);
+			thankCountDiv.html(thankCount);
+		};
 		thankButton.addClass('loading');
 		$.ajax(request);
 

@@ -16,9 +16,17 @@ class ThankPoint(models.Model):
 
     DAILY_LOGIN = 'dailylogin'
     DAILY_NOT_LOGIN = 'dailynotlogin'
+    THANK_COST = 'thankcost'
     
+    THANKED = 'thanked'
+
     def increase_thank_points(self, points, key):
         self.thank_points += points
+        self.save()
+        self.log(points, key)
+
+    def increase_thanked_points(self, points, key):
+        self.thanked_points += points
         self.save()
         self.log(points, key)
 

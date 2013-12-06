@@ -14,8 +14,8 @@ Feature: As a user
 	Scenario: User give thank points to the poster
 		Given I was a logged-in user
 		When I thank a poster for a chapter
-		Then I see my thank points was decreased
-		And poster thanked points was increased by those points
+		Then I see my thank points was spent
+		And poster thanked points was increased by half of those points
 		When I use all my thank points
 		Then I can not thank anylonger
 		

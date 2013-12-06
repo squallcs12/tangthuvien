@@ -1,0 +1,24 @@
+{% load i18n %}
+{% load simple_filters %}
+{% load static_tags %}
+
+{% load_js static /popup_notification.js %}
+
+{% include 'general/bootstrap_modal_requirement.phtml' %}
+<!-- Modal -->
+<div id="popup-notitication" class="modal fade" data-width="460" 
+    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">{% trans 'Notification' %}</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

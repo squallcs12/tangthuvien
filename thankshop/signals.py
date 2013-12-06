@@ -8,6 +8,7 @@ from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
 import datetime
 from django.core.exceptions import ObjectDoesNotExist
+from book import signals as book_signals
 
 def log_user_daily_logged_in(sender, user, request, **kwargs):
     from thankshop import models
@@ -40,3 +41,14 @@ def increaase_thank_points(sender, **kwargs):
         settings.THANKSHOP_DAILY_LOGIN_THANK_POINTS,
         models.ThankPoint.DAILY_LOGIN
     )
+
+@dispatch.receiver(book_signals.chapter_thank_signal)
+def user_spend_thank_points(sender, **kwargs):
+    user = kwargs.get('user')
+    chapter = kwargs.get('chapter')
+    from thankshop import models
+
+    user.thank_point.increase_thank_points(settings.THANKSHOP_THANK_POINTS_COST, models.ThankPoint.THANK_COST)
+    chapter.user.thank_point.increase_thanked_points(-settings.THANKSHOP_THANK_POINTS_COST *
+                                                     settings.THANKSHOP_THANK_POINTS_PERCENT,
+                                                      models.ThankPoint.THANKED)

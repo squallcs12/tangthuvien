@@ -12,7 +12,7 @@
 		<meta name="language" content="{{ LANGUAGE_CODE }}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="{% block meta-description %}{% trans 'Book reading website' %}{% endblock %}" />
-		<meta name="keywords" content="tangthuvien, ttv, kiếm hiệp, {% block meta-keywords %}{% endblock %}" />
+		<meta name="keywords" content="tangthuvien, ttv, ki·∫øm hi·ªáp, {% block meta-keywords %}{% endblock %}" />
 		<meta name="author" content="Antipro.VN" />
 		{% block meta %}{% endblock %}
 		<link rel="pingback" href="/xmlrpc/" />
@@ -74,6 +74,7 @@
 				</div>
 			</footer>
 		</div>
+	{% include '_popup_notification.phtml' %}
 	{% print_js %}
 	{% include '_addthis.phtml' %}
 	</body>
