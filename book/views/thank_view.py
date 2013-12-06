@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 from book.signals import chapter_thank_signal
 from tangthuvien.decorator.ajax_required_decorator import ajax_required
 from django.conf import settings
-from thankshop.decorators import thank_points_required
+from thankshop.decorators import thank_points_required, \
+    thank_points_interval_required
 
 THANK_RESPONSE_CODE_FAIL = 0
 THANK_RESPONSE_CODE_SUCCESS = 1
@@ -19,6 +20,7 @@ THANK_RESPONSE_CODE_ALREADY_THANK = 2
 
 @ajax_required
 @login_required
+@thank_points_interval_required
 @thank_points_required(settings.THANKSHOP_THANK_POINTS_COST)
 def main(request):
     try:

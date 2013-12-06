@@ -9,6 +9,7 @@ from django.conf import settings
 import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from book import signals as book_signals
+from django.utils import timezone
 
 def log_user_daily_logged_in(sender, user, request, **kwargs):
     from thankshop import models
@@ -24,9 +25,9 @@ def increaase_thank_points(sender, **kwargs):
     user = kwargs.get('user')
     from thankshop import models
     try:
-        previous_login = models.UserDailyLoginHistory.objects.get(user=user, date__lt=datetime.date.today())
-        timediff = datetime.date.today() - previous_login.date
-        print timediff
+        today = timezone.now().date()
+        previous_login = models.UserDailyLoginHistory.objects.get(user=user, date__lt=today)
+        timediff = today - previous_login.date
         if timediff.days > 1:
             notlogin_days = timediff.days - 1
             user.thank_point.increase_thank_points(
@@ -35,7 +36,7 @@ def increaase_thank_points(sender, **kwargs):
             )
 
     except ObjectDoesNotExist:
-        print "FAIL"
+        pass
 
     user.thank_point.increase_thank_points(
         settings.THANKSHOP_DAILY_LOGIN_THANK_POINTS,
@@ -48,7 +49,9 @@ def user_spend_thank_points(sender, **kwargs):
     chapter = kwargs.get('chapter')
     from thankshop import models
 
-    user.thank_point.increase_thank_points(settings.THANKSHOP_THANK_POINTS_COST, models.ThankPoint.THANK_COST)
+    thank_obj = user.thank_point
+    thank_obj.set_timeout(settings.THANKSHOP_THANK_INTERVAL)
+    thank_obj.increase_thank_points(settings.THANKSHOP_THANK_POINTS_COST, models.ThankPoint.THANK_COST)
     chapter.user.thank_point.increase_thanked_points(-settings.THANKSHOP_THANK_POINTS_COST *
                                                      settings.THANKSHOP_THANK_POINTS_PERCENT,
                                                       models.ThankPoint.THANKED)

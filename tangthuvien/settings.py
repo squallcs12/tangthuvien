@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -333,6 +333,7 @@ SOCKET_IO_URL = 'http://localhost:8001'
 THANKSHOP_DAILY_LOGIN_THANK_POINTS = 100
 THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS = -10
 THANKSHOP_THANK_POINTS_COST = -10
+THANKSHOP_THANK_INTERVAL = 120  # seconds
 THANKSHOP_THANK_POINTS_PERCENT = 0.5
 
 try:

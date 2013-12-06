@@ -59,7 +59,12 @@ def i_see_my_thank_points_was_decreased(step):
     check_thank_point(world.thank_points)
 
 @step(u'When I thank a poster for a chapter')
-def i_thank_a_poster_for_a_chapter(step, book_index=0):
+def i_thank_a_poster_for_a_chapter(step, book_index= -1):
+    if book_index == -1:
+        if not hasattr(world, 'thankshop_book_index'):
+            world.thankshop_book_index = 0
+        book_index = world.thankshop_book_index
+        world.thankshop_book_index += 1
     try:
         book = Book.objects.all()[book_index]
     except IndexError:
@@ -108,7 +113,7 @@ def i_use_all_my_thank_points(step):
 
 @step(u'Then I can not thank anylonger')
 def i_can_not_thank_anylonger(step):
-    i_thank_a_poster_for_a_chapter(step, 1)
+    i_thank_a_poster_for_a_chapter(step)
     until(lambda: find("#popup-notitication").is_displayed().should.be.true)
     find("#popup-notitication .modal-body").text.should\
         .contain(trans(u"You need at least %(number)d thank points to do thank") % {
@@ -117,7 +122,10 @@ def i_can_not_thank_anylonger(step):
 
 @step(u'Then I can not give any thank in a short time')
 def i_can_not_give_any_thank_in_a_short_time(step):
-    assert False, 'This step must be implemented'
+    i_thank_a_poster_for_a_chapter(step)
+    until(lambda: find("#popup-notitication").is_displayed().should.be.true)
+    find("#popup-notitication .modal-body").text.should.contain(trans(u"You can not thank in next"))
+
 @step(u'Given I has thanked points')
 def given_i_has_thanked_points(step):
     assert False, 'This step must be implemented'
