@@ -175,10 +175,12 @@ INSTALLED_APPS = (
     'south',
     'tagging',
     'thankshop',
-    'tangthuvien',
+    'notification',
+    'mailer',
     'zinnia',
     'ckeditor',
     'ajax_select',
+    'tangthuvien',
 )
 SITE_ID = 1
 
