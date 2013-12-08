@@ -37,8 +37,8 @@ def buy(request, package_id):
                 "intent": "sale",
                 "payer": {"payment_method": "paypal" },
                 "redirect_urls": {
-                    "return_url": 'http://localhost:8000' + reverse('thankshop_thank_point_paypal_return'),
-                    "cancel_url": 'http://localhost:8000' + reverse('thankshop_thank_point_paypal_cancel')
+                    "return_url": request.build_absolute_uri(reverse('thankshop_thank_point_paypal_return')),
+                    "cancel_url": request.build_absolute_uri(reverse('thankshop_thank_point_paypal_cancel'))
                 },
                 "transactions": [ {
                     "amount": {
