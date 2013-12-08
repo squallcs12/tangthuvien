@@ -9,6 +9,13 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 import paypalrestsdk
+from django.conf import settings
+
+paypalrestsdk.configure({
+    'mode': settings.PAYPAL_MODE,
+    'client_id': settings.PAYPAL_CLIENT_ID,
+    'client_secret': settings.PAYPAL_CLIENT_SECRET,
+})
 
 from thankshop import models
 from django.contrib.auth.decorators import login_required
@@ -25,12 +32,6 @@ def index(request, template="thankshop/thank_point_shop.phtml"):
 @login_required
 def buy(request, package_id):
     package = models.Package.objects.get(pk=package_id)
-
-    paypalrestsdk.configure({
-        'mode': 'sandbox',
-        'client_id': 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd',
-        'client_secret': 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX',
-    })
 
     payment = paypalrestsdk.Payment({
                 "intent": "sale",
@@ -67,11 +68,6 @@ def buy(request, package_id):
 
 @login_required
 def paypal_return(request):
-    paypalrestsdk.configure({
-        'mode': 'sandbox',
-        'client_id': 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd',
-        'client_secret': 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX',
-    })
     payment = paypalrestsdk.Payment.find(request.session['paypal_id'])
     payment.execute({"payer_id": request.GET['PayerID']})
 

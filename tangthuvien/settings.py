@@ -340,6 +340,10 @@ THANKSHOP_THANK_POINTS_COST = -10
 THANKSHOP_THANK_INTERVAL = 120  # seconds
 THANKSHOP_THANK_POINTS_PERCENT = 0.5
 
+PAYPAL_MODE = 'sandbox'
+PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd'
+PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
+
 try:
     from local_settings import *  # @UnusedWildImport
 except ImportError:
