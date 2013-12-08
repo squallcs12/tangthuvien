@@ -204,6 +204,7 @@ def given_i_was_a_logged_in_user(step, number=1):
     find("#id_username").send_keys(user.username)
     find("#id_password").send_keys(user.raw_password)
     find("#id_login").click()
+    find("footer")
 
 
 @step(u'Given I was a logged-in super user')

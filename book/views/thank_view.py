@@ -20,8 +20,8 @@ THANK_RESPONSE_CODE_ALREADY_THANK = 2
 
 @ajax_required
 @login_required
-@thank_points_interval_required
 @thank_points_required(settings.THANKSHOP_THANK_POINTS_COST)
+@thank_points_interval_required
 def main(request):
     try:
         chapter_id = int(request.POST.get('chapter_id'))

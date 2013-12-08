@@ -141,11 +141,13 @@ LETTUCE_APPS = (
     'book',
     'accounts',
     'tangthuvien',
+    'thankshop',
 )
 RELISH_APPS = (
     'book',
     'accounts',
     'tangthuvien',
+    'thankshop',
 )
 RELISH_PROJECT_NAME = 'tangthuvien'
 RELISH_PROJECT_VERSION = '1.0'
