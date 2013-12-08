@@ -35,6 +35,9 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('accounts.urls')),
 
+    # thankshop
+    url(r'^thankshop/', include('thankshop.urls')),
+
 )
 
 from tangthuvien import settings

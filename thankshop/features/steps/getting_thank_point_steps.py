@@ -129,18 +129,30 @@ def i_can_not_give_any_thank_in_a_short_time(step):
 @step(u'I has thanked points')
 def given_i_has_thanked_points(step):
     assert False, 'This step must be implemented'
-@step(u'I can not receive more than a limited number of thank points for a chapter on a day')
-def i_can_not_receive_more_than_a_limited_number_of_thank_points_for_a_chapter_on_a_day(step):
-    assert False, 'This step must be implemented'
+
 @step(u'I go to the buy thank points page')
 def i_go_to_the_buy_thank_points_page(step):
-    assert False, 'This step must be implemented'
+    visit_by_view_name('thankshop_thank_point_shop')
+
 @step(u'I see a list of thank points packages')
 def i_see_a_list_of_thank_points_packages(step):
-    assert False, 'This step must be implemented'
+    find("#thankshop #packages")
+
 @step(u'I buy a packages')
 def i_buy_a_packages(step):
-    assert False, 'This step must be implemented'
+    world.current_thank_points = models.ThankPoint.objects.get(user=default_user()).thank_points
+    world.thank_points_package_points = int(find("#thankshop #packages .package .points").text)
+    find("#thankshop #packages .package .buy").click()
+
+    find("#billingModule .panel").click()  # pay with paypal account
+    find("#login_email").fillin(settings.TEST_EMAIL)
+    find("#login_password").fillin(settings.TEST_PASSWORD)
+    find("#submitLogin").click()
+
+    find("#continue_abovefold").click()
+
 @step(u'I receive an amount of thank points to spend')
 def i_receive_an_amount_of_thank_points_to_spend(step):
-    assert False, 'This step must be implemented'
+    find("footer")  # wait for the page loaded
+    check_thank_point(world.current_thank_points + world.thank_points_package_points)
+
