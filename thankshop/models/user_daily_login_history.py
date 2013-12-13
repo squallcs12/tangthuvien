@@ -6,7 +6,7 @@ Created on Dec 4, 2013
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils import datetime_safe
+from django.utils import timezone
 
 class UserDailyLoginHistory(models.Model):
     user = models.ForeignKey(User)
@@ -15,8 +15,8 @@ class UserDailyLoginHistory(models.Model):
     @classmethod
     def log(cls, user):
         assert isinstance(user, User)
-        if not cls.objects.filter(user=user, date=datetime_safe.date.today()).exists():
-            login_history = cls(user=user, date=datetime_safe.date.today())
+        if not cls.objects.filter(user=user, date=timezone.now().date()).exists():
+            login_history = cls(user=user, date=timezone.now().date())
             login_history.save()
             from thankshop import signals
             signals.user_first_daily_login.send(UserDailyLoginHistory, user=user)
