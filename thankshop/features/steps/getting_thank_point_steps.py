@@ -128,7 +128,13 @@ def i_can_not_give_any_thank_in_a_short_time(step):
 
 @step(u'I has thanked points')
 def given_i_has_thanked_points(step):
-    assert False, 'This step must be implemented'
+    commit()
+    try:
+        thank_obj = models.ThankPoint.objects.get(user=default_user())
+    except ObjectDoesNotExist:
+        thank_obj = models.ThankPoint(user=default_user())
+    thank_obj.thanked_points = 1000
+    thank_obj.save()
 
 @step(u'I go to the buy thank points page')
 def i_go_to_the_buy_thank_points_page(step):
