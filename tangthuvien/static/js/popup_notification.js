@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 (function($){
 	catch_notification_messages = function(xhr){
@@ -8,17 +8,17 @@
 			messages = JSON.parse(messages);
 			popup_notification(messages);
 		}
-	}
+	};
 	popup_notification = function (messages_pool){
 		for(var key in messages_pool){
 			var messages = messages_pool[key];
 			for(var i = 0; i < messages.length; i++){
-				add_message(key, messages[0])
+				add_message(key, messages[0]);
 			}
 		}
 		$("#popup-notitication").modal("show");
-	}
-	
+	};
+
 	function add_message(key, message){
 		if(key == 'error'){
 			key = 'danger';
@@ -40,5 +40,5 @@
 (function($){
 	$("#popup-notitication").on("hidden.bs.modal", function(){
 		 $(".modal-body", this).html("");
-	})
+	});
 })(jQuery);
