@@ -21,7 +21,7 @@ def when_i_buy_an_item(step):
 
 @step(u'Then I see that item in my inventory')
 def then_i_see_that_item_in_my_inventory(step):
-    visit_by_view_name("thankshop_user_inventory")
+    visit_by_view_name("thankshop_user_inventory", kwargs={'username': 'me'})
     items = find_all("#my_items .item")
     item_ids = [item.get_attribute("item-id") for item in items]
     item_ids.should.contain(world.shop_item_id)
