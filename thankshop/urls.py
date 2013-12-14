@@ -12,4 +12,5 @@ urlpatterns = patterns('thankshop.views',
     url(r'^thank_point/buy/(?P<package_id>\d*)', 'thank_point_shop_view.buy', name='thankshop_thank_point_buy'),
     url(r'^thank_point/', 'thank_point_shop_view.index', name='thankshop_thank_point_shop'),
     url(r'^$', 'shop_homepage_view.index', name='thankshop_shop_homepage'),
+    url(r'^buy', 'thankshop_buy_item_view.ajax', name='thankshop_buy_item_ajax'),
 )
