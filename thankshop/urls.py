@@ -11,4 +11,5 @@ urlpatterns = patterns('thankshop.views',
     url(r'^thank_point/buy/cancel', 'thank_point_shop.paypal_cancel', name='thankshop_thank_point_paypal_cancel'),
     url(r'^thank_point/buy/(?P<package_id>\d*)', 'thank_point_shop.buy', name='thankshop_thank_point_buy'),
     url(r'^thank_point/', 'thank_point_shop.index', name='thankshop_thank_point_shop'),
+    url(r'^$', 'shop_homepage.index', name='thankshop_shop_homepage'),
 )
