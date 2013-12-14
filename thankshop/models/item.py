@@ -11,7 +11,7 @@ class Item(models.Model):
     long_description = models.TextField()
     price = models.IntegerField()
     stocks = models.IntegerField()
-    image = models.ImageField()
+    image = models.ImageField(upload_to='thankshop/item_images/')
 
     class Meta:
         app_label = 'thankshop'
