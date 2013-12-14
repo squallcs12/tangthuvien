@@ -10,4 +10,7 @@ from thankshop import models
 def index(request, template="thankshop/shop_homepage.phtml"):
     data = {}
 
+    items = models.Item.objects.all().filter(stocks__gt=0)
+    data['items'] = items
+
     return TemplateResponse(request, template, data)
