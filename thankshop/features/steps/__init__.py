@@ -9,6 +9,7 @@ def clear_login_history():
     clean_models.append(models.ThankPoint)
     clean_models.append(models.ThankPointHistory)
     clean_models.append(models.Item)
+    clean_models.append(models.UserItem)
     for model in clean_models:
         for row in model.objects.all():
             row.delete()
