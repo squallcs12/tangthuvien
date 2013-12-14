@@ -4,7 +4,15 @@
 {% block content %}
 <div id="thankshop">
 	<div class="row" id="items">
-
+		{% for item in items %}
+		<div class="col-lg-3 item">
+			<div class="name">{{item.name}}</div>
+			<div class="short_description">{{item.short_description}}</div>
+			<div class="long_description">{{item.long_description}}</div>
+			<div class="price">{{item.price}}</div>
+			<a class="btn btn-default buy">{% trans "Buy" %}</a>
+		</div>
+		{% endfor %}
 	</div>
 </div>
 {% endblock %}
