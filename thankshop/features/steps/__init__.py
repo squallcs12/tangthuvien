@@ -1,11 +1,17 @@
 from lettuce_setup.function import *
 from thankshop import models
+from thankshop.features.factories import ItemFactory
 
 @before.all
 def clear_login_history():
-    for row in models.UserDailyLoginHistory.objects.all():
-        row.delete()
-    for row in models.ThankPoint.objects.all():
-        row.delete()
-    for row in models.ThankPointHistory.objects.all():
-        row.delete()
+    clean_models = []
+    clean_models.append(models.UserDailyLoginHistory)
+    clean_models.append(models.ThankPoint)
+    clean_models.append(models.ThankPointHistory)
+    clean_models.append(models.Item)
+    for model in clean_models:
+        for row in model.objects.all():
+            row.delete()
+
+    for i in range(0, 4):
+        ItemFactory().save()
