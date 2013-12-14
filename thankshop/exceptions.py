@@ -12,3 +12,6 @@ class ItemStockNotAvailableException(ShopException):
 
 class NotEnoughThankedPointsException(ShopException):
     pass
+
+class AlreadyOwnItemException(ShopException):
+    pass
