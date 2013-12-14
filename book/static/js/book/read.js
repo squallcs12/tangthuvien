@@ -34,6 +34,6 @@ function attach_thank_button($, chapter_id, submit_thank_url){
 		thankCountDiv.html(thankCount + 1);
 	}
 	if(!thankButton.hasClass('btn-disable')){
-		thankButton.click(thank)
+		thankButton.click(thank);
 	}
 };
