@@ -17,7 +17,7 @@ def then_i_see_list_of_items(step):
 def when_i_buy_an_item(step):
     world.shop_item_id = find("#thankshop #items .item").get_attribute("item-id")
     find("#thankshop #items .item .buy").click()
-    find("#confirmation .accept").click()
+    find("#buy-confirmation .accept").click()
 
 @step(u'Then I see that item in my inventory')
 def then_i_see_that_item_in_my_inventory(step):
