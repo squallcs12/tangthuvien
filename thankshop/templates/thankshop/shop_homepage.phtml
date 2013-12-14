@@ -13,7 +13,7 @@
 			<div class="short_description">{{item.short_description}}</div>
 			<div class="long_description">{{item.long_description}}</div>
 			<div class="price">{{item.price}}</div>
-			<button class="btn btn-default buy">{% trans "Buy" %}</button>
+			<button class="btn btn-default buy" data-item_id="{{item.id}}">{% trans "Buy" %}</button>
 		</div>
 		{% endfor %}
 	</div>
