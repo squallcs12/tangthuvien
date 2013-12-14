@@ -3,8 +3,12 @@ Created on Dec 14, 2013
 
 @author: antipro
 '''
-class ItemStockNotAvailableException(Exception):
+
+class ShopException(Exception):
     pass
 
-class NotEnoughThankedPointsException(Exception):
+class ItemStockNotAvailableException(ShopException):
+    pass
+
+class NotEnoughThankedPointsException(ShopException):
     pass

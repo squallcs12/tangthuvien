@@ -3,7 +3,7 @@ Created on Dec 14, 2013
 
 @author: antipro
 '''
-from thankshop import models
+from thankshop import models, exceptions
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.utils.translation import ugettext as _
@@ -18,7 +18,7 @@ def ajax(request):
         response = HttpResponse()
         response['messages'] = json.dumps({
                                 'success': [_("Item %(name)s was added to your inventory.") % {'name': item.name}]})
-    except Exception, e:
+    except exceptions.ShopException, e:
         response = HttpResponse()
         response['messages'] = json.dumps({'error': [e.message]})
 
