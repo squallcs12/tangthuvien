@@ -15,3 +15,10 @@ class Item(models.Model):
 
     class Meta:
         app_label = 'thankshop'
+class UserItem(models.Model):
+    user = models.ForeignKey(User)
+    item = models.ForeignKey('thankshop.Item')
+
+    class Meta:
+        app_label = "thankshop"
+        unique_together = (("user", "item"),)
