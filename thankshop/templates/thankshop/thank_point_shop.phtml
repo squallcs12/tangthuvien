@@ -3,13 +3,12 @@
 
 {% block content %}
 <div id="thankshop">
+	{% csrf_token %}
 	<div class="row" id="packages">
 		{% for package in packages %}
 		<div class="col-lg-3 package">
-			{% csrf_token %}
 			<div class="points">{{package.points}}</div>
 			<div class="price">{{package.price}}</div>
-			<input type="hidden" name="package_id" value="{{package.id}}" />
 			<a class="btn btn-primary buy" href="{% url 'thankshop_thank_point_buy' package.id %}">
 				{% trans "Buy" %}
 			</a>
