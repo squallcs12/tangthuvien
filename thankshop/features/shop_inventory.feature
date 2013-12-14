@@ -1,9 +1,10 @@
 Feature: As a poster
 	I want to spend my thanked points
 	To buy things
-	
+
 	Scenario: Inventory Shopping
-		Given I has thanked points
+		Given I was a logged-in user
+		And I has thanked points
 		When I go to the shop page
 		Then I see list of items
 		When I buy an item
