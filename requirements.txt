@@ -16,7 +16,9 @@ django-ckeditor==4.0.2
 django-coverage==1.2.4
 django-extensions==1.2.5
 django-jsonify==0.2.1
+django-mailer==0.1.0
 django-mptt==0.5.5
+django-notification==1.1.1
 django-postman==3.0.2
 django-social-auth==0.7.25
 django-tagging==0.3.1

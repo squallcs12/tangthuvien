@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'tangthuvien.views.home_view.main', name='homepage'),
+    url(r'^testimonials', 'tangthuvien.views.testimonials_view.index', name='testimonials'),
 
     url(r'^ttv/', include('tangthuvien.sub_urls')),
 
