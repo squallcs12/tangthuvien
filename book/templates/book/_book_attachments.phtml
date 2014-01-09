@@ -6,7 +6,7 @@
 	<ul class="nav nav-pills nav-stacked">
 		{% for attachment in book.attachment_set.all %}
 			{% if attachment.is_approved  or perms.book.can_approve_attachment or attachment.uploader.id = request.user.id %}
-				<li>
+				<li id="book_attachment_{{attachment.id}}">
 					{% if request.user.book_profile.can_download_attachment %}
 					<a href="{{attachment.download_url}}">
 					{% else %}
@@ -38,7 +38,7 @@ jQuery(function($){
 		var _this = this;
 		ajaxConf['success'] = function(data){
 			if(data['status'] == 'success'){
-				$(_this).remove();				
+				$(_this).remove();
 			} else {
 				alert(data['message']);
 			}

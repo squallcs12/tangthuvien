@@ -29,3 +29,17 @@
 .categories_filters label .bootstrap-tagsinput{
 	width: 350px;
 }
+
+#process_output{
+	max-height: 400px;
+	overflow: auto;
+}
+
+
+#form_chapter_jump{
+	margin: 16px 0;
+}
+#form_chapter_jump > input{
+	width: 50%;
+	display: inline-block;
+}

@@ -61,7 +61,7 @@ class Book(models.Model):
     last_chapter_title = models.CharField(max_length=255, default='')
 
     _chapters_list = None
-    
+
     def __init__(self, *args, **kwargs):
         super(Book, self).__init__(*args, **kwargs)
         self._chapters_list = None
@@ -88,7 +88,8 @@ class Book(models.Model):
         verbose_name_plural = _('books')
         permissions = (('can_view_all', 'Can view all books'),
                        ('can_change_status', 'Can change status'),
-                       ('can_change_author', 'Can change author(s) 1'),)
+                       ('can_change_author', 'Can change author(s) 1'),
+                       ('can_generate_prc', 'Can generate prc'),)
 
     def __unicode__(self):
         return self.title
@@ -104,11 +105,11 @@ class Book(models.Model):
     @property
     def cover_thumb(self):
         return os.path.join(settings.BOOK_COVER_THUMB_DIR, self.cover.name)
-    
+
     @property
     def prc_file_name(self):
         return "%s.prc" % self.slug
-    
+
     @property
     def prc_file(self):
         return "books/prc/%s" % self.prc_file_name
@@ -124,12 +125,12 @@ class Book(models.Model):
     @property
     def chapters_list(self):
         if self._chapters_list is None:
-            self._chapters_list = get_chapters_list(self.id) 
+            self._chapters_list = get_chapters_list(self.id)
         return self._chapters_list
-    
+
     def reset_chapters_list(self):
         get_chapters_list.clear(self.id)
-        
+
     def is_read_by_user(self, user):
         try:
             return self.last_update < self.userlog_set.get(user=user, book=self).last_update

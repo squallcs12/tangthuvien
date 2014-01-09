@@ -15,6 +15,7 @@ import os
 from book.models.attachment_model import Attachment
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from tangthuvien.json_serializer import JSONSerializer
 
 class Command(BaseCommand):
     help = """
@@ -26,11 +27,14 @@ class Command(BaseCommand):
              help='Book ID from dev.tangthuvien.vn'),
         make_option('-a', '--all', action='store', dest='all', default=0,
              help='Book ID from dev.tangthuvien.vn'),
+        make_option('-j', '--json', action='store', dest='json', default=0,
+             help='Output attachment json'),
     )
 
     def handle(self, *args, **options):
         book_id = int(options.get('book', 0))
         is_all = int(options.get('all', 0))
+        json_output = int(options.get('json', 1))
 
         if is_all:
             books = Book.objects.all()
@@ -47,7 +51,11 @@ class Command(BaseCommand):
                 fp.write(html_content)
 
         for book in books:
-            os.system("%s %s -c2 -o %s" % (
+            if json_output:
+                cmd = "%s %s -c2 -o %s >/dev/null 2>/dev/null"
+            else:
+                cmd = "%s %s -c2 -o %s"
+            os.system(cmd % (
                 settings.realpath('program/kindlegen'),
                 settings.media_path(book.html_file),
                 book.prc_file_name
@@ -68,3 +76,6 @@ class Command(BaseCommand):
                                 size=file_size
                             )
             attachment.save()
+            if json_output:
+                print JSONSerializer().serialize(attachment.json_output)
+

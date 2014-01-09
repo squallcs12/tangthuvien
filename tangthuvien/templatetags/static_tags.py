@@ -38,30 +38,30 @@ class EmptyNode(template.Node):
 
 class PrintCssNode(template.Node):
     source_froms = {
-        'static' : settings.STATIC_URL,
-        'media'  : settings.MEDIA_URL,
+        'static' : settings.STATIC_URL + "css",
+        'media'  : settings.MEDIA_URL + "css",
         'url'    : '',
     }
     def render(self, context):
         if settings.DEBUG:
             output = ''
             for source_from, source_file in reversed(css_files):
-                output += '<link rel="stylesheet" type="text/css" href="%scss%s" />' % (self.source_froms[source_from], source_file,)
+                output += '<link rel="stylesheet" type="text/css" href="%s%s" />' % (self.source_froms[source_from], source_file,)
             return output
         else:
             raise NotImplemented()
 
 class PrintJsNode(template.Node):
     source_froms = {
-        'static' : settings.STATIC_URL,
-        'media'  : settings.MEDIA_URL,
+        'static' : settings.STATIC_URL + "js",
+        'media'  : settings.MEDIA_URL + "js",
         'url'    : '',
     }
     def render(self, context):
         if settings.DEBUG:
             output = ''
             for source_from, source_file in reversed(js_files):
-                output += '<script src="%sjs%s"></script>' % (self.source_froms[source_from], source_file,)
+                output += '<script src="%s%s"></script>' % (self.source_froms[source_from], source_file,)
             return output
         else:
             raise NotImplemented()

@@ -11,6 +11,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from book.forms import ConfigReadingSectionForm
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 
 def main(request, slug, template="book/introduction.phtml"):
     data = {}
@@ -34,8 +36,12 @@ def chapter(request, slug, chapter_number, template="book/read.phtml"):
     data = {}
     book = Book.objects.get(slug=slug)
     data['book'] = book
+    try:
+        chapter = book.chapter_set.filter(number=chapter_number)[0]
+    except IndexError:
+        messages.warning(request, _("Chapter was not posed yet for this book."))
+        return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number': 1}))
 
-    chapter = book.chapter_set.filter(number=chapter_number)[0]
     data['chapter'] = chapter
 
     chapter_read_signal.send(main, user=request.user, chapter=chapter)

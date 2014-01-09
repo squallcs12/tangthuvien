@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'tangthuvien.views.home_view.main', name='homepage'),
+    url(r'^testimonials', 'tangthuvien.views.testimonials_view.index', name='testimonials'),
 
     url(r'^ttv/', include('tangthuvien.sub_urls')),
 
@@ -14,7 +15,7 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+    (r'^admin/lookups/', include('ajax_select.urls')),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 

@@ -163,6 +163,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'django_coverage',
+    'django_extensions',
     'jsonify',
     'lettuce.django',
     'mptt',
@@ -171,9 +172,12 @@ INSTALLED_APPS = (
     'social_auth',
     'south',
     'tagging',
-    'tangthuvien',
+    'notification',
+    'mailer',
     'zinnia',
     'ckeditor',
+    'ajax_select',
+    'tangthuvien',
 )
 SITE_ID = 1
 
@@ -310,6 +314,12 @@ TEST_EMAIL = 'tangthuvien.vn@gmail.com'
 TEST_PASSWORD = ";P/*Aor1%Q-2+c2"
 
 POSTMAN_AUTO_MODERATE_AS = True
+AJAX_LOOKUP_CHANNELS = {
+    'postman_users': dict(model='auth.user', search_field='username'),
+}
+POSTMAN_AUTOCOMPLETER_APP = {
+    'arg_default': 'postman_users',
+}
 
 # Zinnia
 ZINNIA_AUTO_CLOSE_COMMENTS_AFTER = 0
@@ -319,8 +329,10 @@ ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
 HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
 HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
+SOCKET_IO_URL = 'http://localhost:8001'
+
 try:
-    from local_settings import *
+    from local_settings import *  # @UnusedWildImport
 except ImportError:
     pass
 

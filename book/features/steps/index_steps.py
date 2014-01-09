@@ -88,6 +88,7 @@ def then_i_see_the_url_was_changed(step):
 def and_i_see_only_books_in_that_category_were_listed(step):
     for book in find_all("#books .book"):
         book.text.should.contain('category-0')
+    save_list_item_ids(-3, "#books .book")
 
 @step(u'When I choose one more book category')
 def when_i_choose_one_more_book_category(step):
@@ -115,3 +116,13 @@ def and_i_see_the_books_still_there_after_reload_the_page(step):
     when_i_reload_the_page(step)
     save_list_item_ids('y', "#books .book")
     compare_list_item_ids('x', 'y', "#books .book").should.be.true
+
+
+@step(u'When I click browser back button')
+def when_i_click_browser_back_button(step):
+    browser().back()
+
+@step(u'Then I see the previous books was listed')
+def then_i_see_the_previous_books_was_listed(step):
+    save_list_item_ids(-4, "#books .book")
+    compare_list_item_ids(-3, -4, "#books .book")
