@@ -37,3 +37,11 @@ function attach_thank_button($, chapter_id, submit_thank_url){
 		thankButton.click(thank);
 	}
 };
+
+(function($){
+	$("#form_chapter_jump").submit(function(e){
+		e.preventDefault();
+		location.href = $(this).prop("action").replace("000999000", $("input[name='page']").val());
+		return false;
+	});
+})(jQuery);

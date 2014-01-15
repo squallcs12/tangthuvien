@@ -77,11 +77,27 @@
 				<h3>{% trans "Posted chapters" %}</h3>
 				<table class="table table-striped table-bordered table-hover">
 					<tbody>
-						{% for page_info in book.chapters_list %}
-						<tr>
-							<td><a href="{% url 'read_book_chapter' book.slug page_info.0 %}">{{ page_info.0 }} - {{ page_info.1 }}</a></td>
-						</tr>
-						{% endfor %}
+						{% if book.chapters_list|length > 10 %}
+							{% for page_info in book.chapters_list|slice:":4" %}
+							<tr>
+								<td><a href="{% url 'read_book_chapter' book.slug page_info.0 %}">{{ page_info.0 }} - {{ page_info.1 }}</a></td>
+							</tr>
+							{% endfor %}
+							<tr>
+								<td>... ... ...</td>
+							</tr>
+							{% for page_info in book.chapters_list|slice:"-4:" %}
+								<tr>
+									<td><a href="{% url 'read_book_chapter' book.slug page_info.0 %}">{{ page_info.0 }} - {{ page_info.1 }}</a></td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							{% for page_info in book.chapters_list %}
+							<tr>
+								<td><a href="{% url 'read_book_chapter' book.slug page_info.0 %}">{{ page_info.0 }} - {{ page_info.1 }}</a></td>
+							</tr>
+							{% endfor %}
+						{% endif %}
 					</tbody>
 				</table>
 			</div>
