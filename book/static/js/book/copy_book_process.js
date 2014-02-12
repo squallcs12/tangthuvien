@@ -13,13 +13,13 @@ function copy_book_process($, process_output_url){
         $("#process_bar .progress-bar").css('width', percent + '%');
         $("#process_bar .progress-bar").html(percent + '%');
     }
-    
+
     // process command from log
     function report_copy_process(command){
-    	
+
     	//split command parts
         var args = command.split(' ');
-        
+
         //first part is command name
         switch(args[0]){
             case 'start':
@@ -44,7 +44,7 @@ function copy_book_process($, process_output_url){
                	break;
             case 'skip_post':
             case 'process_chapter':
-               	chapter_num += 1;
+                chapter_num += 1;
                	var chapter_percent = ((chapter_num * each_page_percent) / total_chapter ).toFixed(2);
                	var current_percent = (parseFloat(page_percent) + parseFloat(chapter_percent)).toFixed(2);
                	change_percent(current_percent);
@@ -62,7 +62,7 @@ function copy_book_process($, process_output_url){
         }
    		$("#process_output").append(command + "\n");
     }
-        
+
     // constructure ajax request
 	var start_line = 0;
 	var ajaxConf = {};
@@ -83,7 +83,7 @@ function copy_book_process($, process_output_url){
 		}
         $("#process_output").scrollTop($("#process_output")[0].scrollHeight);
 	}
-	
+
 	// request new log every 1 second
     var interval_process = setInterval(function(){
     	ajaxConf['data']['start_line'] = start_line;

@@ -178,9 +178,9 @@ INSTALLED_APPS = (
     'notification',
     'mailer',
     'zinnia',
+    'tangthuvien',
     'ckeditor',
     'ajax_select',
-    'tangthuvien',
 )
 SITE_ID = 1
 
@@ -332,7 +332,7 @@ ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
 HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
 HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
-SOCKET_IO_URL = 'http://localhost:8001'
+SOCKET_IO_URL = 'http://localhost:1234'
 
 THANKSHOP_DAILY_LOGIN_THANK_POINTS = 100
 THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS = -10

@@ -354,13 +354,13 @@ class Deploy(object):
     @classmethod
     def update_local(cls):
         cls.init_folder_tree()
+        local("cd program; curl -O http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
+        local("cd program; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
+        local("sudo mkdir -p /var/log/tangthuvien.vn/")
+        local("sudo chmod 777 /var/log/tangthuvien.vn/")
         local("sudo apt-get install libjpeg-dev -y")
         local("sudo apt-get install libpng-dev -y")
         local("git pull origin %s" % cls.branch())
         local("pip install -r requirements.txt")
-        local("cd program; wget http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz")
-        local("cd program; tar -xf kindlegen_linux_2.6_i386_v2_9.tar.gz")
-        local("sudo mkdir -p /var/log/tangthuvien.vn/")
-        local("sudo chmod 777 /var/log/tangthuvien.vn/")
         local("python manage.py syncdb --migrate")
 
