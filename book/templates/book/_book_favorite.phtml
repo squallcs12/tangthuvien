@@ -2,17 +2,18 @@
 {% load static_tags %}
 
 {% load_js static /book/favorite.js %}
-
-<div class="panel panel-default favorite">
-	<div class="panel-body">
-		<button class="btn btn-default" id="favorite_book" data-book_id="{{book.id}}"
-			favorite="{% if book.favorited_by_current_user %}yes{% else %}no{% endif %}"
-			{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
-			{% if book.favorited_by_current_user %}
-				{% trans "Unfavorite" %}
-			{% else %}
-				{% trans "Favorite" %}
-			{% endif %}
-		</button>
-	</div>
+<div class="col-lg-3">
+    <div class="panel panel-default favorite">
+    	<div class="panel-body">
+    		<button class="btn btn-default" id="favorite_book" data-book_id="{{book.id}}"
+    			favorite="{% if book.favorited_by_current_user %}yes{% else %}no{% endif %}"
+    			{% if not user.is_authenticated %}title="{% trans 'Required you be logged-in to mark as favorite' %}"{% endif %}>
+    			{% if book.favorited_by_current_user %}
+    				{% trans "Unfavorite" %}
+    			{% else %}
+    				{% trans "Favorite" %}
+    			{% endif %}
+    		</button>
+    	</div>
+    </div>
 </div>

@@ -34,6 +34,7 @@ def when_the_process_is_finished(step):
 
 @step(u'Then I see the whole book was copied')
 def then_i_see_the_whole_book_was_copied(step):
+    db_commit()
     book = Book.objects.get(pk=world.copied_book_id)
     book.chapter_set.all()[1].delete()
     copy_log = book.copy
