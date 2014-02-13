@@ -37,9 +37,9 @@
 
 		  ga('create', 'UA-45006270-1', 'tangthuvien.vn');
 		  {% if request.google_analytic.pageview %}
-		  options = {{request.google_analytic.pageview|jsonify}}
+		  options = {{request.google_analytic.pageview|jsonify}};
 		  {% else %}
-		  options = {}
+		  options = {};
 		  {% endif %}
 		  ga('send', 'pageview', options);
 
