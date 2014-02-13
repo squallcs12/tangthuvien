@@ -13,5 +13,6 @@ urlpatterns = patterns('thankshop.views',
     url(r'^thank_point/', 'thank_point_shop_view.index', name='thankshop_thank_point_shop'),
     url(r'^$', 'shop_homepage_view.index', name='thankshop_shop_homepage'),
     url(r'^buy', 'thankshop_buy_item_view.ajax', name='thankshop_buy_item_ajax'),
-    url(r'^inventory/(?P<username>.*)/', 'thankshop_user_inventory_view.index', name='thankshop_user_inventory'),
+    url(r'^inventory/(?P<username>.*)/$', 'thankshop_user_inventory_view.index', name='thankshop_user_inventory'),
+    url(r'^inventory/(?P<user_id>.+)/list$', 'thankshop_user_inventory_view.list_items', name='thankshop_user_inventory_list_items'),
 )

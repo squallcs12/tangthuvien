@@ -40,7 +40,7 @@ class Item(models.Model):
 
 
 class UserItem(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="thankshop_items")
     item = models.ForeignKey('thankshop.Item')
 
     class Meta:

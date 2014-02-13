@@ -35,6 +35,6 @@ def when_i_click_on_item_in_inventory(step):
 def then_i_see_the_item_information(step):
     until(lambda: find("#item_information").is_displayed().should.be.true)
     find("#item_information .title").text.should_not.equal("")
-    find("#item_information .descrition").text.should_not.equal("")
+    find("#item_information .description").text.should_not.equal("")
     find("#item_information img.image").get_attribute("src").should_not.equal("")
 
