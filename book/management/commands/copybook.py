@@ -39,7 +39,7 @@ class Command(BaseCommand):
     )
 
     def get_thread_html(self, thread_id, page=1):
-        url = 'http://www.tangthuvien.vn/forum/showthread.php?t=%s&page=%s' % (thread_id, page)
+        url = 'http://www.tangthuvien.vn/forum/showthread.php?&styleid=31&t=%s&page=%s' % (thread_id, page)
         response = requests.get(url)
         return response.content
 
