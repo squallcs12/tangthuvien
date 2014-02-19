@@ -43,13 +43,10 @@ class PrintCssNode(template.Node):
         'url'    : '',
     }
     def render(self, context):
-        if settings.DEBUG:
-            output = ''
-            for source_from, source_file in reversed(css_files):
-                output += '<link rel="stylesheet" type="text/css" href="%s%s" />' % (self.source_froms[source_from], source_file,)
-            return output
-        else:
-            raise NotImplemented()
+        output = ''
+        for source_from, source_file in reversed(css_files):
+            output += '<link rel="stylesheet" type="text/css" href="%s%s" />' % (self.source_froms[source_from], source_file,)
+        return output
 
 class PrintJsNode(template.Node):
     source_froms = {
@@ -58,10 +55,7 @@ class PrintJsNode(template.Node):
         'url'    : '',
     }
     def render(self, context):
-        if settings.DEBUG:
-            output = ''
-            for source_from, source_file in reversed(js_files):
-                output += '<script src="%s%s"></script>' % (self.source_froms[source_from], source_file,)
-            return output
-        else:
-            raise NotImplemented()
+        output = ''
+        for source_from, source_file in reversed(js_files):
+            output += '<script src="%s%s"></script>' % (self.source_froms[source_from], source_file,)
+        return output
