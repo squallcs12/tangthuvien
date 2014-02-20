@@ -69,6 +69,7 @@ class PublishNewBookForm(forms.ModelForm):
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()
+    skip_first_post = forms.BooleanField(required=False)
 
     def clean_thread_url(self):
         thread_id = self.cleaned_data['thread_url'].split('?')[1].split('=')[1]  # last param number
