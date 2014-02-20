@@ -61,6 +61,7 @@ class Command(BaseCommand):
         start_post = int(options.get('start_post', 0))
         end = int(options.get('end', 0))
         log = options.get('log', '')
+        self.skip = options.get('skip') == 1
         if not log:
             for message in self.copy(thread_id, book_id, start, end, start_post):
                 print message
@@ -101,26 +102,21 @@ class Command(BaseCommand):
         yield "end %s" % end
         yield ""
 
-        skip = True
-
         for page in range(start, end + 1):
             yield "process_page %s" % page
             content = self.get_thread_html(thread_id, page)
             posts = json.loads(content)
 
             post_count = 0
-            if page == 1:
-                post_count += 1
 
-            if skip:
-                skip = False
-                post_count += start_post
+            if self.skip:
+                post_count += 1
+                self.skip = False
 
             if post_count:
                 posts = posts[post_count:]
 
             yield "total_chapter %s" % len(posts)
-
             for post in posts:
                 post_count += 1
 
