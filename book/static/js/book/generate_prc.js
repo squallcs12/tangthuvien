@@ -3,7 +3,7 @@
  */
 function generate_prc_socket_io(book_id){
 	if(typeof(socket) == 'undefined'){
-		socket = io.connect('http://localhost:1234');
+		socket = io.connect(SOCKET_IO_URL);
 	}
 	(function($){
 
