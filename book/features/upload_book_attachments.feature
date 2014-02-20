@@ -23,7 +23,7 @@ Feature: Book App :: Upload book attachments
         Given I was a logged-in super user
         When I read a book has attachment uploaded by normal user
         And I approve that attachment
-        Then the attachment can be seen by other normak user
+        Then the attachment can be seen by other normal user
         When I reach the limited of approving attachment
         Then I can not approve attachment anylonger
 
