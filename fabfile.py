@@ -1,7 +1,8 @@
 from fabric.api import task, run, require, put, sudo, local, env
 import os
+arun = run
 
-env.hosts = ['root@210.211.109.43']
+env.hosts = ['root@210.211.116.249']
 
 def deploy():
     "Deploy current branch to remote server"
@@ -30,7 +31,7 @@ class Deploy(object):
 
     @classmethod
     def sudo(cls, command):
-        sudo(command, user='www-data')
+        sudo(command)
 
     @classmethod
     def init(cls):
@@ -111,7 +112,7 @@ class Deploy(object):
 
     @classmethod
     def install_requirements(cls):
-        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.release_dir)
+        run("cd %s; pip install -r requirements.txt --allow-all-external --allow-unverified PIL" % cls.release_dir)
 
     @classmethod
     def get_python_version(cls):
@@ -210,7 +211,7 @@ class Deploy(object):
 
     @classmethod
     def run_migration(cls):
-        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.release_dir)
+        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate --noinput' % cls.release_dir)
         cls.sudo_virtualenv('cd %s; python manage.py update_permissions;' % cls.release_dir)
 
     @classmethod
