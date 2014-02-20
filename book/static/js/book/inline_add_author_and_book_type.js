@@ -1,9 +1,13 @@
 /**
- * 
+ *
  */
 function inline_add_author_and_type(form_id){
-    jQuery.fn.modalmanager.defaults.resize = true;
-    
+    try{
+        jQuery.fn.modalmanager.defaults.resize = true;
+    } catch(e){
+
+    }
+
     (function($){
         var new_author_option = document.createElement('option');
         $(new_author_option)
@@ -13,7 +17,7 @@ function inline_add_author_and_type(form_id){
             $("#" + form_id + " select[name='author']").val('');
             $("#" + form_id + " select[name='author']").change();
         });
-        
+
         (function(){
             function replaceCkeditor(){
                 $('#new-author-form-div').off('shown.bs.modal', replaceCkeditor);
@@ -59,7 +63,7 @@ function inline_add_author_and_type(form_id){
                     $(new_option)
                         .prop('value', data['id'])
                         .html(data['name']);
-                    
+
                     $("#" + form_id + " select[name='author'] option").slice(2).each(function(){
                         if(added){
                             return;
@@ -72,7 +76,7 @@ function inline_add_author_and_type(form_id){
                     if(!added){
                         $("#" + form_id + " select[name='author']").append(new_option);
                     }
-                    
+
                     // hide modal first
                     $('#new-author-form-div').modal('hide');
                     $("#" + form_id + " select[name='author']").val(data['id']);
@@ -85,7 +89,7 @@ function inline_add_author_and_type(form_id){
             $.ajax(ajaxConf);
             return false;
         });
-        
+
         var new_type_option = document.createElement('option');
         $(new_type_option)
             .html(STR_CREATE_NEW)
@@ -113,7 +117,7 @@ function inline_add_author_and_type(form_id){
                     $(new_option)
                         .prop('value', data['id'])
                         .html(data['name']);
-                    
+
                     $("#" + form_id + " select[name='ttv_type'] option").slice(2).each(function(){
                         if(added){
                             return;
@@ -126,7 +130,7 @@ function inline_add_author_and_type(form_id){
                     if(!added){
                         $("#" + form_id + " select[name='ttv_type']").append(new_option);
                     }
-                    
+
                     // hide modal first
                     $('#new-type-form-div').modal('hide');
                     $("#" + form_id + " select[name='ttv_type']").val(data['id']);

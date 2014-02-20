@@ -5,11 +5,8 @@ Created on Dec 4, 2013
 '''
 from lettuce_setup.function import *
 from thankshop import models
-from django.conf import settings
-import time
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
-from book.features.steps.favorite_book_steps import i_read_a_book
 from book.features.steps.thank_chapter_steps import when_i_thank_the_poster_for_this_chapter
 from book.models.book_model import Book
 from book.models import ChapterType
@@ -150,11 +147,17 @@ def i_buy_a_packages(step):
     world.thank_points_package_points = int(find("#thankshop #packages .package .points").text)
     find("#thankshop #packages .package .buy").click()
 
+
+@step(u'I enter my paypal login information')
+def i_enter_my_paypal_login_information(step):
+
     find("#billingModule .panel").click()  # pay with paypal account
     find("#login_email").fillin(settings.TEST_EMAIL)
     find("#login_password").fillin(settings.TEST_PASSWORD)
     find("#submitLogin").click()
 
+@step(u'I approve the buying process')
+def i_approve_the_buying_process(step):
     find("#continue_abovefold").click()
 
 @step(u'I receive an amount of thank points to spend')

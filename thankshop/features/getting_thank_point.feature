@@ -25,4 +25,6 @@ Feature: As a user
 		When I go to the buy thank points page
 		Then I see a list of thank points packages
 		When I buy a packages
+		And I enter my paypal login information
+		And I approve the buying process
 		Then I receive an amount of thank points to spend

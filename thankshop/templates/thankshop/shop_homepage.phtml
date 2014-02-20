@@ -8,7 +8,7 @@
 <div id="thankshop">
 	<div class="row" id="items">
 		{% for item in items %}
-		<div class="col-lg-3 item">
+		<div class="col-lg-3 item" item-id="{{item.id}}">
 			<div class="name">{{item.name}}</div>
 			<div class="short_description">{{item.short_description}}</div>
 			<div class="long_description">{{item.long_description}}</div>

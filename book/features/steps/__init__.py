@@ -22,6 +22,8 @@ def clear_user_in_db():
         user.delete()
     for group in Group.objects.all():
         group.delete()
+    for book in Book.objects.all():
+        book.delete()
 
 @before.all
 def clear_prc_folder():
