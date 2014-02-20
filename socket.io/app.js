@@ -4,7 +4,7 @@ var io = require('socket.io').listen(server);
 var sys = require('sys');
 var exec = require('child_process').exec;
 
-server.listen(1234);
+server.listen(8001);
 
 app.get('/', function(req, res) {
 	res.sendfile(__dirname + '/index.html');

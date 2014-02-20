@@ -14,7 +14,6 @@
 /htmlcov
 /.idea
 /log
-/bin
 /env
 /program
 /socket.io/node_modules
