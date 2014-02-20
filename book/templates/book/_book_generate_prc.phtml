@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load static_tags %}
 {% if perms.book.can_generate_prc %}
-    {% load_js url http://localhost:1234/socket.io/socket.io.js %}
+    {% load_js url {{SOCKET_IO_URL}}/socket.io/socket.io.js %}
     {% load_js static /book/generate_prc.js %}
     <div class="col-lg-3">
 

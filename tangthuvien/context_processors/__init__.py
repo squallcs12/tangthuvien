@@ -13,6 +13,9 @@ def style_list(request):
         'CURRENT_STYLE': current_style(request.user),
     }
 
+def socket_io(request):
+    return {'SOCKET_IO_URL': settings.SOCKET_IO_URL}
+
 def onetime_show_notification(request):
     return {'onetime_show_notification' : OnetimeShowNotification(request)}
 
