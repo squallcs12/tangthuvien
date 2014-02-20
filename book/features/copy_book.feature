@@ -17,3 +17,5 @@ Feature: Book App :: Copy book
         Then I see the copying was processed
         When the process is finished
         Then I see only new posted chapter was copied
+        When I visit the redirect page for copied thread id
+        Then I was redirected to the reading page of copied book

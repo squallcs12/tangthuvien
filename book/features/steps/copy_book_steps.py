@@ -68,3 +68,11 @@ def then_i_see_only_new_posted_chapter_was_copied(step):
     read_book_by_id(world.copied_book_id)
     i_go_to_last_chapter(step)
     see_the_second_chapter(step)
+
+@step(u'I visit the redirect page for copied thread id')
+def i_visit_the_redirect_page_for_copied_thread_id(step):
+    visit_by_view_name("thread_redirect_view", kwargs={"tid": 50129})
+
+@step(u'I was redirected to the reading page of copied book')
+def i_was_redirected_to_the_reading_page_of_copied_book(step):
+    until(lambda: len(find_all("#sync-copy-book")).should_not.equal(0))
