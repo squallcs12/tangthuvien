@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 from tangthuvien import settings
 from book.models.copy_model import Copy
 from django.core.exceptions import ObjectDoesNotExist
+import json
 
 class Command(BaseCommand):
     help = """
@@ -39,7 +40,7 @@ class Command(BaseCommand):
     )
 
     def get_thread_html(self, thread_id, page=1):
-        url = 'http://www.tangthuvien.vn/forum/showthread.php?t=%s&page=%s' % (thread_id, page)
+        url = 'http://www.tangthuvien.vn/forum/vbb_migration/thread_chapters.php?threadid=%s&code=123qweasdzxc&page=%s' % (thread_id, page)
         response = requests.get(url)
         return response.content
 
@@ -60,6 +61,7 @@ class Command(BaseCommand):
         start_post = int(options.get('start_post', 0))
         end = int(options.get('end', 0))
         log = options.get('log', '')
+        self.skip = options.get('skip') == 1
         if not log:
             for message in self.copy(thread_id, book_id, start, end, start_post):
                 print message
@@ -69,6 +71,9 @@ class Command(BaseCommand):
             for message in self.copy(thread_id, book_id, start, end, start_post):
                 with open(log, "a") as fb:
                     fb.write("\n%s" % message)
+
+    def simple_bb(self, text):
+        return text
 
     def copy(self, thread_id, book_id, start, end, start_post):
         if not thread_id or not book_id:
@@ -91,54 +96,42 @@ class Command(BaseCommand):
             copy_log = Copy(book=book, thread_id=thread_id, last_chapter_number=chapter_number, last_page=page, last_post=post_count, is_done=False)
         copy_log.save()
 
-
-        content = self.get_thread_html(thread_id, start)
-        content = BeautifulSoup(content)
-        thread_start, thread_end = self.get_page_range_from_content(content)
-        if start < thread_start or start > thread_end:
-            start = thread_start
-        if end < thread_start or end > thread_end:
-            end = thread_end
+        end = int(self.get_thread_html(thread_id, 0))
 
         yield "start %s" % start
         yield "end %s" % end
         yield ""
 
-        skip = True
-
         for page in range(start, end + 1):
             yield "process_page %s" % page
             content = self.get_thread_html(thread_id, page)
-
-            start_posts_index = content.find('<div id="posts">') + len('<div id="posts">')
-            end_posts_index = content.find('<div id="lastpost">')
-            posts = content[start_posts_index: end_posts_index]
-            posts = posts.split("<!-- / close content container -->")[0:-1]
-
+            posts = json.loads(content)
 
             post_count = 0
-            if page == 1:
+
+            if self.skip:
                 post_count += 1
-            if skip:
-                skip = False
-                post_count += start_post
+                self.skip = False
 
             if post_count:
                 posts = posts[post_count:]
 
             yield "total_chapter %s" % len(posts)
-
             for post in posts:
                 post_count += 1
-                post = BeautifulSoup(post)
-                vp = post.find(class_="hiddentext")
 
-                if not vp:
+                post_content = post['pagetext']
+                spoiler_end = post_content.find("[/SPOILER]")
+                if spoiler_end == -1:
                     yield "skip_post %s" % post_count
                     continue
 
-                poster = post.find(class_="bigusername")
-                username = poster.text.strip()
+                spoiler_start = post_content.rfind("[SPOILER", 0, spoiler_end)
+                spoiler_start = post_content.find(']', spoiler_start) + 1
+
+                vp = post_content[spoiler_start:spoiler_end]
+
+                username = post['username']
 
                 try:
                     user = User.objects.get(username=username)
@@ -151,7 +144,7 @@ class Command(BaseCommand):
 
                 yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
-                chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in vp.text.split("\n") if txt])
+                chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in self.simple_bb(vp).split("\n") if txt])
                 chapter.number = book.chapters_count + 1
                 chapter.book = book
                 chapter.user = user

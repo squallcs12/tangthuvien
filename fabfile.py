@@ -1,7 +1,8 @@
 from fabric.api import task, run, require, put, sudo, local, env
 import os
+arun = run
 
-env.hosts = ['root@210.211.109.43']
+env.hosts = ['root@210.211.116.249']
 
 def deploy():
     "Deploy current branch to remote server"
@@ -30,7 +31,7 @@ class Deploy(object):
 
     @classmethod
     def sudo(cls, command):
-        sudo(command, user='www-data')
+        return sudo(command)
 
     @classmethod
     def init(cls):
@@ -71,6 +72,7 @@ class Deploy(object):
         sudo("mkdir -p %s/log" % cls.share_dir)
         sudo("mkdir -p %s/log/copybook" % cls.share_dir)
         sudo("mkdir -p %s/media" % cls.share_dir)
+        sudo("mkdir -p %s/node_modules" % cls.share_dir)
         sudo("mkdir -p %s/media/uploads" % cls.share_dir)
         sudo("mkdir -p %s/media/uploads/ckeditor" % cls.share_dir)
         sudo("mkdir -p %s/media/thumbs" % cls.share_dir)
@@ -111,7 +113,7 @@ class Deploy(object):
 
     @classmethod
     def install_requirements(cls):
-        cls.sudo_virtualenv("cd %s; pip install -r requirements.txt" % cls.release_dir)
+        run("cd %s; pip install -r requirements.txt --allow-all-external --allow-unverified PIL" % cls.release_dir)
 
     @classmethod
     def get_python_version(cls):
@@ -201,7 +203,7 @@ class Deploy(object):
         sudo("rm %s" % cls.current_dir)
         sudo("ln -s %s %s" % (cls.release_dir, cls.current_dir))
 
-        sudo("chmod 777 %s/bin/gunicorn_start.sh" % cls.release_dir)
+        sudo("chmod 777 %s/bin/*.sh" % cls.release_dir)
 
         cls.sudo_virtualenv("supervisorctl -c%s/bin/supervisor.conf shutdown" % cls.current_dir)
         cls.sudo_virtualenv("supervisord -c%s/bin/supervisor.conf" % cls.current_dir)
@@ -210,7 +212,7 @@ class Deploy(object):
 
     @classmethod
     def run_migration(cls):
-        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate;' % cls.release_dir)
+        cls.sudo_virtualenv('cd %s; python manage.py syncdb --migrate --noinput' % cls.release_dir)
         cls.sudo_virtualenv('cd %s; python manage.py update_permissions;' % cls.release_dir)
 
     @classmethod
@@ -292,6 +294,12 @@ class Deploy(object):
             sudo("%s install socket.io" % path)
             sudo("%s install express" % path)
 
+    @classmethod
+    def install_node_modules(cls):
+        packages = cls.sudo("cat %s/socket.io/requirements.txt" % cls.release_dir).split("\n")
+        for package in packages:
+            cls.sudo("cd %s; npm install %s" % (cls.share_dir, package))
+        cls.sudo("ln -s %s/node_modules %s/node_modules" % (cls.share_dir, cls.release_dir))
 
     @classmethod
     def setup(cls):
@@ -318,6 +326,7 @@ class Deploy(object):
         current_time = run("date +%Y%m%d%H%M%S")
         cls.checkout_source(current_time)
         cls.install_requirements()
+        cls.install_node_modules()
         cls.run_migration()
         cls.collect_statics()
         cls.combine_django_messages()
