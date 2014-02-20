@@ -111,6 +111,7 @@ class Command(BaseCommand):
             post_count = 0
             if page == 1:
                 post_count += 1
+
             if skip:
                 skip = False
                 post_count += start_post
@@ -129,7 +130,7 @@ class Command(BaseCommand):
                     yield "skip_post %s" % post_count
                     continue
 
-                spoiler_start = post_content.rfind("[SPOILER", spoiler_end)
+                spoiler_start = post_content.rfind("[SPOILER", 0, spoiler_end)
                 spoiler_start = post_content.find(']', spoiler_start) + 1
 
                 vp = post_content[spoiler_start:spoiler_end]

@@ -19,7 +19,6 @@ $threadId = $_GET['threadid']; // 12
 $page = $_GET['page']; // 1
 $each = 10;
 $start = ($page - 1) * $each;
-$end = $start + $each;
 
 if(!$page){
     $sql = "SELECT count(*) FROM `".TABLE_PREFIX."post` WHERE threadid='" . mysql_real_escape_string($threadId) . "'";
@@ -28,7 +27,7 @@ if(!$page){
     die(ceil($row[0] / $each));
 }
 
-$sql = "SELECT * FROM `".TABLE_PREFIX."post` WHERE threadid='" . mysql_real_escape_string($threadId) . "' LIMIT $start, $end";
+$sql = "SELECT * FROM `".TABLE_PREFIX."post` WHERE threadid='" . mysql_real_escape_string($threadId) . "' LIMIT $start, $each";
 $result = mysql_query($sql) or die(mysql_error());
 
 $posts = array();
