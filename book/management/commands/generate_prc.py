@@ -9,7 +9,6 @@ from book.models.book_model import Book
 import datetime
 from django.template.loader import render_to_string
 from tangthuvien import settings
-import subprocess
 import codecs
 import os
 from book.models.attachment_model import Attachment
