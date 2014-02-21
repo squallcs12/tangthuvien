@@ -9,8 +9,6 @@ from book.forms import CopyBookForm, AddAuthorForm, AddBookTypeForm
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from book.models.book_model import Book
-from django.http import StreamingHttpResponse
-import subprocess
 from tangthuvien import settings
 import os
 
