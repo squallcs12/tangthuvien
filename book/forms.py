@@ -14,7 +14,7 @@ from tangthuvien.functions import UserSettings
 from tangthuvien import settings
 from django.contrib import messages
 from book.models.copy_model import Copy
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 class PostNewChapterForm(forms.ModelForm):
 
@@ -69,15 +69,13 @@ class PublishNewBookForm(forms.ModelForm):
 
 class CopyBookForm(PublishNewBookForm):
     thread_url = forms.URLField()
+    skip_first_post = forms.BooleanField(required=False)
 
-    def is_valid(self):
-        is_valid = super(CopyBookForm, self).is_valid()
-        if is_valid:
-            thread_id = self.cleaned_data['thread_url'].split('?')[1].split('=')[1]  # last param number
-            if Copy.objects.filter(thread_id=thread_id).exists():
-                messages.error(self.request, _("The book is already copied to this site."))
-                return False
-        return is_valid
+    def clean_thread_url(self):
+        thread_id = self.cleaned_data['thread_url'].split('?')[1].split('=')[1]  # last param number
+        if Copy.objects.filter(thread_id=thread_id).exists():
+            raise ValidationError(_("The book is already copied to this site."))
+        return self.cleaned_data['thread_url']
 
 style_font_size_choices = [(item, item) for item in settings.BOOK_READING_STYLE_FONT_SIZES]
 style_font_size_choices.insert(0, ('', '---'))

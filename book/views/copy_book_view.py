@@ -25,7 +25,11 @@ def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtm
         form = post_new_book_form(request.user, data=request.POST, files=request.FILES)
         if form.is_valid():
             book = form.save()
-            return HttpResponseRedirect("%s?url=%s" % (reverse('copy_book_process', kwargs={'book_id':book.id}), form.cleaned_data['thread_url']))
+            return HttpResponseRedirect("%s?url=%s&skip=%s" % (
+                                                       reverse('copy_book_process', kwargs={'book_id':book.id}),
+                                                       form.cleaned_data['thread_url'],
+                                                       1 if form["skip_first_post"].value() else 0,
+                                                       ))
     else:
         form = post_new_book_form(request.user)
 
@@ -48,6 +52,7 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
 
     thread_url = request.GET.get('url')
     thread_id = thread_url.split('?')[1].split('=')[1]
+    skip = request.GET.get("skip")
 
     os.system(" ".join([
         settings.realpath('env/bin/python'),
@@ -56,6 +61,7 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
         '-b %s' % book.id,
         '-t %s' % thread_id,
         '-l %s' % get_log_file(book.id),
+        '--skip=%s' % skip,
         "&"
     ]))
 
