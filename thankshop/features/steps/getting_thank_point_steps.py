@@ -7,7 +7,7 @@ from lettuce_setup.function import *
 from thankshop import models
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
-from book.features.steps.thank_chapter_steps import when_i_thank_the_poster_for_this_chapter
+from book.features.steps.thank_chapter_steps import i_thank_the_poster_for_this_chapter
 from book.models.book_model import Book
 from book.models import ChapterType
 from book.features.factories.chapter_type_factory import ChapterTypeFactory
@@ -86,7 +86,7 @@ def i_thank_a_poster_for_a_chapter(step, book_index= -1):
         find("#read_book").click()
     thank_obj = models.ThankPoint.objects.get(user=default_user())
     world.thank_points = thank_obj.thank_points
-    when_i_thank_the_poster_for_this_chapter(step)
+    i_thank_the_poster_for_this_chapter(step)
 
 @step(u'I see my thank points was spent')
 def then_i_see_my_thank_points_was_spent(step):
