@@ -8,12 +8,14 @@ from thankshop import exceptions
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.db.utils import IntegrityError
+from ckeditor.fields import RichTextField
+from django.conf import settings
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
-    short_description = models.TextField()
-    long_description = models.TextField()
-    price = models.IntegerField()
+    short_description = RichTextField()
+    long_description = RichTextField()
+    price = models.IntegerField(_("Price (Thanks)"))
     stocks = models.IntegerField()
     image = models.ImageField(upload_to='thankshop/item_images/')
 
@@ -37,6 +39,12 @@ class Item(models.Model):
         except IntegrityError:
             raise exceptions.AlreadyOwnItemException(_("This item is already owned by you."))
         return item
+
+    def image_html(self):
+        image_url = "%s%s" % (settings.MEDIA_URL, self.image)
+        return "<a href=\"%s\" target=\"_blank\"><img src=\"%s\" height=\"100px\" /></a>" % (image_url, image_url)
+    image_html.allow_tags = True
+    image_html.short_description = _("Image")
 
 
 class UserItem(models.Model):
