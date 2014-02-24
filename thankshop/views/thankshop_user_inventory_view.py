@@ -11,13 +11,13 @@ from thankshop.models.item import Item
 from tangthuvien.django_custom import HttpJson
 
 @login_required
-def index(request, username="me", template="thankshop/inventory.phtml"):
+def index(request, username=None, template="thankshop/inventory.phtml"):
     data = {}
     return TemplateResponse(request, template, data)
 
 @login_required
-def list_items(request, user_id="me"):
-    if user_id == "me":
+def list_items(request, user_id=None):
+    if user_id is None:
         user = request.user
     else:
         user = User.objects.get(pk=user_id)
