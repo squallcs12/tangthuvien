@@ -1,11 +1,6 @@
+{% load bootstrap %}
 {% if messages %}
 	{% for message in messages %}
-        <div class="row notifications">
-            <div class="alert alert-dismissable alert-{% for tag in message.tags %}{{ tag }}1{% endfor %}">
-                <p>
-                    {{message}}
-                </p>
-            </div>
-        </div>
+    {% render_message message %}
 	{% endfor %}
 {% endif %}
