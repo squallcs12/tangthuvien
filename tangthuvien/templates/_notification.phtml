@@ -1,12 +1,10 @@
 {% if messages %}
 	{% for message in messages %}
         <div class="row notifications">
-            <div class="col-lg-12">
-                <div class="alert alert-dismissable alert-{% if message.tags %}{{ message.tags }}{% endif %}">
-                    <p>
-                        {{message}}
-                    </p>
-                </div>
+            <div class="alert alert-dismissable alert-{% for tag in message.tags %}{{ tag }}1{% endfor %}">
+                <p>
+                    {{message}}
+                </p>
             </div>
         </div>
 	{% endfor %}

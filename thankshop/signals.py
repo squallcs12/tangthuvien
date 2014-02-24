@@ -10,19 +10,25 @@ import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from book import signals as book_signals
 from django.utils import timezone
+from django.contrib import messages
+from django.utils.translation import ugettext as _
+
+user_first_daily_login = dispatch.Signal(providing_args=["user", "request"])
 
 def log_user_daily_logged_in(sender, user, request, **kwargs):
     from thankshop import models
-    models.UserDailyLoginHistory.log(user)
+    first_daily_login = models.UserDailyLoginHistory.log(user)
+    if first_daily_login:
+        user_first_daily_login.send(sender, user=user, request=request)
 
 user_logged_in.connect(log_user_daily_logged_in)
 
 # when user read a chapter
-user_first_daily_login = dispatch.Signal(providing_args=["user"])
 
 @dispatch.receiver(user_first_daily_login)
-def increaase_thank_points(sender, **kwargs):
+def increase_thank_points(sender, **kwargs):
     user = kwargs.get('user')
+    request = kwargs.get("request")
     from thankshop import models
     try:
         today = timezone.now().date()
@@ -34,6 +40,7 @@ def increaase_thank_points(sender, **kwargs):
                 settings.THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS * notlogin_days,
                 models.ThankPoint.DAILY_NOT_LOGIN
             )
+            messages.success(request, "thankshop/daily_thankpoints_increase.phtml", extra_tags="template")
 
     except ObjectDoesNotExist:
         pass
