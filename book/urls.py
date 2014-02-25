@@ -4,10 +4,14 @@ Created on Jul 28, 2013
 @author: antipro
 '''
 from django.conf.urls import patterns, url
-
+from book.views.language import setting_view, api_view
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
+
+    url(r'^language/setting', setting_view.LanguageSettingView.as_view(), name="book_language_setting"),
+    url(r'^language/list', api_view.LanguageApiView.as_view(), name="book_language_lists"),
+
     url(r'^ajax_list_books$', 'index_view.ajax', name='ajax_list_books'),
     url(r'^categories/(?P<slugs>.*)$', 'index_view.by_categories', name='books_list_by_categories'),
     url(r'^submit_thank', 'thank_view.main', name='summit_thank_request'),

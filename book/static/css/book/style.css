@@ -43,3 +43,23 @@
 	width: 50%;
 	display: inline-block;
 }
+
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+}
+
+ol.sortable li.placeholder {
+  position: relative;
+  /** More li styles **/
+}
+ol.sortable li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}
