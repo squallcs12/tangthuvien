@@ -7,7 +7,7 @@ Created on Aug 13, 2013
 from lettuce_setup.function import *  # @UnusedWildImport
 from book.features.steps.index_steps import i_visit_book_index_page
 from book.features.steps.read_book_steps import i_click_on_a_book, \
-    i_go_to_last_chapter, i_click_on_the_button
+    i_go_to_last_chapter
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.chapter_model import Chapter
 from book.models.book_model import Book

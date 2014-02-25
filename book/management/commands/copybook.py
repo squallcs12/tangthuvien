@@ -10,7 +10,6 @@ import requests
 from bs4 import BeautifulSoup
 from book.models.chapter_model import Chapter
 import sys
-import time
 from django.contrib.auth.models import User
 from tangthuvien import settings
 from book.models.copy_model import Copy

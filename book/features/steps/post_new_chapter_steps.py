@@ -9,7 +9,7 @@ from book.features.steps.index_steps import i_visit_book_index_page
 from book.features.steps.favorite_book_steps import i_read_a_book
 from book.models.chapter_model import Chapter
 from book.features.steps.favorite_book_steps import find_book_in_list
-from book.features.steps.publish_new_book_steps import when_i_post_a_new_chapter_for_this_book
+from book.features.steps.publish_new_book_steps import i_post_a_new_chapter_for_this_book
 
 @step(u'I am reading a book')
 def i_am_reading_a_book(step):
@@ -20,7 +20,7 @@ def i_am_reading_a_book(step):
 def i_submit_a_new_book_chapter(step):
     world.old_total_chapters = get_total_chapters(int(world.book_id))
     find("#post-new-chapter").click()
-    when_i_post_a_new_chapter_for_this_book(step)
+    i_post_a_new_chapter_for_this_book(step)
 
 def get_total_chapters(book_id):
     db_commit()

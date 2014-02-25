@@ -14,3 +14,8 @@ def add_bootstrap_field(bound_field):
     if bound_field.field.required and not isinstance(bound_field.field.widget, CKEditorWidget):
         bound_field.field.widget.attrs['required'] = 'required'
     return bound_field
+
+@register.inclusion_tag("_notification_message.phtml")
+def render_message(message):
+    message.tags_array = message.tags.split(" ")
+    return {"message": message}

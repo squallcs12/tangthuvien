@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div id="thankshop">
+	{% csrf_token %}
+	<div class="row" id="packages">
+		{% for package in packages %}
+		<div class="col-lg-3 package">
+			<div class="points">{{package.points}}</div>
+			<div class="price">{{package.price}}</div>
+			<a class="btn btn-primary buy" href="{% url 'thankshop_thank_point_buy' package.id %}">
+				{% trans "Buy" %}
+			</a>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

@@ -4,7 +4,6 @@ Created on Sep 21, 2013
 @author: antipro
 '''
 from book.models import Chapter
-from book.models.book_model import Book
 from book.forms import EditChapterForm
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse

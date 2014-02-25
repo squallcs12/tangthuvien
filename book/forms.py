@@ -6,15 +6,12 @@ Created on Sep 21, 2013
 from django import forms
 from django.utils.translation import ugettext as _
 from book.models import Chapter
-from book.models.chapter_model import Chapter
-from book.models import ChapterType, Author, BookType
-from ckeditor.widgets import CKEditorWidget
+from book.models import Author, BookType
 from book.models.book_model import Book
 from tangthuvien.functions import UserSettings
 from tangthuvien import settings
-from django.contrib import messages
 from book.models.copy_model import Copy
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 
 class PostNewChapterForm(forms.ModelForm):
 
@@ -39,7 +36,7 @@ class EditChapterForm(forms.ModelForm):
         fields = ['title', 'number', 'content']
 
 class AddAuthorForm(forms.ModelForm):
-    def __init__(self,*args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(AddAuthorForm, self).__init__(*args, **kwargs)
         self.fields['information'].required = False
         self.fields['information'].widget = forms.Textarea()
