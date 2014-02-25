@@ -8,14 +8,14 @@ jQuery(function(){
     }
 
     $("#userMenu .panel-heading a").each(function(){
-        var this_link = $(this).prop("href");
+        var this_link = $(this).prop("href").split("#")[1];
         if(opened_links.indexOf(this_link)!==-1){
             $(this).click();
         }
     });
 
     $("#userMenu .panel-heading a").click(function(e){
-        var this_link = $(this).prop("href");
+        var this_link = $(this).prop("href").split("#")[1];
 
         var found = opened_links.indexOf(this_link);
 
@@ -31,22 +31,24 @@ jQuery(function(){
         $.cookie("user_openned_menu", opened_menu, {path: '/', expires: date});
     });
 
-    $("#userMenu .top-buttons a").click(function(){
+    $("#userMenu .top-buttons a").click(function(e){
         var click = $(this).data("click");
         if(click == "expand"){
             $("#userMenu .panel-heading a").each(function(){
-                var this_link = $(this).prop("href");
+                var this_link = $(this).prop("href").split("#")[1];
                 if(opened_links.indexOf(this_link)===-1){
                     $(this).click();
                 }
             });
         } else {
             $("#userMenu .panel-heading a").each(function(){
-                var this_link = $(this).prop("href");
+                var this_link = $(this).prop("href").split("#")[1];
                 if(opened_links.indexOf(this_link)!==-1){
                     $(this).click();
                 }
             });
         }
+        e.preventDefault();
+        return false;
     });
 });

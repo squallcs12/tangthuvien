@@ -7,11 +7,11 @@
 {% load_js static /thankshop/inventory.js %}
 {% load_js static /thankshop/angular.js %}
 
-{% block content %}
+{% block accounts-content %}
 <div ng-controller="InventoryController">
     <div class="row" id="my_items">
-        <div class="col-lg-4 item" item-id="{% verbatim %}{{item.id}}{% endverbatim %}" ng-repeat="item in items">
-            <div class="well" ng-click="showDetail(item)">
+        <div class="col-lg-4 item" item-id="{% verbatim %}{{item.id}}{% endverbatim %}" ng-repeat="item in items" ng-click="showDetail(item)">
+            <div class="well" >
                 <div class="image text-center"><img ng-src="{{MEDIA_URL}}{% verbatim %}{{item.image_url}}{% endverbatim %}" /></div>
                 <div>{% verbatim %}{{item.name}}{% endverbatim %}</div>
             </div>
@@ -41,4 +41,4 @@
         </form>
     </div><!-- /.modal -->
 </div>
-{% endblock content %}
+{% endblock accounts-content %}
