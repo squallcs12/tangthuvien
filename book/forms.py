@@ -12,9 +12,8 @@ from ckeditor.widgets import CKEditorWidget
 from book.models.book_model import Book
 from tangthuvien.functions import UserSettings
 from tangthuvien import settings
-from django.contrib import messages
 from book.models.copy_model import Copy
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 
 class PostNewChapterForm(forms.ModelForm):
 

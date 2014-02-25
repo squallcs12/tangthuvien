@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -142,11 +142,13 @@ LETTUCE_APPS = (
     'book',
     'accounts',
     'tangthuvien',
+    'thankshop',
 )
 RELISH_APPS = (
     'book',
     'accounts',
     'tangthuvien',
+    'thankshop',
 )
 RELISH_PROJECT_NAME = 'tangthuvien'
 RELISH_PROJECT_VERSION = '1.0'
@@ -173,6 +175,7 @@ INSTALLED_APPS = (
     'social_auth',
     'south',
     'tagging',
+    'thankshop',
     'notification',
     'mailer',
     'zinnia',
@@ -331,6 +334,16 @@ HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
 HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
 SOCKET_IO_URL = 'http://localhost:1234'
+
+THANKSHOP_DAILY_LOGIN_THANK_POINTS = 100
+THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS = -10
+THANKSHOP_THANK_POINTS_COST = -10
+THANKSHOP_THANK_INTERVAL = 120  # seconds
+THANKSHOP_THANK_POINTS_PERCENT = 0.5
+
+PAYPAL_MODE = 'sandbox'
+PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd'
+PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
 
 try:
     from local_settings import *  # @UnusedWildImport

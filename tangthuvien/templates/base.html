@@ -3,7 +3,7 @@
 {% load jsonify %}
 {% load url from future %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml">
+<html xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml" ng-app="tangthuvien">
 	<head>
 		<title>{{SITE_NAME}} - {% block title %}{% endblock %}</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -12,7 +12,7 @@
 		<meta name="language" content="{{ LANGUAGE_CODE }}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="{% block meta-description %}{% trans 'Book reading website' %}{% endblock %}" />
-		<meta name="keywords" content="tangthuvien, ttv, kiếm hiệp, {% block meta-keywords %}{% endblock %}" />
+		<meta name="keywords" content="tangthuvien, ttv, ki·∫øm hi·ªáp, {% block meta-keywords %}{% endblock %}" />
 		<meta name="author" content="Antipro.VN" />
 		{% block meta %}{% endblock %}
 		<link rel="pingback" href="/xmlrpc/" />
@@ -37,9 +37,9 @@
 
 		  ga('create', 'UA-45006270-1', 'tangthuvien.vn');
 		  {% if request.google_analytic.pageview %}
-		  options = {{request.google_analytic.pageview|jsonify}}
+		  options = {{request.google_analytic.pageview|jsonify}};
 		  {% else %}
-		  options = {}
+		  options = {};
 		  {% endif %}
 		  ga('send', 'pageview', options);
 
@@ -74,6 +74,7 @@
 				</div>
 			</footer>
 		</div>
+	{% include '_popup_notification.phtml' %}
 	{% print_js %}
 	{% include '_addthis.phtml' %}
 	</body>

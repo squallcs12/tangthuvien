@@ -68,10 +68,10 @@ def create_book_list():
     world.book_created = True
     world.book_list = []
 
-    chappter_types = []
-    chappter_type = ChapterTypeFactory()
-    chappter_type.save()
-    chappter_types.append(chappter_type)
+    chapter_types = []
+    chapter_type = ChapterTypeFactory()
+    chapter_type.save()
+    chapter_types.append(chapter_type)
     for i in range(0, TOTAL_BOOK_WILL_BE_CREATED):  # @UnusedVariable
         book = BookFactory()
         book.save()
@@ -80,7 +80,7 @@ def create_book_list():
             chapter = ChapterFactory()
             chapter.number = i
             chapter.book = book
-            chapter.chapter_type = chappter_type
+            chapter.chapter_type = chapter_type
             chapter.save()
 
     for i in range(0, 4):
