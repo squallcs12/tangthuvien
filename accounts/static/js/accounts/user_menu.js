@@ -30,4 +30,23 @@ jQuery(function(){
         date.setTime(date.getTime() + (8 * 60 * 60 * 1000));
         $.cookie("user_openned_menu", opened_menu, {path: '/', expires: date});
     });
+
+    $("#userMenu .top-buttons a").click(function(){
+        var click = $(this).data("click");
+        if(click == "expand"){
+            $("#userMenu .panel-heading a").each(function(){
+                var this_link = $(this).prop("href");
+                if(opened_links.indexOf(this_link)===-1){
+                    $(this).click();
+                }
+            });
+        } else {
+            $("#userMenu .panel-heading a").each(function(){
+                var this_link = $(this).prop("href");
+                if(opened_links.indexOf(this_link)!==-1){
+                    $(this).click();
+                }
+            });
+        }
+    });
 });
