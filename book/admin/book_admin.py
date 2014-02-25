@@ -6,7 +6,7 @@ Created on Jul 27, 2013
 from django.contrib import admin
 from django.core.urlresolvers import NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
-from book.models import Chapter, Author, BookType
+from book.models import Chapter, Author, Language
 from book.admin.filter_base import RelatedSimpleListFilter
 from custom_admin.filters import TextColumnFilter, MatchTextColumnFilter
 from custom_admin.base_admin import ModelAdminColumnFilter
@@ -24,30 +24,32 @@ class AuthorFilter(RelatedSimpleListFilter):
     lookup_key = 'author_id'
     title = _('Authors')
     parameter_name = 'author'
+    model_related_name = 'book_set'
     verbose_name = _('book')
     verbose_name_plurar = _('books')
 
 
-class BookTypeFilter(RelatedSimpleListFilter):
+class LanguageFilter(RelatedSimpleListFilter):
     """
     List filter for EntryAdmin with published authors only.
     """
-    model = BookType
-    lookup_key = 'ttv_type_id'
+    model = Language
+    lookup_key = 'languages__id'
     title = _('Book types')
-    parameter_name = 'ttv_type'
+    parameter_name = 'language'
+    model_related_name = 'book_set'
 
     verbose_name = _('book')
     verbose_name_plurar = _('books')
 
 class BookAdmin(ModelAdminColumnFilter):
     fieldsets = [
-        (None, {'fields': ['title', 'slug', 'cover', 'author', 'description', 'categories', 'complete_status', 'ttv_type']}),
+        (None, {'fields': ['title', 'slug', 'cover', 'author', 'description', 'categories', 'complete_status', 'languages']}),
     ]
 
 #     inlines = [ChapterInline]
 
-    list_display = ('id', 'title', 'slug', 'cover', 'cover_thumb', 'author', 'get_categories', 'complete_status', 'ttv_type',)
+    list_display = ('id', 'title', 'slug', 'cover', 'cover_thumb', 'author', 'get_categories', 'complete_status')
     list_display_links = ('id', 'title', 'slug', 'complete_status',)
 
     column_filters = {
@@ -55,7 +57,7 @@ class BookAdmin(ModelAdminColumnFilter):
         'title' : MatchTextColumnFilter,
     }
 
-
+    list_filter = [LanguageFilter, AuthorFilter]
 
     def get_categories(self, entry):
         """Return the categories linked in HTML"""

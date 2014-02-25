@@ -5,7 +5,7 @@ Created on Oct 23, 2013
 '''
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
-from book.forms import CopyBookForm, AddAuthorForm, AddBookTypeForm
+from book.forms import CopyBookForm, AddAuthorForm, AddLanguageForm
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from book.models.book_model import Book
@@ -34,10 +34,10 @@ def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtm
         form = post_new_book_form(request.user)
 
         author_form = AddAuthorForm(prefix='author')
-        type_form = AddBookTypeForm(prefix='type')
+        language_form = AddLanguageForm(prefix='language')
 
         data['author_form'] = author_form
-        data['type_form'] = type_form
+        data['language_form'] = language_form
 
     data['form'] = form
 

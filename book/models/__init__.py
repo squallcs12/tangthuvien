@@ -19,24 +19,6 @@ from .profile_model import Profile
 from .attachment_model import Attachment
 from .copy_model import Copy
 
-class BookType(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return self.name
-
-    def _create_slug(self):
-        self.slug = slugify(unidecode(self.name))
-
-    def save(self, *args, **kwargs):
-        # create slug
-        self._create_slug()
-
-        return super(BookType, self).save(*args, **kwargs)
-
-    class Meta:
-        app_label = 'book'
-
 class Author(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(_('slug'), unique=True, max_length=255,
@@ -58,16 +40,7 @@ class Author(models.Model):
     class Meta:
         app_label = 'book'
 
-class Type(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        app_label = 'book'
-
-class ChapterType(models.Model):
+class Language(models.Model):
     name = models.CharField(max_length=255)
 
     def __unicode__(self):

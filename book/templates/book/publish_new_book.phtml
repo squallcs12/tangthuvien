@@ -15,12 +15,12 @@
 						{% include 'general/form_render.phtml' %}
 						<div class="form-group">
 		                    <div class="col-lg-9 col-lg-offset-3">
-	                      		<button type="submit" id="id_submit" class="btn btn-primary">{% trans 'Publish' %}</button> 
+	                      		<button type="submit" id="id_submit" class="btn btn-primary">{% trans 'Publish' %}</button>
 	                    	</div>
 	                  	</div>
 					</fieldset>
 				</form>
-                {% include 'book/_inline_add_author_and_book_type.phtml' with form_id='new-book-form' %}
+                {% include 'book/_inline_add_author.phtml' with form_id='new-book-form' %}
 			</div>
 		</div>
 	</div>

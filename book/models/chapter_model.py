@@ -15,7 +15,7 @@ class Chapter(models.Model):
     user = models.ForeignKey(User)
     number = models.IntegerField()
     title = models.CharField(max_length=255)
-    chapter_type = models.ForeignKey('book.ChapterType')
+    language = models.ForeignKey('book.Language', null=True)
     content = RichTextField()
     thank_count = models.IntegerField(default=0)
 
