@@ -55,7 +55,7 @@ class PublishNewBookForm(forms.ModelForm):
 
     class Meta:
         model = Book
-        fields = ['user', 'title', 'description', 'cover', 'author', 'languages']
+        fields = ['user', 'title', 'description', 'cover', 'author', 'categories', 'languages']
         widgets = {
             'user': forms.HiddenInput(),
         }
