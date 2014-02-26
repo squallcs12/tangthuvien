@@ -15,33 +15,6 @@ class ChapterInline(admin.StackedInline):
     model = Chapter
     extra = 0
 
-
-class AuthorFilter(RelatedSimpleListFilter):
-    """
-    List filter for EntryAdmin with published authors only.
-    """
-    model = Author
-    lookup_key = 'author_id'
-    title = _('Authors')
-    parameter_name = 'author'
-    model_related_name = 'book_set'
-    verbose_name = _('book')
-    verbose_name_plurar = _('books')
-
-
-class LanguageFilter(RelatedSimpleListFilter):
-    """
-    List filter for EntryAdmin with published authors only.
-    """
-    model = Language
-    lookup_key = 'languages__id'
-    title = _('Book types')
-    parameter_name = 'language'
-    model_related_name = 'book_set'
-
-    verbose_name = _('book')
-    verbose_name_plurar = _('books')
-
 class BookAdmin(ModelAdminColumnFilter):
     fieldsets = [
         (None, {'fields': ['title', 'slug', 'cover', 'author', 'description', 'categories', 'complete_status', 'languages']}),
@@ -57,7 +30,7 @@ class BookAdmin(ModelAdminColumnFilter):
         'title' : MatchTextColumnFilter,
     }
 
-    list_filter = [LanguageFilter, AuthorFilter]
+    list_filter = ['languages', 'author']
 
     def get_categories(self, entry):
         """Return the categories linked in HTML"""
