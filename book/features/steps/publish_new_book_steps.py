@@ -82,9 +82,9 @@ def i_see_that_book_was_listed(step):
     i_visit_book_index_page(step)
     get_book_title_list().should.contain("Book title")
 
-@step(u'I fill in book title')
-def i_fill_in_book_title(step):
-    world.book_form.find("input[name='title']").send_keys("New book title")
+@step(u'I fill in book title "([^"]*)"')
+def i_fill_in_book_title(step, title):
+    world.book_form.find("input[name='title']").send_keys(title)
 
 @step(u'I fill in book description')
 def i_fill_in_book_description(step):
@@ -96,7 +96,10 @@ def i_select_image_for_book_cover(step):
 
 @step(u'I select book author')
 def i_select_book_author(step):
-    world.book_form.find("select[name='author']").select("Author 1")
+    try:
+        world.book_form.find("select[name='author']").select("Author 1")
+    except:
+        i_create_new_author_of_this_book(step)
 
 @step(u'I create new author of this book')
 def i_create_new_author_of_this_book(step):
@@ -109,15 +112,13 @@ def i_create_new_author_of_this_book(step):
 
 @step(u'I select book categories')
 def i_select_book_categories(step):
-    assert False, 'This step must be implemented'
+    for category in ['category-1', 'category-2']:
+        world.book_form.find("select[name='categories']").select(category)
 
 @step(u'I select languages')
 def i_select_languages(step):
-    assert False, 'This step must be implemented'
-
-@step(u'I fill in book source thread page')
-def i_fill_in_book_source_thread_page(step):
-    assert False, 'This step must be implemented'
+    for language in ['language-1', 'language-2']:
+        world.book_form.find("select[name='languages']").select(language)
 
 @step(u'I submit the publish form')
 def i_submit_the_publish_form(step):

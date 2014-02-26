@@ -6,19 +6,30 @@ Feature: Book App :: Copy book
         Given I was a logged-in user
         When I visit book index page
         And I press "Copy book"
-        And I fill in book title
+        Then I see the copy book form
+        When I fill in book title "Copy book title"
         And I fill in book description
         And I select image for book cover
         And I select book author
-        And I create new author of this book
         And I select book categories
         And I select languages
-        And I fill in book source thread page
+        And I fill in book source thread page "http://www.tangthuvien.vn/forum/showthread.php?t=50129"
         And I submit the publish form
         Then I see the copying was processed
         When the process is finished
         Then I see the whole book was copied
-        And I can not copy this thread again
+        When I visit book index page
+        And I press "Copy book"
+        Then I see the copy book form
+        When I fill in book title "Copy book title 2"
+        And I fill in book description
+        And I select image for book cover
+        And I select book author
+        And I select book categories
+        And I select languages
+        And I fill in book source thread page "http://www.tangthuvien.vn/forum/showthread.php?t=50129"
+        And I submit the publish form
+        Then I see the text "The book is already copied to this site."
         When I visit the copied book
         Then I can sync the new posted chapter from main-site of this book
         When I sync the new posted chapter

@@ -9,8 +9,9 @@ from book.models.category_model import Category
 import subprocess
 from tangthuvien import settings as st
 from book.models.book_model import Book
-from book.models import Author
+from book.models import Author, Language
 import os
+from book.features.factories.language_factory import LanguageFactory
 
 TOTAL_BOOK_WILL_BE_CREATED = 33
 
@@ -50,18 +51,21 @@ def add_super_group_permission():
 def before_book_feature(feature):
     if ('Book App ::' in feature.name) and \
         (not hasattr(world, 'book_created') or not world.book_created):
+
+        clean_book_tables()
+        create_language_list()
         create_book_list()
 
 def clean_book_tables():
-    for book in Book.objects.all():
-        book.delete()
-    for category in Category.objects.all():
-        category.delete()
-    for author in Author.objects.all():
-        author.delete()
+    for model in [Book, Category, Author, Language]:
+        for obj in model.objects.all():
+            obj.delete()
+
+def create_language_list():
+    for i in range(0, 4):
+        LanguageFactory().save()
 
 def create_book_list():
-    clean_book_tables()
     world.book_created = True
     world.book_list = []
 

@@ -12,17 +12,6 @@ from book.features.steps.read_book_steps import i_go_to_last_chapter, \
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.book_model import Book
 
-@step(u'I press "([^"]*)"')
-def i_press(step, text):
-    browser().find_element_by_link_text(text).click()
-
-@step(u'I fill the book information page')
-def i_fill_the_book_information_page(step, book_title="Copy book title"):
-    copy_book_form = find("#copy-book-form")
-    fill_new_book_form(copy_book_form, book_title)
-    copy_book_form.find("input[name='thread_url']").send_keys("http://www.tangthuvien.vn/forum/showthread.php?t=50129")
-    copy_book_form.find("button[type='submit']").click()
-
 @step(u'I see the copying was processed')
 def i_see_the_copying_was_processed(step):
     world.copied_book_id = browser().current_url.split('?')[0].split('/').pop()  # last number in the url
@@ -34,12 +23,23 @@ def the_process_is_finished(step):
 
 @step(u'I see the whole book was copied')
 def i_see_the_whole_book_was_copied(step):
+
+    # delete last chapter from copying
     db_commit()
     book = Book.objects.get(pk=world.copied_book_id)
-    book.chapter_set.all()[1].delete()
+
+    world.copied_chapters_count = book.chapter_set.all().count()
+    skip = True
+    for chapter in book.chapter_set.all():
+        if skip:
+            skip = False
+            continue
+        chapter.delete()
+
     copy_log = book.copy
-    copy_log.last_post = 1
+    copy_log.last_post = 2  # because in this thread, first chapter is in 2nd post
     copy_log.save()
+
     i_visit_book_index_page(step)
     get_book_title_list().should.contain("Copy book title")
     browser().find_element_by_link_text("Copy book title").click()
@@ -65,14 +65,22 @@ def i_sync_the_new_posted_chapter(step):
 
 @step(u'I see only new posted chapter was copied')
 def i_see_only_new_posted_chapter_was_copied(step):
-    read_book_by_id(world.copied_book_id)
-    i_go_to_last_chapter(step)
-    see_the_second_chapter(step)
+    db_commit()
+    book = Book.objects.get(pk=world.copied_book_id)
+    book.chapter_set.all().count().should.equal(world.copied_chapters_count)
 
 @step(u'I visit the redirect page for copied thread id')
 def i_visit_the_redirect_page_for_copied_thread_id(step):
-    visit_by_view_name("thread_redirect_view", kwargs={"tid": 50129})
+    visit_by_view_name("thread_redirect_view", kwargs={"thread_id": 50129})
 
 @step(u'I was redirected to the reading page of copied book')
 def i_was_redirected_to_the_reading_page_of_copied_book(step):
     until(lambda: len(find_all("#sync-copy-book")).should_not.equal(0))
+
+@step(u'I see the copy book form')
+def i_see_the_copy_book_form(step):
+    world.book_form = find("#copy-book-form")
+
+@step(u'I fill in book source thread page "([^"]*)"')
+def i_fill_in_book_source_thread_page(step, thread_url):
+    world.book_form.find("input[name='thread_url']").send_keys(thread_url)
