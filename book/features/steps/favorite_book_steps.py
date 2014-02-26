@@ -11,7 +11,6 @@ from book.features.steps.read_book_steps import i_click_on_a_book, \
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.chapter_model import Chapter
 from book.models.book_model import Book
-from book.models import ChapterType
 
 
 @step(u'I am reading a book')
@@ -64,7 +63,6 @@ def a_new_chapter_was_posted_to_the_book(step, book=None):
         book=book,
         title="New posted chapter",
         content="New posted chapter content",
-        chapter_type=ChapterType.objects.all()[0],
         number=book.chapters_count + 1
     )
 

@@ -5,16 +5,6 @@ Created on Jul 27, 2013
 @author: antipro
 '''
 from lettuce_setup.function import *  # @UnusedWildImport
-from book.features.factories.book_factory import BookFactory
-from book.features.factories.chapter_factory import ChapterFactory
-from book.features.factories.chapter_type_factory import ChapterTypeFactory
-from book.features.factories.category_factory import CategoryFactory
-import random
-from book.models.category_model import Category
-import subprocess
-from tangthuvien import settings as st
-from django.contrib.auth.models import User, Group
-from book.models.book_model import Book
 
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):

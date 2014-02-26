@@ -3,14 +3,13 @@ from django.contrib.auth.models import Group
 from book.models.attachment_model import Attachment
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
-from book.features.factories.chapter_type_factory import ChapterTypeFactory
 from book.features.factories.category_factory import CategoryFactory
 import random
 from book.models.category_model import Category
 import subprocess
 from tangthuvien import settings as st
 from book.models.book_model import Book
-from book.models import Author, BookType
+from book.models import Author
 import os
 
 TOTAL_BOOK_WILL_BE_CREATED = 33
@@ -60,28 +59,11 @@ def clean_book_tables():
         category.delete()
     for author in Author.objects.all():
         author.delete()
-    for book_type in BookType.objects.all():
-        book_type.delete()
 
 def create_book_list():
     clean_book_tables()
     world.book_created = True
     world.book_list = []
-
-    chapter_types = []
-    chapter_type = ChapterTypeFactory()
-    chapter_type.save()
-    chapter_types.append(chapter_type)
-    for i in range(0, TOTAL_BOOK_WILL_BE_CREATED):  # @UnusedVariable
-        book = BookFactory()
-        book.save()
-        world.book_list.append(book)
-        for i in range(1, 15 if i > (TOTAL_BOOK_WILL_BE_CREATED - 15) else 2):
-            chapter = ChapterFactory()
-            chapter.number = i
-            chapter.book = book
-            chapter.chapter_type = chapter_type
-            chapter.save()
 
     for i in range(0, 4):
         category = CategoryFactory()
@@ -91,4 +73,4 @@ def create_book_list():
             if random.randint(0, 1):
                 category.books.add(book)
 
-    subprocess.call(['rm',  '%s/*' % st.realpath('log/copybook'), '-f'])
+    subprocess.call(['rm', '%s/*' % st.realpath('log/copybook'), '-f'])

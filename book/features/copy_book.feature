@@ -6,7 +6,15 @@ Feature: Book App :: Copy book
         Given I was a logged-in user
         When I visit book index page
         And I press "Copy book"
-        And I fill the book information page
+        And I fill in book title
+        And I fill in book description
+        And I select image for book cover
+        And I select book author
+        And I create new author of this book
+        And I select book categories
+        And I select languages
+        And I fill in book source thread page
+        And I submit the publish form
         Then I see the copying was processed
         When the process is finished
         Then I see the whole book was copied
