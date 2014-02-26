@@ -4,24 +4,25 @@
 {% load static_tags %}
 
 {% load_js static /jquery-sortable.js %}
-{% load_js static /thankshop/angular.js %}
 {% load_js static /bootbox.js%}
 {% load_css static /book/style.css %}
 
 {% block accounts-content %}
-<div ng-controller="LanguageSettingController">
+<div>
     <div class="row">
         <ul id="bookLanguages" class="list-group sortable">
-            <li class="list-group-item" ng-repeat="language in languages">
-                <span class="badge" data-id="{% verbatim %}{{language.id}}{% endverbatim %}">
-                    {% verbatim %}{{$index + 1}}{% endverbatim %}
+            {% for language in languages %}
+            <li class="list-group-item">
+                <span class="badge" data-id="{{language.id}}">
+                    {{forloop.counter}}
                 </span>
-                {% verbatim %}{{language.name}}{% endverbatim %}
+                {{language.name}}
             </li>
+            {% endfor %}
         </ul>
     </div>
     <div class="row text-center">
-        <button type="button" class="btn btn-primary" ng-click="saveLanguageSetting()">
+        <button type="button" class="btn btn-primary" id="saveLanguageSetting">
             {% trans "Save language setting" %}
         </button>
     </div>
@@ -62,11 +63,6 @@
                 }
             });
         });
-
-        var reqModule = reqModule || angular.module('tangthuvien', []);
-        LanguageSettingController = function($scope){
-            $scope.languages = [{id: 1, name: 'English'}, {id: 2, name: 'Vietnamese'}]
-        }
 
     })
 </script>

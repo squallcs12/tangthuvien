@@ -14,8 +14,8 @@ class LanguageSettingView(View):
 
     def get(self, request):
         data = {}
-
-        data['active_languagesetting'] = True # active menu language settings
+        data['languages'] = models.Language.objects.all()
+        data['active_languagesetting'] = True  # active menu language settings
         data['language_prefer'] = UserSettings.get(settings.BOOK_LANGUAGE_PREFER_KEY, request.user.id)
         return TemplateResponse(request, self.template, data)
 
@@ -25,7 +25,7 @@ class LanguageSettingView(View):
 
         # make sure settings is valid
         for value in settings_dict:
-            int(value) # if fail then 500 error will be thrown
+            int(value)  # if fail then 500 error will be thrown
 
         UserSettings.set(settings.BOOK_LANGUAGE_PREFER_KEY, request.user.id, settings_dict)
         return HttpResponse("1")
