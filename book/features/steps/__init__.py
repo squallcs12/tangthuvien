@@ -69,6 +69,16 @@ def create_book_list():
     world.book_created = True
     world.book_list = []
 
+    for i in range(0, 33):
+        book = BookFactory()
+        book.save()
+        world.book_list.append(book)
+        for j in range(1, 5):
+            chapter = ChapterFactory()
+            chapter.number = j
+            chapter.book = book
+            chapter.save()
+
     for i in range(0, 4):
         category = CategoryFactory()
         category.save()
