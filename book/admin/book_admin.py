@@ -31,6 +31,7 @@ class BookAdmin(ModelAdminColumnFilter):
     }
 
     list_filter = ['languages', 'author']
+    search_fields = ['title', 'author__name', 'slug']
 
     def get_categories(self, entry):
         """Return the categories linked in HTML"""
