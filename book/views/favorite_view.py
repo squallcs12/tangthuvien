@@ -38,6 +38,8 @@ def unfavorite_books(request):
 def main(request, template="book/favorite.phtml"):
     data = {}
     books = request.user.favorite_books.all()
+
     data['books'] = books
+    data['active_favoritebook'] = True
 
     return TemplateResponse(request, template, data)
