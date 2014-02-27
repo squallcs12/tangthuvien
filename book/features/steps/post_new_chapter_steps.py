@@ -29,11 +29,7 @@ def get_total_chapters(book_id):
 
 @step(u'I see new chapter was posted')
 def i_see_new_chapter_was_posted(step):
-    find(".notifications").text.should.contain(trans(u"New chapter was posted successfully."))
-    i_am_reading_a_book(step)
-    get_total_chapters(int(world.book_id)).should.be.equal(world.old_total_chapters + 1)
-    chapter = find("#chapter")
-    chapter.find("h2 span.number").text.should.equal(str(world.old_total_chapters + 1))
+    find("#chapter h2 span.number").text.should.equal(str(world.old_total_chapters + 1))
 
 @step(u'other people can read this chapter')
 def other_people_can_read_this_chapter(step):

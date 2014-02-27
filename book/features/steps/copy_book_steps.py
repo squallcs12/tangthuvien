@@ -14,6 +14,7 @@ from book.models.book_model import Book
 
 @step(u'I see the copying was processed')
 def i_see_the_copying_was_processed(step):
+    db_commit()
     world.copied_book_id = browser().current_url.split('?')[0].split('/').pop()  # last number in the url
     find("#process_bar.progress .progress-bar")
 

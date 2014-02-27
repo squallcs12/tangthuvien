@@ -44,7 +44,7 @@ def see_the_second_chapter(step):
 
 @step(u'I choose a random chapter from selection box')
 def i_choose_a_random_chapter_from_selection_box(step):
-    world.random_chapter_choose = random.randint(3, 7)
+    world.random_chapter_choose = random.randint(2, 5)
     find(".chapters_pagination .chapter-list option[value='%s']" % world.random_chapter_choose).click()
 
 @step(u'see a random chapter')

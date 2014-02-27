@@ -33,11 +33,12 @@ Feature: Book App :: Book reading page
         Then I see the book rating is 5.00
         And I see the book rating count is 1
         And I can not rate for the book anylonger
-        And I see the "Start reading" button
-        When I click on the "Start reading" button
+        And I see the button "Start reading"
+        When I click on "Start reading"
         And I choose a random chapter from selection box
         And I visit book index page
         And I click on the previous book
+        And I click on "Continue reading"
         And I see the last random chapter
         And I see chapter thank count
         And I can thank the poster for this chapter

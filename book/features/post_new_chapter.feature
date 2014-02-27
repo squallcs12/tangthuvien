@@ -10,7 +10,8 @@ Feature: Book App :: Post new chapter
         And I enter chapter content "New chapter content 1"
         And I select language for this chapter
         And I click on "Post chapter"
-        Then I see new chapter was posted
+        Then I see the notification "New chapter was posted successfully."
+        And I see new chapter was posted
         And new chapter title is "New chapter 1"
         And new chapter content is "New chapter content 1"
         And other people can read this chapter

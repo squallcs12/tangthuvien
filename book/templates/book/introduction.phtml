@@ -113,7 +113,7 @@
         <div class="col-lg-3">
             <div class="panel panel-default start-reading">
                 <div class="panel-body">
-                    {% if request.user.is_authenticated and book_read_log%}
+                    {% if request.user.is_authenticated and book_read_log %}
                         <a class="btn btn-primary" id="read_book"
                             href="{% url 'read_book_chapter' book.slug book_read_log.page %}">
                             {% trans "Continue reading" %}

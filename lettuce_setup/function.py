@@ -295,6 +295,19 @@ def i_click_on(step, text):
             element = browser().find_element_by_link_text(text)
         except TimeoutException:
             element = xpath("//button[.='%s']" % text)
-    if element is None:
-        raise TimeoutException("Element \"%s\" not found" % text)
     element.click()
+
+@step(u'I see the notification "([^"]*)"')
+def i_see_the_notification(step, notification):
+    find(".notifications").text.should.contain(notification)
+
+@step(u'I see the button "([^"]*)"')
+def i_see_the_button(step, text):
+    try:
+        xpath("//button[.='%s']" % text)
+    except NoSuchElementException:
+        browser().find_element_by_link_text(text)
+
+@before.each_step
+def commit_db(step):
+    db_commit()

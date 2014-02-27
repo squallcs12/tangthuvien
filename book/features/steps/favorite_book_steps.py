@@ -52,7 +52,7 @@ def i_see_the_book_was_listed_there(step):
 @step(u'I read the last chapter of the book')
 def i_read_the_last_chapter_of_the_book(step):
     read_book_by_id(world.book_id)
-    i_go_to_last_chapter(step)
+    find("#chapters_list a:last-child").click()
 
 @step(u'a new chapter was posted to the book')
 def a_new_chapter_was_posted_to_the_book(step, book=None):

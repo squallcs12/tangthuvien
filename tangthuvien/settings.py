@@ -347,8 +347,10 @@ PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd
 PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
 
 import sys
-if 'harvest' in sys.argv and '-P' in sys.argv:
-    LETTUCE_SERVER_PORT = int(sys.argv[sys.argv.index('-P') + 1])
+if 'harvest' in sys.argv:
+    LANGUAGE_CODE = 'eni' # disable localization
+    if '-P' in sys.argv: # custom port
+        LETTUCE_SERVER_PORT = int(sys.argv[sys.argv.index('-P') + 1])
 
 try:
     from local_settings import *  # @UnusedWildImport

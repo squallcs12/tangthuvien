@@ -18,14 +18,10 @@ def main(request, slug, template="book/introduction.phtml"):
     data = {}
     book = Book.objects.get(slug=slug)
     data['book'] = book
-
     if request.user.is_authenticated():
         try:
             book_read_log = UserLog.objects.get(user=request.user, book=book)
             data['book_read_log'] = book_read_log
-            if not request.GET.get('r'):
-                page = book_read_log.page
-                return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number' : page}))
         except ObjectDoesNotExist:
             pass
 
