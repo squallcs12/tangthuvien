@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static_tags %}
+{% load book_language %}
 
 {% block title %}{{book.title}}{% endblock %}
 
@@ -14,39 +15,34 @@
     <h3 class="col-lg-9">{{book.title}} / {{book.author.name}}</h3>
 </div>
 <div class="row" id="book" item_id="{{book.id}}">
-
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             {% if book.cover %}
                 <img src="{{book.cover.url}}" />
             {% else %}
                 <img src="{{STATIC_URL}}img/book/cover.jpg" />
             {% endif %}
         </div>
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <div class="row">
-                <div class="col-lg-3">{% trans "Number of chapters" %}</div>
-                <div class="col-lg-9">{{book.chapters_count}}</div>
+                <div class="col-lg-4">{% trans "Author" %}</div>
+                <div class="col-lg-8">{{book.author.name}}</div>
             </div>
             <div class="row">
-                <div class="col-lg-3">{% trans "Alternate titles" %}</div>
-                <div class="col-lg-9">{{book.chapters_count}}</div>
+                <div class="col-lg-4">{% trans "Alternate titles" %}</div>
+                <div class="col-lg-8">{{book.chapters_count}}</div>
             </div>
             <div class="row">
-                <div class="col-lg-3">{% trans "Year of Release" %}</div>
-                <div class="col-lg-9">{{book.chapters_count}}</div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3">{% trans "Status" %}</div>
-                <div class="col-lg-9">{{book.chapters_count}}</div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3">{% trans "Author" %}</div>
-                <div class="col-lg-9">{{book.author.name}}</div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3">{% trans "Genre" %}</div>
-                <div class="col-lg-9">{{book.chapters_count}}</div>
+            	<div class="col-lg-4">{% trans "Languages" %}</div>
+            	<div class="col-lg-8" id="languages">
+            		{% get_preference_language_id as language_id %}
+            		{% for language in book.languages.all %}
+            			<button type="button" data-id="{{language.id}}"
+            				class="btn {% if language.id == language_id %}btn-success{% else %}btn-default{% endif %} btn-xs language language-{{language.slug}}">
+            				{{language.name}}
+            			</button>
+            		{% endfor %}
+            	</div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
