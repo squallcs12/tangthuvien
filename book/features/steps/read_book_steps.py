@@ -4,10 +4,14 @@ Created on Jul 29, 2013
 
 @author: antipro
 '''
-from lettuce import step
 from lettuce_setup.function import *  # @UnusedWildImport
 import random
 from book.models.book_model import Book
+from book.models.chapter_model import Chapter
+from book.models import Language
+from book.features.factories.book_factory import BookFactory
+from book.features.factories.chapter_factory import ChapterFactory
+from book.features.steps.general import *
 
 @step(u'I click on a book')
 def i_click_on_a_book(step):
@@ -74,3 +78,53 @@ def i_see_the_button(step, text):
 @step(u'I click on the "([^"]*)" button')
 def i_click_on_the_button(step, text):
     browser().find_element_by_link_text(text).click()
+
+@step(u'a book exists in "([^"]*)" languages')
+def a_book_exists_in_group1_languages(step, count):
+    book = BookFactory()
+    book.save()
+    for language in Language.objects.all()[0: int(count)]:
+        book.languages.add(language)
+    book.save()
+    world.book_id = book.id
+
+@step(u'that book contain chapters:')
+def that_book_contain_chapters(step):
+    for chapter_data in step.hashes:
+        chapter = ChapterFactory()
+        chapter.book_id = world.book_id
+        chapter.number = int(chapter_data['number'])
+        chapter.title = chapter_data['title']
+        chapter.language = Language.objects.get(name=chapter_data['language'])
+        chapter.save()
+
+@step(u'I visit this book introduction page')
+def i_visit_this_book_introduction_page(step):
+    read_book_by_id(world.book_id)
+
+@step(u'I see a languages prefer contain "([^"]*)"')
+def i_see_a_languages_prefer_contain_group1(step, languages):
+    prefer_languages = [elm.text for elm in find_all("#languages .language")]
+    prefer_languages.should.equal(languages.split(","))
+
+@step(u'I choose "([^"]*)" as prefer language')
+def i_choose_group1_as_prefer_language(step, language):
+    for language_button in find_all("#languages .language"):
+        if language_button.text == language:
+            language_button.click()
+
+@step(u'I go to chapter "([^"]*)"')
+def i_go_to_chapter_group1(step, group1):
+    assert False, 'This step must be implemented'
+
+@step(u'I see a list of languages contain "([^"]*)"')
+def i_see_a_list_of_languages_contain_group1(step, group1):
+    assert False, 'This step must be implemented'
+
+@step(u'I choose language "([^"]*)"')
+def i_choose_language(step, language):
+    assert False, 'This step must be implemented'
+
+@step(u'I setting my language prefer to "([^"]*)"')
+def i_setting_my_language_prefer_to_group1(step, group1):
+    assert False, 'This step must be implemented'

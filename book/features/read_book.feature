@@ -61,3 +61,41 @@ Feature: Book App :: Book reading page
         Then I see the configuration of readind section is applied
         When I read another book
         Then I see the configuration of readind section is applied
+
+    Scenario: Select language while reading
+        Given I was a logged-in user
+        And a book exists in "4" languages
+        And that book contain chapters:
+            | number | title                | language   |
+            | 1      | chapter 1 language 0 | language-0 |
+            | 1      | chapter 1 language 1 | language-1 |
+            | 1      | chapter 1 language 2 | language-2 |
+            | 1      | chapter 1 language 3 | language-3 |
+            | 2      | chapter 2 language 0 | language-0 |
+            | 2      | chapter 2 language 1 | language-1 |
+            | 2      | chapter 2 language 2 | language-2 |
+            | 3      | chapter 3 language 0 | language-0 |
+            | 3      | chapter 4 language 1 | language-1 |
+            | 4      | chapter 1 language 0 | language-0 |
+        When I visit this book introduction page
+        Then I see a languages prefer contain "language-0,language-1,language-2,language-3"
+        When I choose "language-2" as prefer language
+        And I click on "Start reading"
+        Then I see chapter title is "chapter 1 language 2"
+        When I go to chapter "2"
+        Then I see chapter title is "chapter 2 language 2"
+        And I see a list of languages contain "language-0,language-1,language-2"
+        When I choose language "language-1"
+        Then I see chapter title is "chapter 2 language 1"
+        When I go to chapter "1"
+        Then I see chapter title is "chapter 1 language 1"
+        When I go to chapter "4"
+        Then I see chapter title is "chapter 4 language 0"
+        When I go to chapter "3"
+        Then I see chapter title is "chapter 3 language 0"
+        When I setting my language prefer to "language-1,language-0,language-2,language-3"
+        And I visit this book introduction page
+        And I click on "Continue reading"
+        Then I see chapter title is "chapter 3 language 1"
+        When I go to chapter "1"
+        Then I see chapter title is "chapter 1 language 2"
