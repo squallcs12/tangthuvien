@@ -2,13 +2,7 @@ from lettuce_setup.function import *  # @UnusedWildImport
 from book.models import Attachment
 import os
 from book.models.book_model import Book
-
-
-def get_attachments_list():
-    return [attachment.text for attachment in find_all("#attachments .filename")]
-
-def read_book_by_id(book_id):
-    visit_by_view_name('book_read_short', kwargs={'book_id':book_id})
+from book.features.steps.general import *
 
 @step(u'I upload a attachment to the book')
 def i_upload_a_attachment_to_the_book(step):

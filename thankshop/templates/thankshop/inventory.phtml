@@ -1,18 +1,20 @@
 {% extends "accounts/base.phtml" %}
 
+{% load thankshop %}
 {% load i18n %}
 {% load static_tags %}
 
-{% load_js static /thankshop/myitem.js %}
-{% load_js static /angular/ApiHandler.js %}
+{% load_js static /thankshop/inventory.js %}
 {% load_js static /thankshop/angular.js %}
 
-{% block content %}
+{% block accounts-content %}
 <div ng-controller="InventoryController">
     <div class="row" id="my_items">
-        <div class="col-lg-4 item" item-id="{% verbatim %}{{item.id}}{% endverbatim %}" ng-repeat="item in items">
-            <span>{% verbatim %}{{item.name}}{% endverbatim %}</span>
-            <button class="btn btn-default view" ng-click="showDetail(item)">{% trans "Detail" %}</button>
+        <div class="col-lg-4 item" item-id="{% verbatim %}{{item.id}}{% endverbatim %}" ng-repeat="item in items" ng-click="showDetail(item)">
+            <div class="well" >
+                <div class="image text-center"><img ng-src="{{MEDIA_URL}}{% verbatim %}{{item.image_url}}{% endverbatim %}" /></div>
+                <div>{% verbatim %}{{item.name}}{% endverbatim %}</div>
+            </div>
         </div>
     </div>
     <!-- Modal -->
@@ -31,9 +33,12 @@
                         <img class="image" ng-src="{% verbatim %}{{item.image_url}}{% endverbatim %}" />
                         <div class="description">{% verbatim %}{{item.long_description}}{% endverbatim %}</div>
                     </div>
+                    <div class="modal-footer" ng-show="item.has_action">
+                        <button type="submit" ng-click="activate(item)">{% trans "Activate"%}</button>
+                    </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </form>
     </div><!-- /.modal -->
 </div>
-{% endblock content %}
+{% endblock accounts-content %}

@@ -15,6 +15,7 @@ class RelatedSimpleListFilter(SimpleListFilter):
     parameter_name = None
     verbose_name = ''
     verbose_name_plurar = ''
+    model_related_name = None
 
     def queryset(self, request, queryset):
         """
@@ -30,7 +31,9 @@ class RelatedSimpleListFilter(SimpleListFilter):
         """
         active_objects = self.model.objects.all()
         for active_object in active_objects:
-            active_object.number_of_entries = getattr(active_object, '%s_set' % self.parameter_name).count()
+            if self.model_related_name is None:
+                self.model_related_name = '%s_set' % self.parameter_name
+            active_object.number_of_entries = getattr(active_object, self.model_related_name).count()
 
         for active_object in active_objects:
             yield (

@@ -17,4 +17,16 @@
 	$("body").on("hidden.bs.modal", "div.modal.modal-centered", function(){
 		$(this).css("top", "");
 	});
+
+	$.fn.showLoading = function(){
+		$(this).each(function(){
+			$(this).append(LOADING_IMAGE_HTML);
+		});
+	};
+
+	$.fn.removeLoading = function(){
+		$(this).each(function(){
+			$(".loading", this).remove();
+		});
+	};
 })(jQuery);

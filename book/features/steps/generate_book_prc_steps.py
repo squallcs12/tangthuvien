@@ -11,7 +11,7 @@ from django.core.management import call_command
 import os
 from tangthuvien import settings as st
 
-@step(u'a book exist')
+@step(u'a book exist$')
 def a_book_exist(step):
     world.book = Book.objects.all()[0]
 

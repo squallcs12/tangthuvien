@@ -44,4 +44,10 @@ function attach_thank_button($, chapter_id, submit_thank_url){
 		location.href = $(this).prop("action").replace("000999000", $("input[name='page']").val());
 		return false;
 	});
+
+	$("#change_chapter_language li a").click(function(){
+		var language_id = $(this).data("id");
+		$("#change_chapter_language input[name='language_id']").val(language_id);
+		$("#change_chapter_language").submit();
+	});
 })(jQuery);
