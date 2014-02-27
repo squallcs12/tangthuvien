@@ -4,7 +4,6 @@ Created on Aug 4, 2013
 
 @author: antipro
 '''
-from lettuce import step
 from lettuce_setup.function import *
 
 def get_rate_button():

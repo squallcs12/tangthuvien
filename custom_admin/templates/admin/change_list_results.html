@@ -27,8 +27,9 @@
 </tr>
 {% if cl.model_admin.column_filters %}
 <tr>
-	{% for header in result_headers %}
-	<th><div>{% admin_column_filter header %}</div> </th>{% endfor %}
+    {% for header in result_headers %}
+    <th><div>{% admin_column_filter header %}</div> </th>
+    {% endfor %}
 </tr>
 {% endif %}
 </thead>

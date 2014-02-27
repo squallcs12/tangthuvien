@@ -103,45 +103,5 @@ function inline_add_author_and_type(form_id){
                 $('#new-type-form-div').modal('show');
             }
         });
-        $("#" + form_id + " select[name='ttv_type'] option:first").after(new_type_option);
-        $("#new-type-form").submit(function(){
-            var _this = this;
-            var ajaxConf = {}
-            ajaxConf['url'] = ADD_BOOK_TYPE_AJAX_URL;
-            ajaxConf['data'] = $(this).serialize();
-            ajaxConf['type'] = 'POST';
-            ajaxConf['success'] = function(data){
-                if(data['success']){
-                    var added = false;
-                    var new_option = document.createElement('option');
-                    $(new_option)
-                        .prop('value', data['id'])
-                        .html(data['name']);
-
-                    $("#" + form_id + " select[name='ttv_type'] option").slice(2).each(function(){
-                        if(added){
-                            return;
-                        }
-                        if($(this).html() > data['name']){
-                            added = true;
-                            $(this).before(new_option);
-                        }
-                    });
-                    if(!added){
-                        $("#" + form_id + " select[name='ttv_type']").append(new_option);
-                    }
-
-                    // hide modal first
-                    $('#new-type-form-div').modal('hide');
-                    $("#" + form_id + " select[name='ttv_type']").val(data['id']);
-                }
-            };
-            ajaxConf['complete'] = function(){
-                $("[type='submit'] img.loading", _this).remove();
-            };
-            $("[type='submit']", _this).append(LOADING_IMAGE_HTML);
-            $.ajax(ajaxConf);
-            return false;
-        });
     })(jQuery);
 };

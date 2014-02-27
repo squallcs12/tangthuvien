@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static_tags %}
+{% load book_language %}
 
 {% block title %}{{book.title}} - {% blocktrans with number=chapter.number%}Chapter {{number}}{% endblocktrans %}{% endblock %}
 
@@ -13,8 +14,28 @@
 {% include 'book/onetime_notification/user_log_notification.phtml' %}
 <div class="row">
     <div class="row">
-        <h3 class="col-lg-9">{{book.title}} / {{book.author.name}}</h3>
-        <div class="col-lg-3" id="read_config">
+        <h3 class="col-lg-6">{{book.title}} / {{book.author.name}}</h3>
+        <div class="col-lg-6 text-right" id="read_config">
+        	{% get_preference_language_id as language_id %}
+        	<form id="change_chapter_language" method="GET" action="{% url 'book_language_preference' %}" class="inline-form">
+        		<input type="hidden" name="book_id" value="{{book.id}}" />
+        		<input type="hidden" name="language_id" value="" />
+	        	<div class="btn-group">
+	                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	                	{% for language in chapter.languages %}
+	                		{% if language.id == language_id %}{{language.name}}{% endif %}
+	        			{% endfor %}
+	                  <span class="caret"></span>
+	                </button>
+	                <ul class="dropdown-menu text-left" id="languages">
+	                	{% for language in chapter.languages %}
+	                	<li class="language language-{{language.slug}}">
+	                		<a href="#" data-id="{{language.id}}">{{language.name}}</a>
+	                	</li>
+	        			{% endfor %}
+	            	</ul>
+	            </div>
+        	</form>
             {% include 'book/_config_reading_section.phtml' %}
         </div>
     </div>

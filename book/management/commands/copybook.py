@@ -108,7 +108,9 @@ class Command(BaseCommand):
 
             post_count = 0
 
-            if self.skip:
+            if start_post:
+                post_count = start_post
+            elif self.skip:
                 post_count += 1
                 self.skip = False
 

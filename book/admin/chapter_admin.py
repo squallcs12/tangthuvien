@@ -6,27 +6,27 @@ Created on Jul 28, 2013
 
 from django.contrib import admin
 from django.core import urlresolvers
-from book.models import ChapterType
 
 from django.db.models import Count
 from django.contrib.admin.filters import SimpleListFilter
 from django.utils.translation import ugettext_lazy as _, ungettext_lazy
+from book.models import Language
 
-class ChapterTypeFilter(SimpleListFilter):
+class LanguageFilter(SimpleListFilter):
     """
     List filter for EntryAdmin with published authors only.
     """
-    model = ChapterType
-    lookup_key = 'chapter_type_id'
-    title = _('Chapter types')
-    parameter_name = 'chapter_type'
+    model = Language
+    lookup_key = 'language_id'
+    title = _('Language')
+    parameter_name = 'language'
 
     def lookups(self, request, model_admin):
         """
         Return published objects with the number of entries.
         """
         active_objects = self.model.objects.all().annotate(
-            number_of_entries=Count('id'))
+            number_of_entries=Count('chapter'))
         for active_object in active_objects:
             yield (
                 str(active_object.pk), ungettext_lazy(
@@ -51,13 +51,13 @@ class BookTitleFilter(object):
 
 class ChapterAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['book', 'number', 'title', 'chapter_type', 'content']}),
+        (None, {'fields': ['book', 'number', 'title', 'language', 'content']}),
     ]
 
-    list_display = ('id', 'number', 'title', 'description', 'book', 'chapter_type')
+    list_display = ('id', 'number', 'title', 'description', 'book', 'language')
     list_editable = ('number', 'title')
 
-    list_filter = [ChapterTypeFilter, 'book']
+    list_filter = [LanguageFilter, 'book']
 
     list_display_links = ()
 

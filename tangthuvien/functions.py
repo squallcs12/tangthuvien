@@ -5,6 +5,7 @@ Created on Sep 14, 2013
 '''
 from . import settings as st
 import redis
+import json
 
 pool = redis.ConnectionPool(host=st.REDIS_HOST, port=st.REDIS_PORT, db=st.REDIS_DB)
 redis_cli = redis.Redis(connection_pool=pool)
@@ -17,8 +18,11 @@ class UserSettings(object):
 
     @classmethod
     def get(cls, key, user_id):
-        return redis_cli.hget(cls.wrap(key), user_id)
+        settings = redis_cli.hget(cls.wrap(key), user_id)
+        if settings is None:
+            return None
+        return json.loads(settings)
 
     @classmethod
     def set(cls, key, user_id, value):
-        redis_cli.hset(cls.wrap(key), user_id, value)
+        redis_cli.hset(cls.wrap(key), user_id, json.dumps(value))

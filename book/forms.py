@@ -5,8 +5,10 @@ Created on Sep 21, 2013
 '''
 from django import forms
 from django.utils.translation import ugettext as _
-from book.models import Chapter
-from book.models import Author, BookType
+from book.models import Chapter, Language
+from book.models.chapter_model import Chapter
+from book.models import Author
+from ckeditor.widgets import CKEditorWidget
 from book.models.book_model import Book
 from tangthuvien.functions import UserSettings
 from tangthuvien import settings
@@ -24,7 +26,7 @@ class PostNewChapterForm(forms.ModelForm):
 
     class Meta:
         model = Chapter
-        fields = ['book', 'user', 'title', 'number', 'content', 'chapter_type']
+        fields = ['book', 'user', 'title', 'number', 'content', 'language']
         widgets = {
             'book': forms.HiddenInput(),
             'user': forms.HiddenInput(),
@@ -44,16 +46,16 @@ class AddAuthorForm(forms.ModelForm):
         model = Author
         fields = ['name', 'information']
 
-class AddBookTypeForm(forms.ModelForm):
+class AddLanguageForm(forms.ModelForm):
     class Meta:
-        model = BookType
+        model = Language
         fields = ['name']
 
 class PublishNewBookForm(forms.ModelForm):
 
     class Meta:
         model = Book
-        fields = ['user', 'title', 'description', 'cover', 'author', 'ttv_type']
+        fields = ['user', 'title', 'description', 'cover', 'author', 'categories', 'languages']
         widgets = {
             'user': forms.HiddenInput(),
         }

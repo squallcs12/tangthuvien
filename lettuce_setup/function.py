@@ -31,6 +31,9 @@ def find_all(selector):
 def find(selector):
     return browser().find_element_by_css_selector(selector)
 
+def xpath(selector):
+    return browser().find_element_by_xpath(selector)
+
 WebElement.find = WebElement.find_element_by_css_selector
 WebElement.find_all = WebElement.find_elements_by_css_selector
 WebElement.xpath = WebElement.find_element_by_xpath
@@ -72,9 +75,9 @@ def fillin(self, value):
 
 WebElement.fillin = fillin
 
-def django_url(url="", host='localhost', port=8000):
+def django_url(url="", host='localhost'):
     base_url = "http://%s" % host
-    port = int(port or getattr(settings, 'LETTUCE_SERVER_PORT', 8000))
+    port = getattr(settings, 'LETTUCE_SERVER_PORT', 8000)
     if port is not 80:
         base_url += ':%d' % port
 
@@ -98,6 +101,13 @@ def until(method, timeout=10, message='', ignored_exceptions=True, interval=0.5)
         if(time.time() > end_time):
             break
     raise TimeoutException(message)
+
+def until_pass(timeout=10):
+    def decorator(func):
+        def decorator(*args, **kwargs):
+            until(func, timeout=timeout)
+        return decorator
+    return decorator
 
 def browser():
     '''
@@ -260,3 +270,54 @@ class datetime_fake:
     @classmethod
     def now(cls):
         return datetime.datetime.now() + cls.timedelta
+
+@step(u'I see the text "([^"]*)"')
+def i_see_the_text(step, text):
+    find("body").text.should.contain(text)
+
+@step(u'I press "([^"]*)"')
+def i_press(step, text):
+    browser().find_element_by_link_text(text).click()
+
+@step(u'I click on "([^"]*)"')
+def i_click_on(step, text):
+    element = None
+    try:
+        element = link(text)
+    except NoSuchElementException:
+        try:
+            element = button(text)
+        except NoSuchElementException:
+            pass
+    if element is None:
+        try:
+            until(lambda: link(text).should_not.be.none)
+            element = link(text)
+        except TimeoutException:
+            element = button(text)
+    element.click()
+
+@step(u'I see the notification "([^"]*)"')
+def i_see_the_notification(step, notification):
+    find(".notifications").text.should.contain(notification)
+
+@step(u'I see the button "([^"]*)"')
+def i_see_the_button(step, text):
+    try:
+        button(text)
+    except NoSuchElementException:
+        browser().find_element_by_link_text(text)
+
+@before.each_step
+def commit_db(step):
+    db_commit()
+
+def button(button_text):
+    return xpath("//button[.='%s']" % button_text)
+
+def link(link_text):
+    return browser().find_element_by_link_text(link_text)
+
+@step(u'button "([^"]*)" is set to state "([^"]*)"')
+def then_button_is_set_to_state(step, button_text, state):
+    button(button_text).has_class("btn-%s" % state)
