@@ -59,13 +59,6 @@ def the_book_was_not_listed_yet(step):
     get_book_title_list().should_not.contain("Book title")
     browser().back()
 
-def current_book_id():
-    return int(browser().current_url.split('/').pop())
-
-def current_book():
-    db_commit()
-    return Book.objects.get(pk=current_book_id())
-
 @step(u'I post a new chapter for this book')
 def i_post_a_new_chapter_for_this_book(step):
     new_chapter_form = find("#new-chapter-form")

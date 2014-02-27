@@ -31,6 +31,9 @@ def find_all(selector):
 def find(selector):
     return browser().find_element_by_css_selector(selector)
 
+def xpath(selector):
+    return browser().find_element_by_xpath(selector)
+
 WebElement.find = WebElement.find_element_by_css_selector
 WebElement.find_all = WebElement.find_elements_by_css_selector
 WebElement.xpath = WebElement.find_element_by_xpath
@@ -72,9 +75,9 @@ def fillin(self, value):
 
 WebElement.fillin = fillin
 
-def django_url(url="", host='localhost', port=8000):
+def django_url(url="", host='localhost'):
     base_url = "http://%s" % host
-    port = int(port or getattr(settings, 'LETTUCE_SERVER_PORT', 8000))
+    port = getattr(settings, 'LETTUCE_SERVER_PORT', 8000)
     if port is not 80:
         base_url += ':%d' % port
 
@@ -98,6 +101,13 @@ def until(method, timeout=10, message='', ignored_exceptions=True, interval=0.5)
         if(time.time() > end_time):
             break
     raise TimeoutException(message)
+
+def until_pass(timeout=10):
+    def decorator(func):
+        def decorator(*args, **kwargs):
+            until(func, timeout=timeout)
+        return decorator
+    return decorator
 
 def browser():
     '''
@@ -268,3 +278,23 @@ def i_see_the_text(step, text):
 @step(u'I press "([^"]*)"')
 def i_press(step, text):
     browser().find_element_by_link_text(text).click()
+
+@step(u'I click on "([^"]*)"')
+def i_click_on(step, text):
+    element = None
+    try:
+        element = browser().find_element_by_link_text(text)
+    except NoSuchElementException:
+        try:
+            element = xpath("//button[.='%s']" % text)
+        except NoSuchElementException:
+            pass
+    if element is None:
+        try:
+            until(lambda: browser().find_element_by_link_text(text).should_not.be.none)
+            element = browser().find_element_by_link_text(text)
+        except TimeoutException:
+            element = xpath("//button[.='%s']" % text)
+    if element is None:
+        raise TimeoutException("Element \"%s\" not found" % text)
+    element.click()
