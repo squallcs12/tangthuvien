@@ -283,18 +283,18 @@ def i_press(step, text):
 def i_click_on(step, text):
     element = None
     try:
-        element = browser().find_element_by_link_text(text)
+        element = link(text)
     except NoSuchElementException:
         try:
-            element = xpath("//button[.='%s']" % text)
+            element = button(text)
         except NoSuchElementException:
             pass
     if element is None:
         try:
-            until(lambda: browser().find_element_by_link_text(text).should_not.be.none)
-            element = browser().find_element_by_link_text(text)
+            until(lambda: link(text).should_not.be.none)
+            element = link(text)
         except TimeoutException:
-            element = xpath("//button[.='%s']" % text)
+            element = button(text)
     element.click()
 
 @step(u'I see the notification "([^"]*)"')
@@ -304,10 +304,20 @@ def i_see_the_notification(step, notification):
 @step(u'I see the button "([^"]*)"')
 def i_see_the_button(step, text):
     try:
-        xpath("//button[.='%s']" % text)
+        button(text)
     except NoSuchElementException:
         browser().find_element_by_link_text(text)
 
 @before.each_step
 def commit_db(step):
     db_commit()
+
+def button(button_text):
+    return xpath("//button[.='%s']" % button_text)
+
+def link(link_text):
+    return browser().find_element_by_link_text(link_text)
+
+@step(u'button "([^"]*)" is set to state "([^"]*)"')
+def then_button_is_set_to_state(step, button_text, state):
+    button(button_text).has_class("btn-%s" % state)

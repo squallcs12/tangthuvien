@@ -172,7 +172,48 @@ class Book(models.Model):
 @cache_it(expire=60 * 60 * 24 * 7)
 def get_chapters_list(book_id):
     book = Book.objects.get(pk=book_id)
-    chapter_list = []
+    chapter_list = {}
+
+    default_language_id = None
+    max_chapter_number = 0
+    last_process_language_id = 0
+
     for chapter in book.chapter_set.all().order_by('number'):
-        chapter_list.append([chapter.number, chapter.title])
+
+        # make sure all list are full
+        if chapter.number > max_chapter_number + 1:
+            for key in chapter_list.keys():
+                language_chapter_count = len(chapter_list[key])
+                for i in range(language_chapter_count, max_chapter_number + 1):
+                    if len(chapter_list[default_language_id]) > i:
+                        chapter_list[key].append(chapter_list[default_language_id][i])
+                    else:
+                        chapter_list[key].append(chapter_list[last_process_language_id][i])
+
+        # init language list
+        if chapter_list.get(chapter.language_id) is None:
+            chapter_list[chapter.language_id] = []
+            if default_language_id is None:
+                default_language_id = chapter.language_id
+
+        current_language_chapter_count = len(chapter_list[chapter.language_id])
+        # if current chapter list is not fillled
+        if chapter.number > current_language_chapter_count + 1:
+            # fill current language chapter list by default language chapter list
+            for i in range(current_language_chapter_count, chapter.number):
+                chapter_list[chapter.language_id].append(chapter_list[default_language_id][i])
+
+        chapter_list[chapter.language_id].append([chapter.number, chapter.title])
+
+        last_process_language_id = chapter.language_id
+        max_chapter_number = chapter.number
+
+    for key in chapter_list.keys():
+        language_chapter_count = len(chapter_list[key])
+        for i in range(language_chapter_count, max_chapter_number):
+            if len(chapter_list[default_language_id]) > i:
+                chapter_list[key].append(chapter_list[default_language_id][i])
+            else:
+                chapter_list[key].append(chapter_list[last_process_language_id][i])
+
     return chapter_list

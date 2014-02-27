@@ -12,6 +12,8 @@ from book.models import Language
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
 from book.features.steps.general import *
+from book.models.language_book_preference import LanguagePreference
+from tangthuvien.functions import UserSettings
 
 @step(u'I click on a book')
 def i_click_on_a_book(step):
@@ -46,10 +48,13 @@ def i_go_to_next_chapter(step):
 def see_the_second_chapter(step):
     check_chapter(2)
 
+def go_to_chapter(number):
+    find(".chapters_pagination .chapter-list option[value='%s']" % number).click()
+
 @step(u'I choose a random chapter from selection box')
 def i_choose_a_random_chapter_from_selection_box(step):
     world.random_chapter_choose = random.randint(2, 5)
-    find(".chapters_pagination .chapter-list option[value='%s']" % world.random_chapter_choose).click()
+    go_to_chapter(world.random_chapter_choose)
 
 @step(u'see a random chapter')
 def see_a_random_chapter(step):
@@ -70,14 +75,6 @@ def i_go_to_last_chapter(step):
 @step(u'see the last chapter')
 def see_the_last_chapter(step):
     find_all(".chapters_pagination .pagination a").pop().should_be_temp_link()
-
-@step(u'I see the "([^"]*)" button')
-def i_see_the_button(step, text):
-    len(browser().find_elements_by_link_text(text)).should_not.equal(0)
-
-@step(u'I click on the "([^"]*)" button')
-def i_click_on_the_button(step, text):
-    browser().find_element_by_link_text(text).click()
 
 @step(u'a book exists in "([^"]*)" languages')
 def a_book_exists_in_group1_languages(step, count):
@@ -102,8 +99,9 @@ def that_book_contain_chapters(step):
 def i_visit_this_book_introduction_page(step):
     read_book_by_id(world.book_id)
 
+
 @step(u'I see a languages prefer contain "([^"]*)"')
-def i_see_a_languages_prefer_contain_group1(step, languages):
+def i_see_a_languages_prefer_contain(step, languages):
     prefer_languages = [elm.text for elm in find_all("#languages .language")]
     prefer_languages.should.equal(languages.split(","))
 
@@ -114,17 +112,30 @@ def i_choose_group1_as_prefer_language(step, language):
             language_button.click()
 
 @step(u'I go to chapter "([^"]*)"')
-def i_go_to_chapter_group1(step, group1):
-    assert False, 'This step must be implemented'
+def i_go_to_chapter(step, chapter_number):
+    go_to_chapter(int(chapter_number))
 
 @step(u'I see a list of languages contain "([^"]*)"')
-def i_see_a_list_of_languages_contain_group1(step, group1):
-    assert False, 'This step must be implemented'
+def i_see_a_list_of_languages_contain(step, languages):
+    find("#change_chapter_language button").click()
+    i_see_a_languages_prefer_contain(step, languages)
+    find("#change_chapter_language button").click()
 
 @step(u'I choose language "([^"]*)"')
 def i_choose_language(step, language):
-    assert False, 'This step must be implemented'
+    find("#change_chapter_language button").click()
+    i_click_on(step, language)
+
+@step(u'"([^"]*)" is the selected language of this book')
+def language_is_the_selected_language_of_this_book(step, language):
+    book = Book.objects.get(pk=world.book_id)
+    preference = LanguagePreference.objects.get(book=book, user=default_user())
+    preference.language.name.should.equal(language)
 
 @step(u'I setting my language prefer to "([^"]*)"')
-def i_setting_my_language_prefer_to_group1(step, group1):
-    assert False, 'This step must be implemented'
+def i_setting_my_language_prefer_to(step, languages):
+    languages = languages.split(",")
+    settings_dict = []
+    for language in languages:
+        settings_dict.append(Language.objects.get(name=language).id)
+    UserSettings.set(settings.BOOK_LANGUAGE_PREFER_KEY, default_user().id, settings_dict)

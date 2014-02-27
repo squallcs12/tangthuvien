@@ -4,11 +4,8 @@ Created on Oct 23, 2013
 @author: antipro
 '''
 from lettuce_setup.function import *  # @UnusedWildImport
-from book.features.steps.publish_new_book_steps import fill_new_book_form, \
-    get_book_title_list
+from book.features.steps.publish_new_book_steps import get_book_title_list
 from book.features.steps.index_steps import i_visit_book_index_page
-from book.features.steps.read_book_steps import i_go_to_last_chapter, \
-    see_the_last_chapter, see_the_second_chapter
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.book_model import Book
 
@@ -43,12 +40,12 @@ def i_see_the_whole_book_was_copied(step):
 
     i_visit_book_index_page(step)
     get_book_title_list().should.contain("Copy book title")
-    browser().find_element_by_link_text("Copy book title").click()
+    link("Copy book title").click()
 
 @step(u'I can not copy this thread again')
 def i_can_not_copy_this_thread_again(step):
     i_visit_book_index_page(step)
-    browser().find_element_by_link_text("Copy book").click()
+    link("Copy book").click()
     i_fill_the_book_information_page(step, "Copy book title 2")
     find(".notifications").text.should.contain(trans(u"The book is already copied to this site."))
 

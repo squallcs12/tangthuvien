@@ -1,9 +1,9 @@
 {% load i18n %}
-{% load slice_page_range %}
+{% load book_language %}
 <div class="row chapters_pagination">
 	<div class="col-lg-4">
 	<ul class="pagination pagination-sm">
-		    {% for chapter_number in book.chapters_list|chapters_paging:chapter.number %}
+		    {% for chapter_number in book.chapters_list|chapters_paging:chapter %}
 				<li {% if chapter_number ==  chapter.number %}class="active"{% endif %}>
 					<a class="current"
 						{% if chapter_number ==  chapter.number %}
@@ -31,7 +31,7 @@
 	<div class="col-lg-5">
 		<form>
 			<select name="chapter" class="form-control chapter-list">
-				{% for page_info in book.chapters_list %}
+				{% for page_info in book.chapters_list|filter_by_language:chapter.language_id %}
 					<option value="{{ page_info.0 }}" data-href="{% url 'read_book_chapter' book.slug page_info.0 %}"
 						{% if chapter.number == page_info.0 %}selected="selected"{% endif %}>
 						{{ page_info.0 }} - {{ page_info.1 }}

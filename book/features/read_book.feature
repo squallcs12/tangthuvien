@@ -75,20 +75,22 @@ Feature: Book App :: Book reading page
             | 2      | chapter 2 language 1 | language-1 |
             | 2      | chapter 2 language 2 | language-2 |
             | 3      | chapter 3 language 0 | language-0 |
-            | 3      | chapter 4 language 1 | language-1 |
-            | 4      | chapter 1 language 0 | language-0 |
+            | 3      | chapter 3 language 1 | language-1 |
+            | 4      | chapter 4 language 0 | language-0 |
         When I visit this book introduction page
         Then I see a languages prefer contain "language-0,language-1,language-2,language-3"
-        When I choose "language-2" as prefer language
-        And I click on "Start reading"
-        Then I see chapter title is "chapter 1 language 2"
-        When I go to chapter "2"
-        Then I see chapter title is "chapter 2 language 2"
-        And I see a list of languages contain "language-0,language-1,language-2"
-        When I choose language "language-1"
-        Then I see chapter title is "chapter 2 language 1"
-        When I go to chapter "1"
+        When I click on "language-1"
+        Then button "language-1" is set to state "success"
+        And "language-1" is the selected language of this book
+        When I click on "Start reading"
         Then I see chapter title is "chapter 1 language 1"
+        When I go to chapter "2"
+        Then I see chapter title is "chapter 2 language 1"
+        And I see a list of languages contain "language-0,language-1,language-2"
+        When I choose language "language-2"
+        Then I see chapter title is "chapter 2 language 2"
+        When I go to chapter "1"
+        Then I see chapter title is "chapter 1 language 2"
         When I go to chapter "4"
         Then I see chapter title is "chapter 4 language 0"
         When I go to chapter "3"
