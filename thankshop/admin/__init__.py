@@ -1,6 +1,6 @@
 from django.contrib import admin
 from thankshop import models
-from thankshop.admin import item_admin, package_admin, thankpoint_admin, thankpointhistory_admin
+from thankshop.admin import thankpoint_admin, thankpointhistory_admin, item_admin, package_admin
 
 admin.site.register(models.Package, package_admin.PackageAdmin)
 admin.site.register(models.ThankPoint, thankpoint_admin.ThankpointAdmin)

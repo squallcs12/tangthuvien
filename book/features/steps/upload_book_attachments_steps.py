@@ -10,8 +10,7 @@ def i_upload_a_attachment_to_the_book(step):
     upload_form = find("#upload_attachment")
     upload_form.find(".upload").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
     time.sleep(0.5)
-    if find("#upload_attachment .progress").is_displayed():
-        until(lambda: not find("#upload_attachment .progress").is_displayed())
+    until(lambda: not find("#upload_attachment .progress").is_displayed())
 
 @step(u'I see the attachment listed when reading that book')
 def i_see_the_attachment_listed_when_reading_that_book(step):

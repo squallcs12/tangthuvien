@@ -1,4 +1,4 @@
-var reqModule = reqModule || angular.module('tangthuvien', ANGULAR_REQUIRES);
+var reqModule = reqModule || angular.module('tangthuvien', []);
 
 reqModule.factory('InventoryService', function(APIHandler){
     return APIHandler('/thankshop/inventory', {
@@ -11,7 +11,7 @@ function InventoryController($scope, InventoryService){
     $scope.items = [];
 
     $scope.fetchItems = function(){
-        InventoryService.list({id: "me"}, function(items){
+        InventoryService.list({}, function(items){
             $scope.items = items;
         });
     };

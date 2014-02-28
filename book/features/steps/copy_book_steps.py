@@ -42,13 +42,6 @@ def i_see_the_whole_book_was_copied(step):
     get_book_title_list().should.contain("Copy book title")
     link("Copy book title").click()
 
-@step(u'I can not copy this thread again')
-def i_can_not_copy_this_thread_again(step):
-    i_visit_book_index_page(step)
-    link("Copy book").click()
-    i_fill_the_book_information_page(step, "Copy book title 2")
-    find(".notifications").text.should.contain(trans(u"The book is already copied to this site."))
-
 @step(u'I visit the copied book')
 def i_visit_the_copied_book(step):
     read_book_by_id(world.copied_book_id)

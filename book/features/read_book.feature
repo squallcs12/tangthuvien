@@ -8,8 +8,8 @@ Feature: Book App :: Book reading page
         And I see the book rating result
         And I see rating book button
         And I can not rate for the book
-        And I see the "Start reading" button
-        When I click on the "Start reading" button
+        And I see the button "Start reading"
+        When I click on "Start reading"
         Then I see the first chapter
         When I go to next chapter
         Then I see the second chapter

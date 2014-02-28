@@ -1,11 +1,17 @@
 {% extends "accounts/base.phtml" %}
 
 {% load i18n %}
-{% load static_tags %}
 
-{% load_js static /jquery-sortable.js %}
-{% load_js static /bootbox.js%}
-{% load_css static /book/style.css %}
+{% block footer-js %}
+    {{ block.super }}
+    <script src="{{STATIC_URL}}js/jquery-sortable.js"></script>
+    <script src="{{STATIC_URL}}js/bootbox.js"></script>
+{% endblock %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/book/style.css" />
+{% endblock %}
 
 {% block accounts-content %}
 <div>

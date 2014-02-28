@@ -1,26 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'book/base.html' %}
 {% load i18n %}
 {% load jsonify %}
 {% load simple_filters %}
-{% load static_tags %}
-{% load_css static /bootstrap-tagsinput/bootstrap-tagsinput.css %}
-{% load_js static /bootstrap-tagsinput/bootstrap-tagsinput.js %}
-{% load_js static /bootstrap-tagsinput/bootstrap-typeahead.js %}
-{% load_js static /plugins/jquery.loading.js %}
-{% load_js static /book/index.js %}
 
 {% block title %}{% if page_title %}{{page_title}}{% else %}{% trans "List of books" %}{% endif %}{% endblock %}
 
 {% block meta-description %}{% if page_description %}{{page_description}}{% else %}{% trans 'List of books' %}{% endif %}{% endblock %}
 
 {% block content %}
-	{% include 'book/onetime_notification/user_log_notification.phtml' %}
-	<h3>
-	    {% trans "List of books" %}
+    {% include 'book/onetime_notification/user_log_notification.phtml' %}
+    <h3>
+        {% trans "List of books" %}
         <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
         <a href="{% url 'copy_book' %}" id="copy-book">{% trans 'Copy book' %}</a>
-	</h3>
-	<div class="row">
+    </h3>
+    <div class="row">
         <div class="col-lg-6 col-lg-offset-6">
             <form class="categories_filters">
                 <label>
@@ -30,7 +24,7 @@
             </form>
             <script>
             jQuery(window).load(function() {
-				var selectedCategories = {};
+                var selectedCategories = {};
                 {% for category in selectedCategories %}
                 selectedCategories['{{category.id}}'] = '{{category.title|escapejs}}';
                 {% endfor %}
@@ -38,8 +32,8 @@
             });
             </script>
         </div>
-	</div>
-	<div id="books_list_block">
-	   {% include 'book/_books_list_index.phtml'%}
-	</div>
+    </div>
+    <div id="books_list_block">
+       {% include 'book/_books_list_index.phtml'%}
+    </div>
 {% endblock %}

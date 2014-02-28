@@ -1,48 +1,48 @@
 {% load i18n %}
 {% load book_language %}
 <div class="row chapters_pagination">
-	<div class="col-lg-4">
-	<ul class="pagination pagination-sm">
-		    {% for chapter_number in book.chapters_list|chapters_paging:chapter %}
-				<li {% if chapter_number ==  chapter.number %}class="active"{% endif %}>
-					<a class="current"
-						{% if chapter_number ==  chapter.number %}
-							href="#"
-						{% else %}
-							href="{% url 'read_book_chapter' book.slug chapter_number %}"
-						{% endif %}
-						>
-						{% if chapter.number < 99 %}
-							{% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
-						{% else %}
-							{{chapter_number}}
-						{% endif %}
-					</a>
-				</li>
-			{% endfor %}
-		</ul>
-	</div>
-	<div class="col-lg-3">
-		<form id="form_chapter_jump" class="form-horizontal" action="{% url 'read_book_chapter' book.slug '000999000' %}">
-			<input type="text" name="page" class="form-control" value="{{chapter.number}}" />
-			<button type="submit" class="btn btn-default">{% trans "Jump" %}</button>
-		</form>
-	</div>
-	<div class="col-lg-5">
-		<form>
-			<select name="chapter" class="form-control chapter-list">
-				{% for page_info in book.chapters_list|filter_by_language:chapter.language_id %}
-					<option value="{{ page_info.0 }}" data-href="{% url 'read_book_chapter' book.slug page_info.0 %}"
-						{% if chapter.number == page_info.0 %}selected="selected"{% endif %}>
-						{{ page_info.0 }} - {{ page_info.1 }}
-					</option>
-				{% endfor %}
-			</select>
-			<script>
-				jQuery(".chapter-list").unbind('click').change(function(){
-					location.href = jQuery(this.options[this.selectedIndex]).data("href");
-				});
-			</script>
-		</form>
-	</div>
+    <div class="col-lg-4">
+    <ul class="pagination pagination-sm">
+            {% for chapter_number in book.chapters_list|chapters_paging:chapter %}
+                <li {% if chapter_number ==  chapter.number %}class="active"{% endif %}>
+                    <a class="current"
+                        {% if chapter_number ==  chapter.number %}
+                            href="#"
+                        {% else %}
+                            href="{% url 'read_book_chapter' book.slug chapter_number %}"
+                        {% endif %}
+                        >
+                        {% if chapter.number < 99 %}
+                            {% blocktrans with number=chapter_number %}Chapter {{number}}{% endblocktrans %}
+                        {% else %}
+                            {{chapter_number}}
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-lg-3">
+        <form id="form_chapter_jump" class="form-horizontal" action="{% url 'read_book_chapter' book.slug '000999000' %}">
+            <input type="text" name="page" class="form-control" value="{{chapter.number}}" />
+            <button type="submit" class="btn btn-default">{% trans "Jump" %}</button>
+        </form>
+    </div>
+    <div class="col-lg-5">
+        <form>
+            <select name="chapter" class="form-control chapter-list">
+                {% for page_info in book.chapters_list|filter_by_language:chapter.language_id %}
+                    <option value="{{ page_info.0 }}" data-href="{% url 'read_book_chapter' book.slug page_info.0 %}"
+                        {% if chapter.number == page_info.0 %}selected="selected"{% endif %}>
+                        {{ page_info.0 }} - {{ page_info.1 }}
+                    </option>
+                {% endfor %}
+            </select>
+            <script>
+                jQuery(".chapter-list").unbind('click').change(function(){
+                    location.href = jQuery(this.options[this.selectedIndex]).data("href");
+                });
+            </script>
+        </form>
+    </div>
 </div>
