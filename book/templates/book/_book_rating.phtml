@@ -1,11 +1,12 @@
 {% load i18n %}
+{% load l10n %}
 
 <div class="col-lg-3">
     <div class="panel panel-default rating" id="book_rating">
         <div class="panel-heading">{% trans 'Rate book' %}</div>
         <div class="panel-body">
             <div class="result">
-                {% blocktrans with book.rating.average_result as averate and book.rating.rating_count as rating_count %}
+                {% blocktrans with book.rating.average_result|unlocalize as averate and book.rating.rating_count as rating_count %}
                     Was rated <strong><span class="average-result">{{averate}}</span></strong>
                     over <strong><span class="rating-count">{{rating_count}}</span></strong> ratings
                 {% endblocktrans %}
