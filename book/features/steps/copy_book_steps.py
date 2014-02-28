@@ -55,7 +55,6 @@ def i_sync_the_new_posted_chapter(step):
     find("#sync-copy-book").click()
 
 @step(u'I see only new posted chapter was copied')
-@until_pass()
 def i_see_only_new_posted_chapter_was_copied(step):
     db_commit()
     book = Book.objects.get(pk=world.copied_book_id)
