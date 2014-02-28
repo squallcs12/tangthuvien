@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from tangthuvien.models.fields import AutoOneToOneField
 import datetime
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 class ThankPoint(models.Model):
     user = AutoOneToOneField(User, related_name="thank_point")
@@ -49,6 +50,9 @@ class ThankPoint(models.Model):
             points=points,
             key=key,
         ).save()
+
+    def __unicode__(self):
+        return _("User ID %s thank point") % self.user_id
 
     class Meta:
         app_label = 'thankshop'

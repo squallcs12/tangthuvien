@@ -58,7 +58,7 @@ function InventoryController($scope, ItemService){
     $scope.items = [];
 
     $scope.fetchItems = function(){
-        ItemService.list({id: "me"}, function(items){
+        ItemService.list({}, function(items){
             $scope.items = items;
         });
     };

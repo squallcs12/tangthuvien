@@ -4,7 +4,6 @@ Created on Aug 4, 2013
 
 @author: antipro
 '''
-from lettuce import step
 from lettuce_setup.function import *
 
 def get_rate_button():
@@ -38,10 +37,7 @@ def i_rate_star_for_the_book(step, number):
 
 @step(u'I see the book rating is (.*)')
 def i_see_the_book_rating_is(step, number):
-    try:
-        find("#book_rating .average-result").text.should.equal(number)
-    except:
-        find("#book_rating .average-result").text.should.equal(number.replace('.', ','))
+    find("#book_rating .average-result").text.should.equal(number)
 
 @step(u'I see the book rating count is (.*)')
 def i_see_the_book_rating_count_is(step, number):

@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% load static_tags %}
+
+{% load_js static /accounts/user_menu.js %}
 
 {% block content %}
 <div>
 	<div class="row">
 		<div class="col-lg-9">
-			<div class="well">
 				{% block accounts-content %}
 				{% endblock %}
-			</div>
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-3" id="userMenu">
 			{% include 'accounts/_user_menu.phtml' %}
 		</div>
 	</div>

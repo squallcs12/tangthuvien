@@ -258,6 +258,7 @@ BOOK_ATTACHMENTS_COUNT_APPROVE_LIMIT = 30
 BOOK_ATTACHMENTS_COUNT_DOWNLOAD_LIMIT = 20
 BOOK_READING_STYLE_FONT_FAMILIES = ('Arial', 'Tahoma')
 BOOK_READING_STYLE_FONT_SIZES = ["%spx" % size for size in range(13, 30)]
+BOOK_LANGUAGE_PREFER_KEY = "BOOK_LANGUAGE_PREFER"
 
 # social auth
 
@@ -344,6 +345,12 @@ THANKSHOP_THANK_POINTS_PERCENT = 0.5
 PAYPAL_MODE = 'sandbox'
 PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd'
 PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
+
+import sys
+if 'harvest' in sys.argv:
+    LANGUAGE_CODE = 'eni' # disable localization
+    if '-P' in sys.argv: # custom port
+        LETTUCE_SERVER_PORT = int(sys.argv[sys.argv.index('-P') + 1])
 
 try:
     from local_settings import *  # @UnusedWildImport

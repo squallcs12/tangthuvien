@@ -44,6 +44,7 @@ class ColumnFilter(SimpleListFilter):
             self.value = None
             if self.parameter_name in lookup_params:
                 self.value = lookup_params.pop(self.parameter_name)
+                print (self.parameter_name, self.value)
         return self
 
 class TextColumnFilter(ColumnFilter):
@@ -85,5 +86,7 @@ class ForeignKeyColumnFilter(ColumnFilter):
         data['name'] = self.parameter_name
 
         data['options'] = self.get_options()
+
+        data['value'] = self.value
 
         return render_to_string('custom_admin/foreign_key.phtml', data, context)

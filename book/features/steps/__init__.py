@@ -3,15 +3,15 @@ from django.contrib.auth.models import Group
 from book.models.attachment_model import Attachment
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
-from book.features.factories.chapter_type_factory import ChapterTypeFactory
 from book.features.factories.category_factory import CategoryFactory
 import random
 from book.models.category_model import Category
 import subprocess
 from tangthuvien import settings as st
 from book.models.book_model import Book
-from book.models import Author, BookType
+from book.models import Author, Language
 import os
+from book.features.factories.language_factory import LanguageFactory
 
 TOTAL_BOOK_WILL_BE_CREATED = 33
 
@@ -51,36 +51,37 @@ def add_super_group_permission():
 def before_book_feature(feature):
     if ('Book App ::' in feature.name) and \
         (not hasattr(world, 'book_created') or not world.book_created):
+
+        clean_book_tables()
+        create_language_list()
         create_book_list()
 
 def clean_book_tables():
-    for book in Book.objects.all():
-        book.delete()
-    for category in Category.objects.all():
-        category.delete()
-    for author in Author.objects.all():
-        author.delete()
-    for book_type in BookType.objects.all():
-        book_type.delete()
+    for model in [Book, Category, Author, Language]:
+        for obj in model.objects.all():
+            obj.delete()
+
+def create_language_list():
+    for i in range(0, 4):
+        world.language = LanguageFactory()
+        world.language.save()
 
 def create_book_list():
-    clean_book_tables()
     world.book_created = True
     world.book_list = []
 
-    chapter_types = []
-    chapter_type = ChapterTypeFactory()
-    chapter_type.save()
-    chapter_types.append(chapter_type)
-    for i in range(0, TOTAL_BOOK_WILL_BE_CREATED):  # @UnusedVariable
+    for i in range(0, 33):
         book = BookFactory()
         book.save()
+        book.languages.add(world.language)
+        book.save()
+
         world.book_list.append(book)
-        for i in range(1, 15 if i > (TOTAL_BOOK_WILL_BE_CREATED - 15) else 2):
+        for j in range(0, 5):
             chapter = ChapterFactory()
-            chapter.number = i
+            chapter.number = j
             chapter.book = book
-            chapter.chapter_type = chapter_type
+            chapter.language = world.language
             chapter.save()
 
     for i in range(0, 4):
@@ -91,4 +92,4 @@ def create_book_list():
             if random.randint(0, 1):
                 category.books.add(book)
 
-    subprocess.call(['rm',  '%s/*' % st.realpath('log/copybook'), '-f'])
+    subprocess.call(['rm', '%s/*' % st.realpath('log/copybook'), '-f'])

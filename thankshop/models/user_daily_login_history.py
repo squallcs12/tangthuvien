@@ -18,8 +18,6 @@ class UserDailyLoginHistory(models.Model):
         if not cls.objects.filter(user=user, date=timezone.now().date()).exists():
             login_history = cls(user=user, date=timezone.now().date())
             login_history.save()
-            from thankshop import signals
-            signals.user_first_daily_login.send(UserDailyLoginHistory, user=user)
             return True
         return False
 

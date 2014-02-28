@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load static_tags %}
 
-{% load_js static /book/inline_add_author_and_book_type.js %}
+{% load_js static /book/inline_add_author.js %}
 
 {% include 'general/bootstrap_modal_requirement.phtml' %}
 <!-- Modal -->
@@ -32,7 +32,7 @@
     </form>
 </div><!-- /.modal -->
 <!-- Modal -->
-<div id="new-type-form-div" class="modal fade" data-width="600" 
+<div id="new-type-form-div" class="modal fade" data-width="600"
     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form id="new-type-form">
         <div class="modal-dialog">
@@ -44,7 +44,7 @@
                     <h4 class="modal-title">{% trans 'Add type' %}</h4>
                 </div>
                 <div class="modal-body">
-                    {% include 'general/form_render.phtml' with form=type_form %}
+                    {% include 'general/form_render.phtml' with form=language_form %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">

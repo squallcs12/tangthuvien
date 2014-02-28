@@ -11,7 +11,6 @@ from book.features.steps.read_book_steps import i_click_on_a_book, \
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.chapter_model import Chapter
 from book.models.book_model import Book
-from book.models import ChapterType
 
 
 @step(u'I am reading a book')
@@ -45,15 +44,13 @@ def i_visit_favorite_books_manager_page(step):
 
 @step(u'I see the book was listed there')
 def i_see_the_book_was_listed_there(step):
-    for book in find_all("#books.favorite .book"):
-        if book.get_attribute("item_id") == world.book_id:
-            return
-    raise Exception("Book was not listed in favorite list")
+    book_ids = [book.get_attribute("item_id") for book in find_all("#books.favorite .book")]
+    book_ids.should.contain(world.book_id)
 
 @step(u'I read the last chapter of the book')
 def i_read_the_last_chapter_of_the_book(step):
     read_book_by_id(world.book_id)
-    i_go_to_last_chapter(step)
+    find("#chapters_list a:last-child").click()
 
 @step(u'a new chapter was posted to the book')
 def a_new_chapter_was_posted_to_the_book(step, book=None):
@@ -64,8 +61,8 @@ def a_new_chapter_was_posted_to_the_book(step, book=None):
         book=book,
         title="New posted chapter",
         content="New posted chapter content",
-        chapter_type=ChapterType.objects.all()[0],
-        number=book.chapters_count + 1
+        number=book.chapters_count + 1,
+        language=world.language
     )
 
 @step(u'I see that book marked as unread on favorite list')

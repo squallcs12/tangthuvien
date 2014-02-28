@@ -2,13 +2,7 @@ from lettuce_setup.function import *  # @UnusedWildImport
 from book.models import Attachment
 import os
 from book.models.book_model import Book
-
-
-def get_attachments_list():
-    return [attachment.text for attachment in find_all("#attachments .filename")]
-
-def read_book_by_id(book_id):
-    visit_by_view_name('book_read_short', kwargs={'book_id':book_id})
+from book.features.steps.general import *
 
 @step(u'I upload a attachment to the book')
 def i_upload_a_attachment_to_the_book(step):
@@ -16,8 +10,7 @@ def i_upload_a_attachment_to_the_book(step):
     upload_form = find("#upload_attachment")
     upload_form.find(".upload").send_keys(os.path.join(settings.MEDIA_ROOT, "books/covers/1278231576904.jpg"))
     time.sleep(0.5)
-    if find("#upload_attachment .progress").is_displayed():
-        until(lambda: not find("#upload_attachment .progress").is_displayed())
+    until(lambda: not find("#upload_attachment .progress").is_displayed())
 
 @step(u'I see the attachment listed when reading that book')
 def i_see_the_attachment_listed_when_reading_that_book(step):
