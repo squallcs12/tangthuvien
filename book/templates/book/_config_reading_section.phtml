@@ -1,14 +1,11 @@
 {% load i18n %}
 {% load simple_filters %}
-{% load static_tags %}
-
-{% load_js static /book/config_reading_section.js %}
 
 {% include 'general/bootstrap_modal_requirement.phtml' %}
 <button type="button" data-toggle="modal" data-target="#config-modal"
     class="btn btn-default config">{% trans 'Config reading section' %}</button>
 <!-- Modal -->
-<div id="config-modal" class="modal fade" data-width="600" data-height="{{config_reading_section_form.fields|length|multiple:70}}" 
+<div id="config-modal" class="modal fade" data-width="600" data-height="{{config_reading_section_form.fields|length|multiple:70}}"
     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form id="config-reading-section-form">
         <div class="modal-dialog">

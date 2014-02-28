@@ -1,32 +1,38 @@
-{% extends 'base.html' %}
+{% extends 'book/base.html' %}
 {% load i18n %}
-{% load static_tags %}
 
 {% block title %}{% trans 'Copy'%} {{book.title}}{% endblock %}
 
-{% load_css static /book/style.css %}
-{% load_js static /book/copy_book_process.js %}
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/book/style.css" />
+{% endblock %}
+
+{% block footer-js %}
+    {{ block.super }}
+    <script src="{{STATIC_URL}}js/book/copy_book_process.js"></script>
+{% endblock %}
 
 {% block content %}
 <div class="row">
-	<div class="col-lg-9">
-		<h3>{{book.title}} / {{book.author.name}}</h3>
-		<div class="panel panel-default">
-        	<div class="panel-body">
-        	    <div class="progress progress-striped active" id="process_bar">
+    <div class="col-lg-9">
+        <h3>{{book.title}} / {{book.author.name}}</h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="progress progress-striped active" id="process_bar">
                     <div class="progress-bar progress-bar-info" style="width: 0%"></div>
                 </div>
-        	    <pre id="process_output"></pre>
-        	    <script>
-        	    jQuery(function(){
-        	    	copy_book_process(jQuery, "{% url 'copy_book_process_output' book.id %}");
-        	    });
-        	    </script>
+                <pre id="process_output"></pre>
+                <script>
+                jQuery(function(){
+                    copy_book_process(jQuery, "{% url 'copy_book_process_output' book.id %}");
+                });
+                </script>
             </div>
         </div>
-	</div>
-	<div class="col-lg-3 sidebar-margin-top">
-		
-	</div>
+    </div>
+    <div class="col-lg-3 sidebar-margin-top">
+
+    </div>
 </div>
 {% endblock %}

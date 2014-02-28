@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load static_tags %}
 {% load jsonify %}
 {% load url from future %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -18,17 +17,12 @@
         <link rel="pingback" href="/xmlrpc/" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="home" href="{% url 'homepage' %}" />
-        {% block link %}{% endblock %}
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap/{{CURRENT_STYLE}}.css" />
-        {% load_css static /style.css %}
-        {% print_css %}
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <script>
-            if (!window.jQuery){
-                document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>');
-            }
-            jQuery.noConflict();
-        </script>
+        {% block head-link %}
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap/{{CURRENT_STYLE}}.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-modal/bootstrap-modal.css" />
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-modal/bootstrap-modal-bs3patch.css" />
+        {% endblock %}
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -45,11 +39,17 @@
 
         </script>
         {% include '_js_defined_params.phtml' %}
-        <script src="{{ STATIC_URL }}js/head_define.js"></script>
-        <script src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
-        {% block script %}{% endblock %}
-        {% load_js static /bootstrap.min.js %}
-        {% load_js static /foot_define.js %}
+        {% block head-js %}
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+            <script>
+                if (!window.jQuery){
+                    document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>');
+                }
+                jQuery.noConflict();
+            </script>
+            <script src="{{ STATIC_URL }}js/head_define.js"></script>
+            <script src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
+        {% endblock %}
     </head>
     <body id="{% block page_id %}{% endblock %}">
         {% include '_top_nav.phtml' %}
@@ -74,8 +74,17 @@
                 </div>
             </footer>
         </div>
+
+    {% block footer-js %}
+        <script src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+        <script src="{{STATIC_URL}}js/foot_define.js"></script>
+        <script src="{{STATIC_URL}}js/bootstrap-modal/bootstrap-modalmanager.js"></script>
+        <script src="{{STATIC_URL}}js/bootstrap-modal/bootstrap-modal.js"></script>
+        <script src="{{STATIC_URL}}js/popup_notification.js"></script>
+    {% endblock %}
+
     {% include '_popup_notification.phtml' %}
-    {% print_js %}
+
     {% include '_addthis.phtml' %}
     </body>
 </html>

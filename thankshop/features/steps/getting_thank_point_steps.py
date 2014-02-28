@@ -9,9 +9,9 @@ from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
 from book.features.steps.thank_chapter_steps import i_thank_the_poster_for_this_chapter
 from book.models.book_model import Book
-from book.models import ChapterType
-from book.features.factories.chapter_type_factory import ChapterTypeFactory
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
+from book.models.language_model import Language
+from book.features.factories.language_factory import LanguageFactory
 
 
 world.thank_points = 0
@@ -62,16 +62,21 @@ def i_thank_a_poster_for_a_chapter(step, book_index= -1):
             world.thankshop_book_index = 0
         book_index = world.thankshop_book_index
         world.thankshop_book_index += 1
+
+    try:
+        language = Language.objects.all()[0]
+    except IndexError:
+        language = LanguageFactory()
+        language.save()
+
     try:
         book = Book.objects.all()[book_index]
     except IndexError:
         book = BookFactory()
         book.save()
-    try:
-        chapter_type = ChapterType.objects.all()[0]
-    except IndexError:
-        chapter_type = ChapterTypeFactory()
-        chapter_type.save()
+        book.languages.add(language)
+        book.save()
+
     try:
         chapter = book.chapter_set.all()[0]
     except IndexError:
@@ -79,7 +84,7 @@ def i_thank_a_poster_for_a_chapter(step, book_index= -1):
         chapter.number = 1
         chapter.book = book
         chapter.user = default_user(2)
-        chapter.chapter_type = chapter_type
+        chapter.language = language
         chapter.save()
     read_book_by_id(book.id)
     if len(find_all("#read_book")):

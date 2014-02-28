@@ -1,3 +1,30 @@
+var reqModule = reqModule || angular.module('tangthuvien', ANGULAR_REQUIRES);
+
+reqModule.factory('ShopItemService', function(APIHandler){
+    return APIHandler('/thankshop/item', {
+        list:{method:'GET'},
+        get:{method:'GET'}
+    });
+});
+
+function ShopItemController($scope, ShopItemService, $sanitize){
+    $scope.items = [];
+
+    $scope.fetchItems = function(){
+        ShopItemService.list({}, function(items){
+            $scope.items = items;
+        });
+    };
+
+    $scope.fetchItems();
+
+    var $ = jQuery;
+    $scope.showBuyForm = function($item){
+        $scope.item = $item;
+		$("#buy-confirmation").modal("show");
+    };
+}
+
 (function($){
 	var current_item_id = 0;
 	var form = $("#buy-confirmation form");

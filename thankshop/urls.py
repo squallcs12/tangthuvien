@@ -15,4 +15,7 @@ urlpatterns = patterns('thankshop.views',
     url(r'^buy', 'thankshop_buy_item_view.ajax', name='thankshop_buy_item_ajax'),
     url(r'^inventory/(?P<user_id>[^\/]+)?/?list$', 'thankshop_user_inventory_view.list_items', name='thankshop_user_inventory_list_items'),
     url(r'^inventory/(?P<username>[^\/]+)?/?$', 'thankshop_user_inventory_view.index', name='thankshop_user_inventory'),
+
+    url(r'^item/list/$', 'thankshop_item_api.list_items', name='thankshop_item_api_list_items'),
+    url(r'^item/(?P<item_id>.+)/get$', 'thankshop_item_api.get_item', name='thankshop_item_api_get_item'),
 )

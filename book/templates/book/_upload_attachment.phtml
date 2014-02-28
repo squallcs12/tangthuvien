@@ -1,34 +1,28 @@
 {% load i18n %}
-{% load static_tags %}
-{% if request.user.book_profile.can_upload_attachment %}
-	{% load_css static /plugins/jquery.fileupload.css %}
 
-	{% load_js static /book/upload_attachment.js %}
-	{% load_js static /plugins/jquery.fileupload.js %}
-	{% load_js static /plugins/jquery.iframe-transport.js %}
-	{% load_js static /plugins/vendor/jquery.ui.widget.js %}
-	
-	<form id="upload_attachment">
-		{% csrf_token %}
-		<span class="btn btn-success fileinput-button">
-	        <i class="glyphicon glyphicon-plus"></i>
-	        <span>Select files...</span>
-	        <!-- The file input field used as target for the file upload widget -->
-	        <input id="fileupload" type="file" name="file" class="upload" multiple>
-	    </span>
-		<div class="progress progress-striped active" id="process_bar">
-	        <div class="progress-bar progress-bar-info" style="width: 0%"></div>
-	    </div>
-	</form>
-	<script>
-	jQuery(window).load(function(){
-		ajax_upload_book_attachment('{{book.id}}');
-	});
-	</script>
+{% if request.user.book_profile.can_upload_attachment %}
+
+    <form id="upload_attachment">
+        {% csrf_token %}
+        <span class="btn btn-success fileinput-button">
+            <i class="glyphicon glyphicon-plus"></i>
+            <span>{% trans "Select files..." %}</span>
+            <!-- The file input field used as target for the file upload widget -->
+            <input id="fileupload" type="file" name="file" class="upload" multiple>
+        </span>
+        <div class="progress progress-striped active" id="process_bar">
+            <div class="progress-bar progress-bar-info" style="width: 0%"></div>
+        </div>
+    </form>
+    <script>
+    jQuery(window).load(function(){
+        ajax_upload_book_attachment('{{book.id}}');
+    });
+    </script>
 {% else %}
-	{% if request.user.is_authenticated %}
-		<span class="upload">{% trans 'You reach upload count limited' %}</span>
-	{% else %}
-		<span class="upload">{% trans 'You need to log-in to upload document' %}</span>
-	{% endif %}
+    {% if request.user.is_authenticated %}
+        <span class="upload">{% trans 'You reach upload count limited' %}</span>
+    {% else %}
+        <span class="upload">{% trans 'You need to log-in to upload document' %}</span>
+    {% endif %}
 {% endif %}
