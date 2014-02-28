@@ -200,7 +200,7 @@ def get_chapters_list(book_id):
         # if current chapter list is not fillled
         if chapter.number > current_language_chapter_count + 1:
             # fill current language chapter list by default language chapter list
-            for i in range(current_language_chapter_count, chapter.number):
+            for i in range(current_language_chapter_count, chapter.number - 1):
                 chapter_list[chapter.language_id].append(chapter_list[default_language_id][i])
 
         chapter_list[chapter.language_id].append([chapter.number, chapter.title])

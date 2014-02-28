@@ -17,16 +17,6 @@ def i_am_reading_a_book(step):
     i_visit_book_index_page(step)
     i_read_a_book(step)
 
-@step(u'I submit a new book chapter')
-def i_submit_a_new_book_chapter(step):
-    world.old_total_chapters = get_total_chapters(int(world.book_id))
-    find("#post-new-chapter").click()
-    i_post_a_new_chapter_for_this_book(step)
-
-def get_total_chapters(book_id):
-    db_commit()
-    return Chapter.objects.filter(book_id=book_id).count()
-
 @step(u'I see new chapter was posted')
 def i_see_new_chapter_was_posted(step):
     find("#chapter h2 span.number").text.should.equal(str(world.old_total_chapters + 1))

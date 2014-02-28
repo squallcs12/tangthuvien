@@ -63,7 +63,8 @@ def clean_book_tables():
 
 def create_language_list():
     for i in range(0, 4):
-        LanguageFactory().save()
+        world.language = LanguageFactory()
+        world.language.save()
 
 def create_book_list():
     world.book_created = True
@@ -72,11 +73,15 @@ def create_book_list():
     for i in range(0, 33):
         book = BookFactory()
         book.save()
+        book.languages.add(world.language)
+        book.save()
+
         world.book_list.append(book)
-        for j in range(1, 5):
+        for j in range(0, 5):
             chapter = ChapterFactory()
             chapter.number = j
             chapter.book = book
+            chapter.language = world.language
             chapter.save()
 
     for i in range(0, 4):

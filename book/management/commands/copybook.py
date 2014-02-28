@@ -15,6 +15,7 @@ from tangthuvien import settings
 from book.models.copy_model import Copy
 from django.core.exceptions import ObjectDoesNotExist
 import json
+from book.models.language_model import Language
 
 class Command(BaseCommand):
     help = """
@@ -101,6 +102,8 @@ class Command(BaseCommand):
         yield "end %s" % end
         yield ""
 
+        language = Language.objects.all()[0]
+
         for page in range(start, end + 1):
             yield "process_page %s" % page
             content = self.get_thread_html(thread_id, page)
@@ -149,7 +152,7 @@ class Command(BaseCommand):
                 chapter.number = book.chapters_count + 1
                 chapter.book = book
                 chapter.user = user
-                chapter.chapter_type_id = 1
+                chapter.language = language
                 chapter.save()
                 chapter_number += 1
 

@@ -44,10 +44,8 @@ def i_visit_favorite_books_manager_page(step):
 
 @step(u'I see the book was listed there')
 def i_see_the_book_was_listed_there(step):
-    for book in find_all("#books.favorite .book"):
-        if book.get_attribute("item_id") == world.book_id:
-            return
-    raise Exception("Book was not listed in favorite list")
+    book_ids = [book.get_attribute("item_id") for book in find_all("#books.favorite .book")]
+    book_ids.should.contain(world.book_id)
 
 @step(u'I read the last chapter of the book')
 def i_read_the_last_chapter_of_the_book(step):
@@ -63,7 +61,8 @@ def a_new_chapter_was_posted_to_the_book(step, book=None):
         book=book,
         title="New posted chapter",
         content="New posted chapter content",
-        number=book.chapters_count + 1
+        number=book.chapters_count + 1,
+        language=world.language
     )
 
 @step(u'I see that book marked as unread on favorite list')

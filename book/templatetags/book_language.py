@@ -23,7 +23,9 @@ def chapters_paging(chapters_list, chapter):
 
 @register.filter(name='filter_by_language')
 def filter_by_language(chapters_list, language_id):
-    return chapters_list[language_id]
+    if language_id in chapters_list:
+        return chapters_list[language_id]
+    return chapters_list.items()[0][1]  # first chapter list
 
 @register.tag
 def get_preference_language_id(parser, token):
