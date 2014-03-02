@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/bootstrap-tagsinput/bootstrap-tagsinput.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/plugins/jquery.fileupload.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/book/style.css" />
+{% endblock %}
+
+{% block footer-js %}
+    {{ block.super }}
+    <script src="{{STATIC_URL}}js/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-tagsinput/bootstrap-typeahead.js"></script>
+    <script src="{{STATIC_URL}}js/plugins/jquery.loading.js"></script>
+
+    <script src="{{STATIC_URL}}js/plugins/vendor/jquery.ui.widget.js"></script>
+    <script src="{{STATIC_URL}}js/plugins/jquery.iframe-transport.js"></script>
+    <script src="{{STATIC_URL}}js/plugins/jquery.fileupload.js"></script>
+
+    <script src="{{SOCKET_IO_URL}}/socket.io/socket.io.js"></script>
+
+    <script src="{{STATIC_URL}}js/book/upload_attachment.js"></script>
+    <script src="{{STATIC_URL}}js/book/index.js"></script>
+    <script src="{{STATIC_URL}}js/book/introduction.js"></script>
+    <script src="{{STATIC_URL}}js/book/favorite.js"></script>
+    <script src="{{STATIC_URL}}js/book/generate_prc.js"></script>
+    <script src="{{STATIC_URL}}js/book/rating.js"></script>
+    <script src="{{STATIC_URL}}js/book/config_reading_section.js"></script>
+    <script src="{{STATIC_URL}}js/book/inline_add_author.js"></script>
+{% endblock %}

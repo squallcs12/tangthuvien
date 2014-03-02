@@ -31,6 +31,7 @@ from django.db.models import Model
 from django.db.models.query import QuerySet
 from django.utils.encoding import smart_unicode
 from django.utils.simplejson import dumps
+from decimal import Decimal
 
 class UnableToSerializeError(Exception):
     """ Error for not implemented classes """
@@ -91,24 +92,26 @@ class JSONSerializer():
         """Called when serializing of an object ends."""
         self.stream.write(u'}')
 
-    def handle_object(self, object):
+    def handle_object(self, obj):
         """ Called to handle everything, looks for the correct handling """
-        if isinstance(object, dict):
-            self.handle_dictionary(object)
-        elif isinstance(object, list):
-            self.handle_list(object)
-        elif isinstance(object, Model):
-            self.handle_model(object)
-        elif isinstance(object, QuerySet):
-            self.handle_queryset(object)
-        elif isinstance(object, bool):
-            self.handle_simple(object)
-        elif isinstance(object, int) or isinstance(object, float) or isinstance(object, long):
-            self.handle_simple(object)
-        elif isinstance(object, basestring):
-            self.handle_simple(object)
+        if isinstance(obj, dict):
+            self.handle_dictionary(obj)
+        elif isinstance(obj, list):
+            self.handle_list(obj)
+        elif isinstance(obj, Model):
+            self.handle_model(obj)
+        elif isinstance(obj, QuerySet):
+            self.handle_queryset(obj)
+        elif isinstance(obj, bool):
+            self.handle_simple(obj)
+        elif isinstance(obj, int) or isinstance(obj, float) or isinstance(obj, long):
+            self.handle_simple(obj)
+        elif isinstance(obj, basestring):
+            self.handle_simple(obj)
+        elif isinstance(obj, Decimal):
+            self.handle_decima(obj)
         else:
-            raise UnableToSerializeError(type(object))
+            raise UnableToSerializeError(type(obj))
 
     def handle_dictionary(self, d):
         """Called to handle a Dictionary"""
@@ -234,6 +237,9 @@ class JSONSerializer():
     def handle_simple(self, simple):
         """ Called to handle values that can be handled via simplejson """
         self.stream.write(unicode(dumps(simple)))
+
+    def handle_decima(self, number):
+        self.stream.write(unicode(number))
 
     def getvalue(self):
         """Return the fully serialized object (or None if the output stream is  not seekable).sss """

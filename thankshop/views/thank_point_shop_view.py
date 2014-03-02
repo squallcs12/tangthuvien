@@ -77,7 +77,7 @@ def paypal_return(request):
         thank_point = request.user.thank_point
         thank_point.increase_thank_points(package.points, item_sku)
 
-        messages.success(request, _("%(number)d thank points was added to your account") % {'number': package.points})
+        messages.success(request, _("%(number)d thank points was added to your account.") % {'number': package.points})
         del request.session['paypal_id']
 
         return HttpResponseRedirect(reverse('thankshop_thank_point_shop'))

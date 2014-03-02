@@ -1,49 +1,69 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load static_tags %}
 
-{% load_js static /thankshop/homepage.js %}
+{% block footer-js %}
+    {{ block.super }}
+    <script src="{{STATIC_URL}}js/angular/angular.js"></script>
+    <script src="{{STATIC_URL}}js/angular/angular-sanitize.js"></script>
+    <script src="{{STATIC_URL}}js/angular/ApiHandler.js"></script>
+    <script src="{{STATIC_URL}}js/thankshop/homepage.js"></script>
+{% endblock %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/thankshop.css" />
+{% endblock %}
 
 {% block content %}
-<div id="thankshop">
-	<div class="row" id="items">
-		{% for item in items %}
-		<div class="col-lg-3 item" item-id="{{item.id}}">
-			<div class="name">{{item.name}}</div>
-			<div class="short_description">{{item.short_description}}</div>
-			<div class="long_description">{{item.long_description}}</div>
-			<div class="price">{{item.price}}</div>
-			<button class="btn btn-default buy" data-item_id="{{item.id}}">{% trans "Buy" %}</button>
-		</div>
-		{% endfor %}
-	</div>
+<div ng-controller="ShopItemController">
+    <div id="thankshop">
+        <div class="row" id="items">
+            <div class="col-lg-3 item" item-id="{% verbatim %}{{item.id}}{% endverbatim %}" ng-repeat="item in items">
+                <div class="well">
+                    <div class="image text-center"><img ng-src="{{MEDIA_URL}}{% verbatim %}{{item.image}}{% endverbatim %}" /></div>
+                    <div class="row">
+                        <h3 class="name pull-left">{% verbatim %}{{item.name}}{% endverbatim %}</h3>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-default buy" data-item_id="{% verbatim %}{{item.id}}{% endverbatim %}"
+                            ng-click="showBuyForm(item)">{% trans "Buy for {{item.price}}" %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="buy-confirmation" class="modal fade modal-centered" data-width="600"
+        tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">{% trans 'You are going to buy this item' %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="image text-center"><img ng-src="{{MEDIA_URL}}{% verbatim %}{{item.image}}{% endverbatim %}" /></div>
+                        </div>
+                        <div class="col-lg-8">
+                            <h3>{% verbatim %}{{item.name}}{% endverbatim %}</h3>
+                            <div class="full_description" ng-bind-html="item.long_description"></div>
+                        </div>
+                    </div>
+                    <form action="{% url 'thankshop_buy_item_ajax' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{% verbatim %}{{item.id}}{% endverbatim %}" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary accept">{% trans "Buy for {{item.price}}" %}</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">{% trans "Cancel" %}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
-<!-- Modal -->
-<div id="buy-confirmation" class="modal fade" data-width="600"
-    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    &times;
-                </button>
-                <h4 class="modal-title">{% trans 'You are going to buy this item' %}</h4>
-            </div>
-            <div class="modal-body">
-            	<form action="{% url 'thankshop_buy_item_ajax' %}" method="POST">
-					{% csrf_token %}
-					<input type="hidden" name="item_id" value="0" />
-            	</form>
-				<div class="name"></div>
-				<div class="short_description"></div>
-				<div class="long_description"></div>
-				<div class="price"></div>
-            </div>
-            <div class="modal-footer">
-            	<button class="btn btn-primary accept">{% trans "Buy" %}</button>
-            	<button class="btn btn-default cancel" data-dismiss="modal">{% trans "Cancel" %}</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 {% endblock %}

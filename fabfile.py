@@ -60,7 +60,8 @@ class Deploy(object):
 
     @classmethod
     def get_command_real_path(cls, command):
-        return run("whereis %s" % command).split(' ')[1]
+        path = run("which %s" % command)
+        return path
 
     @classmethod
     def mkdirs(cls):
@@ -117,16 +118,45 @@ class Deploy(object):
 
     @classmethod
     def get_python_version(cls):
-        return ".".join(run("python -V").split(' ')[1].split('.')[0:2])
+        return run("python -V").split(' ')[1]
 
     @classmethod
     def install_python(cls):
-        if cls.get_python_version() != '2.7':
-            sudo("cd ~; wget http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2")
-            sudo("cd ~; tar -xf Python-2.7.5.tar.bz2")
-            sudo("cd ~/Python-2.7.5; ./configure")
-            sudo("cd ~/Python-2.7.5; make")
-            sudo("cd ~/Python-2.7.5; make install")
+
+        if cls.get_python_version() != '2.7.5':
+            cls.python_path = "/usr/local/bin/python2.7"
+            if not cls.is_file_exists(cls.python_path):
+                # install python 2.7.5
+                sudo("cd ~; wget http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2")
+                sudo("cd ~; tar -xf Python-2.7.5.tar.bz2")
+                sudo("cd ~/Python-2.7.5; ./configure")
+                sudo("cd ~/Python-2.7.5; make")
+                sudo("cd ~/Python-2.7.5; make altinstall")
+
+            # install setup tools
+            cls.easy_install_path = "/usr/local/bin/easy_install"
+            if not cls.is_file_exists(cls.easy_install_path):
+                sudo("cd ~; wget --no-check-certificate https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz#md5=2044725530450d0517393882dc4b7508")
+                sudo("cd ~; tar -xf setuptools-2.1.tar.gz")
+                sudo("cd ~/setuptools-2.1; %s setup.py install" % cls.python_path)
+
+            # install pip
+            cls.pip_path = "/usr/local/bin/pip"
+            if not cls.is_file_exists(cls.pip_path):
+                sudo("%s pip")
+
+            # install virtualenv
+            cls.virtualenv_path = "/usr/local/bin/virtualenv"
+            if not cls.is_file_exists(cls.virtualenv_path):
+                sudo("%s install virtualenv")
+        else:
+            cls.python_path = cls.get_command_real_path("python")
+            cls.install_setup_tools()
+            cls.install_pip()
+            cls.install_virtualenv()
+            cls.easy_install_path = cls.get_command_real_path("easy_install")
+            cls.pip_path = cls.get_command_real_path("pip")
+            cls.virtualenv_path = cls.get_command_real_path("virtualenv")
 
     @classmethod
     def install_setup_tools(cls):
@@ -151,7 +181,7 @@ class Deploy(object):
     @classmethod
     def install_virtualenv(cls):
         if not cls.is_command_exists('virtualenv'):
-            sudo("%s install virtualenv", cls.get_command_real_path('pip'))
+            sudo("%s install virtualenv" % cls.get_command_real_path('pip'))
 
     @classmethod
     def is_file_exists(cls, filename):
@@ -160,7 +190,7 @@ class Deploy(object):
     @classmethod
     def create_virtualenv(cls):
         if not cls.is_file_exists('%s/bin/activate' % cls.virtualenv_dir) :
-            cls.sudo("%s %s" % (cls.get_command_real_path('virtualenv'), cls.virtualenv_dir))
+            cls.sudo("%s %s" % (cls.virtualenv_path, cls.virtualenv_dir))
 
     @classmethod
     def install_mysql_dev(cls):
@@ -172,9 +202,9 @@ class Deploy(object):
     @classmethod
     def create_user_and_group(cls):
         # user not exists
-        if not sudo("cat /etc/passwd | grep www-data"):
+        try:
             sudo("useradd www-data")
-        else:
+        except:
             if not sudo("cat /etc/group | grep www-data"):
                 sudo("groupadd www-data")
                 sudo("useradd -G www-data www-data")
@@ -307,9 +337,6 @@ class Deploy(object):
         cls.mkdirs()
         cls.install_git()
         cls.install_python()
-        cls.install_setup_tools()
-        cls.install_pip()
-        cls.install_virtualenv()
         cls.create_user_and_group()
         cls.chown_dirs()
         cls.create_virtualenv()

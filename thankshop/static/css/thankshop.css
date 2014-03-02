@@ -1,0 +1,4 @@
+#thankshop .item .image img, #buy-confirmation .image img{
+	max-width: 220px;
+	max-height: 250px;
+}

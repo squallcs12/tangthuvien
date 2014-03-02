@@ -12,5 +12,8 @@ class Package(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     points = models.IntegerField()
 
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         app_label = 'thankshop'

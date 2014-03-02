@@ -1,14 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'book/base.html' %}
 {% load i18n %}
-{% load static_tags %}
+
 {% load book_language %}
 
 {% block title %}{{book.title}}{% endblock %}
 
 {% block meta-description %}{{book.description|striptags|escapejs}}{% endblock %}
-
-{% load_css static /book/style.css %}
-{% load_js static /book/introduction.js %}
 
 {% block content %}
 {% include 'book/onetime_notification/user_log_notification.phtml' %}
@@ -30,16 +27,16 @@
                 <div class="col-lg-8">{{book.author.name}}</div>
             </div>
             <div class="row">
-            	<div class="col-lg-4">{% trans "Languages" %}</div>
-            	<div class="col-lg-8" id="languages">
-            		<script>BOOK_LANGUAGE_PREFERENCE_URL = '{% url "book_language_preference" %}'</script>
-            		{% get_preference_language_id as language_id %}
-            		{% for language in book.languages.all %}
-            			<button class="btn {% if language.id == language_id %}btn-success{% else %}btn-default{% endif %} btn-xs language language-{{language.slug}}"
-            				type="button" data-id="{{language.id}}"
-            				>{{language.name}}</button>
-            		{% endfor %}
-            	</div>
+                <div class="col-lg-4">{% trans "Languages" %}</div>
+                <div class="col-lg-8" id="languages">
+                    <script>BOOK_LANGUAGE_PREFERENCE_URL = '{% url "book_language_preference" %}'</script>
+                    {% get_preference_language_id as language_id %}
+                    {% for language in book.languages.all %}
+                        <button class="btn {% if language.id == language_id %}btn-success{% else %}btn-default{% endif %} btn-xs language language-{{language.slug}}"
+                            type="button" data-id="{{language.id}}"
+                            >{{language.name}}</button>
+                    {% endfor %}
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">

@@ -1,11 +1,14 @@
 {% extends "accounts/base.phtml" %}
 
-{% load thankshop %}
 {% load i18n %}
-{% load static_tags %}
 
-{% load_js static /thankshop/inventory.js %}
-{% load_js static /thankshop/angular.js %}
+{% block footer-js %}
+    {{ block.super }}
+    <script src="{{STATIC_URL}}js/angular/angular.js"></script>
+    <script src="{{STATIC_URL}}js/angular/angular-sanitize.js"></script>
+    <script src="{{STATIC_URL}}js/angular/ApiHandler.js"></script>
+    <script src="{{STATIC_URL}}js/thankshop/inventory.js"></script>
+{% endblock %}
 
 {% block accounts-content %}
 <div ng-controller="InventoryController">

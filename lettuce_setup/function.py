@@ -93,7 +93,7 @@ def until(method, timeout=10, message='', ignored_exceptions=True, interval=0.5)
     while(True):
         try:
             value = method()
-            if value:
+            if value or value is None:
                 return value
         except:
             pass
@@ -184,14 +184,8 @@ def default_user(number=1):
     user.raw_password = 'password'
     return user
 
-def commit():
-    try:
-        connection.commit()
-    except TransactionManagementError:
-        pass
-
 def eval_sql(sql):
-    commit()
+    db_commit()
     cursor = connection.cursor()
     cursor.execute(sql)
     value = cursor.fetchone()
@@ -280,26 +274,26 @@ def i_press(step, text):
     browser().find_element_by_link_text(text).click()
 
 @step(u'I click on "([^"]*)"')
-def i_click_on(step, text):
+def i_click_on(step, text, parent="body"):
     element = None
     try:
-        element = link(text)
+        element = link(text, parent)
     except NoSuchElementException:
         try:
-            element = button(text)
+            element = button(text, parent)
         except NoSuchElementException:
             pass
-    if element is None:
+    if not element:
         try:
-            until(lambda: link(text).should_not.be.none)
-            element = link(text)
+            until(lambda: link(text, parent))
+            element = link(text, parent)
         except TimeoutException:
-            element = button(text)
+            element = button(text, parent)
     element.click()
 
 @step(u'I see the notification "([^"]*)"')
 def i_see_the_notification(step, notification):
-    find(".notifications").text.should.contain(notification)
+    until(lambda: find(".notifications").text.should.contain(notification))
 
 @step(u'I see the button "([^"]*)"')
 def i_see_the_button(step, text):
@@ -312,12 +306,36 @@ def i_see_the_button(step, text):
 def commit_db(step):
     db_commit()
 
-def button(button_text):
-    return xpath("//button[.='%s']" % button_text)
+def button(button_text, parent="body"):
+    for node in find_all(parent):
+        try:
+            return node.xpath(".//button[.='%s']" % button_text)
+        except:
+            pass
+    return False
 
-def link(link_text):
-    return browser().find_element_by_link_text(link_text)
+def link(link_text, parent="body"):
+    for node in find_all(parent):
+        try:
+            node.find_element_by_link_text(link_text)
+        except:
+            pass
+    return False
 
 @step(u'button "([^"]*)" is set to state "([^"]*)"')
 def then_button_is_set_to_state(step, button_text, state):
     button(button_text).has_class("btn-%s" % state)
+
+
+@after.each_scenario
+def after_scenario(scenario):
+    if hasattr(world, 'browser'):
+        world.browser.get(django_url("/"))
+        world.browser.delete_all_cookies()
+
+@after.harvest
+def close_browser(total):
+    if hasattr(world, 'browser'):
+        world.browser.quit()
+        del world.browser
+

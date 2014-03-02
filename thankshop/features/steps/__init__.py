@@ -14,9 +14,3 @@ def clear_login_history():
     for model in clean_models:
         for row in model.objects.all():
             row.delete()
-
-    for i in range(0, 4):
-        ItemFactory().save()
-
-    for i in range(0, 4):
-        ThankFactory().save()
