@@ -22,9 +22,17 @@ Feature: As a user
 
 	Scenario: User buy thank points
 		Given I was a logged-in user
+        And there is a list of thankpoint package:
+        	| name      | price | points |
+        	| package 1 | 100   | 100    |
+        	| package 2 | 200   | 200    |
+        	| package 3 | 300   | 300    |
+        	| package 4 | 400   | 400    |
 		When I go to the buy thank points page
 		Then I see a list of thank points packages
-		When I buy a packages
-		And I enter my paypal login information
+		When I buy a package of "200" thank points
+		Then I was redirected to paypal checkout
+		When I enter my paypal login information
 		And I approve the buying process
-		Then I receive an amount of thank points to spend
+		Then I see the notification "200 thank points was added to your account"
+		And I receive an amount of thank points to spend

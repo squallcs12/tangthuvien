@@ -1,4 +1,4 @@
-var reqModule = reqModule || angular.module('tangthuvien', []);
+var reqModule = reqModule || angular.module('tangthuvien', ANGULAR_REQUIRES);
 
 reqModule.factory('InventoryService', function(APIHandler){
     return APIHandler('/thankshop/inventory', {
