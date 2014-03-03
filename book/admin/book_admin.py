@@ -23,7 +23,8 @@ class BookAdmin(ModelAdminColumnFilter):
 #     inlines = [ChapterInline]
 
     list_display = ('id', 'title', 'slug', 'cover', 'cover_thumb', 'author', 'get_categories', 'complete_status')
-    list_display_links = ('id', 'title', 'slug', 'complete_status',)
+    list_display_links = ('id',)
+    list_editable = ('title', 'slug')
 
     column_filters = {
         'id' : TextColumnFilter,
