@@ -125,6 +125,10 @@ class Command(BaseCommand):
                 post_count += 1
 
                 post_content = post['pagetext']
+
+                if not post_content:  # deleted post
+                    continue
+
                 spoiler_end = post_content.find("[/SPOILER]")
                 if spoiler_end == -1:
                     yield "skip_post %s" % post_count
