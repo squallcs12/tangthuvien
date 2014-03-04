@@ -3,7 +3,6 @@ from django.conf.urls import patterns, include, url
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'tangthuvien.views.home_view.main', name='homepage'),
@@ -33,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^blog/', include('zinnia.urls.entries')),
     url(r'^blog/', include('zinnia.urls.archives')),
     url(r'^blog/', include('zinnia.urls.shortlink')),
+    url(r'^blog/', include('zinnia.urls.quick_entry')),
 
     url(r'^accounts/', include('accounts.urls')),
 
