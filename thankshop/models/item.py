@@ -46,6 +46,9 @@ class Item(models.Model):
     image_html.allow_tags = True
     image_html.short_description = _("Image")
 
+    def __unicode__(self):
+        return self.name
+
 
 class UserItem(models.Model):
     user = models.ForeignKey(User, related_name="thankshop_items")
