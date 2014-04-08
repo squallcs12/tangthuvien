@@ -43,8 +43,9 @@ def go_to_chapter(number):
 
 @step(u'I choose a random chapter from selection box')
 def i_choose_a_random_chapter_from_selection_box(step):
-    world.random_chapter_choose = random.randint(2, 4)
-    go_to_chapter(world.random_chapter_choose)
+    rand = random.randint(2, 4)
+    go_to_chapter(rand)
+    world.random_chapter_choose = int(find("#chapter .number").text)
 
 @step(u'see a random chapter')
 def see_a_random_chapter(step):
