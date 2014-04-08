@@ -317,7 +317,7 @@ def button(button_text, parent="body"):
 def link(link_text, parent="body"):
     for node in find_all(parent):
         try:
-            node.find_element_by_link_text(link_text)
+            return node.find_element_by_link_text(link_text)
         except:
             pass
     return False
