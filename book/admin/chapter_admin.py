@@ -57,24 +57,16 @@ class ChapterAdmin(admin.ModelAdmin):
     list_display = ('id', 'number', 'title', 'description', 'book', 'language')
     list_editable = ('number', 'title')
 
-    list_filter = [LanguageFilter, 'book']
-
-    list_display_links = ()
+    list_filter = ['language']
+    search_fields = ['number', 'title', 'book__title']
 
     actions_on_top = True
     actions_on_bottom = True
-
 
     def save_model(self, request, obj, form, change):
         if not hasattr(obj, 'user'):
             obj.user = request.user
         obj.save()
-
-    def get_book(self, chapter):
-        edit_url = urlresolvers.reverse('admin:book_book_change', args=(chapter.book.id,))
-        return '<a href="%s">%s</a>' % (edit_url, chapter.book.__unicode__())
-    get_book.allow_tags = True
-    get_book.short_description = 'Book'
 
     def description(self, chapter):
         return chapter.content[0: 100]
