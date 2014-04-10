@@ -45,11 +45,14 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
 
     //dialog contain
     var h1 = document.createElement("h1")
+    h1.className = "tcat";
+    h1.style.padding = "7px 20px";
     h1.innerHTML = "This story was cloned to new site.";
     dialog.appendChild(h1);
 
     //option 1
     var option1 = document.createElement("div");
+    option1.style.padding = "7px 20px";
     dialog.appendChild(option1);
 
     var radio1 = document.createElement("input");
@@ -68,6 +71,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
 
     //option 2
     var option2 = document.createElement("div");
+    option2.style.padding = "7px 20px";
     dialog.appendChild(option2);
 
     var radio2 = document.createElement("input");
@@ -86,6 +90,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
 
     // remember choice
     var option3 = document.createElement("div");
+    option3.style.padding = "7px 20px";
     dialog.appendChild(option3);
 
     var checkbox = document.createElement("input");
@@ -107,6 +112,8 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     dialog.appendChild(option4);
 
     var button = document.createElement("button");
+    button.style.padding = "5px 10px";
+    button.style.marginBottom = "10px";
     button.innerHTML = "Go";
 
     option4.appendChild(button);
