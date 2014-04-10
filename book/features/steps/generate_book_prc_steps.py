@@ -10,10 +10,7 @@ from book.features.steps.upload_book_attachments_steps import read_book_by_id, g
 from django.core.management import call_command
 import os
 from tangthuvien import settings as st
-
-@step(u'a book exist$')
-def a_book_exist(step):
-    world.book = Book.objects.all()[0]
+from django.contrib.auth.models import Permission
 
 @step(u'some chapter was posted')
 def some_chapter_was_posted(step):
@@ -45,3 +42,8 @@ def i_see_the_generate_prc_process_was_shown(step):
 @step(u'the process is done')
 def the_process_is_done(step):
     until(lambda: not find("#generate_book_prc_div .progress").is_displayed(), 30)
+
+@step(u'I have permission "([^"]*)"')
+def i_have_permission(step, permission_code):
+    permission = Permission.objects.get(codename=permission_code)
+    default_user().user_permissions.add(permission)

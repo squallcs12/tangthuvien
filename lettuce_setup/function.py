@@ -40,6 +40,7 @@ def should_be_temp_link(self):
 WebElement.should_be_temp_link = should_be_temp_link
 
 def fillin(self, value):
+    import pdb;pdb.set_trace()
     assert isinstance(self, WebElement)
     if self.tag_name == 'textarea':
         if self.value_of_css_property('display').lower() == 'none':
@@ -184,10 +185,6 @@ def given_i_was_a_logged_in_user(step, number=1):
     find("#id_login").click()
     find("footer")
 
-
-@step(u'Given I was a logged-in super user')
-def given_i_was_a_logged_in_super_user(step, number=3):
-    given_i_was_a_logged_in_user(step, number)
 
 def super_group():
     if not hasattr(world, 'super_group'):

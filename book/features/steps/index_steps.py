@@ -5,6 +5,9 @@ Created on Jul 27, 2013
 @author: antipro
 '''
 from lettuce_setup.function import *  # @UnusedWildImport
+from book.models.category_model import Category
+from book.models.book_model import Book
+import random
 
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):
@@ -116,3 +119,19 @@ def i_click_browser_back_button(step):
 def i_see_the_previous_books_was_listed(step):
     save_list_item_ids(-4, "#books .book")
     compare_list_item_ids(-3, -4, "#books .book")
+
+@step(u'And there are categories exist in the system:')
+def and_there_are_categories_exist_in_the_system(step):
+    categories = []
+    for row in step.hashes:
+        category = Category.objects.create(title=row['category'])
+        categories.append(category)
+    world.categories = categories
+
+@step(u'And each book belong to some of categories')
+def and_each_book_belong_to_some_of_categories(step):
+    for book in Book.objects.all():
+        for category in world.categories:
+            if random.randint(0, 1):
+                book.categories.add(category)
+        book.save()

@@ -12,29 +12,10 @@ from book.features.factories.book_factory import BookFactory
 from book.models.language_model import Language
 from book.features.factories.language_factory import LanguageFactory
 from book.models.book_model import Book
-
-def author():
-    if not hasattr(world, "author"):
-        try:
-            world.author = Author.objects.all()[0]
-        except IndexError:
-            world.author = AuthorFactory()
-            world.author.save()
-    return world.author
-
-def language():
-    if not hasattr(world, "language"):
-        try:
-            world.language = Language.objects.all()[0]
-        except IndexError:
-            world.language = LanguageFactory()
-            world.language.save()
-    return world.language
-
+from book.features.steps.general import language
 
 @step(u'thread with id "([^"]*)" was cloned to current site book id "([^"]*)"')
 def thread_with_id_was_cloned_to_current_site_book_id(step, thread_id, book_id):
-
     book = BookFactory()
     book.id = int(book_id)
     book.save()
@@ -44,7 +25,7 @@ def thread_with_id_was_cloned_to_current_site_book_id(step, thread_id, book_id):
     chapter = ChapterFactory()
     chapter.book = book
     chapter.language = language()
-    chapter.number = 0
+    chapter.number = 1
     chapter.save()
 
     Copy.objects.create(thread_id=thread_id,

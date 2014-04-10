@@ -4,6 +4,7 @@ Feature: Book App :: Favorite book
 
     Scenario: Manage favorite book
         Given I was a logged-in user
+        And there are "1" books exist in the system
         When I read a book
         Then I see the mark-as-favorite button
         When I click on mark-as-favorite button
@@ -16,4 +17,3 @@ Feature: Book App :: Favorite book
         Then I see that book marked as unread on favorite list
         When I remove the book from favorite list
         Then I see the book was not marked as favorite
-        
