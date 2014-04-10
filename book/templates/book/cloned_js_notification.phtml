@@ -1,0 +1,135 @@
+//<script>
+CONST_OPTION_REDIRECT = "1";
+CONST_OPTION_KEEPREADING = "2";
+CONST_COOKIE_NEWBOOK_SITE = "cloned_book_notification";
+CONST_COOKIE_REMEMBER_CHOICCE = "cloned_book_remember_choice";
+{% if book %}
+BOOK_URL = "{% url 'book_read' book.slug %}";
+if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
+    var option = fetch_cookie(CONST_COOKIE_NEWBOOK_SITE);
+    if(option == CONST_OPTION_REDIRECT){
+        location.href = BOOK_URL;
+    }
+} else {
+    // overlay
+    var overlay = document.createElement("div");
+    overlay.style.width = "100%";
+    overlay.style.height = "1500px";
+    overlay.style.opacity = "0.5";
+    overlay.style.position = "fixed";
+    overlay.style.top = "0px";
+    overlay.style.left = "0px";
+    overlay.style.zIndex = "1000";
+    overlay.style.background = "black";
+
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(overlay);
+
+    // dialog container
+    var dialog_parent = document.createElement("div");
+    dialog_parent.className = "dialog";
+    dialog_parent.style.width = "100%";
+    dialog_parent.style.position = "fixed";
+    dialog_parent.style.top = "100px";
+    dialog_parent.style.left = "0px";
+    dialog_parent.style.zIndex = "1001";
+
+    body.appendChild(dialog_parent);
+
+    var dialog = document.createElement("div");
+    dialog.style.width = "600px";
+    dialog.style.margin = "auto";
+    dialog.style.background = "white";
+
+    dialog_parent.appendChild(dialog);
+
+    //dialog contain
+    var h1 = document.createElement("h1")
+    h1.innerHTML = "This story was cloned to new site.";
+    dialog.appendChild(h1);
+
+    //option 1
+    var option1 = document.createElement("div");
+    dialog.appendChild(option1);
+
+    var radio1 = document.createElement("input");
+    radio1.type = "radio"
+    radio1.name = CONST_COOKIE_NEWBOOK_SITE;
+    radio1.value = CONST_OPTION_REDIRECT;
+    radio1_id = CONST_COOKIE_NEWBOOK_SITE + CONST_OPTION_REDIRECT;
+    radio1.id = radio1_id;
+
+    var label1 = document.createElement("label");
+    label1.innerHTML = "Go to the new site.";
+    label1.setAttribute("for", radio1_id);
+
+    option1.appendChild(radio1);
+    option1.appendChild(label1);
+
+    //option 2
+    var option2 = document.createElement("div");
+    dialog.appendChild(option2);
+
+    var radio2 = document.createElement("input");
+    radio2.type = "radio"
+    radio2.name = CONST_COOKIE_NEWBOOK_SITE;
+    radio2.value = CONST_OPTION_KEEPREADING;
+    radio2_id = CONST_COOKIE_NEWBOOK_SITE + CONST_OPTION_KEEPREADING;
+    radio2.id = radio2_id;
+
+    var label2 = document.createElement("label");
+    label2.innerHTML = "Keep reading on current site.";
+    label2.setAttribute("for", radio2_id);
+
+    option2.appendChild(radio2);
+    option2.appendChild(label2);
+
+    // remember choice
+    var option3 = document.createElement("div");
+    dialog.appendChild(option3);
+
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox"
+    checkbox.name = CONST_COOKIE_REMEMBER_CHOICCE;
+    checkbox.value = "1";
+    checkbox.id = CONST_COOKIE_REMEMBER_CHOICCE;
+
+    var label3 = document.createElement("label");
+    label3.innerHTML = "Remember my choice for all cloned books.";
+    label3.setAttribute("for", CONST_COOKIE_REMEMBER_CHOICCE);
+
+    option3.appendChild(checkbox);
+    option3.appendChild(label3);
+
+    // button go
+    var option4 = document.createElement("div");
+    option4.style.textAlign = "center";
+    dialog.appendChild(option4);
+
+    var button = document.createElement("button");
+    button.innerHTML = "Go";
+
+    option4.appendChild(button);
+
+    button.onclick = function(e){
+        if(!radio1.checked && !radio2.checked){
+            return alert("You have to select 1 option.");
+        } else {
+            if(checkbox.checked){
+                var selection = radio1.value;
+                if(radio2.checked){
+                    selection = radio2.value;
+                }
+                var now = new Date();
+                now.setDate(now.getDate() + 1000);
+                set_cookie(radio1.name, selection, now);
+                set_cookie(CONST_COOKIE_REMEMBER_CHOICCE, "1", now);
+            }
+            if(radio1.checked){
+                location.href = BOOK_URL;
+            }
+        };
+    };
+}
+{% endif %}
+//</script>

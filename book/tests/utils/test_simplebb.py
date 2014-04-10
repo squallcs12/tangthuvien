@@ -3,7 +3,6 @@ Created on Apr 10, 2014
 
 @author: antipro
 '''
-import unittest
 from django.test import TestCase
 import sure
 
