@@ -6,7 +6,6 @@ Created on Jul 28, 2013
 from django.template.response import TemplateResponse
 
 from book.models import Book
-from zinnia.models import Entry
 from tangthuvien import settings
 import datetime
 
