@@ -11,11 +11,13 @@
     {% include 'book/onetime_notification/user_log_notification.phtml' %}
     <h3>
         {% trans "List of books" %}
-        <a href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
-        <a href="{% url 'copy_book' %}" id="copy-book">{% trans 'Copy book' %}</a>
     </h3>
     <div class="row">
-        <div class="col-lg-6 col-lg-offset-6">
+    	<div class="col-lg-6">
+	        <a class="btn btn-default" href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
+	        <a class="btn btn-default" href="{% url 'copy_book' %}" id="copy-book">{% trans 'Copy book' %}</a>
+    	</div>
+        <div class="col-lg-6">
             <form class="categories_filters">
                 <label>
                     {% trans "Filter book by category" %}
