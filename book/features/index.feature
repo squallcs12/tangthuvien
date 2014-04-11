@@ -34,3 +34,12 @@ Feature: Book App :: Book listing page
         When I clear selected book categories
         And the loading animation finished
         Then I see all the books were listed
+
+	Scenario: List book by author
+		Given author "author-1" has "2" books
+		Given author "author-2" has "2" books
+		When I visit book index page
+		And I click on a book name
+		And I click on the author name
+		Then I see list of books
+		And all books is writen by the the clicked author
