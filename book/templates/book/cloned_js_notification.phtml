@@ -5,7 +5,7 @@ CONST_OPTION_KEEPREADING = "2";
 CONST_COOKIE_NEWBOOK_SITE = "cloned_book_notification";
 CONST_COOKIE_REMEMBER_CHOICCE = "cloned_book_remember_choice";
 {% if book %}
-BOOK_URL = "{{ request.get_host }}{% url 'book_read' book.slug %}";
+BOOK_URL = "http://{{ request.get_host }}{% url 'book_read' book.slug %}";
 if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     var option = fetch_cookie(CONST_COOKIE_NEWBOOK_SITE);
     if(option == CONST_OPTION_REDIRECT){
