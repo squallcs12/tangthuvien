@@ -1,4 +1,4 @@
-from fabric.api import task, run, require, put, run, local, env
+from fabric.api import task, run, require, put, local, env
 import os
 arun = run
 
@@ -105,6 +105,9 @@ class Deploy(object):
         run("touch %s" % cls.current_dir)  # so that we can remote it later
         run("touch %s/local_settings.py" % cls.share_dir)
 
+    @classmethod
+    def remove_old_versions(cls):
+        run("cd %s; ls -lt | tail -n +10 | xargs rm -rf;" % cls.release_dir)
 
     @classmethod
     def checkout_source(cls, current_time):
