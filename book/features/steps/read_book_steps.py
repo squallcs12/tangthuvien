@@ -7,7 +7,6 @@ Created on Jul 29, 2013
 from lettuce_setup.function import *  # @UnusedWildImport
 import random
 from book.models.book_model import Book
-from book.models.chapter_model import Chapter
 from book.models import Language
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
@@ -123,3 +122,13 @@ def i_setting_my_language_prefer_to(step, languages):
     for language in languages:
         settings_dict.append(Language.objects.get(name=language).id)
     UserSettings.set(settings.BOOK_LANGUAGE_PREFER_KEY, default_user().id, settings_dict)
+
+@step(u'each book have "([^"]*)" chapters')
+def each_book_have_number_chapters(step, number):
+    for book in Book.objects.all():
+        for _ in range(0, int(number)):
+            chapter = ChapterFactory()
+            chapter.book = book
+            chapter.language = language()
+            chapter.number = book.chapters_count + 1
+            chapter.save()

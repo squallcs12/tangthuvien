@@ -19,6 +19,7 @@ TOTAL_BOOK_WILL_BE_CREATED = 33
 
 @before.each_scenario
 def clear_user_in_db(scenario):
+    Profile.objects.filter(user_id__gt=1).delete()
     User.objects.filter(id__gt=1).delete()
     Group.objects.all().delete()
     Book.objects.all().delete()

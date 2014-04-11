@@ -10,7 +10,7 @@ from book.models.book_model import Book
 
 @step(u'I see a book was published')
 def i_see_a_book_was_published(step):
-    find(".notifications").text.should.contain(trans(u"New book was published successfully."))
+    world.book_id = Book.objects.all()[0].id
 
 def get_book_title_list():
     title_links = find_all("#books .book a.title")

@@ -1,7 +1,7 @@
 Feature: Book App :: Book listing page
 
     Scenario: User visit book list
-        Given there are "20" books exist in the system
+        Given there are "40" books exist in the system
         And there are categories exist in the system:
             | category   |
             | category-0 |
