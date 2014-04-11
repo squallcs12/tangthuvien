@@ -40,7 +40,6 @@ def should_be_temp_link(self):
 WebElement.should_be_temp_link = should_be_temp_link
 
 def fillin(self, value):
-    import pdb;pdb.set_trace()
     assert isinstance(self, WebElement)
     if self.tag_name == 'textarea':
         if self.value_of_css_property('display').lower() == 'none':
@@ -172,12 +171,12 @@ def when_i_reload_the_page(step):
     browser().refresh()
 
 
-@step(u'Given I was a non-logged-in user')
-def given_i_was_a_non_logged_in_user(step):
+@step(u'I was a non-logged-in user')
+def i_was_a_non_logged_in_user(step):
     pass  # we dont need to do anything for now
 
-@step(u'Given I was a logged-in user')
-def given_i_was_a_logged_in_user(step, number=1):
+@step(u'I was a logged-in user')
+def i_was_a_logged_in_user(step, number=1):
     visit_by_view_name('login')
     user = default_user(number)
     find("#id_username").send_keys(user.username)
@@ -205,7 +204,7 @@ def logout_current_user():
     right_nav_bar().find(".logout").click()
 
 def login_another_user(step):
-    given_i_was_a_logged_in_user(step, 2)
+    i_was_a_logged_in_user(step, 2)
 
 def random_password():
     return settings.TEST_PASSWORD

@@ -15,6 +15,7 @@ from book.models.book_model import Book
 from tangthuvien import settings
 import os
 from book.models.profile_model import Profile
+from book.models.rating_model import Rating
 
 # when user read a chapter
 chapter_read_signal = dispatch.Signal(providing_args=["user", "chapter", "page"])
@@ -141,3 +142,9 @@ def create_book_profile(sender, **kwargs):
         user = kwargs.get('instance')
         book_profile = Profile(user=user)
         book_profile.save()
+
+@dispatch.receiver(post_save, sender=Book)
+def create_book_rating(sender, **kwargs):
+    if kwargs.get('created'):
+        book = kwargs.get('instance')
+        Rating.objects.create(book=book)
