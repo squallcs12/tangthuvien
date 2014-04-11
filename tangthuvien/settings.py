@@ -110,7 +110,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'tangthuvien.context_processors.site_name',
     'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
-    'tangthuvien.context_processors.disqus',
     'tangthuvien.context_processors.socket_io',
   )  # Optional
 
@@ -291,10 +290,6 @@ SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 135
 SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 
 FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
-
-# disqus config
-DISQUS_DEVELOPER = True
-DISQUS_SHORTNAME = 'tangthuvien'
 
 # redis config
 REDIS_HOST = 'localhost'
