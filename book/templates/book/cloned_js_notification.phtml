@@ -1,10 +1,11 @@
+{% load i18n %}
 //<script>
 CONST_OPTION_REDIRECT = "1";
 CONST_OPTION_KEEPREADING = "2";
 CONST_COOKIE_NEWBOOK_SITE = "cloned_book_notification";
 CONST_COOKIE_REMEMBER_CHOICCE = "cloned_book_remember_choice";
 {% if book %}
-BOOK_URL = "{% url 'book_read' book.slug %}";
+BOOK_URL = "{{request.build_absolute_uri}}{% url 'book_read' book.slug %}";
 if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     var option = fetch_cookie(CONST_COOKIE_NEWBOOK_SITE);
     if(option == CONST_OPTION_REDIRECT){
@@ -47,7 +48,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     var h1 = document.createElement("h1")
     h1.className = "tcat";
     h1.style.padding = "7px 20px";
-    h1.innerHTML = "This story was cloned to new site.";
+    h1.innerHTML = '{% trans "This story was cloned to new site." %}';
     dialog.appendChild(h1);
 
     //option 1
@@ -63,7 +64,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     radio1.id = radio1_id;
 
     var label1 = document.createElement("label");
-    label1.innerHTML = "Go to the new site.";
+    label1.innerHTML = '{% trans "Go to the new site." %}';
     label1.setAttribute("for", radio1_id);
 
     option1.appendChild(radio1);
@@ -82,7 +83,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     radio2.id = radio2_id;
 
     var label2 = document.createElement("label");
-    label2.innerHTML = "Keep reading on current site.";
+    label2.innerHTML = '{% trans "Keep reading on current site." %}';
     label2.setAttribute("for", radio2_id);
 
     option2.appendChild(radio2);
@@ -100,7 +101,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     checkbox.id = CONST_COOKIE_REMEMBER_CHOICCE;
 
     var label3 = document.createElement("label");
-    label3.innerHTML = "Remember my choice for all cloned books.";
+    label3.innerHTML = '{% trans "Remember my choice for all cloned books." %}';
     label3.setAttribute("for", CONST_COOKIE_REMEMBER_CHOICCE);
 
     option3.appendChild(checkbox);
@@ -114,13 +115,13 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     var button = document.createElement("button");
     button.style.padding = "5px 10px";
     button.style.marginBottom = "10px";
-    button.innerHTML = "Go";
+    button.innerHTML = '{% trans "Go" %}';
 
     option4.appendChild(button);
 
     button.onclick = function(e){
         if(!radio1.checked && !radio2.checked){
-            return alert("You have to select 1 option.");
+            return alert('{% trans "You have to select 1 option." %}');
         } else {
             if(checkbox.checked){
                 var selection = radio1.value;
