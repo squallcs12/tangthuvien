@@ -8,6 +8,10 @@ from lettuce_setup.function import *  # @UnusedWildImport
 from book.models.category_model import Category
 from book.models.book_model import Book
 import random
+from book.models.author_model import Author
+from book.features.factories.book_factory import BookFactory
+from book.features.steps.general import language
+from book.features.factories.chapter_factory import ChapterFactory
 
 @step(u'I visit book index page')
 def i_visit_book_index_page(step):
@@ -135,3 +139,37 @@ def and_each_book_belong_to_some_of_categories(step):
             if random.randint(0, 1):
                 book.categories.add(category)
         book.save()
+
+@step(u'author "([^"]*)" has "([^"]*)" books')
+def author_has_number_of_books(step, author_name, number):
+    author = Author.objects.create(name=author_name)
+    for _ in range(0, int(number)):
+        book = BookFactory()
+        book.author = author
+        book.save()
+
+        book.languages.add(language())
+        book.save()
+
+        chapter = ChapterFactory()
+        chapter.book = book
+        chapter.language = language()
+        chapter.number = 1
+        chapter.save()
+
+@step(u'I click on the author name')
+def i_click_on_the_author_name(step):
+    world.current_author_name = find(".author").text
+    find(".author").click()
+
+@step(u'all books are written by the the clicked author')
+def all_books_are_written_by_the_the_clicked_author(step):
+    books = find_all("#books tbody tr")
+    for book in books:
+        book.find(".author").text.should.equal(world.current_author_name)
+
+@step(u'I should see "([^"]*)" books in list')
+def i_should_see_number_of_books_in_list(step, number):
+    books = find_all("#books tbody tr")
+    len(books).should.equal(int(number))
+

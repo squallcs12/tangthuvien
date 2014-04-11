@@ -24,6 +24,7 @@ def clear_user_in_db(scenario):
     Group.objects.all().delete()
     Book.objects.all().delete()
     Category.objects.all().delete()
+    Author.objects.all().delete()
 
 @before.all
 def clear_prc_folder():

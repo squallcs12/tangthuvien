@@ -41,5 +41,5 @@ Feature: Book App :: Book listing page
 		When I visit book index page
 		And I click on a book name
 		And I click on the author name
-		Then I see list of books
-		And all books is writen by the the clicked author
+		Then I should see "2" books in list
+		And all books are written by the the clicked author
