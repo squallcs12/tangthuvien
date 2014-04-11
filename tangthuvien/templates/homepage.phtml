@@ -3,37 +3,24 @@
 
 {% block content %}
 <div class="row">
-	<div class="col-lg-6">
-		<h3>{% trans "News" %}</h3>
-		{% for entry in entries %}
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<a href="{{entry.get_absolute_url}}">{{entry.title}}</a>
-			</div>
-			<div class="panel-body">
-				{{entry.content|safe}}
-			</div>
-		</div>
-		{% endfor %}
-	</div>
-	<div class="col-lg-6">
-		<h3>{% trans "Recent new chapters" %}</h3>
-		<ul class="list-group">
-			{% for book in books %}
-			<li class="list-group-item">
-				<div class="badge">
-					{{book.last_update|time}}<br />
-					{{book.last_update|date:"d-M-Y"}}
-				</div>
-				<a href="{% url 'book_read' book.slug %}">
-					{{ book.title }}
-				</a><br />
-				<a href="{% url 'read_book_chapter' book.slug 1 %}">
-					{{ book.last_chapter_number }} - {{ book.last_chapter_title }}
-				</a>
-			</li>
-			{% endfor %}
-		</ul>
-	</div>
+    <div class="col-lg-12">
+        <h3>{% trans "Recent new chapters" %}</h3>
+        <ul class="list-group">
+            {% for book in books %}
+            <li class="list-group-item">
+                <div class="badge">
+                    {{book.last_update|time}}<br />
+                    {{book.last_update|date:"d-M-Y"}}
+                </div>
+                <a href="{% url 'book_read' book.slug %}">
+                    {{ book.title }}
+                </a><br />
+                <a href="{% url 'read_book_chapter' book.slug 1 %}">
+                    {{ book.last_chapter_number }} - {{ book.last_chapter_title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock %}

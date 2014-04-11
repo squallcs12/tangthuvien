@@ -18,6 +18,4 @@ def main(request, template="homepage.phtml"):
     last_update_time = datetime.datetime.now() - datetime.timedelta(**settings.HOMEPAGE_REGENT_BOOK_UPDATE_TIME)
     data['books'] = Book.objects.filter(last_update__gte=last_update_time).order_by('-last_update')
 
-    data['entries'] = Entry.objects.all().order_by('-last_update')[0: settings.HOMEPAGE_RECENT_ENTRY_COUNT]  # @UndefinedVariable
-
     return TemplateResponse(request, template, data)

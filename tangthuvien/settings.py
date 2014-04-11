@@ -177,7 +177,6 @@ INSTALLED_APPS = (
     'thankshop',
     'notification',
     'mailer',
-    'zinnia',
     'tangthuvien',
     'ckeditor',
     'ajax_select',
@@ -331,7 +330,6 @@ ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
 
 # Homepage
 HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
-HOMEPAGE_RECENT_ENTRY_COUNT = 3
 
 SOCKET_IO_URL = 'http://localhost:1234'
 
@@ -349,8 +347,8 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 import sys
 if 'harvest' in sys.argv:
-    LANGUAGE_CODE = 'eni' # disable localization
-    if '-P' in sys.argv: # custom port
+    LANGUAGE_CODE = 'eni'  # disable localization
+    if '-P' in sys.argv:  # custom port
         LETTUCE_SERVER_PORT = int(sys.argv[sys.argv.index('-P') + 1])
 
 try:
