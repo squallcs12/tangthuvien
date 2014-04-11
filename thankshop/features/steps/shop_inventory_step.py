@@ -19,11 +19,11 @@ def i_see_a_modal_with_text(step, modal_id, text):
     until(lambda: find("#%s" % modal_id).is_displayed().should.be.true)
     until(lambda: find("#%s" % modal_id).text.should.contain(text))
 
-@step(u'I see that item in my inventory')
-def i_see_that_item_in_my_inventory(step):
+@step(u'I see item "([^"]*)" in my inventory')
+def i_see_that_item_in_my_inventory(step, item_name):
     items = find_all("#my_items .item")
-    item_ids = [item.get_attribute("item-id") for item in items]
-    item_ids.should.contain(world.shop_item_id)
+    item_names = [item.text for item in items]
+    item_names.should.contain(item_name)
 
 @step(u'I click on item in inventory')
 def i_click_on_item_in_inventory(step):
@@ -39,27 +39,28 @@ def there_is_a_list_of_shop_item(step):
         item.stocks = 1
         item.save()
 
-@step(u'I click on modal "([^"]*)"')
-def i_click_on_modal(step, text):
-    i_click_on(step, text, parent=".modal")
+@step(u'I click on button "([^"]*)"')
+def i_click_on_button(step, button_text):
+    ShortDom.button(button_text).click()
 
-@step(u'I see a popup notification "([^"]*)"')
-def i_see_a_popup_notification(step, text):
-    find("#popup-notification").text.should.contain(text)
+@step(u'I click on modal button "([^"]*)"')
+def i_click_on_modal_button(step, button_text):
+    ShortDom.button(button_text, parent=".modal").click()
 
 @step(u'I go to my inventory page')
 def i_go_to_my_inventory_page(step):
     visit_by_view_name("thankshop_user_inventory", kwargs={'username': 'me'})
 
 @step(u'I click on item "([^"]*)" in inventory')
-def i_click_on_item_group1_in_inventory(step, group1):
-    item = find("#my_items .item[item-id='%s']" % world.shop_item_id)
-    item.find(".view").click()
+def i_click_on_item_group1_in_inventory(step, item_name):
+    item_id = Item.objects.get(name=item_name).id
+    find("#my_items .item[item-id='%s']" % item_id).click()
 
 @step(u'I see the item "([^"]*)" information')
 def i_see_the_item_group1_information(step, item):
     until(lambda: find("#item_information").is_displayed().should.be.true)
-    find("#item_information .title").text.should_not.equal(item)
-    find("#item_information .description").text.should_not.equal(item)
+    # wait for angularjs rendering
+    until(lambda: find("#item_information .title").text.should.equal(item))
+    find("#item_information .description").text.should.equal(item)
     find("#item_information img.image").get_attribute("src").should_not.equal("")
 

@@ -3,6 +3,9 @@ Feature: Book App :: Upload book attachments
     I want to upload the convert file to the book
     So that other user can download it
 
+	Background:
+        Given there are "3" books exist in the system
+
     Scenario: Normal user upload attachment
         Given I was a logged-in user
         When I read a book
@@ -13,14 +16,16 @@ Feature: Book App :: Upload book attachments
         Then I can not upload attachment anylonger
 
     Scenario: Super user upload attachment
-        Given I was a logged-in super user
+        Given I was a logged-in user
+        And I have permission "can_approve_attachment"
         When I read a book
         And I upload a attachment to the book
         Then I see the attachment listed when reading that book
         And the attachment can be seen by other normal user
 
     Scenario: Super user approve uploaded attachment
-        Given I was a logged-in super user
+        Given I was a logged-in user
+        And I have permission "can_approve_attachment"
         When I read a book has attachment uploaded by normal user
         And I approve that attachment
         Then the attachment can be seen by other normal user

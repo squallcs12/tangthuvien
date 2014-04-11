@@ -7,10 +7,9 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
-from tangthuvien.models.fields import AutoOneToOneField
 
 class Rating(models.Model):
-    book = AutoOneToOneField('book.Book')
+    book = models.OneToOneField('book.Book')
     rating_count = models.IntegerField(default=0)
     average_result = models.DecimalField(default=0.0, max_digits=3, decimal_places=2)
 

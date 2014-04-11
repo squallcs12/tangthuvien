@@ -1,6 +1,14 @@
 Feature: Book App :: Book listing page
 
     Scenario: User visit book list
+        Given there are "40" books exist in the system
+        And there are categories exist in the system:
+            | category   |
+            | category-0 |
+            | category-1 |
+            | category-2 |
+            | category-3 |
+        And each book belong to some of categories
         When I visit book index page
         Then I see list of books
         And I was at the first page of listing

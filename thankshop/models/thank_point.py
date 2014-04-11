@@ -5,13 +5,12 @@ Created on Dec 4, 2013
 '''
 from django.db import models
 from django.contrib.auth.models import User
-from tangthuvien.models.fields import AutoOneToOneField
 import datetime
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
 class ThankPoint(models.Model):
-    user = AutoOneToOneField(User, related_name="thank_point")
+    user = models.OneToOneField(User, related_name="thank_point")
     thank_points = models.IntegerField(default=0)
     thanked_points = models.IntegerField(default=0)
     max_thanked_points = models.IntegerField(default=0)

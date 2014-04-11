@@ -11,6 +11,9 @@ from book.features.steps.read_book_steps import i_click_on_a_book, \
 from book.features.steps.upload_book_attachments_steps import read_book_by_id
 from book.models.chapter_model import Chapter
 from book.models.book_model import Book
+from book.features.factories.book_factory import BookFactory
+from book.features.factories.chapter_factory import ChapterFactory
+from book.features.steps.general import language
 
 
 @step(u'I am reading a book')
@@ -86,3 +89,22 @@ def i_see_the_book_was_marked_as_favorite(step):
 @step(u'I see the book was not marked as favorite')
 def i_see_the_book_was_not_marked_as_favorite(step):
     mark_as_favorite_button().get_attribute('favorite').should.equal('no')
+
+@step(u'there are "([^"]*)" books exist in the system')
+def there_are_number_books_exist_in_the_system(step, number):
+    for _ in range(0, int(number)):
+        book = BookFactory()
+        book.save()
+        book.languages.add(language())
+        book.save()
+
+        chapter = ChapterFactory()
+        chapter.book = book
+        chapter.language = language()
+        chapter.number = 1
+        chapter.save()
+    world.book = book
+
+@step(u'each book belong to some categories in:')
+def each_book_belong_to_some_categories_in(step):
+    assert False, 'This step must be implemented'

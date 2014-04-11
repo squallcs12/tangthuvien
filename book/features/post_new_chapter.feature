@@ -2,6 +2,7 @@ Feature: Book App :: Post new chapter
 
     Scenario: User post new chapter
         Given I was a logged-in user
+        And there are "1" books exist in the system
         When I am reading a book
         And I click on "Add Chapter"
         Then I see the post new chapter form
@@ -19,6 +20,7 @@ Feature: Book App :: Post new chapter
 
     Scenario: User edit chapter
         Given I was a logged-in user
+        And there are "1" books exist in the system
         When I am reading a book
         And I edit that chapter
         Then I see that chapter was edited

@@ -6,12 +6,13 @@ Created on Dec 4, 2013
 from django import dispatch
 from django.contrib.auth.signals import user_logged_in
 from django.conf import settings
-import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from book import signals as book_signals
 from django.utils import timezone
 from django.contrib import messages
-from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from thankshop.models.thank_point import ThankPoint
 
 user_first_daily_login = dispatch.Signal(providing_args=["user", "request"])
 
@@ -62,3 +63,9 @@ def user_spend_thank_points(sender, **kwargs):
     chapter.user.thank_point.increase_thanked_points(-settings.THANKSHOP_THANK_POINTS_COST *
                                                      settings.THANKSHOP_THANK_POINTS_PERCENT,
                                                       models.ThankPoint.THANKED)
+@dispatch.receiver(post_save, sender=User)
+def create_thank_obj(sender, **kwargs):
+    if kwargs.get('created'):
+        user = kwargs.get('instance')
+        thank_obj = ThankPoint(user=user)
+        thank_obj.save()

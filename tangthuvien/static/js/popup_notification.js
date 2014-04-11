@@ -16,14 +16,14 @@
 				add_message(key, messages[0]);
 			}
 		}
-		$("#popup-notitication").modal("show");
+		$("#popup-notification").modal("show");
 	};
 
 	function add_message(key, message){
 		if(key == 'error'){
 			key = 'danger';
 		}
-		$("#popup-notitication .modal-body").append(
+		$("#popup-notification .modal-body").append(
 			'<div class="row notifications">' +
 	            '<div class="col-lg-12">' +
 	                '<div class="alert alert-' + key + '">' +
@@ -38,7 +38,7 @@
 })(jQuery);
 
 (function($){
-	$("#popup-notitication").on("hidden.bs.modal", function(){
+	$("#popup-notification").on("hidden.bs.modal", function(){
 		 $(".modal-body", this).html("");
 	});
 })(jQuery);

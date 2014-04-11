@@ -4,6 +4,12 @@ Feature: Book App :: Copy book
 
     Scenario: Copy book
         Given I was a logged-in user
+        And there are categories exist in the system:
+            | category   |
+            | category-0 |
+            | category-1 |
+            | category-2 |
+            | category-3 |
         When I visit book index page
         And I press "Copy book"
         Then I see the copy book form

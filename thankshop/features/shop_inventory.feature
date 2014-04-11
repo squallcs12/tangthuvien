@@ -13,11 +13,11 @@ Feature: As a poster
         And I has thanked points
         When I go to the shop page
         Then I see list of items
-        When I click on "Buy for 100"
+        When I click on button "Buy for 100"
         Then I see a "buy-confirmation" modal with text "item 0"
-        When I click on modal "Buy for 100"
-        Then I see a popup notification "Item Item 0 was added to your inventory."
+        When I click on modal button "Buy for 100"
+        Then I should see the popup notification "Item item 0 was added to your inventory."
         When I go to my inventory page
-        Then I see that item in my inventory
+        Then I see item "item 0" in my inventory
         When I click on item "item 0" in inventory
         Then I see the item "item 0" information

@@ -4,9 +4,10 @@ Created on Jul 25, 2013
 @author: antipro
 '''
 from . import all
-from lettuce import world, step, before, after
-from selenium import webdriver
-from selenium.webdriver.remote.webelement import WebElement
+from .selenium_shortcut import *
+from .short_dom import ShortDom
+
+from lettuce import step, before, after
 from django.db import connection
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -25,19 +26,6 @@ import datetime
 def trans(text):
     return ugettext_lazy(text).__unicode__()
 
-def find_all(selector):
-    return browser().find_elements_by_css_selector(selector)
-
-def find(selector):
-    return browser().find_element_by_css_selector(selector)
-
-def xpath(selector):
-    return browser().find_element_by_xpath(selector)
-
-WebElement.find = WebElement.find_element_by_css_selector
-WebElement.find_all = WebElement.find_elements_by_css_selector
-WebElement.xpath = WebElement.find_element_by_xpath
-
 def has_class(self, class_name):
     return class_name in self.get_attribute('class').split(' ')
 WebElement.has_class = has_class
@@ -50,10 +38,6 @@ def should_be_temp_link(self):
     self.tag_name.should.equal('a')
     self.get_attribute('href').should.equal(browser().current_url + '#')
 WebElement.should_be_temp_link = should_be_temp_link
-
-def select(self, value):
-    self.xpath("./option[text()='%s']" % value).click()
-WebElement.select = select
 
 def fillin(self, value):
     assert isinstance(self, WebElement)
@@ -108,16 +92,6 @@ def until_pass(timeout=10):
             until(func, timeout=timeout)
         return decorator
     return decorator
-
-def browser():
-    '''
-    @return: selenium.webdriver.Firefox
-    '''
-    if not hasattr(world, 'browser'):
-        world.browser = webdriver.Firefox()
-        world.browser.maximize_window()
-        world.browser.implicitly_wait(3)
-    return world.browser
 
 def visit(url):
     browser().get(django_url(url))
@@ -197,12 +171,12 @@ def when_i_reload_the_page(step):
     browser().refresh()
 
 
-@step(u'Given I was a non-logged-in user')
-def given_i_was_a_non_logged_in_user(step):
+@step(u'I was a non-logged-in user')
+def i_was_a_non_logged_in_user(step):
     pass  # we dont need to do anything for now
 
-@step(u'Given I was a logged-in user')
-def given_i_was_a_logged_in_user(step, number=1):
+@step(u'I was a logged-in user')
+def i_was_a_logged_in_user(step, number=1):
     visit_by_view_name('login')
     user = default_user(number)
     find("#id_username").send_keys(user.username)
@@ -210,10 +184,6 @@ def given_i_was_a_logged_in_user(step, number=1):
     find("#id_login").click()
     find("footer")
 
-
-@step(u'Given I was a logged-in super user')
-def given_i_was_a_logged_in_super_user(step, number=3):
-    given_i_was_a_logged_in_user(step, number)
 
 def super_group():
     if not hasattr(world, 'super_group'):
@@ -234,7 +204,7 @@ def logout_current_user():
     right_nav_bar().find(".logout").click()
 
 def login_another_user(step):
-    given_i_was_a_logged_in_user(step, 2)
+    i_was_a_logged_in_user(step, 2)
 
 def random_password():
     return settings.TEST_PASSWORD
@@ -280,7 +250,7 @@ def i_click_on(step, text, parent="body"):
         element = link(text, parent)
     except NoSuchElementException:
         try:
-            element = button(text, parent)
+            element = ShortDom.button(text, parent)
         except NoSuchElementException:
             pass
     if not element:
@@ -288,7 +258,7 @@ def i_click_on(step, text, parent="body"):
             until(lambda: link(text, parent))
             element = link(text, parent)
         except TimeoutException:
-            element = button(text, parent)
+            element = ShortDom.button(text, parent)
     element.click()
 
 @step(u'I see the notification "([^"]*)"')
@@ -298,7 +268,7 @@ def i_see_the_notification(step, notification):
 @step(u'I see the button "([^"]*)"')
 def i_see_the_button(step, text):
     try:
-        button(text)
+        ShortDom.button(text)
     except NoSuchElementException:
         browser().find_element_by_link_text(text)
 
@@ -306,13 +276,6 @@ def i_see_the_button(step, text):
 def commit_db(step):
     db_commit()
 
-def button(button_text, parent="body"):
-    for node in find_all(parent):
-        try:
-            return node.xpath(".//button[.='%s']" % button_text)
-        except:
-            pass
-    return False
 
 def link(link_text, parent="body"):
     for node in find_all(parent):
@@ -324,7 +287,7 @@ def link(link_text, parent="body"):
 
 @step(u'button "([^"]*)" is set to state "([^"]*)"')
 def then_button_is_set_to_state(step, button_text, state):
-    button(button_text).has_class("btn-%s" % state)
+    ShortDom.button(button_text).has_class("btn-%s" % state)
 
 
 @after.each_scenario
