@@ -34,5 +34,6 @@ Feature: Book App :: Cloned book notification
         And I click label on dialog "Keep reading on current site."
         And I click label on dialog "Remember my choice for all cloned books."
         And I click button on dialog "Go"
-        And I read thread "11" on main site
+        Then I should not see any dialog
+        When I read thread "11" on main site
         Then I should not see any dialog

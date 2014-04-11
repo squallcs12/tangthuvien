@@ -135,6 +135,9 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
             }
             if(radio1.checked){
                 location.href = BOOK_URL;
+            } else {
+            	body.removeChild(overlay);
+            	body.removeChild(dialog_parent);
             }
         };
     };
