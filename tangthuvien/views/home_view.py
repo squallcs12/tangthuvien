@@ -15,6 +15,6 @@ def main(request, template="homepage.phtml"):
     data['show_top_banner'] = True
 
     last_update_time = datetime.datetime.now() - datetime.timedelta(**settings.HOMEPAGE_REGENT_BOOK_UPDATE_TIME)
-    data['books'] = Book.objects.filter(last_update__gte=last_update_time).order_by('-last_update')
+    data['books'] = Book.objects.filter(last_update__gte=last_update_time, chapter_counts__gt=0).order_by('-last_update')
 
     return TemplateResponse(request, template, data)
