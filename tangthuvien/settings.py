@@ -324,7 +324,7 @@ ZINNIA_AUTO_CLOSE_COMMENTS_AFTER = 0
 ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
 
 # Homepage
-HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
+HOMEPAGE_RECENT_BOOK_UPDATE_TIME = [{'days': 3}, {'days': 7}, {'days': 14}, {'days': 21}]
 
 SOCKET_IO_URL = 'http://localhost:1234'
 
