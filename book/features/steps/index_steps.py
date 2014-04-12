@@ -19,7 +19,7 @@ def i_visit_book_index_page(step):
 
 @step(u'I see list of books')
 def i_see_list_of_books(step):
-    check_title(trans(u'List of books'))
+    check_title('List of books')
     range(0, settings.BOOK_LIST_ITEM_COUNT + 1).should.contain(len(find_all("#books .book")))
 
 @step(u'I was at the first page of listing')

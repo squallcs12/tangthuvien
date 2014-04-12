@@ -10,9 +10,7 @@ from tangthuvien import settings
 from book.signals import pre_listing_book
 from book.models.category_model import Category
 from django.template.loader import render_to_string
-from django.core.urlresolvers import reverse
 from tangthuvien.django_custom import HttpJson
-from django.http.response import HttpResponseRedirect
 from book.models.author_model import Author
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -22,9 +20,13 @@ def by_categories(func):
         book_list, context = func(request)
 
         slugs = request.REQUEST.get('categories')
+        ids = request.REQUEST.get('category_ids')
 
-        if slugs:
-            categories = Category.objects.filter(slug__in=slugs.split(','))
+        if slugs or ids:
+            if slugs:
+                categories = Category.objects.filter(slug__in=slugs.split(','))
+            elif ids:
+                categories = Category.objects.filter(id__in=[int(_id) for _id in ids.split(',')])
             if categories:
                 for category in categories:
                     book_list = book_list.filter(categories__pk=category.id)
@@ -36,6 +38,9 @@ def by_categories(func):
                     context['page_description'] = categories[0].description
                 else:
                     context['page_description'] = context['page_title']
+
+                if request.is_ajax():
+                    context['category_slugs'] = ",".join(category.slug for category in categories)
 
         return book_list, context
 
@@ -94,7 +99,8 @@ def ajax(request, template='book/_books_list_index.phtml'):
     page = request.GET.get('page')
     perpage = request.GET.get('perpage', settings.BOOK_LIST_ITEM_COUNT)
 
-    book_list = get_book_list(request)
+    book_list, context = get_book_list(request)
+    data.update(**context)
 
     paginator = Paginator(book_list, perpage)
     try:
@@ -108,6 +114,8 @@ def ajax(request, template='book/_books_list_index.phtml'):
     data['showcheckbox'] = False
 
     returnJson['content'] = render_to_string(template, data)
+    if 'category_slugs' in context:
+        returnJson['category_slugs'] = context['category_slugs']
 
     return HttpJson(returnJson)
 
