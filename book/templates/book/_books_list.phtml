@@ -22,10 +22,10 @@
                              <a href="{{ book.full_url }}" class="title">{{book.title}}</a></td>
                         <td>
                             {% for category in book.categories.all %}
-                            <a class="label label-info" href="{% url 'books_list_by_categories' category.slug %}">{{category.title}}</a>
+                            <a class="label label-info" href="{% url 'books_home' %}?categories={{ category.slug }}">{{category.title}}</a>
                             {% endfor %}
                         </td>
-                        <td><a href="books/author/{{book.author.slug}}">{{book.author.name}}</a></td>
+                        <td><a class="author" href="{% url 'books_home' %}?author={{book.author.slug}}">{{book.author.name}}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

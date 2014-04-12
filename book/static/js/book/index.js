@@ -17,7 +17,7 @@
                 $("input[name='categories']").tagsinput('input').val('');
                 $("input[name='categories']").tagsinput('focus');
             }
-        })
+        });
 
         for(var category_id in selectedCategories){
 	        $("input[name='categories']").tagsinput('add', {
@@ -30,26 +30,33 @@
         });
     };
 
+    function construct_url(category_slugs){
+		var url = new current_url();
+		url.remove_param('page');
+		url.add_param('categories', category_slugs);
+		return url.generate();
+    }
+
     var loading = false;
     var current_ajax_request = null;
     function reload_book_list_by_category(filter){
         if (loading){
             current_ajax_request.abort();
         }
-        var ajaxSettings = {}
+        var ajaxSettings = {};
         ajaxSettings['url'] = AJAX_LIST_BOOK_URL;
         ajaxSettings['data'] = {};
-        ajaxSettings['data']['categories'] = $(filter).val();
+        ajaxSettings['data']['category_ids'] = $(filter).val();
         ajaxSettings['success'] = function(data){
             updateBookList(data);
             $("#books_list_block").removeLoading();
             if (typeof window.history.pushState != 'undefined'){
-                window.history.pushState(data,"", data['url']);
+                window.history.pushState(data,"", construct_url(data['category_slugs']));
             } else {
                 alert("Not implemented yet");
             }
 
-        }
+        };
         loading = true;
         $("#books_list_block").putLoading();
         current_ajax_request = $.ajax(ajaxSettings);
