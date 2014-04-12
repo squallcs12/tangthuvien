@@ -25,10 +25,12 @@
             {% endif %}
         </div>
         <div class="col-lg-8">
-            <div class="row">
-                <div class="col-lg-4">{% trans "Author" %}</div>
-                <div class="col-lg-8">{{book.author.name}}</div>
-            </div>
+		    <div clas="row">
+		        <div class="panel panel-default">
+		            <div class="panel-heading">{% trans "Introduction" %}</div>
+		            <div class="panel-body">{{book.description|safe}}</div>
+		        </div>
+		    </div>
             <div class="row">
                 <div class="col-lg-4">{% trans "Languages" %}</div>
                 <div class="col-lg-8" id="languages">
@@ -57,12 +59,6 @@
                     <!-- AddThis Button END -->
                 </div>
             </div>
-        </div>
-    </div>
-    <div clas="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">{% trans "Introduction" %}</div>
-            <div class="panel-body">{{book.description|safe}}</div>
         </div>
     </div>
     <div class="row">
