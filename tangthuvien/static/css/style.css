@@ -23,3 +23,6 @@ footer {
 .modal.in .modal-dialog{
     padding: 0;
 }
+.dropdown-backdrop {
+    position: static;
+}
