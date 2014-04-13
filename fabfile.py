@@ -134,7 +134,7 @@ class Deploy(object):
 
     @classmethod
     def install_requirements(cls):
-        run("cd %s; pip install -r requirements.txt --allow-all-external --allow-unverified PIL" % cls.release_dir)
+        cls.run_virtualenv("cd %s; pip install -r requirements.txt --allow-all-external --allow-unverified PIL" % cls.release_dir)
 
     @classmethod
     def get_python_version(cls):
