@@ -17,14 +17,14 @@
 </div>
 <div class="row-fluid" id="book" data-item_id="{{book.id}}">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3 book-cover">
             {% if book.cover %}
                 <img src="{{book.cover.url}}" />
             {% else %}
                 <img src="{{STATIC_URL}}img/book/cover.jpg" />
             {% endif %}
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-9">
 		    <div clas="row">
 		        <div class="panel panel-default">
 		            <div class="panel-heading">{% trans "Introduction" %}</div>

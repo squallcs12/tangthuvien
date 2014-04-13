@@ -62,3 +62,7 @@ ol.sortable li.placeholder:before {
   position: absolute;
   /** Define arrowhead **/
 }
+
+.book-cover img{
+	width: 100%;
+}
