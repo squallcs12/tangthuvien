@@ -11,17 +11,17 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'UserProfile'
-        db.create_table(u'accounts_userprofile', (
+        db.create_table(u'accounts_userprofile', (# @UndefinedVariable
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
             ('avatar', self.gf('awesome_avatar.fields.AvatarField')(max_length=100)),
         ))
-        db.send_create_signal(u'accounts', ['UserProfile'])
+        db.send_create_signal(u'accounts', ['UserProfile'])  # @UndefinedVariable
 
 
     def backwards(self, orm):
         # Deleting model 'UserProfile'
-        db.delete_table(u'accounts_userprofile')
+        db.delete_table(u'accounts_userprofile')  # @UndefinedVariable
 
 
     models = {

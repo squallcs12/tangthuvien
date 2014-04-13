@@ -12,3 +12,6 @@ except:
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     avatar = AvatarField(upload_to='avatars', width=100, height=100)
+
+    def __unicode__(self):
+        return 'Profile for user %s' % self.user_id
