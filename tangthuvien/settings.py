@@ -298,7 +298,18 @@ REDIS_DB = 0
 
 REDIS_ONETIME_NOTIFICATION_PREFIX = "ONETIME_NOTIFICATION_"
 
-AVAILABLE_STYLES = ['amelia', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'united']
+AVAILABLE_STYLES = ['default',
+                    'amelia',
+                    'cerulean',
+                    'cosmo',
+                    'cyborg',
+                    'flatly',
+                    'journal',
+                    'readable',
+                    'simplex',
+                    'slate',
+                    'spacelab',
+                    'united']
 DEFAULT_STYLE = 'slate'
 REDIS_STYLE_USER_SETTING_KEY = 'STYLE'
 
