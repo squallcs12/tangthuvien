@@ -85,7 +85,8 @@
     {% endblock %}
 
     {% include '_popup_notification.phtml' %}
-
-    {% include '_addthis.phtml' %}
+	{% if not is_mobile %}
+    	{% include '_addthis.phtml' %}
+    {% endif %}
     </body>
 </html>

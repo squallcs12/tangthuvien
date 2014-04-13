@@ -111,11 +111,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
     'tangthuvien.context_processors.socket_io',
+    'django_mobile.context_processors.is_mobile',
   )  # Optional
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
+    'django_mobile.middleware.SetFlavourMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
