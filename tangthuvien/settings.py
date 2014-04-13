@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     'thankshop',
     'notification',
     'mailer',
+    'awesome_avatar',
     'tangthuvien',
     'ckeditor',
     'ajax_select',
@@ -353,6 +354,8 @@ PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd
 PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 import sys
 if 'harvest' in sys.argv:
