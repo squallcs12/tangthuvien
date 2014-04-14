@@ -8,10 +8,18 @@ try:
 except:
     pass
 
+GENDER_CHOICES = (
+                  (True, 'Male'),
+                  (False, 'Female'),
+                  )
+
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     avatar = AvatarField(upload_to='avatars', width=100, height=100)
+    homepage = models.URLField(default='', blank=True)
+    gender = models.BooleanField(default=True, choices=GENDER_CHOICES)
+    birthday = models.DateField(blank=True)
 
     def __unicode__(self):
         return 'Profile for user %s' % self.user_id
