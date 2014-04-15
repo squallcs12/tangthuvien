@@ -4,4 +4,12 @@
 {% block title %}{% trans 'Your profile' %}{% endblock %}
 
 {% block accounts-content %}
+<div class="profile-page">
+	<h3>{% blocktrans with username=user.username %}{{ username }} profile {% endblocktrans %}</h3>
+	{% if editable %}
+	<div class="text-center">
+		<a class="btn btn-primary" href="{% url 'accounts_edit_profile' %}">{% trans 'Edit profile' %}</a>
+	</div>
+	{% endif %}
+</div>
 {% endblock %}
