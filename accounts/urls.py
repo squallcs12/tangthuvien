@@ -6,6 +6,7 @@ Created on Jul 30, 2013
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.views import login
 from accounts.forms import AuthenticationForm
+from accounts.views.profile_view import EditProfileView, ProfileView
 urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name':'accounts/login.phtml', 'authentication_form': AuthenticationForm}, name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name':'accounts/logged_out.phtml'}, name='logout'),
@@ -21,7 +22,9 @@ urlpatterns = patterns('',
         {'template_name':'accounts/password_reset_confirm.phtml'},
         name='password_reset_confirm'),
     url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_complete', {'template_name':'accounts/password_reset_complete.phtml'}, name='password_reset_complete'),
-    url(r'^profile', 'accounts.views.profile_view.main', name='accounts_profile'),
+
+    url(r'^profile', ProfileView.as_view(editable=True), name='accounts_profile'),
+    url(r'^edit_profile', EditProfileView.as_view(), name='accounts_edit_profile'),
 
     url(r'^set_password', 'accounts.views.set_password_view.main', name='set_user_password'),
     url(r'^social_auth/', include('social_auth.urls')),

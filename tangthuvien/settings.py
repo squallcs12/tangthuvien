@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'notification',
     'mailer',
     'tangthuvien',
+    'awesome_avatar',
     'ckeditor',
     'ajax_select',
 )
@@ -353,6 +354,18 @@ PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd
 PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+AWESOME_AVATAR = {
+    'width': 200,
+    'height': 200,
+
+    'select_area_width': 500,
+    'select_area_height': 300,
+
+    'save_quality': 90,
+    'save_format': 'png',
+}
 
 import sys
 if 'harvest' in sys.argv:
