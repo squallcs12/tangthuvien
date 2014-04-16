@@ -17,7 +17,7 @@ GENDER_CHOICES = (
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     fullname = models.CharField(max_length=255, blank=True, default='')
-    avatar = AvatarField(upload_to='avatars', width=100, height=100)
+    avatar = AvatarField(upload_to='avatars', width=200, height=200)
     homepage = models.URLField(default='', blank=True)
     gender = models.BooleanField(default=True, choices=GENDER_CHOICES)
     birthday = models.DateField(blank=True)

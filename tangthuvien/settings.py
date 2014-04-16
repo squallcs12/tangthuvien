@@ -357,10 +357,10 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 AWESOME_AVATAR = {
-    'width': 100,
-    'height': 100,
+    'width': 200,
+    'height': 200,
 
-    'select_area_width': 400,
+    'select_area_width': 500,
     'select_area_height': 300,
 
     'save_quality': 90,

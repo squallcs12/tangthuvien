@@ -46,6 +46,7 @@ class ProfileView(View):
     def get(self, request):
         data = {}
         data['user'] = request.user
+        data['profile'] = request.user.get_profile()
         data['active_profile'] = True
 
         if self.editable:
