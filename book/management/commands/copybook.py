@@ -100,7 +100,7 @@ class Command(BaseCommand):
         yield "end %s" % end
         yield ""
 
-        language = Language.objects.all()[0]
+        language = book.languages.all()[0]
 
         for page in range(start, end + 1):
             yield "process_page %s" % page
