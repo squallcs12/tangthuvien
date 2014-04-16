@@ -150,7 +150,7 @@ class Command(BaseCommand):
 
                 yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
-                chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in simple_bb(vp).split("\n") if txt])
+                chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in simple_bb(vp).split("\n") if txt.strip() != ""])
                 chapter.number = book.chapters_count + 1
                 chapter.book = book
                 chapter.user = user
