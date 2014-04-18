@@ -16,10 +16,11 @@ from django.utils.translation import ugettext as _
 from book.models.language_book_preference import LanguagePreference
 from tangthuvien.functions import UserSettings
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 
 def main(request, slug, template="book/introduction.phtml"):
     data = {}
-    book = Book.objects.get(slug=slug)
+    book = get_object_or_404(Book, slug=slug)
     data['book'] = book
     if request.user.is_authenticated():
         try:
@@ -33,7 +34,7 @@ def main(request, slug, template="book/introduction.phtml"):
 
 def chapter(request, slug, chapter_number, template="book/read.phtml"):
     data = {}
-    book = Book.objects.get(slug=slug)
+    book = get_object_or_404(Book, slug=slug)
     data['book'] = book
 
     # check chapter available
