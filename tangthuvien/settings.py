@@ -1,7 +1,7 @@
 # Django settings for tangthuvien project.
 import os
-
-PATH_ROOT = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PATH_ROOT = BASE_DIR
 
 def realpath(path):
     return os.path.realpath(os.path.join(PATH_ROOT, path))
