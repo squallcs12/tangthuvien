@@ -38,7 +38,7 @@ def chapter(request, slug, chapter_number, template="book/read.phtml"):
     data['book'] = book
 
     # check chapter available
-    if book.chapter_set.filter(number=chapter_number).count() == 0:
+    if book.chapter_set.filter(number=int(chapter_number)).count() == 0:
         messages.warning(request, _("Chapter was not posed yet for this book."))
         return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number': 1}))
 
