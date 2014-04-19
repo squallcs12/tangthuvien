@@ -21,7 +21,7 @@ from thankshop import models
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def index(request, template="thankshop/thank_point_shop.phtml"):
+def index(request, template="thankshop/thank_point_shop.html"):
     data = {}
 
     packages = models.Package.objects.all().order_by('price')

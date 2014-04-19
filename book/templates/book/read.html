@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block content %}
-{% include 'book/onetime_notification/user_log_notification.phtml' %}
+{% include 'book/onetime_notification/user_log_notification.html' %}
 <div class="row-fluid">
     <div class="row">
         <h3 class="col-lg-6">{{book.title}} / {{book.author.name}}</h3>
@@ -43,11 +43,11 @@
                     </ul>
                 </div>
             </form>
-            {% include 'book/_config_reading_section.phtml' %}
+            {% include 'book/_config_reading_section.html' %}
         </div>
     </div>
     <div class="well">
-        {% include 'book/_read_pagination.phtml'%}
+        {% include 'book/_read_pagination.html'%}
         <div id="chapters">
             <div id="chapter" class="item chapter" item_id="{{chapter.id}}">
                 <h2><span class="number">{{chapter.number}}</span> - {{chapter.title}}</h2>
@@ -69,7 +69,7 @@
                 </script>{{chapter.content|safe}}</div>
             </div>
         </div>
-        {% include 'book/_read_pagination.phtml'%}
+        {% include 'book/_read_pagination.html'%}
     </div>
     <div id="after-chapter-content" class="btn-group btn-group-justified">
         <a id="post-new-chapter" href="{% url 'post_new_chapter' book.id %}" class="btn btn-default">{% trans 'Add Chapter' %}</a>
@@ -80,7 +80,7 @@
     <script>
         var disqus_url = get_real_link("{% url 'book_read' book.slug %}");
     </script>
-    {% include 'facebook_comments.phtml'%}
+    {% include 'facebook_comments.html'%}
     <div class="row">
         <div class="col-lg-3">
             <div id="chapter-thank" class="panel panel-default">
@@ -108,12 +108,12 @@
                 </div>
             </div>
         </div>
-        {% include 'book/_book_generate_prc.phtml' %}
-        {% include 'book/_book_favorite.phtml' %}
-        {% include 'book/_book_rating.phtml' %}
+        {% include 'book/_book_generate_prc.html' %}
+        {% include 'book/_book_favorite.html' %}
+        {% include 'book/_book_rating.html' %}
     </div>
     <div class="row">
-        {% include 'book/_book_attachments.phtml' %}
+        {% include 'book/_book_attachments.html' %}
     </div>
 </div>
 {% endblock %}

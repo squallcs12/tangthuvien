@@ -9,7 +9,7 @@ from book.models.copy_model import Copy
 from django.core.exceptions import ObjectDoesNotExist
 
 class TestClonedBookNotificationView(View):
-    template_name = "book/test_cloned_notification.phtml"
+    template_name = "book/test_cloned_notification.html"
 
     def get(self, request, thread_id):
         data = {}
@@ -18,7 +18,7 @@ class TestClonedBookNotificationView(View):
         return TemplateResponse(request, self.template_name, data)
 
 class ClonedBookJsNotificationView(View):
-    template_name = "book/cloned_js_notification.phtml"
+    template_name = "book/cloned_js_notification.html"
 
     def get(self, request, thread_id):
         data = {}

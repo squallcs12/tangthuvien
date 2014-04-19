@@ -10,7 +10,7 @@ from book import models
 import json
 
 class LanguageSettingView(View):
-    template = "book/language_setting.phtml"
+    template = "book/language_setting.html"
 
     def get(self, request):
         data = {}

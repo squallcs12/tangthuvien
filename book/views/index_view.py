@@ -68,7 +68,7 @@ def get_book_list(request):
     book_list = Book.objects.filter(chapters_count__gt=0)
     return book_list, {}
 
-def main(request, template='book/index.phtml'):
+def main(request, template='book/index.html'):
     data = {}
 
     page = request.REQUEST.get('page')
@@ -92,7 +92,7 @@ def main(request, template='book/index.phtml'):
 
     return TemplateResponse(request, template, data)
 
-def ajax(request, template='book/_books_list_index.phtml'):
+def ajax(request, template='book/_books_list_index.html'):
     data = {}
     returnJson = {}
 

@@ -4,7 +4,7 @@
     <div id="attachments" class="panel panel-default">
     	<div class="panel-heading">{% trans 'Book attachments' %}</div>
         <div class="panel-body">
-	        {% include 'book/_upload_attachment.phtml' %}
+	        {% include 'book/_upload_attachment.html' %}
 	        <ul class="nav nav-pills nav-stacked">
 	            {% for attachment in book.attachment_set.all %}
 	                {% if attachment.is_approved  or perms.book.can_approve_attachment or attachment.uploader.id = request.user.id %}

@@ -18,10 +18,10 @@ def main(request):
     if request.user.has_usable_password():
         return HttpResponseRedirect(reverse('password_change'))
     return password_change(request,
-                           template_name='accounts/password_set.phtml',
+                           template_name='accounts/password_set.html',
                            password_change_form=SetPasswordForm,
                            post_change_redirect=reverse('password_set_done'))
 
-def done(request, template='accounts/password_set_done.phtml'):
+def done(request, template='accounts/password_set_done.html'):
     data = {}
     return TemplateResponse(request, template, data)

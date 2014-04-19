@@ -5,7 +5,7 @@ Created on Jul 28, 2013
 '''
 from django.template.response import TemplateResponse
 
-def index(request, template="testimonials.phtml"):
+def index(request, template="testimonials.html"):
     data = {}
 
     data['show_top_banner'] = True

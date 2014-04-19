@@ -8,7 +8,7 @@
 {% block meta-description %}{% if page_description %}{{page_description}}{% else %}{% trans 'List of books' %}{% endif %}{% endblock %}
 
 {% block content %}
-    {% include 'book/onetime_notification/user_log_notification.phtml' %}
+    {% include 'book/onetime_notification/user_log_notification.html' %}
     <h3>
         {% trans "List of books" %}
     </h3>
@@ -36,6 +36,6 @@
         </div>
     </div>
     <div id="books_list_block">
-       {% include 'book/_books_list_index.phtml'%}
+       {% include 'book/_books_list_index.html'%}
     </div>
 {% endblock %}

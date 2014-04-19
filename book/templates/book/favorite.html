@@ -1,4 +1,4 @@
-{% extends 'accounts/base.phtml' %}
+{% extends 'accounts/base.html' %}
 {% load i18n %}
 {% block title %}Favorite books{{% endblock %}
 
@@ -7,7 +7,7 @@
 	{% if books %}
 	<form method="POST" action="{% url 'unfavorite_books' %}">
 	    {% csrf_token %}
-	    {% include 'book/_books_list.phtml' with class='favorite' showcheckbox=1%}
+	    {% include 'book/_books_list.html' with class='favorite' showcheckbox=1%}
 	    <div class"actions">
 	        <button type="submit" name="unfavorite_books" id="unfavorite_books" class="btn btn-default">{% trans 'Unfavorite' %}</button>
 	    </div>

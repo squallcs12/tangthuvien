@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 
 @login_required
-def main(request, post_new_book_form=PublishNewBookForm, template="book/publish_new_book.phtml"):
+def main(request, post_new_book_form=PublishNewBookForm, template="book/publish_new_book.html"):
     data = {}
 
     if request.method == "POST":

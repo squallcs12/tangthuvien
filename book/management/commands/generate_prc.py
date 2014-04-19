@@ -45,7 +45,7 @@ class Command(BaseCommand):
 
         for book in books:
             assert isinstance(book, Book)
-            html_content = render_to_string('book/prc_html_file.phtml', {'book':book})
+            html_content = render_to_string('book/prc_html_file.html', {'book':book})
             with codecs.open(settings.media_path(book.html_file), "w", "utf-8") as fp:
                 fp.write(html_content)
 
