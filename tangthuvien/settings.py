@@ -183,6 +183,7 @@ INSTALLED_APPS = (
     'awesome_avatar',
     'ckeditor',
     'ajax_select',
+    'feedback',
 )
 SITE_ID = 1
 
