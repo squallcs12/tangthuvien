@@ -21,18 +21,22 @@ def test():
     print Deploy.get_python_version()
 
 def restart_web():
+    "Restart web service"
     Deploy.init()
     Deploy.restart_web_services()
 
 def init_folder_tree():
+    "Init folder tree"
     Deploy.init_folder_tree()
 
 def update_remote():
+    "Update remote source code"
     Deploy.init()
     Deploy.update_remote_code()
     Deploy.collect_current_statics()
 
 def manage(command):
+    "Run manage command"
     Deploy.init()
     Deploy.manage(command)
 
