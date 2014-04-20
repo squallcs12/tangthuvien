@@ -309,6 +309,7 @@ class Deploy(object):
             'bin_dir': cls.bin_dir,
             'program_dir': cls.program_dir,
             'log_dir': cls.log_dir,
+            'current_dir': cls.current_dir
         }
         dirs = os.listdir(".")
         sub_dirs = ('cron.daily', 'cron.hourly', 'cron.monthly', 'cron.weekly', 'cron.d',)
