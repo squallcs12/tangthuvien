@@ -4,7 +4,8 @@ Created on Jul 28, 2013
 @author: antipro
 '''
 from django.conf.urls import patterns, url
+from feedback.views import FeedbackFormView
 
-urlpatterns = patterns('book.views',
-    url(r'^$', 'index_view.main', name='books_home'),
+urlpatterns = patterns('',
+    url(r'^form$', FeedbackFormView.as_view(), name='feedback_form'),
 )

@@ -31,4 +31,6 @@ urlpatterns = patterns('',
     # thankshop
     url(r'^thankshop/', include('thankshop.urls')),
 
+    url(r'^feedback/', include('feedback.urls')),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

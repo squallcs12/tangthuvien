@@ -25,7 +25,7 @@
         };
         request['success'] = function(data){
             loading = false;
-            $("#favorite_book").removeLoading();
+            $("#favorite_book").hideLoading();
             ajaxComplete();
         };
         $("#favorite_book").showLoading();
