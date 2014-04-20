@@ -73,6 +73,8 @@ def i_login_using_my_google_account(step):
         until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 10)
         find("#submit_approve_access").click()
 
+        until(lambda: browser().current_url[0:16].should.equal("http://localhost"))
+
 @step(u'my account was associated with facebook, twitter and google')
 def my_account_was_associated_with_facebook_twitter_and_google(step):
     my_account_was_associated_with_both_facebook_and_twitter(step)

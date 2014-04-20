@@ -11,7 +11,7 @@ Feature: Book App :: Copy book
             | category-2 |
             | category-3 |
         When I visit book index page
-        And I click on link"Copy book"
+        And I click on link "Copy book"
         Then I see the copy book form
         When I fill in book title "Copy book title"
         And I fill in book description
@@ -25,7 +25,7 @@ Feature: Book App :: Copy book
         When the process is finished
         Then I see the whole book was copied
         When I visit book index page
-        And I click on link"Copy book"
+        And I click on link "Copy book"
         Then I see the copy book form
         When I fill in book title "Copy book title 2"
         And I fill in book description
