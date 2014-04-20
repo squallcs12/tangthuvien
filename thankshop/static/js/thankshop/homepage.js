@@ -40,9 +40,6 @@ function ShopItemController($scope, ShopItemService, $sanitize){
 			url: form.prop('action'),
 			type: 'POST',
 			data: form.serialize(),
-			complete: function(xhr, status){
-				catch_notification_messages(xhr);
-			},
 			success: function(data){
 				$("#buy-confirmation").modal("hide");
 			}

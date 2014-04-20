@@ -120,10 +120,6 @@ def i_can_not_thank_anylonger(step):
         .contain(trans(u"You need at least %(number)d thank points to do thank") % {
                 'number':-settings.THANKSHOP_THANK_POINTS_COST
             })
-@step(u'I should see the popup notification "([^"]*)"')
-def i_should_see_the_popup_notification(step, text):
-    until(lambda: find("#popup-notification").is_displayed().should.be.true)
-    find("#popup-notification .modal-body").text.should.contain(text)
 
 @step(u'I has thanked points')
 def i_has_thanked_points(step):

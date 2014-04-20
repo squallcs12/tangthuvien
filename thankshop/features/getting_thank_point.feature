@@ -3,7 +3,7 @@ Feature: As a user
 	And I can spend my thank points to thank other people
 
 	Scenario: User get points by daily login
-		Given I was a non-logged-in user
+		Given I was a visitor
 		When I log into the website for the first time in a day
 		Then I receive a number of thank points
 		When I re-login again

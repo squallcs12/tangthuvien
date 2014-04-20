@@ -26,35 +26,35 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     var body = document.getElementsByTagName("body")[0];
     body.appendChild(overlay);
 
-    // dialog container
-    var dialog_parent = document.createElement("div");
-    dialog_parent.className = "dialog";
-    dialog_parent.style.width = "100%";
-    dialog_parent.style.position = "fixed";
-    dialog_parent.style.top = "100px";
-    dialog_parent.style.left = "0px";
-    dialog_parent.style.zIndex = "1001";
+    // modal container
+    var modal_parent = document.createElement("div");
+    modal_parent.className = "modal";
+    modal_parent.style.width = "100%";
+    modal_parent.style.position = "fixed";
+    modal_parent.style.top = "100px";
+    modal_parent.style.left = "0px";
+    modal_parent.style.zIndex = "1001";
 
-    body.appendChild(dialog_parent);
+    body.appendChild(modal_parent);
 
-    var dialog = document.createElement("div");
-    dialog.style.width = "600px";
-    dialog.style.margin = "auto";
-    dialog.style.background = "white";
+    var modal = document.createElement("div");
+    modal.style.width = "600px";
+    modal.style.margin = "auto";
+    modal.style.background = "white";
 
-    dialog_parent.appendChild(dialog);
+    modal_parent.appendChild(modal);
 
-    //dialog contain
+    //modal contain
     var h1 = document.createElement("h1")
     h1.className = "tcat";
     h1.style.padding = "7px 20px";
     h1.innerHTML = '{% trans "This story was cloned to new site." %}';
-    dialog.appendChild(h1);
+    modal.appendChild(h1);
 
     //option 1
     var option1 = document.createElement("div");
     option1.style.padding = "7px 20px";
-    dialog.appendChild(option1);
+    modal.appendChild(option1);
 
     var radio1 = document.createElement("input");
     radio1.type = "radio"
@@ -73,7 +73,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     //option 2
     var option2 = document.createElement("div");
     option2.style.padding = "7px 20px";
-    dialog.appendChild(option2);
+    modal.appendChild(option2);
 
     var radio2 = document.createElement("input");
     radio2.type = "radio"
@@ -92,7 +92,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     // remember choice
     var option3 = document.createElement("div");
     option3.style.padding = "7px 20px";
-    dialog.appendChild(option3);
+    modal.appendChild(option3);
 
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox"
@@ -110,7 +110,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
     // button go
     var option4 = document.createElement("div");
     option4.style.textAlign = "center";
-    dialog.appendChild(option4);
+    modal.appendChild(option4);
 
     var button = document.createElement("button");
     button.style.padding = "5px 10px";
@@ -137,7 +137,7 @@ if(fetch_cookie(CONST_COOKIE_REMEMBER_CHOICCE)){
                 location.href = BOOK_URL;
             } else {
             	body.removeChild(overlay);
-            	body.removeChild(dialog_parent);
+            	body.removeChild(modal_parent);
             }
         };
     };

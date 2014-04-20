@@ -3,6 +3,7 @@
     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <form action="{% url 'feedback_form' %}" method="POST"
         id="feedback_form" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,9 +16,8 @@
                     {% include "general/form_render.html" %}
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit">
-                        {% trans "Submit feedback" %}
-                    </button>
+                    <button class="btn btn-primary" type="submit"
+                        >{% trans "Submit feedback" %}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -3,9 +3,10 @@ Created on Jul 25, 2013
 
 @author: antipro
 '''
-from . import all
 from .selenium_shortcut import *
 from .short_dom import ShortDom
+from . import  general_steps
+from lettuce_setup.utils import *
 
 from lettuce import step, before, after
 from django.db import connection
@@ -67,31 +68,6 @@ def django_url(url="", host='localhost'):
 
     return urlparse.urljoin(base_url, url)
 
-class TimeoutException(Exception):
-    pass
-
-def until(method, timeout=10, message='', ignored_exceptions=True, interval=0.5):
-    """Calls the method provided with the driver as an argument until the \
-    return value is not False."""
-    end_time = time.time() + timeout
-    while(True):
-        try:
-            value = method()
-            if value or value is None:
-                return value
-        except:
-            pass
-        time.sleep(0.5)
-        if(time.time() > end_time):
-            break
-    raise TimeoutException(message)
-
-def until_pass(timeout=10):
-    def decorator(func):
-        def decorator(*args, **kwargs):
-            until(func, timeout=timeout)
-        return decorator
-    return decorator
 
 def visit(url):
     browser().get(django_url(url))
@@ -171,8 +147,8 @@ def when_i_reload_the_page(step):
     browser().refresh()
 
 
-@step(u'I was a non-logged-in user')
-def i_was_a_non_logged_in_user(step):
+@step(u'I was a visitor')
+def i_was_a_visitor(step):
     pass  # we dont need to do anything for now
 
 @step(u'I was a logged-in user')
@@ -239,8 +215,8 @@ class datetime_fake:
 def i_see_the_text(step, text):
     find("body").text.should.contain(text)
 
-@step(u'I press "([^"]*)"')
-def i_press(step, text):
+@step(u'I click on link "([^"]*)"')
+def i_click_on_link(step, text):
     browser().find_element_by_link_text(text).click()
 
 @step(u'I click on "([^"]*)"')
@@ -301,4 +277,5 @@ def close_browser(total):
     if hasattr(world, 'browser'):
         world.browser.quit()
         del world.browser
+
 
