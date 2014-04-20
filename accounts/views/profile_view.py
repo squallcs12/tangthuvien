@@ -12,7 +12,7 @@ from django.views.generic.edit import UpdateView
 from accounts.forms import UserProfileForm
 
 class EditProfileView(UpdateView):
-    template = "accounts/edit_profile.phtml"
+    template = "accounts/edit_profile.html"
 
     def _render(self, request, **kwargs):
         data = {}
@@ -39,7 +39,7 @@ class EditProfileView(UpdateView):
 
 
 class ProfileView(View):
-    template = "accounts/profile.phtml"
+    template = "accounts/profile.html"
     editable = False
 
     @method_decorator(login_required)

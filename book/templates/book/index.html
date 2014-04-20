@@ -1,0 +1,41 @@
+{% extends 'book/base.html' %}
+{% load i18n %}
+{% load jsonify %}
+{% load simple_filters %}
+
+{% block title %}{% if page_title %}{{page_title}}{% else %}{% trans "List of books" %}{% endif %}{% endblock %}
+
+{% block meta-description %}{% if page_description %}{{page_description}}{% else %}{% trans 'List of books' %}{% endif %}{% endblock %}
+
+{% block content %}
+    {% include 'book/onetime_notification/user_log_notification.html' %}
+    <h3>
+        {% trans "List of books" %}
+    </h3>
+    <div class="row">
+    	<div class="col-lg-6">
+	        <a class="btn btn-default" href="{% url 'publish_new_book' %}" id="new-book">{% trans 'New book' %}</a>
+	        <a class="btn btn-default" href="{% url 'copy_book' %}" id="copy-book">{% trans 'Copy book' %}</a>
+    	</div>
+        <div class="col-lg-6">
+            <form class="categories_filters">
+                <label>
+                    {% trans "Filter book by category" %}
+                    <input type="text" name="categories" class="bootstrap-tagsinput" />
+                </label>
+            </form>
+            <script>
+            jQuery(window).load(function() {
+                var selectedCategories = {};
+                {% for category in selectedCategories %}
+                selectedCategories['{{category.id}}'] = '{{category.title|escapejs}}';
+                {% endfor %}
+                filter_books_by_category(selectedCategories, {{categories|list|jsonify}});
+            });
+            </script>
+        </div>
+    </div>
+    <div id="books_list_block">
+       {% include 'book/_books_list_index.html'%}
+    </div>
+{% endblock %}

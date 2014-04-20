@@ -11,7 +11,7 @@
                         language_id: $(this).data("id")
                     },
                 success: function(){
-                    $(_this).removeLoading();
+                    $(_this).hideLoading();
 
                     // remove old language preference
                     $("#languages .language.btn-success")

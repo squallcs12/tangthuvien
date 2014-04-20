@@ -2,7 +2,7 @@
     $(".onetime-notification[data-dismiss='alert']").click(function(){
         var key = $(this).data('key');
 
-        request = {};
+        var request = {};
         request['url'] = ONETIME_NOTIFICATION_SUBMIT_URL;
         request['type'] = 'post';
         request['data'] = {};
@@ -17,18 +17,6 @@
     $("body").on("hidden.bs.modal", "div.modal.modal-centered", function(){
         $(this).css("top", "");
     });
-
-    $.fn.showLoading = function(){
-        $(this).each(function(){
-            $(this).append(LOADING_IMAGE_HTML);
-        });
-    };
-
-    $.fn.removeLoading = function(){
-        $(this).each(function(){
-            $(".loading", this).remove();
-        });
-    };
 
 })(jQuery);
 
@@ -70,3 +58,37 @@ current_url.prototype.add_param = function(name, value){
 current_url.prototype.generate = function(){
 	return this.href + (jQuery.isEmptyObject(this.params) ? '' : '?' + jQuery.param(this.params));
 };
+
+
+(function($){
+    var loaded = false;
+
+    function attach_feedback_modal(modal_html){
+            $("body").append(modal_html);
+            $("#feedback_form").ajaxForm(submit_ajax_feedback);
+            $("#feedback_modal").modal("show");
+    }
+    function submit_ajax_feedback(data){
+        if(data != "1"){
+            $("#feedback_modal").remove();
+            attach_feedback_modal(data);
+        } else {
+            $("#feedback_modal").modal("hide");
+        }
+    }
+
+    $("#feedback").click(function(e){
+        e.preventDefault();
+        var _this = this;
+        if(!loaded){
+            loaded = true; //ignore any unexpected error
+            $(this).showLoading();
+            $.get($(this).prop('href'), function(form_html){
+                $(_this).hideLoading();
+                attach_feedback_modal(form_html);
+            });
+        } else {
+            $("#feedback_modal").modal("show");
+        }
+    });
+})(jQuery);

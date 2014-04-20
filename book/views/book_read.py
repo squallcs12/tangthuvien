@@ -18,7 +18,7 @@ from tangthuvien.functions import UserSettings
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
-def main(request, slug, template="book/introduction.phtml"):
+def main(request, slug, template="book/introduction.html"):
     data = {}
     book = get_object_or_404(Book, slug=slug)
     data['book'] = book
@@ -32,13 +32,13 @@ def main(request, slug, template="book/introduction.phtml"):
     return TemplateResponse(request, template, data)
 
 
-def chapter(request, slug, chapter_number, template="book/read.phtml"):
+def chapter(request, slug, chapter_number, template="book/read.html"):
     data = {}
     book = get_object_or_404(Book, slug=slug)
     data['book'] = book
 
     # check chapter available
-    if book.chapter_set.filter(number=chapter_number).count() == 0:
+    if book.chapter_set.filter(number=int(chapter_number)).count() == 0:
         messages.warning(request, _("Chapter was not posed yet for this book."))
         return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number': 1}))
 

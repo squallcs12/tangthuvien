@@ -41,7 +41,7 @@ def increase_thank_points(sender, **kwargs):
                 settings.THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS * notlogin_days,
                 models.ThankPoint.DAILY_NOT_LOGIN
             )
-            messages.success(request, "thankshop/daily_thankpoints_increase.phtml", extra_tags="template")
+            messages.success(request, "thankshop/daily_thankpoints_increase.html", extra_tags="template")
 
     except ObjectDoesNotExist:
         pass

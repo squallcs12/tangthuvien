@@ -9,7 +9,7 @@ from book.models import Book
 from tangthuvien import settings
 import datetime
 
-def main(request, template="homepage.phtml"):
+def main(request, template="homepage.html"):
     data = {}
 
     data['show_top_banner'] = True

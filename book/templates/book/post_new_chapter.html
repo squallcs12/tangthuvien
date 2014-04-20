@@ -1,0 +1,27 @@
+{% extends 'book/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Post new chapter'%}{% endblock %}
+
+{% block content %}
+<div id="post_new_chapter">
+	<div class="row">
+		<div class="col-lg-9">
+			<div class="well">
+				<form method="post" action="{% url 'post_new_chapter' book.id %}" class="form-horizontal" id="new-chapter-form">
+					{% csrf_token %}
+					<fieldset>
+						<legend>{% trans 'Post chapter' %}</legend>
+						{% include 'general/form_render.html' %}
+						<div class="form-group">
+		                    <div class="col-lg-9 col-lg-offset-3">
+	                      		<button type="submit" id="id_submit" class="btn btn-primary">{% trans 'Post chapter' %}</button> 
+	                    	</div>
+	                  	</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -16,7 +16,7 @@ def get_log_file(book_id):
     return settings.realpath('log/copybook/%s.log' % book_id)
 
 @login_required
-def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtml"):
+def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.html"):
     data = {}
 
     if request.method == "POST":
@@ -42,7 +42,7 @@ def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.phtm
     return TemplateResponse(request, template, data)
 
 @login_required
-def process(request, book_id=0, template="book/copy_book_process.phtml"):
+def process(request, book_id=0, template="book/copy_book_process.html"):
     data = {}
 
     book = Book.objects.get(pk=book_id)
@@ -66,7 +66,7 @@ def process(request, book_id=0, template="book/copy_book_process.phtml"):
     return TemplateResponse(request, template, data)
 
 @login_required
-def sync(request, book_id=0, template="book/copy_book_process.phtml"):
+def sync(request, book_id=0, template="book/copy_book_process.html"):
     data = {}
 
     book = Book.objects.get(pk=book_id)
