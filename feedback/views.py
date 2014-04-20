@@ -4,6 +4,8 @@ from feedback.forms import FeedbackForm
 from django.http.response import HttpResponse
 import json
 from django.utils.translation import ugettext
+from feedback.models import Feedback
+from tangthuvien.functions import get_client_ip
 
 class FeedbackFormView(View):
     template_name = "feedback/form.html"
@@ -19,7 +21,8 @@ class FeedbackFormView(View):
 
     def post(self, request):
         data = {}
-        form = FeedbackForm(request.POST, request.FILES)
+        feedback = Feedback(ip=get_client_ip(request))
+        form = FeedbackForm(request.POST, request.FILES, instance=feedback)
 
         if form.is_valid():
             form.save();

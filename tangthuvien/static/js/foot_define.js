@@ -65,7 +65,7 @@ current_url.prototype.generate = function(){
 
     function attach_feedback_modal(modal_html){
             $("body").append(modal_html);
-            $("#feedback_form").submit(submit_ajax_feedback);
+            $("#feedback_form").ajaxForm(submit_ajax_feedback);
             $("#feedback_modal").modal("show");
     }
     function submit_ajax_feedback(data){
@@ -85,7 +85,8 @@ current_url.prototype.generate = function(){
             $(this).showLoading();
             $.get($(this).prop('href'), function(form_html){
                 $(_this).hideLoading();
-                attach_feedback_modal(form_html);            });
+                attach_feedback_modal(form_html);
+            });
         } else {
             $("#feedback_modal").modal("show");
         }

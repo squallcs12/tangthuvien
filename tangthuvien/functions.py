@@ -26,3 +26,10 @@ class UserSettings(object):
     @classmethod
     def set(cls, key, user_id, value):
         redis_cli.hset(cls.wrap(key), user_id, json.dumps(value))
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0]
+    else:
+        return request.META.get('REMOTE_ADDR', '0.0.0.0')
