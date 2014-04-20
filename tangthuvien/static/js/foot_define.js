@@ -63,13 +63,15 @@ current_url.prototype.generate = function(){
 (function($){
     var loaded = false;
 
-    function submit_ajax_feedback(data){
-        if(data != "1"){
-            // fail
-            $("#feedback_modal").remove();
+    function attach_feedback_modal(modal_html){
             $("body").append(data);
             $("#feedback_form").submit(submit_ajax_feedback);
-             $("#feedback_modal").modal("show");
+            $("#feedback_modal").modal("show");
+    }
+    function submit_ajax_feedback(data){
+        if(data != "1"){
+            $("#feedback_modal").remove();
+            attach_feedback_modal(data);
         } else {
             $("#feedback_modal").modal("hide");
         }
@@ -82,13 +84,8 @@ current_url.prototype.generate = function(){
             loaded = true; //ignore any unexpected error
             $(this).showLoading();
             $.get($(this).prop('href'), function(form_html){
-                $("body").append(form_html);
                 $(_this).hideLoading();
-
-                $("#feedback_form").ajaxForm(submit_ajax_feedback);
-
-                $("#feedback_modal").modal("show");
-            });
+                attach_feedback_modal(form_html);            });
         } else {
             $("#feedback_modal").modal("show");
         }
