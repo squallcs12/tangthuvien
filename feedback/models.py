@@ -6,6 +6,6 @@ class Feedback(models.Model):
     date = models.DateTimeField(default=timezone.now)
     subject = models.CharField(max_length=255)
     content = models.TextField()
-    attachment = models.FileField(upload_to='feedback')
+    attachment = models.FileField(upload_to='feedback', blank=True)
     url = models.URLField(default='')
     ip = models.IPAddressField(default='0.0.0.0')
