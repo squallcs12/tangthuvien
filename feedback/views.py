@@ -10,7 +10,10 @@ class FeedbackFormView(View):
 
     def get(self, request):
         data = {}
-        data['form'] = FeedbackForm()
+        init = {}
+        if 'HTTP_REFERER' in request.META:
+            init["url"] = request.META['HTTP_REFERER']
+        data['form'] = FeedbackForm(initial=init)
 
         return TemplateResponse(request, self.template_name, data)
 

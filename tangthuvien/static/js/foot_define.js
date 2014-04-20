@@ -64,7 +64,7 @@ current_url.prototype.generate = function(){
     var loaded = false;
 
     function attach_feedback_modal(modal_html){
-            $("body").append(data);
+            $("body").append(modal_html);
             $("#feedback_form").submit(submit_ajax_feedback);
             $("#feedback_modal").modal("show");
     }
