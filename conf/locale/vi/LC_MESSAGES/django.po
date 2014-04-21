@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-21 09:02+0700\n"
+"POT-Creation-Date: 2014-04-21 09:22+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -658,6 +658,22 @@ msgstr "Chuyển sắp xếp"
 msgid "--"
 msgstr "--"
 
+#: feedback/models.py:8 templates/postman/base_folder.html:35
+msgid "Subject"
+msgstr "Tiêu đề"
+
+#: feedback/models.py:9
+msgid "Content"
+msgstr "Nội dung"
+
+#: feedback/models.py:10
+msgid "Attachment"
+msgstr "Tệp đính kèm"
+
+#: feedback/models.py:11
+msgid "Url"
+msgstr "Url trang"
+
 #: feedback/views.py:30
 msgid "Your feedback is sent. We will work on that as soon as possible."
 msgstr "Feedback của bạn đã được gởi. Chúng tôi sẽ xem xét sớm nhất có thể."
@@ -679,14 +695,16 @@ msgstr "Trang không tồn tại"
 msgid ""
 "The page you requested could not be found, either contact your webmaster or "
 "try again."
-msgstr "Không tìm thấy trang được yêu cầu, vui lòng feedback với admin hoặc "
-"thử lại lần nữa."
+msgstr ""
+"Không tìm thấy trang được yêu cầu, vui lòng feedback với admin hoặc thử lại "
+"lần nữa."
 
 #: tangthuvien/templates/404.html:9
 msgid ""
 "Use your browsers <strong>Back</strong> button to navigate to the page you "
 "have prevously come from."
-msgstr "Dùng nút <strong>Back</strong> của trình duyệt để quay lại trang trước."
+msgstr ""
+"Dùng nút <strong>Back</strong> của trình duyệt để quay lại trang trước."
 
 #: tangthuvien/templates/404.html:10
 msgid "Or you could just press this neat little button:"
@@ -935,10 +953,6 @@ msgstr "Người gởi"
 #: templates/postman/base_folder.html:34 templates/postman/reply.html:4
 msgid "Recipient"
 msgstr "Người nhận"
-
-#: templates/postman/base_folder.html:35
-msgid "Subject"
-msgstr "Tiêu đề"
 
 #: templates/postman/base_folder.html:36
 msgid "Date"
