@@ -1,14 +1,14 @@
-import redis
 import hashlib
 import datetime
 from django.shortcuts import get_object_or_404
 from limiter.exceptions import LimiterException
+from tangthuvien.functions import redis_cli
 
 get_object_or_404
 
 class Limiter(object):
 
-    cli = redis.Redis()
+    cli = redis_cli()
     @classmethod
     def md5_key(cls, key):
         return hashlib.sha224(key).hexdigest()
