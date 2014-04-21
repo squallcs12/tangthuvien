@@ -20,8 +20,7 @@ def create_or_get_author():
 class BookFactory(factory.Factory):
     FACTORY_FOR = Book
 
-    title = factory.Sequence(lambda n: 'Book Title {0}'.format(n))
-    slug = factory.Sequence(lambda n: 'book-title-{0}'.format(n))
+    title = factory.Sequence(lambda n: unicode('Book Title {0}'.format(n)))
     author = factory.Sequence(lambda n: create_or_get_author())
     complete_status = factory.Sequence(lambda n: random.randint(1, 4))
     user = User.objects.all()[0]

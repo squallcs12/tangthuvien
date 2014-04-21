@@ -1,6 +1,14 @@
 Feature: Book App :: Book listing page
 
     Scenario: User visit book list
+        Given there are "40" books exist in the system
+        And there are categories exist in the system:
+            | category   |
+            | category-0 |
+            | category-1 |
+            | category-2 |
+            | category-3 |
+        And each book belong to some of categories
         When I visit book index page
         Then I see list of books
         And I was at the first page of listing
@@ -26,3 +34,12 @@ Feature: Book App :: Book listing page
         When I clear selected book categories
         And the loading animation finished
         Then I see all the books were listed
+
+	Scenario: List book by author
+		Given author "author-1" has "2" books
+		Given author "author-2" has "2" books
+		When I visit book index page
+		And I click on a book name
+		And I click on the author name
+		Then I should see "2" books in list
+		And all books are written by the the clicked author

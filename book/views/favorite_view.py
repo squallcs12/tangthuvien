@@ -35,7 +35,7 @@ def unfavorite_books(request):
     return HttpGoBack(request)
 
 @login_required
-def main(request, template="book/favorite.phtml"):
+def main(request, template="book/favorite.html"):
     data = {}
     books = request.user.favorite_books.all()
 

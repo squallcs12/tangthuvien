@@ -158,6 +158,9 @@ class Book(models.Model):
     def _create_slug(self):
         self.slug = slugify(unidecode(self.title))
 
+    def get_absolute_url(self):
+        return reverse("book_read", kwargs={"slug": self.slug})
+
     def save(self, *args, **kwargs):
         # create slug
         self._create_slug()

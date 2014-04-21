@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 class ColumnFilter(SimpleListFilter):
 
-    template = 'custom_admin/empty.phtml'
+    template = 'custom_admin/empty.html'
     title = 1
     parameter_name = 1
 
@@ -57,7 +57,7 @@ class TextColumnFilter(ColumnFilter):
 
         data['value'] = self.value if self.value else ''
 
-        return render_to_string('custom_admin/text_field.phtml', data, context)
+        return render_to_string('custom_admin/text_field.html', data, context)
 
 class MatchTextColumnFilter(TextColumnFilter):
     '''
@@ -89,4 +89,4 @@ class ForeignKeyColumnFilter(ColumnFilter):
 
         data['value'] = self.value
 
-        return render_to_string('custom_admin/foreign_key.phtml', data, context)
+        return render_to_string('custom_admin/foreign_key.html', data, context)

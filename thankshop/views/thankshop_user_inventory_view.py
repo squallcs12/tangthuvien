@@ -11,7 +11,7 @@ from thankshop.models.item import Item
 from tangthuvien.django_custom import HttpJson
 
 @login_required
-def index(request, username=None, template="thankshop/inventory.phtml"):
+def index(request, username=None, template="thankshop/inventory.html"):
     data = {}
     return TemplateResponse(request, template, data)
 

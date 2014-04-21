@@ -22,16 +22,16 @@ def clear_social_login(scenario):
 
 @step(u'I login using my facebook account')
 def i_login_using_my_facebook_account(step):
-    graphApi = facebook.GraphAPI(settings.FACEBOOK_APP_ACCESS_TOKEN)
-    testUsers = graphApi.get_object("/%s/accounts/test-users" % settings.FACEBOOK_APP_ID)
-    browser().get('https://facebook.com')
-    browser().get(testUsers['data'][0]['login_url'])
 
     visit_by_view_name('login')
     find("#social_login #facebook").click()
     try:
         browser().find_element_by_name('__CONFIRM__').click()
-    except: pass
+    except:
+        if find_all("#email"):
+            find("#email").fillin("lisa_ubhedvc_narayananman@tfbnw.net")
+            find("#pass").fillin(settings.TEST_PASSWORD)
+            find("#loginbutton").click()
 
 @step(u'I was asked to update my account password')
 def i_was_asked_to_update_my_account_password(step):
@@ -72,6 +72,8 @@ def i_login_using_my_google_account(step):
         find("#submit_approve_access")
         until(lambda: find("#submit_approve_access").get_attribute('disabled') is None, 10)
         find("#submit_approve_access").click()
+
+        until(lambda: browser().current_url[0:16].should.equal("http://localhost"))
 
 @step(u'my account was associated with facebook, twitter and google')
 def my_account_was_associated_with_facebook_twitter_and_google(step):

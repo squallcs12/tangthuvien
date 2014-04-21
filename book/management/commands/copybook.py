@@ -16,6 +16,7 @@ from book.models.copy_model import Copy
 from django.core.exceptions import ObjectDoesNotExist
 import json
 from book.models.language_model import Language
+from book.utils import simple_bb
 
 class Command(BaseCommand):
     help = """
@@ -72,9 +73,6 @@ class Command(BaseCommand):
                 with open(log, "a") as fb:
                     fb.write("\n%s" % message)
 
-    def simple_bb(self, text):
-        return text
-
     def copy(self, thread_id, book_id, start, end, start_post):
         if not thread_id or not book_id:
             sys.stdout.write("You must specific thread and book")
@@ -102,7 +100,7 @@ class Command(BaseCommand):
         yield "end %s" % end
         yield ""
 
-        language = Language.objects.all()[0]
+        language = book.languages.all()[0]
 
         for page in range(start, end + 1):
             yield "process_page %s" % page
@@ -152,7 +150,7 @@ class Command(BaseCommand):
 
                 yield "process_chapter %s" % chapter_number
                 chapter = Chapter()
-                chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in self.simple_bb(vp).split("\n") if txt])
+                chapter.content = "".join(["<p>%s</p>" % txt.strip() for txt in simple_bb(vp).split("\n") if txt.strip() != ""])
                 chapter.number = book.chapters_count + 1
                 chapter.book = book
                 chapter.user = user

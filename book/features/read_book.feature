@@ -1,7 +1,11 @@
 Feature: Book App :: Book reading page
 
+	Background:
+        Given there are "3" books exist in the system
+        And each book have "4" chapters
+
     Scenario: Read book as guest
-        Given I was a non-logged-in user
+        Given I was a visitor
         When I visit book index page
         And I click on a book
         Then I see the book rating box

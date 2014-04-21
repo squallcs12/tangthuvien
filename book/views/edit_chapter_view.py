@@ -13,7 +13,7 @@ from django.template.response import TemplateResponse
 from django.utils.translation import ugettext as _
 
 @login_required
-def main(request, chapter_id, edit_chapter_form=EditChapterForm, template="book/edit_chapter.phtml"):
+def main(request, chapter_id, edit_chapter_form=EditChapterForm, template="book/edit_chapter.html"):
     data = {}
     chapter = Chapter.objects.get(pk=chapter_id)
     book = chapter.book

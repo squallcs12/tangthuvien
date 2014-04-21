@@ -3,7 +3,7 @@ Feature: Accounts App :: Social login
     I want to be able to login with my social account
 
     Scenario: Social login of non-logged-in user
-        Given I was a non-logged-in user
+        Given I was a visitor
         When I login using my facebook account
         Then I was asked to update my account password
         And I update my account password

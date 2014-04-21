@@ -10,7 +10,7 @@ from django.views.generic.base import TemplateResponseMixin
 from social_auth.db.django_models import UserSocialAuth
 
 @login_required
-def main(request, template='accounts/social.phtml'):
+def main(request, template='accounts/social.html'):
     data = {}
 
     socials = UserSocialAuth.objects.filter(user=request.user)

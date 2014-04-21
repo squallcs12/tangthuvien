@@ -18,11 +18,3 @@ def socket_io(request):
 
 def onetime_show_notification(request):
     return {'onetime_show_notification' : OnetimeShowNotification(request)}
-
-
-
-def disqus(request):
-    return {
-        'DISQUS_SHORTNAME': st.DISQUS_SHORTNAME,
-        'DISQUS_DEVELOPER': st.DISQUS_DEVELOPER
-    }

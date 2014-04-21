@@ -1,7 +1,7 @@
 # Django settings for tangthuvien project.
 import os
-
-PATH_ROOT = os.path.realpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..'))
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+PATH_ROOT = BASE_DIR
 
 def realpath(path):
     return os.path.realpath(os.path.join(PATH_ROOT, path))
@@ -110,13 +110,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'tangthuvien.context_processors.site_name',
     'tangthuvien.context_processors.style_list',
     'tangthuvien.context_processors.onetime_show_notification',
-    'tangthuvien.context_processors.disqus',
     'tangthuvien.context_processors.socket_io',
+    'django_mobile.context_processors.is_mobile',
   )  # Optional
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_mobile.middleware.MobileDetectionMiddleware',
+    'django_mobile.middleware.SetFlavourMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -177,10 +179,11 @@ INSTALLED_APPS = (
     'thankshop',
     'notification',
     'mailer',
-    'zinnia',
     'tangthuvien',
+    'awesome_avatar',
     'ckeditor',
     'ajax_select',
+    'feedback',
 )
 SITE_ID = 1
 
@@ -293,10 +296,6 @@ SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 
 FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
 
-# disqus config
-DISQUS_DEVELOPER = True
-DISQUS_SHORTNAME = 'tangthuvien'
-
 # redis config
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
@@ -304,7 +303,18 @@ REDIS_DB = 0
 
 REDIS_ONETIME_NOTIFICATION_PREFIX = "ONETIME_NOTIFICATION_"
 
-AVAILABLE_STYLES = ['amelia', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'united']
+AVAILABLE_STYLES = ['default',
+                    'amelia',
+                    'cerulean',
+                    'cosmo',
+                    'cyborg',
+                    'flatly',
+                    'journal',
+                    'readable',
+                    'simplex',
+                    'slate',
+                    'spacelab',
+                    'united']
 DEFAULT_STYLE = 'slate'
 REDIS_STYLE_USER_SETTING_KEY = 'STYLE'
 
@@ -330,8 +340,7 @@ ZINNIA_AUTO_CLOSE_COMMENTS_AFTER = 0
 ZINNIA_AUTO_CLOSE_PINGBACKS_AFTER = 0
 
 # Homepage
-HOMEPAGE_REGENT_BOOK_UPDATE_TIME = {'days': 3}
-HOMEPAGE_RECENT_ENTRY_COUNT = 3
+HOMEPAGE_RECENT_BOOK_UPDATE_TIME = [{'days': 3}, {'days': 7}, {'days': 14}, {'days': 21}]
 
 SOCKET_IO_URL = 'http://localhost:1234'
 
@@ -345,10 +354,24 @@ PAYPAL_MODE = 'sandbox'
 PAYPAL_CLIENT_ID = 'AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd'
 PAYPAL_CLIENT_SECRET = 'EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'
 
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+AWESOME_AVATAR = {
+    'width': 200,
+    'height': 200,
+
+    'select_area_width': 500,
+    'select_area_height': 300,
+
+    'save_quality': 90,
+    'save_format': 'png',
+}
+
 import sys
 if 'harvest' in sys.argv:
-    LANGUAGE_CODE = 'eni' # disable localization
-    if '-P' in sys.argv: # custom port
+    LANGUAGE_CODE = 'eni'  # disable localization
+    if '-P' in sys.argv:  # custom port
         LETTUCE_SERVER_PORT = int(sys.argv[sys.argv.index('-P') + 1])
 
 try:

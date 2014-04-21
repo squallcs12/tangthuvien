@@ -4,18 +4,29 @@ Created on Sep 21, 2013
 @author: antipro
 '''
 from django import template
+from django.forms.fields import DateField, DateTimeField
 from ckeditor.widgets import CKEditorWidget
 
 register = template.Library()
 
-@register.filter(name='add_bootstrap_field')
-def add_bootstrap_field(bound_field):
-    bound_field.field.widget.attrs['class'] = 'form-control'
-    if bound_field.field.required and not isinstance(bound_field.field.widget, CKEditorWidget):
-        bound_field.field.widget.attrs['required'] = 'required'
-    return bound_field
+@register.inclusion_tag("general/form_requirement.html")
+def form_requirements(form):
+    context = {}
+    for bound_field in form:
+        bound_field.field.widget.attrs['class'] = 'form-control'
+        if bound_field.field.required and not isinstance(bound_field.field.widget, CKEditorWidget):
+            bound_field.field.widget.attrs['required'] = 'required'
 
-@register.inclusion_tag("_notification_message.phtml")
+        if isinstance(bound_field.field, (DateField, DateTimeField)):
+            context['datetimepicker'] = True
+            if isinstance(bound_field.field, DateField):
+                bound_field.field.datepicker = True
+            else:
+                bound_field.field.datetimepicker = True
+    return context
+
+
+@register.inclusion_tag("_notification_message.html")
 def render_message(message):
     message.tags_array = message.tags.split(" ")
     return {"message": message}

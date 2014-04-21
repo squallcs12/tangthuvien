@@ -21,7 +21,7 @@ def the_attachment_can_not_be_seen_by_other_normal_user(step):
     visit_by_view_name("logout")
     read_book_by_id(world.book_id)
     get_attachments_list().should_not.contain("1278231576904.jpg")
-    given_i_was_a_logged_in_user(step)
+    i_was_a_logged_in_user(step)
     read_book_by_id(world.book_id)
 
 @step(u'I reach the limited of uploading attachment')
@@ -40,7 +40,7 @@ def the_attachment_can_be_seen_by_other_normal_user(step):
     visit_by_view_name("logout")
     read_book_by_id(world.book_id)
     get_attachments_list().should.contain("1278231576904.jpg")
-    given_i_was_a_logged_in_super_user(step)
+    i_was_a_logged_in_user(step)
 
 @step(u'I approve that attachment')
 def i_approve_that_attachment(step):
@@ -48,7 +48,7 @@ def i_approve_that_attachment(step):
 
 @step(u'I reach the limited of approving attachment')
 def i_reach_the_limited_of_approving_attachment(step):
-    profile = default_user(3).book_profile
+    profile = default_user().book_profile
     profile.daily_approved_attachments_count = settings.BOOK_ATTACHMENTS_COUNT_APPROVE_LIMIT
     profile.save()
 

@@ -1,0 +1,25 @@
+{% load i18n %}
+<div id="feedback_modal" class="modal fade" data-width="600"
+    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form action="{% url 'feedback_form' %}" method="POST"
+        id="feedback_form" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">{% trans 'Tell us to improve this page.' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% include "general/form_render.html" %}
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit"
+                        >{% trans "Submit feedback" %}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </form>
+</div><!-- /.modal -->

@@ -1,0 +1,30 @@
+{% load i18n %}{% load postman_tags %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a data-toggle="collapse" href="#messageMenuBody">
+            {% trans "Messages" %}
+        </a>
+    </div>
+    <div id="messageMenuBody" class="panel-collapse collapse">
+        <div class="panel-body">
+            <ul id="postman_menu" class="nav nav-pills nav-stacked">
+                {% postman_unread as unread_count %}
+                <li>
+                    <a href="{% url 'postman_inbox' %}">{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'postman_sent' %}">{% trans "Sent Messages" %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'postman_write' %}">{% trans "Write" %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'postman_archives' %}">{% trans "Archives" %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'postman_trash' %}">{% trans "Trash" %}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

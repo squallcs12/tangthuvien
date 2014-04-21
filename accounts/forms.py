@@ -10,6 +10,7 @@ import requests
 from django.contrib.auth.models import User
 import json
 from tangthuvien import settings
+from accounts.models import UserProfile
 
 class AuthenticationForm(auth_form.AuthenticationForm):
 
@@ -59,3 +60,8 @@ class AuthenticationForm(auth_form.AuthenticationForm):
                 raise forms.ValidationError(self.error_messages['inactive'])
         self.check_for_test_cookie()
         return self.cleaned_data
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ('user',)

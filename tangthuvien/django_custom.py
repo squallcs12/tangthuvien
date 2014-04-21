@@ -5,7 +5,6 @@ Created on Aug 23, 2013
 '''
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.core.serializers.json import DjangoJSONEncoder
-from django.utils import simplejson
 from django.utils.http import is_safe_url
 from django.shortcuts import resolve_url
 from django.contrib.auth import REDIRECT_FIELD_NAME

@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 from book.models.book_model import Book
 from tangthuvien import settings
 import os
+from book.models.profile_model import Profile
+from book.models.rating_model import Rating
 
 # when user read a chapter
 chapter_read_signal = dispatch.Signal(providing_args=["user", "chapter", "page"])
@@ -133,3 +135,16 @@ def mark_unread_for_book(sender, **kwargs):
     for book in kwargs.get('books'):
         if not book.is_read:
             book.is_read_by_current_user = book.is_read_by_user(user)
+
+@dispatch.receiver(post_save, sender=User)
+def create_book_profile(sender, **kwargs):
+    if kwargs.get('created'):
+        user = kwargs.get('instance')
+        book_profile = Profile(user=user)
+        book_profile.save()
+
+@dispatch.receiver(post_save, sender=Book)
+def create_book_rating(sender, **kwargs):
+    if kwargs.get('created'):
+        book = kwargs.get('instance')
+        Rating.objects.create(book=book)

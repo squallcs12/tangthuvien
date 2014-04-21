@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 
 @login_required
-def main(request, book_id, post_new_chapter_form=PostNewChapterForm, template="book/post_new_chapter.phtml"):
+def main(request, book_id, post_new_chapter_form=PostNewChapterForm, template="book/post_new_chapter.html"):
     data = {}
     book = Book.objects.get(pk=book_id)
     data['book'] = book

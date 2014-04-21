@@ -44,3 +44,7 @@ jQuery(document).on("click", "ul.pagination li.disabled a", function() {
 jQuery(document).on("click", "ul.pagination li.active a", function() {
     return false;
 });
+
+jQuery(document).ajaxSuccess(function( event, xhr, settings ) {
+    catch_notification_messages(xhr);
+});

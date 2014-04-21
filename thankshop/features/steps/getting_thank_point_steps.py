@@ -25,7 +25,7 @@ def check_thank_point(points, user_number=1):
 def i_log_into_the_website_for_the_first_time_in_a_day(step):
     for row in models.UserDailyLoginHistory.objects.all():
         row.delete()
-    given_i_was_a_logged_in_user(step)
+    i_was_a_logged_in_user(step)
 
 @step(u'I receive a number of thank points')
 def i_receive_a_number_of_thank_points(step):
@@ -35,7 +35,7 @@ def i_receive_a_number_of_thank_points(step):
 @step(u'I re-login again')
 def i_re_login_again(step):
     logout_current_user()
-    given_i_was_a_logged_in_user(step)
+    i_was_a_logged_in_user(step)
 
 @step(u'I do not receive any thank points')
 def i_do_not_receive_any_thank_points(step):
@@ -52,7 +52,7 @@ def i_do_not_log_into_website_in_the_next_day(step):
 def i_see_my_thank_points_was_decreased(step):
     world.thank_points += settings.THANKSHOP_DAILY_LOGIN_THANK_POINTS
     world.thank_points += settings.THANKSHOP_DAILY_NOT_LOGIN_THANK_POINTS
-    given_i_was_a_logged_in_user(step)
+    i_was_a_logged_in_user(step)
     db_commit()
     check_thank_point(world.thank_points)
 
@@ -121,14 +121,8 @@ def i_can_not_thank_anylonger(step):
                 'number':-settings.THANKSHOP_THANK_POINTS_COST
             })
 
-@step(u'I can not give any thank in a short time')
-def i_can_not_give_any_thank_in_a_short_time(step):
-    i_thank_a_poster_for_a_chapter(step)
-    until(lambda: find("#popup-notitication").is_displayed().should.be.true)
-    find("#popup-notitication .modal-body").text.should.contain(trans(u"You can not thank in next"))
-
 @step(u'I has thanked points')
-def given_i_has_thanked_points(step):
+def i_has_thanked_points(step):
     try:
         thank_obj = models.ThankPoint.objects.get(user=default_user())
     except ObjectDoesNotExist:

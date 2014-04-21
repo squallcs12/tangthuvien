@@ -3,7 +3,7 @@ Feature: As a user
 	And I can spend my thank points to thank other people
 
 	Scenario: User get points by daily login
-		Given I was a non-logged-in user
+		Given I was a visitor
 		When I log into the website for the first time in a day
 		Then I receive a number of thank points
 		When I re-login again
@@ -16,9 +16,12 @@ Feature: As a user
 		When I thank a poster for a chapter
 		Then I see my thank points was spent
 		And poster thanked points was increased by half of those points
-		And I can not give any thank in a short time
+		When I thank a poster for a chapter
+		Then I should see the popup notification "You can not thank in next"
 		When I use all my thank points
-		Then I can not thank anylonger
+		And I thank a poster for a chapter
+		Then I should see the popup notification "You need at least"
+		And I should see the popup notification "thank points to do thank"
 
 	Scenario: User buy thank points
 		Given I was a logged-in user

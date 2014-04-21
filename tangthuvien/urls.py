@@ -1,9 +1,10 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.conf import settings
 admin.autodiscover()
-
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'tangthuvien.views.home_view.main', name='homepage'),
@@ -25,27 +26,11 @@ urlpatterns = patterns('',
     # ckeditor
     url(r'^ckeditor/', include('ckeditor.urls')),
 
-    # zinnia
-    url(r'^blog/search/', include('zinnia.urls.search')),
-    url(r'^blog/site_map/', include('zinnia.urls.sitemap')),
-    url(r'^blog/', include('zinnia.urls.capabilities')),
-    url(r'^blog/feeds/', include('zinnia.urls.feeds')),
-    url(r'^blog/', include('zinnia.urls.entries')),
-    url(r'^blog/', include('zinnia.urls.archives')),
-    url(r'^blog/', include('zinnia.urls.shortlink')),
-
     url(r'^accounts/', include('accounts.urls')),
 
     # thankshop
     url(r'^thankshop/', include('thankshop.urls')),
 
-)
+    url(r'^feedback/', include('feedback.urls')),
 
-from tangthuvien import settings
-if settings.DEBUG:
-    urlpatterns += patterns('',
-                            (r'^media/(?P<path>.*\.(css|js|jpg|png|gif|bmp|ico|avi|mp3|mp4|wav|pdf|prc|zip|rar|doc))$',
-                             'django.views.static.serve',
-                            {'document_root': settings.realpath('media')}))
-    # put the favicon in ano the place so that warning will not be thrown durring the test
-    urlpatterns += patterns('', (r'^(?P<path>favicon\.ico)$', 'django.views.static.serve', {'document_root': settings.realpath('media')}))
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

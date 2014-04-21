@@ -6,18 +6,18 @@ Created on Jul 28, 2013
 from django.template.response import TemplateResponse
 
 from book.models import Book
-from zinnia.models import Entry
 from tangthuvien import settings
 import datetime
 
-def main(request, template="homepage.phtml"):
+def main(request, template="homepage.html"):
     data = {}
 
     data['show_top_banner'] = True
-
-    last_update_time = datetime.datetime.now() - datetime.timedelta(**settings.HOMEPAGE_REGENT_BOOK_UPDATE_TIME)
-    data['books'] = Book.objects.filter(last_update__gte=last_update_time).order_by('-last_update')
-
-    data['entries'] = Entry.objects.all().order_by('-last_update')[0: settings.HOMEPAGE_RECENT_ENTRY_COUNT]  # @UndefinedVariable
+    for time_settings in settings.HOMEPAGE_RECENT_BOOK_UPDATE_TIME:
+        last_update_time = datetime.datetime.now() - datetime.timedelta(**time_settings)
+        data['books'] = Book.objects.filter(last_update__gte=last_update_time,
+                                        chapters_count__gt=0).order_by('-last_update')
+        if data['books'].count():
+            break
 
     return TemplateResponse(request, template, data)
