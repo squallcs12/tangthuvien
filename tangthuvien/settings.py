@@ -185,6 +185,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'ajax_select',
     'feedback',
+    'limiter',
 )
 SITE_ID = 1
 
