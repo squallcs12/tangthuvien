@@ -13,21 +13,21 @@ from django.utils.translation import ugettext as _
 
 get_object_or_404
 
-class Limiter(object):
+class LimitChecker(object):
 
     cli = redis_cli()
 
-    limiters = dict((x.code, x) for x in models.Limiter.objects.all())
+    limiters = dict((x.code, x) for x in models.Tracker.objects.all())
 
     @classmethod
     def refresh_limiters(cls):
-        cls.limiters = dict((x.code, x) for x in models.Limiter.objects.all())
+        cls.limiters = dict((x.code, x) for x in models.Tracker.objects.all())
 
     @classmethod
     def register(cls, code, error_message, timeout_module, timeout_func, limit):
         if code in cls.limiters:
             return
-        models.Limiter.objects.create(code=code,
+        models.Tracker.objects.create(code=code,
                                                 error_message=error_message,
                                                 timeout_module=timeout_module,
                                                 timeout_func=timeout_func,

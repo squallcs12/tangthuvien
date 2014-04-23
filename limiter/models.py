@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils import importlib
 
-class Limiter(models.Model):
-    code = models.CharField(max_length=255)
+class Tracker(models.Model):
+    code = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     error_message = models.CharField(max_length=255)
     timeout_module = models.CharField(max_length=255)
@@ -29,11 +29,22 @@ class Limiter(models.Model):
 
         return getattr(module, self.timeout_func)()
 
+    def check_error_message(self):
+        if "%(counter)d" not in self.error_message:
+            raise Exception("Missing counter parameter")
+
+        if "%(limit)d" not in self.error_message:
+            raise Exception("Missing limit parameter")
+
+    def save(self, *args, **kwargs):
+        self.check_error_message()
+        super(Tracker, self).save(*args, **kwargs)
+
 from django import dispatch
 from django.db.models.signals import post_save
 
-@dispatch.receiver(post_save, sender=Limiter)
+@dispatch.receiver(post_save, sender=Tracker)
 def create_book_profile(sender, **kwargs):
     from limiter import utils
     _limiter = kwargs.get('instance')
-    utils.Limiter.limiters[_limiter.code] = _limiter
+    utils.LimitChecker.limiters[_limiter.code] = _limiter
