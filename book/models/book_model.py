@@ -93,9 +93,11 @@ class Book(models.Model):
     def __unicode__(self):
         return self.title
 
-    @property
-    def full_url(self):
-        return "%s%s" % (reverse('books_home'), self.slug,)
+    def get_absolute_url(self):
+        return reverse('book_read', kwargs={"slug": self.slug})
+
+    def get_continue_url(self):
+        return reverse('book_read_continue', kwargs={"slug": self.slug})
 
     @property
     def is_read(self):

@@ -46,6 +46,9 @@ Feature: Book App :: Book reading page
         And I click on the previous book
         And I click on "Continue reading"
         And I see the last random chapter
+        When I visit book index page
+        And I click on last book "Continue" button
+        Then I see the last random chapter
         And I see chapter thank count
         And I can thank the poster for this chapter
         When I thank the poster for this chapter

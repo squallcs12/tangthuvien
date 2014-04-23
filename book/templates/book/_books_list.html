@@ -19,7 +19,13 @@
                             {% if showcheckbox %}
                                 <input type="checkbox" name="ids[]" value="{{book.id}}">
                             {% endif %}
-                             <a href="{{ book.full_url }}" class="title">{{book.title}}</a></td>
+                             <a href="{{ book.get_absolute_url }}" class="title">{{book.title}}</a>
+                             {% if user.is_authenticated %}
+                                <a class="btn btn-default pull-right"
+                                    href="{{ book.get_continue_url }}"
+                                    >{% trans "Continue reading" %}</a>
+                             {% endif %}
+                        </td>
                         <td>
                             {% for category in book.categories.all %}
                             <a class="label label-info" href="{% url 'books_home' %}?categories={{ category.slug }}">{{category.title}}</a>

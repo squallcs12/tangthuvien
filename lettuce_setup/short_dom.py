@@ -26,5 +26,9 @@ class ShortDom(object):
         return cls.element_by_tagname_and_text("label", label_text, parent)
 
     @classmethod
+    def link(cls, link_text, parent="body"):
+        return cls.element_by_tagname_and_text("a", link_text, parent)
+
+    @classmethod
     def element_for_label(cls, label):
         return find("#%s" % label.get_attribute("for"))
