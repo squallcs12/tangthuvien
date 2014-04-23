@@ -35,7 +35,7 @@ Feature: Book App :: Copy book
         And I select languages
         And I fill in book source thread page "http://www.tangthuvien.vn/forum/showthread.php?t=50129"
         And I submit the publish form
-        Then I see the text "The book is already copied to this site."
+        Then I should see the text "The book is already copied to this site."
         When I visit the copied book
         Then I can sync the new posted chapter from main-site of this book
         When I sync the new posted chapter

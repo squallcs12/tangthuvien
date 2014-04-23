@@ -35,3 +35,15 @@ def language():
             world.language = LanguageFactory()
             world.language.save()
     return world.language
+
+def category():
+    from lettuce import world
+    if not hasattr(world, "category"):
+        try:
+            from book.models.category_model import Category
+            world.category = Category.objects.all()[0]
+        except IndexError:
+            from book.features.factories.category_factory import CategoryFactory
+            world.category = CategoryFactory()
+            world.category.save()
+    return world.category

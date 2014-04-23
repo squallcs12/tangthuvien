@@ -13,7 +13,7 @@ from book.models.chapter_model import Chapter
 from book.models.book_model import Book
 from book.features.factories.book_factory import BookFactory
 from book.features.factories.chapter_factory import ChapterFactory
-from book.features.steps.general import language
+from book.features.steps.general import language, category
 
 
 @step(u'I am reading a book')
@@ -96,6 +96,7 @@ def there_are_number_books_exist_in_the_system(step, number):
         book = BookFactory()
         book.save()
         book.languages.add(language())
+        book.categories.add(category())
         book.save()
 
         chapter = ChapterFactory()

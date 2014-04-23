@@ -211,8 +211,8 @@ class datetime_fake:
     def now(cls):
         return datetime.datetime.now() + cls.timedelta
 
-@step(u'I see the text "([^"]*)"')
-def i_see_the_text(step, text):
+@step(u'I should see the text "([^"]*)"')
+def i_should_see_the_text(step, text):
     find("body").text.should.contain(text)
 
 @step(u'I click on link "([^"]*)"')
