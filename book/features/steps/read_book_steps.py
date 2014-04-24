@@ -132,3 +132,14 @@ def each_book_have_number_chapters(step, number):
             chapter.language = language()
             chapter.number = book.chapters_count + 1
             chapter.save()
+
+@step(u'I should see the book categories')
+def i_should_see_the_book_categories(step):
+    find("#categories").should.be.ok
+    len(find_all("#categories .category")).should_not.equal(0)
+
+@step(u'I click on last book "([^"]*)" button')
+def i_click_on_last_book_button(step, button_text):
+    book_selector = "#books .book[item_id='%s']" % world.book_id
+    ShortDom.link(button_text, book_selector).click()
+

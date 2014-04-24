@@ -16,7 +16,7 @@ from django.utils.translation import ugettext as _
 from book.models.language_book_preference import LanguagePreference
 from tangthuvien.functions import UserSettings
 from django.conf import settings
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 def main(request, slug, template="book/introduction.html"):
     data = {}
@@ -30,6 +30,18 @@ def main(request, slug, template="book/introduction.html"):
             pass
 
     return TemplateResponse(request, template, data)
+
+def continue_read(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    page = 1
+    if request.user.is_authenticated():
+        try:
+            book_read_log = UserLog.objects.get(user=request.user, book=book)
+            page = book_read_log.page
+        except ObjectDoesNotExist:
+            pass
+
+    return redirect("read_book_chapter", slug=slug, chapter_number=page)
 
 
 def chapter(request, slug, chapter_number, template="book/read.html"):
