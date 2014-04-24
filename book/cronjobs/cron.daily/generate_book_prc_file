@@ -1,1 +1,1 @@
-{{virtualenv_dir}}/bin/python {{current_dir}}/manage.py generate_prc
+cd {{current_dir}};source {{virtualenv_dir}}/bin/activate;python manage.py generate_prc
