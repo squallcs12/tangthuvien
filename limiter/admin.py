@@ -4,10 +4,9 @@ Created on Apr 22, 2014
 @author: antipro
 '''
 from django.contrib import admin
-from limiter.models import Limiter
+from limiter.models import Tracker
 
-# Register your models here.
-class LimiterAdmin(admin.ModelAdmin):
+class TrackerAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ('id', 'code', 'description', 'error_message',
                     'timeout_module', 'timeout_func', 'limit')}),
@@ -27,4 +26,4 @@ class LimiterAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-admin.site.register(Limiter, LimiterAdmin)
+admin.site.register(Tracker, TrackerAdmin)
