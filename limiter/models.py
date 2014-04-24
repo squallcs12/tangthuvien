@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import importlib
+from tangthuvien.functions import get_client_ip
 
 class Tracker(models.Model):
     code = models.CharField(max_length=255, unique=True)
@@ -7,15 +8,25 @@ class Tracker(models.Model):
     error_message = models.CharField(max_length=255)
     timeout_module = models.CharField(max_length=255)
     timeout_func = models.CharField(max_length=255)
+    key_module = models.CharField(max_length=255, default='limiter.models.Tracker')
+    key_func = models.CharField(max_length=255, default='get_user_id')
     limit = models.PositiveIntegerField()
 
-    def get_timeout(self):
+    @classmethod
+    def get_user_id(cls, request):
+        if request.user.is_authenticated():
+            return request.user.id
+
+    def get_user_ip(self, request):
+        return get_client_ip(request)
+
+    def run(self, module_class, method, *args, **kwargs):
         try:
             # import module
-            module = importlib.import_module(self.timeout_module)
+            module = importlib.import_module(module_class)
         except ImportError:  # class importing
             # split module path
-            components = self.timeout_module.split(".")
+            components = module_class.split(".")
 
             # class name is the last component
             class_name = components.pop()
@@ -27,7 +38,14 @@ class Tracker(models.Model):
             module = importlib.import_module(module_name)
             module = getattr(module, class_name)
 
-        return getattr(module, self.timeout_func)()
+        return getattr(module, method)(*args, **kwargs)
+
+
+    def get_timeout(self):
+        return self.run(self.timeout_module, self.timeout_func)
+
+    def get_key(self, request):
+        return self.run(self.key_module, self.key_func, request)
 
     def check_error_message(self):
         if "%(counter)d" not in self.error_message:
@@ -44,7 +62,7 @@ from django import dispatch
 from django.db.models.signals import post_save
 
 @dispatch.receiver(post_save, sender=Tracker)
-def create_book_profile(sender, **kwargs):
+def update_limiter_list(sender, **kwargs):
     from limiter import utils
     _limiter = kwargs.get('instance')
     utils.LimitChecker.limiters[_limiter.code] = _limiter

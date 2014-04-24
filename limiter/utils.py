@@ -28,10 +28,10 @@ class LimitChecker(object):
         if code in cls.limiters:
             return
         models.Tracker.objects.create(code=code,
-                                                error_message=error_message,
-                                                timeout_module=timeout_module,
-                                                timeout_func=timeout_func,
-                                                limit=limit)
+                                      error_message=error_message,
+                                      timeout_module=timeout_module,
+                                      timeout_func=timeout_func,
+                                      limit=limit)
 
     @classmethod
     def md5_key(cls, key):
@@ -57,8 +57,13 @@ class LimitChecker(object):
         return 3600 - (now_time.minute * 60 + now_time.second)
 
     @classmethod
-    def check(cls, code, key, raise_error=True):
+    def check(cls, code, request, raise_error=True):
         key_exists = cls.cli.exists(code)
+
+        # get key
+        key = cls.limiters[code].get_key(request)
+        if key == None:
+            return True
 
         # current limit counter
         counter = int(cls.cli.hget(code, key))
@@ -81,18 +86,18 @@ class LimitChecker(object):
         return True
 
     @classmethod
-    def weekly(cls, code, key, raise_error=True):
+    def weekly(cls, code, request, raise_error=True):
         return cls.check(code,
-                  key,
+                  request,
                   raise_error=raise_error)
 
     @classmethod
-    def daily(cls, code, key, raise_error=True):
+    def daily(cls, code, request, raise_error=True):
         return cls.check(code,
-                  key,
+                  request,
                   raise_error=raise_error)
     @classmethod
-    def hourly(cls, code, key, raise_error=True):
+    def hourly(cls, code, request, raise_error=True):
         return cls.check(code,
-                  key,
+                  request,
                   raise_error=raise_error)
