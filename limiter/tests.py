@@ -32,32 +32,32 @@ class LimitCheckerModelTests(TestCase):
         LimitChecker.get_timeout().should.equal(100)
 
     def test_refresh_LimitCheckers(self):
-        utils.LimitChecker.register('code', ' %(counter)d %(limit)d', 'timeout_module', 'timeout_func', 10)
+        utils.LimitChecker.register('code', ' %(counter)d %(limit)d', 10)
         len(utils.LimitChecker.limiters).should.equal(1)
 
         # same code, nothing change
-        utils.LimitChecker.register('code', ' %(counter)d %(limit)d', 'timeout_module', 'timeout_func', 10)
+        utils.LimitChecker.register('code', ' %(counter)d %(limit)d', 10)
         len(utils.LimitChecker.limiters).should.equal(1)
 
         # different code -> LimitCheckers refresh
-        utils.LimitChecker.register('code1', ' %(counter)d %(limit)d', 'timeout_module', 'timeout_func', 10)
+        utils.LimitChecker.register('code1', ' %(counter)d %(limit)d', 10)
         len(utils.LimitChecker.limiters).should.equal(2)
 
     def test_error_message_exception(self):
         try:
-            utils.LimitChecker.register('code3', '%(limit)d', 'timeout_module', 'timeout_func', 10)
+            utils.LimitChecker.register('code3', '%(limit)d', 10)
             assert False
         except Exception:
             pass
 
         try:
-            utils.LimitChecker.register('code4', '%(counter)d', 'timeout_module', 'timeout_func', 10)
+            utils.LimitChecker.register('code4', '%(counter)d', 10)
             assert False
         except Exception:
             pass
 
         try:
-            utils.LimitChecker.register('code5', 'a', 'timeout_module', 'timeout_func', 10)
+            utils.LimitChecker.register('code5', 'a', 10)
             assert False
         except Exception:
             pass

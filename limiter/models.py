@@ -1,24 +1,15 @@
 from django.db import models
 from django.utils import importlib
-from tangthuvien.functions import get_client_ip
 
 class Tracker(models.Model):
     code = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     error_message = models.CharField(max_length=255)
-    timeout_module = models.CharField(max_length=255)
-    timeout_func = models.CharField(max_length=255)
-    key_module = models.CharField(max_length=255, default='limiter.models.Tracker')
+    timeout_module = models.CharField(max_length=255, default='limiter.utils.LimitChecker')
+    timeout_func = models.CharField(max_length=255, default='timeout_to_next_day')
+    key_module = models.CharField(max_length=255, default='limiter.utils.LimitChecker')
     key_func = models.CharField(max_length=255, default='get_user_id')
     limit = models.PositiveIntegerField()
-
-    @classmethod
-    def get_user_id(cls, request):
-        if request.user.is_authenticated():
-            return request.user.id
-
-    def get_user_ip(self, request):
-        return get_client_ip(request)
 
     def run(self, module_class, method, *args, **kwargs):
         try:

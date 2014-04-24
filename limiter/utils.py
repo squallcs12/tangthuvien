@@ -3,11 +3,10 @@ Created on Apr 22, 2014
 
 @author: antipro
 '''
-import hashlib
 import datetime
 from django.shortcuts import get_object_or_404
 from limiter.exceptions import LimiterException
-from tangthuvien.functions import redis_cli
+from tangthuvien.functions import redis_cli, get_client_ip
 from limiter import models
 from django.utils.translation import ugettext as _
 
@@ -24,18 +23,20 @@ class LimitChecker(object):
         cls.limiters = dict((x.code, x) for x in models.Tracker.objects.all())
 
     @classmethod
-    def register(cls, code, error_message, timeout_module, timeout_func, limit):
+    def register(cls, code, error_message, limit, **kwargs):
         if code in cls.limiters:
             return
         models.Tracker.objects.create(code=code,
                                       error_message=error_message,
-                                      timeout_module=timeout_module,
-                                      timeout_func=timeout_func,
-                                      limit=limit)
+                                      limit=limit, **kwargs)
 
     @classmethod
-    def md5_key(cls, key):
-        return hashlib.sha224(key).hexdigest()
+    def get_user_id(cls, request):
+        if request.user.is_authenticated():
+            return request.user.id
+
+    def get_user_ip(self, request):
+        return get_client_ip(request)
 
     @classmethod
     def timeout_to_next_day(cls):
