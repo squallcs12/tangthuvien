@@ -115,3 +115,12 @@ class LimitChecker(object):
                 return func(self, request, *args, **kwargs)
             return wrapper
         return decorator
+
+    @classmethod
+    def check_func(cls, code, raise_error=True):
+        def decorator(func):
+            def wrapper(request, *args, **kwargs):
+                cls._check(code, request, raise_error=raise_error)
+                return func(request, *args, **kwargs)
+            return wrapper
+        return decorator
