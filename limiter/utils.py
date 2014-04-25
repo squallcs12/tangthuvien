@@ -58,7 +58,7 @@ class LimitChecker(object):
         return 3600 - (now_time.minute * 60 + now_time.second)
 
     @classmethod
-    def check(cls, code, request, raise_error=True):
+    def _check(cls, code, request, raise_error=True):
         key_exists = cls.cli.exists(code)
 
         # get key
@@ -67,7 +67,12 @@ class LimitChecker(object):
             return True
 
         # current limit counter
-        counter = int(cls.cli.hget(code, key))
+        counter = cls.cli.hget(code, key)
+        if counter:
+            counter = int(counter)
+        else:
+            counter = 0
+
         limit = cls.limiters[code].limit
         if limit > 0 and counter >= limit:
             if raise_error:
@@ -87,18 +92,10 @@ class LimitChecker(object):
         return True
 
     @classmethod
-    def weekly(cls, code, request, raise_error=True):
-        return cls.check(code,
-                  request,
-                  raise_error=raise_error)
-
-    @classmethod
-    def daily(cls, code, request, raise_error=True):
-        return cls.check(code,
-                  request,
-                  raise_error=raise_error)
-    @classmethod
-    def hourly(cls, code, request, raise_error=True):
-        return cls.check(code,
-                  request,
-                  raise_error=raise_error)
+    def check(cls, code, raise_error=True):
+        def decorator(func):
+            def wrapper(self, request, *args, **kwargs):
+                cls._check(code, request, raise_error=raise_error)
+                return func(self, request, *args, **kwargs)
+            return wrapper
+        return decorator

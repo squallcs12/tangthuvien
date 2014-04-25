@@ -7,6 +7,7 @@ from django.conf.urls import patterns, url
 from book.views.language import setting_view, api_list_view, api_preference_view
 from book.views.cloned_book_notification_view import TestClonedBookNotificationView, \
     ClonedBookJsNotificationView
+from book.views.publish_new_book_view import PublishNewBookView
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
@@ -25,7 +26,7 @@ urlpatterns = patterns('book.views',
     url(r'^favorite', 'favorite_view.main', name='favorite_books'),
     url(r'^post_new_chapter/(?P<book_id>\d*)', 'post_new_chapter_view.main', name='post_new_chapter'),
     url(r'^edit_chapter/(?P<chapter_id>\d*)', 'edit_chapter_view.main', name='edit_chapter'),
-    url(r'^publish', 'publish_new_book_view.main', name='publish_new_book'),
+    url(r'^publish', PublishNewBookView.as_view(), name='publish_new_book'),
 
     url(r'^add_book_author_ajax', 'add_book_author_view.ajax', name='add_book_author_ajax'),
     url(r'^add_book_type_ajax', 'add_book_type_view.ajax', name='add_book_type_ajax'),
