@@ -8,6 +8,7 @@ from book.views.language import setting_view, api_list_view, api_preference_view
 from book.views.cloned_book_notification_view import TestClonedBookNotificationView, \
     ClonedBookJsNotificationView
 from book.views.publish_new_book_view import PublishNewBookView
+from book.views.post_new_chapter_view import PostNewChapterView
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
@@ -24,7 +25,7 @@ urlpatterns = patterns('book.views',
 
     url(r'^unfavorite_books', 'favorite_view.unfavorite_books', name='unfavorite_books'),
     url(r'^favorite', 'favorite_view.main', name='favorite_books'),
-    url(r'^post_new_chapter/(?P<book_id>\d*)', 'post_new_chapter_view.main', name='post_new_chapter'),
+    url(r'^post_new_chapter/(?P<book_id>\d*)', PostNewChapterView.as_view(), name='post_new_chapter'),
     url(r'^edit_chapter/(?P<chapter_id>\d*)', 'edit_chapter_view.main', name='edit_chapter'),
     url(r'^publish', PublishNewBookView.as_view(), name='publish_new_book'),
 

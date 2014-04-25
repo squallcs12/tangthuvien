@@ -19,16 +19,17 @@ class LimitChecker(object):
     limiters = dict((x.code, x) for x in models.Tracker.objects.all())
 
     @classmethod
-    def refresh_limiters(cls):
-        cls.limiters = dict((x.code, x) for x in models.Tracker.objects.all())
-
-    @classmethod
     def register(cls, code, error_message, limit, **kwargs):
         if code in cls.limiters:
             return
         models.Tracker.objects.create(code=code,
                                       error_message=error_message,
                                       limit=limit, **kwargs)
+
+    @classmethod
+    def update(cls, code, **kwargs):
+        cls.limiters[code].__dict__.update(**kwargs)
+        cls.limiters[code].save()
 
     @classmethod
     def get_user_id(cls, request):
