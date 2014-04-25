@@ -58,6 +58,21 @@ class LimitChecker(object):
         return 3600 - (now_time.minute * 60 + now_time.second)
 
     @classmethod
+    def get_counter(cls, code, request):
+        key = cls.get_key(code, request)
+        if key == None:
+            return None
+
+        counter = cls.cli.hget(code, key)
+        if counter:
+            return int(counter)
+        return 0
+
+    @classmethod
+    def get_key(cls, code, request):
+        return cls.limiters[code].get_key(request)
+
+    @classmethod
     def _check(cls, code, request, raise_error=True):
         key_exists = cls.cli.exists(code)
 

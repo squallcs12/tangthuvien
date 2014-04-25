@@ -33,4 +33,6 @@ urlpatterns = patterns('',
 
     url(r'^feedback/', include('feedback.urls')),
 
+    url(r'^limiter/', include('limiter.urls')),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
