@@ -52,22 +52,24 @@ class PublishNewBookView(View):
 
         return self._render(request, form)
 
-LimitChecker.register("HOURLY_USER_PUBLISH_NEW_BOOK",
+LimitChecker.register(__name__, "HOURLY_USER_PUBLISH_NEW_BOOK",
                       _("You published %(counter)d of %(limit)d books in 1 hour. "
                         "So you can not publish any books until next hour. "
                         "Please try again"), 10, timeout_func='timeout_to_next_hour')
 
-LimitChecker.register("HOURLY_IP_PUBLISH_NEW_BOOK",
+LimitChecker.register(__name__, "HOURLY_IP_PUBLISH_NEW_BOOK",
                       _("Your IP published %(counter)d of %(limit)d books in 1 hour. "
                         "So you can not publish any books until next hour. "
-                        "Please try again"), 50, timeout_func='timeout_to_next_hour')
+                        "Please try again"), 50, timeout_func='timeout_to_next_hour',
+                      key_func='get_user_ip')
 
-LimitChecker.register("DAILY_USER_PUBLISH_NEW_BOOK",
+LimitChecker.register(__name__, "DAILY_USER_PUBLISH_NEW_BOOK",
                       _("You published %(counter)d of %(limit)d books today. "
                         "So you can not publish any books until next day. "
                         "Please try again"), 100, timeout_func='timeout_to_next_day')
 
-LimitChecker.register("DAILY_IP_PUBLISH_NEW_BOOK",
+LimitChecker.register(__name__, "DAILY_IP_PUBLISH_NEW_BOOK",
                       _("Your IP published %(counter)d of %(limit)d books today. "
                         "So you can not publish any books until next day. "
-                        "Please try again"), 500, timeout_func='timeout_to_next_day')
+                        "Please try again"), 500, timeout_func='timeout_to_next_day',
+                      key_func='get_user_ip')

@@ -48,23 +48,24 @@ class PostNewChapterView(View):
             return HttpResponseRedirect(reverse('read_book_chapter', kwargs={'slug':book.slug, 'chapter_number': chapter.number}))
         return self._render(request, book, form)
 
-
-LimitChecker.register("HOURLY_USER_PUBLISH_NEW_CHAPTER",
+LimitChecker.register(__name__, "HOURLY_USER_PUBLISH_NEW_CHAPTER",
                       _("You published %(counter)d of %(limit)d chapters in 1 hour. "
                         "So you can not publish any chapters until next hour. "
                         "Please try again"), 100, timeout_func='timeout_to_next_hour')
 
-LimitChecker.register("HOURLY_IP_PUBLISH_NEW_CHAPTER",
+LimitChecker.register(__name__, "HOURLY_IP_PUBLISH_NEW_CHAPTER",
                       _("Your IP published %(counter)d of %(limit)d chapters in 1 hour. "
                         "So you can not publish any chapters until next hour. "
-                        "Please try again"), 500, timeout_func='timeout_to_next_hour')
+                        "Please try again"), 500, timeout_func='timeout_to_next_hour',
+                      key_func='get_user_ip')
 
-LimitChecker.register("DAILY_USER_PUBLISH_NEW_CHAPTER",
+LimitChecker.register(__name__, "DAILY_USER_PUBLISH_NEW_CHAPTER",
                       _("You published %(counter)d of %(limit)d chapters today. "
                         "So you can not publish any chapters until next day. "
                         "Please try again"), 300, timeout_func='timeout_to_next_day')
 
-LimitChecker.register("DAILY_IP_PUBLISH_NEW_CHAPTER",
+LimitChecker.register(__name__, "DAILY_IP_PUBLISH_NEW_CHAPTER",
                       _("Your IP published %(counter)d of %(limit)d chapters today. "
                         "So you can not publish any chapters until next day. "
-                        "Please try again"), 1000, timeout_func='timeout_to_next_day')
+                        "Please try again"), 1000, timeout_func='timeout_to_next_day',
+                      key_func='get_user_ip')

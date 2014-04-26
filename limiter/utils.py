@@ -19,10 +19,11 @@ class LimitChecker(object):
     limiters = dict((x.code, x) for x in models.Tracker.objects.all())
 
     @classmethod
-    def register(cls, code, error_message, limit, **kwargs):
+    def register(cls, module_name, code, error_message, limit, **kwargs):
         if code in cls.limiters:
             return
-        models.Tracker.objects.create(code=code,
+        package = module_name.split(".")[0]
+        models.Tracker.objects.create(code=code, package=package,
                                       error_message=error_message,
                                       limit=limit, **kwargs)
 
@@ -36,7 +37,8 @@ class LimitChecker(object):
         if request.user.is_authenticated():
             return request.user.id
 
-    def get_user_ip(self, request):
+    @classmethod
+    def get_user_ip(cls, request):
         return get_client_ip(request)
 
     @classmethod

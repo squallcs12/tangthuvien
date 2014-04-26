@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import importlib
 
 class Tracker(models.Model):
+    package = models.CharField(max_length=255)
     code = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     error_message = models.CharField(max_length=255)
