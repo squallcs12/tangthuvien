@@ -29,7 +29,7 @@ from io import StringIO
 from django.db.models import Model
 from django.db.models.query import QuerySet
 from django.utils.encoding import smart_unicode
-from django.utils.simplejson import dumps
+from json import dumps
 from decimal import Decimal
 
 class UnableToSerializeError(Exception):
