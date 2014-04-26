@@ -101,9 +101,6 @@ class LimitChecker(object):
                                                 })
             return False
 
-        # increase counter
-        cls.cli.hincrby(code, key, 1)
-
         # auto remove this hash
         if not key_exists:
             cls.cli.expire(code, cls.limiters[code].get_timeout())
@@ -114,7 +111,14 @@ class LimitChecker(object):
         def decorator(func):
             def wrapper(self, request, *args, **kwargs):
                 cls._check(code, request, raise_error=raise_error)
-                return func(self, request, *args, **kwargs)
+
+                response = func(self, request, *args, **kwargs)
+
+                # increase counter
+                if response.status < 400: # not error
+                    cls.cli.hincrby(code, cls.get_key(code, request), 1)
+
+                return response
             return wrapper
         return decorator
 
