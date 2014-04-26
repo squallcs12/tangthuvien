@@ -12,10 +12,12 @@ from tangthuvien.django_custom import HttpJson
 from django.utils.decorators import method_decorator
 from limiter.utils import LimitChecker
 from django.utils.translation import ugettext as _
+from django.contrib.auth.decorators import login_required
 
 class RatingView(View):
 
     @method_decorator(ajax_required)
+    @method_decorator(login_required)
     @LimitChecker.check("DAILY_USER_RATING_LIMIT")
     @LimitChecker.check("DAILY_IP_RATING_LIMIT")
     def post(self, request):
