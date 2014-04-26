@@ -10,6 +10,7 @@ from book.views.cloned_book_notification_view import TestClonedBookNotificationV
 from book.views.publish_new_book_view import PublishNewBookView
 from book.views.post_new_chapter_view import PostNewChapterView
 from book.views.rating_view import RatingView
+from book.views.attachment_upload_view import UploadAttachmentView
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
@@ -34,7 +35,7 @@ urlpatterns = patterns('book.views',
     url(r'^add_book_type_ajax', 'add_book_type_view.ajax', name='add_book_type_ajax'),
 
     url(r'^ajax_book_reading_config', 'book_reading_config_view.ajax', name='ajax_book_reading_config'),
-    url(r'^upload_book_attachment_ajax', 'attachment_upload_view.ajax', name='upload_book_attachment_ajax'),
+    url(r'^upload_book_attachment_ajax', UploadAttachmentView.as_view(), name='upload_book_attachment_ajax'),
     url(r'^approve_book_attachment_ajax', 'attachment_approve_view.ajax', name='approve_book_attachment_ajax'),
 
     url(r'^book_attachment_download/(?P<book_id>\d*)/(?P<attachment_id>\d*)', 'attachment_download_view.main', name='book_attachment_download'),
