@@ -115,7 +115,7 @@ class LimitChecker(object):
                 response = func(self, request, *args, **kwargs)
 
                 # increase counter
-                if response.status < 400: # not error
+                if response.status_code < 400:  # not error
                     cls.cli.hincrby(code, cls.get_key(code, request), 1)
 
                 return response
@@ -129,8 +129,9 @@ class LimitChecker(object):
                 cls._check(code, request, raise_error=raise_error)
 
                 response = func(request, *args, **kwargs)
-                            # increase counter
-                if response.status < 400:  # not error
+
+                # increase counter
+                if response.status_code < 400:  # not error
                     cls.cli.hincrby(code, cls.get_key(code, request), 1)
 
                 return response
