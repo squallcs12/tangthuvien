@@ -9,6 +9,7 @@ from book.views.cloned_book_notification_view import TestClonedBookNotificationV
     ClonedBookJsNotificationView
 from book.views.publish_new_book_view import PublishNewBookView
 from book.views.post_new_chapter_view import PostNewChapterView
+from book.views.rating_view import RatingView
 
 urlpatterns = patterns('book.views',
     url(r'^$', 'index_view.main', name='books_home'),
@@ -20,7 +21,7 @@ urlpatterns = patterns('book.views',
     url(r'^ajax_list_books$', 'index_view.ajax', name='ajax_list_books'),
 
     url(r'^submit_thank', 'thank_view.main', name='summit_thank_request'),
-    url(r'^submit_book_rating', 'rating_view.main', name='submit_book_rating'),
+    url(r'^submit_book_rating', RatingView.as_view(), name='submit_book_rating'),
     url(r'^submit_favorite_book', 'favorite_view.ajax_submit', name='submit_favorite_book'),
 
     url(r'^unfavorite_books', 'favorite_view.unfavorite_books', name='unfavorite_books'),
