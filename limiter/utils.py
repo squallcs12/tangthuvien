@@ -127,6 +127,12 @@ class LimitChecker(object):
         def decorator(func):
             def wrapper(request, *args, **kwargs):
                 cls._check(code, request, raise_error=raise_error)
-                return func(request, *args, **kwargs)
+
+                response = func(request, *args, **kwargs)
+                            # increase counter
+                if response.status < 400:  # not error
+                    cls.cli.hincrby(code, cls.get_key(code, request), 1)
+
+                return response
             return wrapper
         return decorator
