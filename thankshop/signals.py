@@ -31,6 +31,8 @@ def increase_thank_points(sender, **kwargs):
     user = kwargs.get('user')
     request = kwargs.get("request")
     from thankshop import models
+    if not hasattr(user, 'thank_point'):
+        user.thank_point = models.ThankPoint.objects.get(user=user)
     try:
         today = timezone.now().date()
         previous_login = models.UserDailyLoginHistory.objects.get(user=user, date__lt=today)
