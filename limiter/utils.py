@@ -107,7 +107,7 @@ class LimitChecker(object):
         return True
 
     @classmethod
-    def check(cls, code, raise_error=True):
+    def check(cls, code, raise_error=True, accept_codes=(200, 201, 301, 302)):
         def decorator(func):
             def wrapper(self, request, *args, **kwargs):
                 cls._check(code, request, raise_error=raise_error)
@@ -115,7 +115,7 @@ class LimitChecker(object):
                 response = func(self, request, *args, **kwargs)
 
                 # increase counter
-                if response.status_code < 400:  # not error
+                if response.status_code in accept_codes:  # not error
                     cls.cli.hincrby(code, cls.get_key(code, request), 1)
 
                 return response
@@ -123,7 +123,7 @@ class LimitChecker(object):
         return decorator
 
     @classmethod
-    def check_func(cls, code, raise_error=True):
+    def check_func(cls, code, raise_error=True, accept_codes=(200, 201, 301, 302)):
         def decorator(func):
             def wrapper(request, *args, **kwargs):
                 cls._check(code, request, raise_error=raise_error)
@@ -131,7 +131,7 @@ class LimitChecker(object):
                 response = func(request, *args, **kwargs)
 
                 # increase counter
-                if response.status_code < 400:  # not error
+                if response.status_code in accept_codes:  # not error
                     cls.cli.hincrby(code, cls.get_key(code, request), 1)
 
                 return response
