@@ -11,16 +11,40 @@ from django.core.urlresolvers import reverse
 from book.models.book_model import Book
 from tangthuvien import settings
 import os
+from django.views.generic.base import View
+from django.utils.decorators import method_decorator
+from limiter.utils import LimitChecker
 
 def get_log_file(book_id):
     return settings.realpath('log/copybook/%s.log' % book_id)
 
-@login_required
-def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.html"):
-    data = {}
+class CopyNewBookView(View):
+    template="book/copy_book.html"
+    post_new_book_form=CopyBookForm
 
-    if request.method == "POST":
-        form = post_new_book_form(request.user, data=request.POST, files=request.FILES)
+    def _render(self, request, form):
+        data = {}
+        data['form'] = form
+        author_form = AddAuthorForm(prefix='author')
+        language_form = AddLanguageForm(prefix='language')
+
+        data['author_form'] = author_form
+        data['language_form'] = language_form
+
+        return TemplateResponse(request, self.template, data)
+
+    @method_decorator(login_required)
+    def get(self, request):
+        form = self.post_new_book_form(request.user)
+        return self._render(request, form)
+
+    @method_decorator(login_required)
+    @LimitChecker.check("HOURLY_USER_PUBLISH_NEW_BOOK")
+    @LimitChecker.check("HOURLY_IP_PUBLISH_NEW_BOOK")
+    @LimitChecker.check("DAILY_USER_PUBLISH_NEW_BOOK")
+    @LimitChecker.check("DAILY_IP_PUBLISH_NEW_BOOK")
+    def post(self, request):
+        form = self.post_new_book_form(request.user, data=request.POST, files=request.FILES)
         if form.is_valid():
             book = form.save()
             return HttpResponseRedirect("%s?url=%s&skip=%s" % (
@@ -28,18 +52,7 @@ def main(request, post_new_book_form=CopyBookForm, template="book/copy_book.html
                                                        form.cleaned_data['thread_url'],
                                                        1 if form["skip_first_post"].value() else 0,
                                                        ))
-    else:
-        form = post_new_book_form(request.user)
-
-        author_form = AddAuthorForm(prefix='author')
-        language_form = AddLanguageForm(prefix='language')
-
-        data['author_form'] = author_form
-        data['language_form'] = language_form
-
-    data['form'] = form
-
-    return TemplateResponse(request, template, data)
+        return self._render(request, form)
 
 @login_required
 def process(request, book_id=0, template="book/copy_book_process.html"):
