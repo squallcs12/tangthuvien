@@ -191,7 +191,7 @@ def email_address():
 @before.all
 def clear_redis():
     from tangthuvien.functions import redis_cli
-    redis_cli.flushdb()
+    redis_cli().flushdb()
 
 def db_commit():
     # try to commit database connection to fetch latest result for test

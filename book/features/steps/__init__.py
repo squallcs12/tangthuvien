@@ -26,6 +26,15 @@ def clear_user_in_db(scenario):
     Category.objects.all().delete()
     Author.objects.all().delete()
 
+    if hasattr(world, 'category'):
+        del world.category
+
+    if hasattr(world, 'book'):
+        del world.book
+
+    if hasattr(world, 'language'):
+        del world.language
+
 @before.all
 def clear_prc_folder():
     os.system("rm -f %s/*" % 'media/books/prc')

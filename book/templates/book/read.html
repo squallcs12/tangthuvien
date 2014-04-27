@@ -21,7 +21,9 @@
 {% include 'book/onetime_notification/user_log_notification.html' %}
 <div class="row-fluid">
     <div class="row">
-        <h3 class="col-lg-6">{{book.title}} / {{book.author.name}}</h3>
+        <div class="col-lg-6">
+            {% include "book/_book_title_header.html" %}
+        </div>
         <div class="col-lg-6 text-right" id="read_config">
             {% get_preference_language_id as language_id %}
             <form id="change_chapter_language" method="GET" action="{% url 'book_language_preference' %}" class="inline-form">

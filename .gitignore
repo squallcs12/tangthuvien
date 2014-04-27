@@ -18,3 +18,4 @@
 /program
 /socket.io/node_modules
 dump.rdb
+conf/locale/vi/LC_MESSAGES/django.mo

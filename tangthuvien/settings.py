@@ -126,6 +126,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'tangthuvien.middleware.GoogleAnalytics',
+    'limiter.middleware.Limiter',
 )
 
 ROOT_URLCONF = 'tangthuvien.urls'
@@ -184,6 +185,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'ajax_select',
     'feedback',
+    'limiter',
 )
 SITE_ID = 1
 

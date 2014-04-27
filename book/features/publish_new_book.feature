@@ -23,4 +23,5 @@ Feature: Book App :: Publish new book
         And I see the post new chapter form
         And the book was not listed yet
         When I post a new chapter for this book
+        And I visit book index page
         Then I see that book "New book title" was listed

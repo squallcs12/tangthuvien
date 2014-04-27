@@ -1,0 +1,2 @@
+<h3><a class="title" href="{% url 'book_read' book.slug %}">{{book.title}}</a></h3>
+<h4><a class="author" href="{% url 'books_home' %}?author={{ book.author.slug }}">{{book.author.name}}</a></h4>
