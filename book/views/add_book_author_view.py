@@ -8,7 +8,7 @@ from tangthuvien.django_custom import HttpJson
 
 def ajax(request, new_author_form=AddAuthorForm):
     returnJson = {}
-    form = AddAuthorForm(request.POST, prefix='author')
+    form = new_author_form(request.POST, prefix='author')
     returnJson['success'] = False
     if form.is_valid():
         author = form.save()
