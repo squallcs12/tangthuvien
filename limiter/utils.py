@@ -23,9 +23,12 @@ class LimitChecker(object):
         if code in cls.limiters:
             return
         package = module_name.split(".")[0]
-        models.Tracker.objects.create(code=code, package=package,
-                                      error_message=error_message,
-                                      limit=limit, **kwargs)
+        try:
+            models.Tracker.objects.create(code=code, package=package,
+                                          error_message=error_message,
+                                          limit=limit, **kwargs)
+        except:
+            pass
 
     @classmethod
     def update(cls, code, **kwargs):
