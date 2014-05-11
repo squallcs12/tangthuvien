@@ -16,7 +16,7 @@ class WebImageGenerateView(View):
         filename = url.split("/").pop().split(".")[0]
 
         import os
-        os.system("wkhtmltoimage \"%s\" %s.jpg" % (url, os.path.join(
+        os.system("/usr/bin/wkhtmltoimage \"%s\" %s.jpg" % (url, os.path.join(
                                                         settings.MEDIA_ROOT,
                                                          "web_images",
                                                          filename)))
