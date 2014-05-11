@@ -35,4 +35,6 @@ urlpatterns = patterns('',
 
     url(r'^limiter/', include('limiter.urls')),
 
+    url(r'^web_image/', include('web_image.urls')),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
