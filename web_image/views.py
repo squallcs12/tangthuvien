@@ -16,7 +16,6 @@ class WebImageGenerateView(View):
         width = request.POST['width']
         height = request.POST['height']
 
-        logging.info(request.POST)
 
         filename = url.split("/").pop().split(".")[0]
 
@@ -27,6 +26,9 @@ class WebImageGenerateView(View):
             os.unlink(des_file)
         except OSError:
             pass
+
+
+        logging.info("%s --width %s --height %s \"%s\" %s" % (program, width, height, url, des_file))
         os.system("%s --width %s --height %s \"%s\" %s" % (program, width, height, url, des_file))
 
         return HttpResponse("1")
