@@ -2,6 +2,7 @@ from django.views.generic.base import View
 from django.http.response import HttpResponse
 from tangthuvien import settings
 from django.views.decorators.csrf import csrf_exempt
+import logging
 
 # Create your views here.
 class WebImageGenerateView(View):
@@ -14,6 +15,8 @@ class WebImageGenerateView(View):
         url = request.POST['url']
         width = request.POST['width']
         height = request.POST['height']
+
+        logging.info(request.POST)
 
         filename = url.split("/").pop().split(".")[0]
 
